@@ -146,9 +146,83 @@ module.exports = grammar({
     sql_clauses: $ => prec.right(choice(
       seq($.dml_clause, optional(SEMI))
       ,seq($.cfl_statement, optional(SEMI))
+      ,seq($.ddl_clause, optional(SEMI))
       ,seq($.another_statement, optional(SEMI))
       //TODO https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L53-L61
     )),
+
+    // =====================
+    // DDL
+    // =====================
+
+    ddl_clause: $ => choice(
+      $.create_table
+      // Future: $.alter_table, $.drop_table, $.create_index, etc.
+    ),
+
+    //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L1479
+    create_table: $ => seq(
+      token(/CREATE/i), token(/TABLE/i),
+      $.full_table_name,
+      token('('),
+      $.table_element, repeat(seq(token(','), $.table_element)),
+      token(')')
+    ),
+
+    table_element: $ => choice(
+      $.column_definition,
+      $.table_constraint,
+    ),
+
+    //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L1485
+    column_definition: $ => seq(
+      field('name', $.id_),
+      $.data_type,
+      repeat(choice(
+        $.null_notnull,
+        $.identity_column,
+        $.column_constraint,
+      )),
+    ),
+
+    null_notnull: $ => choice(
+      seq(token(/NOT/i), $.null_),
+      $.null_,
+    ),
+
+    //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L1488
+    identity_column: $ => seq(
+      token(/IDENTITY/i),
+      optional(seq(token('('), $.decimal_, token(','), $.decimal_, token(')'))),
+    ),
+
+    column_constraint: $ => seq(
+      optional(seq(token(/CONSTRAINT/i), field('name', $.id_))),
+      choice(
+        seq(token(/PRIMARY/i), token(/KEY/i)),
+        token(/UNIQUE/i),
+        seq($.default, $.expression),
+        seq(token(/CHECK/i), token('('), $.search_condition, token(')')),
+        seq(optional(seq(token(/FOREIGN/i), token(/KEY/i))),
+          token(/REFERENCES/i), $.full_table_name,
+          optional(seq(token('('), $.id_, token(')')))),
+      )
+    ),
+
+    table_constraint: $ => seq(
+      optional(seq(token(/CONSTRAINT/i), field('name', $.id_))),
+      choice(
+        seq(token(/PRIMARY/i), token(/KEY/i),
+          token('('), $.column_name_list, token(')')),
+        seq(token(/UNIQUE/i),
+          token('('), $.column_name_list, token(')')),
+        seq(token(/FOREIGN/i), token(/KEY/i),
+          token('('), $.column_name_list, token(')'),
+          token(/REFERENCES/i), $.full_table_name,
+          optional(seq(token('('), $.column_name_list, token(')')))),
+        seq(token(/CHECK/i), token('('), $.search_condition, token(')')),
+      )
+    ),
 
     //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L250-L264
     cfl_statement: $ => choice(
