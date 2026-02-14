@@ -1,5 +1,6 @@
 {
   "name": "TSQL",
+  "word": "_word",
   "rules": {
     "tsql_file": {
       "type": "CHOICE",
@@ -14734,15 +14735,16 @@
         "value": "[0-9]+"
       }
     },
+    "_word": {
+      "type": "PATTERN",
+      "value": "[A-Za-z_#][A-Za-z_#$@0-9]*"
+    },
     "id_": {
       "type": "CHOICE",
       "members": [
         {
-          "type": "TOKEN",
-          "content": {
-            "type": "PATTERN",
-            "value": "[A-Za-z_#][A-Za-z_#$@0-9]*"
-          }
+          "type": "SYMBOL",
+          "name": "_word"
         },
         {
           "type": "TOKEN",

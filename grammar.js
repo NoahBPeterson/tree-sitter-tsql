@@ -43,6 +43,8 @@ const parens = (...rule) => seq('(', ...rule, ')');
 module.exports = grammar({
   name: "TSQL",
 
+  word: $ => $._word,
+
   conflicts: $ => [
     [$.batch]
     ,[$.table_source_item]
@@ -1163,9 +1165,13 @@ module.exports = grammar({
     // HELPERS
     //
 
+    // Word token for keyword extraction optimization
+    // This must match the identifier pattern so tree-sitter can extract keywords
+    _word: $ => /[A-Za-z_#][A-Za-z_#$@0-9]*/,
+
     //https://msdn.microsoft.com/en-us/library/ms175874.aspx
     id_: $ => choice(
-      ID
+      $._word
       ,SQUARE_BRACKET_ID
       ,DOUBLE_QUOTE_ID
       ,$.keyword
