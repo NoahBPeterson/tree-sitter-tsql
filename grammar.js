@@ -20,7 +20,7 @@ const data_type = require('./grammar/data_types.js');
 const SEMI = token(';');
 //FULLWIDTH handling?
 const ID                = token(/[A-Za-z_#][A-Za-z_#$@0-9]*/);
-const SQUARE_BRACKET_ID = token(/\[[A-Za-z_#]+\]/);
+const SQUARE_BRACKET_ID = token(/\[[^\]]+\]/);
 const DOUBLE_QUOTE_ID   = token(/"[^"]*"/);
 const LOCAL_ID          = token(/@[A-Za-z_$@#0-9]+/);
 const INT               = token(/[0-9]+/);
@@ -243,9 +243,76 @@ module.exports = grammar({
     select_statement: $ => prec.left(seq(
       $.query_expression
       ,optional($.select_order_by_clause)
+      ,optional($.for_clause)
+      ,optional($.option_clause)
       ,optional(SEMI)
-      //TODO https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L2186
     )),
+
+    //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L4055-L4068
+    for_clause: $ => seq(
+      token(/FOR/i)
+      ,choice(
+        token(/BROWSE/i)
+        ,seq(token(/XML/i), $.xml_common_directives)
+        ,seq(token(/JSON/i), $.json_common_directives)
+      )
+    ),
+
+    //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L4058-L4065
+    xml_common_directives: $ => choice(
+      seq(token(/RAW/i), optional(seq(token('('), $.string_lit, token(')'))), repeat(seq(token(','), $.xml_option)))
+      ,seq(token(/AUTO/i), repeat(seq(token(','), $.xml_option)))
+      ,seq(token(/EXPLICIT/i), repeat(seq(token(','), $.xml_option)))
+      ,seq(token(/PATH/i), optional(seq(token('('), $.string_lit, token(')'))), repeat(seq(token(','), $.xml_option)))
+    ),
+
+    xml_option: $ => choice(
+      token(/ELEMENTS/i)
+      ,seq(token(/ELEMENTS/i), choice(token(/XSINIL/i), token(/ABSENT/i)))
+      ,token(/TYPE/i)
+      ,seq(token(/ROOT/i), optional(seq(token('('), $.string_lit, token(')'))))
+      ,token(/BINARY_BASE64/i)
+      ,seq(token(/XMLSCHEMA/i), optional(seq(token('('), $.string_lit, token(')'))))
+      ,seq(token(/XMLDATA/i))
+    ),
+
+    //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L4067-L4068
+    json_common_directives: $ => seq(
+      choice(token(/AUTO/i), token(/PATH/i))
+      ,repeat(seq(token(','), $.json_option))
+    ),
+
+    json_option: $ => choice(
+      seq(token(/ROOT/i), optional(seq(token('('), $.string_lit, token(')'))))
+      ,token(/INCLUDE_NULL_VALUES/i)
+      ,token(/WITHOUT_ARRAY_WRAPPER/i)
+    ),
+
+    //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L4089
+    option_clause: $ => seq(
+      token(/OPTION/i), token('('), $.query_hint, repeat(seq(token(','), $.query_hint)), token(')')
+    ),
+
+    //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L4093
+    query_hint: $ => choice(
+      token(/RECOMPILE/i)
+      ,seq(token(/MAXDOP/i), $.expression)
+      ,seq(token(/OPTIMIZE/i), token(/FOR/i), choice(token(/UNKNOWN/i), seq(token('('), $.optimize_for_arg, repeat(seq(token(','), $.optimize_for_arg)), token(')'))))
+      ,seq(token(/HASH/i), choice(token(/GROUP/i), token(/JOIN/i), token(/UNION/i)))
+      ,seq(token(/MERGE/i), choice(token(/JOIN/i), token(/UNION/i)))
+      ,seq(token(/LOOP/i), token(/JOIN/i))
+      ,seq(token(/CONCAT/i), token(/UNION/i))
+      ,seq(token(/FORCE/i), token(/ORDER/i))
+      ,seq(token(/KEEP/i), token(/PLAN/i))
+      ,token(/EXPAND_VIEWS/i)
+      ,token(/FAST/i)
+      ,seq(token(/MAXRECURSION/i), $.expression)
+      ,seq(token(/USE/i), token(/PLAN/i), $.string_lit)
+    ),
+
+    optimize_for_arg: $ => seq(
+      $.LOCAL_ID_, choice(token(/UNKNOWN/i), seq(token('='), $.constant))
+    ),
 
     query_expression: $ => seq(
       $.query_specification, repeat($.sql_union)
@@ -381,18 +448,28 @@ module.exports = grammar({
       //TODO https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L4150-L4153
     ),
 
-    //TODO https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L4160C4-L4163
+    //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L4160C4-L4163
     table_source: $ => seq($.table_source_item, repeat($.join_part)),
 
     table_source_item: $ => seq(
       choice(
-        $.full_table_name
+        $.table_valued_function  // must be before full_table_name (both start with id_)
+        ,$.full_table_name
         ,seq(token('('), $.select_statement, token(')'))  // derived table
         ,$.local_id_
-        //TODO table-valued functions, OPENROWSET, OPENQUERY, etc.
+        //TODO OPENROWSET, OPENQUERY, OPENDATASOURCE
       )
-      ,optional($.as_table_alias)
-      ,optional($.with_table_hints)
+      ,choice(
+        $.pivot_clause          // PIVOT path (includes its own alias)
+        ,$.unpivot_clause       // UNPIVOT path (includes its own alias)
+        ,seq(optional($.as_table_alias), optional($.with_table_hints))  // normal path
+      )
+    ),
+
+    //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L4175
+    table_valued_function: $ => seq(
+      $.func_proc_name_database_schema
+      ,token('('), optional($.expression_list_), token(')')
     ),
 
     as_table_alias: $ => seq(optional(token(/AS/i)), $.id_),
@@ -433,6 +510,24 @@ module.exports = grammar({
       ,seq(token(/CROSS/i), token(/APPLY/i), $.table_source_item)
       ,seq(token(/OUTER/i), token(/APPLY/i), $.table_source_item)
     ),
+
+    //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L4247
+    pivot_clause: $ => seq(
+      token(/PIVOT/i), token('(')
+      ,$.aggregate_functions, token(/FOR/i), $.full_column_name
+      ,token(/IN/i), token('('), $.column_alias_list, token(')')
+      ,token(')'), $.as_table_alias
+    ),
+
+    //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L4251
+    unpivot_clause: $ => seq(
+      token(/UNPIVOT/i), token('(')
+      ,$.full_column_name, token(/FOR/i), $.full_column_name
+      ,token(/IN/i), token('('), $.column_alias_list, token(')')
+      ,token(')'), $.as_table_alias
+    ),
+
+    column_alias_list: $ => seq($.column_alias, repeat(seq(token(','), $.column_alias))),
 
     join_hint: $ => choice(
       token(/LOOP/i), token(/HASH/i), token(/MERGE/i), token(/REMOTE/i)
