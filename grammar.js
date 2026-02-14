@@ -45,6 +45,8 @@ module.exports = grammar({
 
   conflicts: $ => [
     [$.batch]
+    ,[$.table_source_item]
+    ,[$.top_clause, $.bracket_expression]
   ],
 
   extras: $ => [
@@ -222,23 +224,53 @@ module.exports = grammar({
 
     select_statement: $ => prec.left(seq(
       $.query_expression
+      ,optional($.select_order_by_clause)
       ,optional(SEMI)
       //TODO https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L2186
     )),
 
     query_expression: $ => seq(
-      $.query_specification
-      //TODO union all https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L3999
+      $.query_specification, repeat($.sql_union)
+      //TODO parenthesized query_expression https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L3999
+    ),
+
+    sql_union: $ => seq(
+      choice(
+        seq(token(/UNION/i), optional(token(/ALL/i)))
+        ,token(/EXCEPT/i)
+        ,token(/INTERSECT/i)
+      )
+      ,choice($.query_specification, seq(token('('), $.query_expression, token(')')))
     ),
 
     query_specification: $ => seq(
       $.select
+      ,optional(choice(token(/ALL/i), token(/DISTINCT/i)))
+      ,optional($.top_clause)
       ,$.select_list
+      ,optional(seq(token(/INTO/i), $.full_table_name))
       ,optional(seq(token(/FROM/i), $.table_sources))
       ,optional(seq(token(/WHERE/i), $.search_condition))
       ,optional($.groupby)
       ,optional(seq(token(/HAVING/i), $.search_condition))
       //TODO https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L4010-L4023
+    ),
+
+    top_clause: $ => seq(
+      token(/TOP/i)
+      ,choice(
+        seq(token('('), $.expression, token(')'))
+        ,$.expression
+      )
+      ,optional(token(/PERCENT/i))
+      ,optional(seq(token(/WITH/i), token(/TIES/i)))
+    ),
+
+    select_order_by_clause: $ => seq(
+      token(/ORDER/i), token(/BY/i)
+      ,$.order_by_expression, repeat(seq(token(','), $.order_by_expression))
+      ,optional(seq(token(/OFFSET/i), $.expression, token(/ROWS/i)))
+      ,optional(seq(token(/FETCH/i), choice(token(/FIRST/i), token(/NEXT/i)), $.expression, token(/ROWS/i), token(/ONLY/i)))
     ),
 
     select: $ => token(/SELECT/i),
@@ -283,7 +315,7 @@ module.exports = grammar({
 
     //https://learn.microsoft.com/en-us/sql/t-sql/queries/select-clause-transact-sql?view=sql-server-ver16
     //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L4133
-    udt_elem: $ => prec.left(choice(
+    udt_elem: $ => prec.left(10, choice(
       seq(field('udt_column_name', $.id_), DOT, field('non_static_attr',$.id_), $.udt_method_arguments, optional($.as_column_alias))
 
       ,seq(field('udt_column_name', $.id_), DOUBLE_COLON, field('non_static_attr',$.id_)
@@ -312,16 +344,41 @@ module.exports = grammar({
       ,$.string_lit
     ),
 
-    table_sources: $ => choice(
-      $.table_source
+    table_sources: $ => seq(
+      $.table_source, repeat(seq(token(','), $.table_source))
       //TODO https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L4150-L4153
     ),
 
     //TODO https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L4160C4-L4163
-    table_source: $ => seq($.table_source_item),
+    table_source: $ => seq($.table_source_item, repeat($.join_part)),
 
-    table_source_item: $ => choice(
-      $.full_table_name
+    table_source_item: $ => seq(
+      choice(
+        $.full_table_name
+        ,seq(token('('), $.select_statement, token(')'))  // derived table
+        ,$.local_id_
+        //TODO table-valued functions, OPENROWSET, OPENQUERY, etc.
+      )
+      ,optional($.as_table_alias)
+    ),
+
+    as_table_alias: $ => seq(optional(token(/AS/i)), $.id_),
+
+    join_part: $ => choice(
+      seq(optional($.join_hint), token(/JOIN/i), $.table_source_item, token(/ON/i), $.search_condition)
+      ,seq(token(/INNER/i), optional($.join_hint), token(/JOIN/i), $.table_source_item, token(/ON/i), $.search_condition)
+      ,seq(choice(
+        seq(token(/LEFT/i), optional(token(/OUTER/i)))
+        ,seq(token(/RIGHT/i), optional(token(/OUTER/i)))
+        ,seq(token(/FULL/i), optional(token(/OUTER/i)))
+      ), optional($.join_hint), token(/JOIN/i), $.table_source_item, token(/ON/i), $.search_condition)
+      ,seq(token(/CROSS/i), token(/JOIN/i), $.table_source_item)
+      ,seq(token(/CROSS/i), token(/APPLY/i), $.table_source_item)
+      ,seq(token(/OUTER/i), token(/APPLY/i), $.table_source_item)
+    ),
+
+    join_hint: $ => choice(
+      token(/LOOP/i), token(/HASH/i), token(/MERGE/i), token(/REMOTE/i)
     ),
 
     //TODO CORPUS
@@ -348,10 +405,15 @@ module.exports = grammar({
       ,field('table', $.id_)
     )),
 
-    //TODO https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L5155-L5160
-    full_column_name: $ => seq(
-      $.id_
-    ),
+    //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L5155-L5160
+    full_column_name: $ => prec.right(seq(
+      optional(choice(
+        seq(field('server', $.id_), DOT, field('schema', $.id_), DOT, field('table', $.id_), DOT)
+        ,seq(field('schema', $.id_), DOT, field('table', $.id_), DOT)
+        ,seq(field('table', $.id_), DOT)
+      ))
+      ,field('column', $.id_)
+    )),
 
     //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L3900-L3917
     expression: $ => choice(

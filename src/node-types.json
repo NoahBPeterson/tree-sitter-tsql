@@ -15,6 +15,11 @@
     "fields": {}
   },
   {
+    "type": "WITH",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "aggregate_functions",
     "named": true,
     "fields": {
@@ -141,6 +146,11 @@
         }
       ]
     }
+  },
+  {
+    "type": "all_",
+    "named": true,
+    "fields": {}
   },
   {
     "type": "all_distinct_expression",
@@ -278,6 +288,21 @@
         },
         {
           "type": "column_alias",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "as_table_alias",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "id_",
           "named": true
         }
       ]
@@ -1163,6 +1188,11 @@
     "fields": {}
   },
   {
+    "type": "distinct_",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "dml_clause",
     "named": true,
     "fields": {},
@@ -1547,16 +1577,47 @@
   {
     "type": "full_column_name",
     "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": true,
-      "types": [
-        {
-          "type": "id_",
-          "named": true
-        }
-      ]
+    "fields": {
+      "column": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "id_",
+            "named": true
+          }
+        ]
+      },
+      "schema": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "id_",
+            "named": true
+          }
+        ]
+      },
+      "server": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "id_",
+            "named": true
+          }
+        ]
+      },
+      "table": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "id_",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {
@@ -1961,6 +2022,34 @@
     "fields": {}
   },
   {
+    "type": "join_hint",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "join_part",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "join_hint",
+          "named": true
+        },
+        {
+          "type": "search_condition",
+          "named": true
+        },
+        {
+          "type": "table_source_item",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "keyword",
     "named": true,
     "fields": {}
@@ -2000,6 +2089,11 @@
         }
       ]
     }
+  },
+  {
+    "type": "left_",
+    "named": true,
+    "fields": {}
   },
   {
     "type": "local_id_",
@@ -2370,11 +2464,15 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": true,
       "types": [
         {
           "type": "query_specification",
+          "named": true
+        },
+        {
+          "type": "sql_union",
           "named": true
         }
       ]
@@ -2388,6 +2486,10 @@
       "multiple": true,
       "required": true,
       "types": [
+        {
+          "type": "full_table_name",
+          "named": true
+        },
         {
           "type": "groupby",
           "named": true
@@ -2406,6 +2508,10 @@
         },
         {
           "type": "table_sources",
+          "named": true
+        },
+        {
+          "type": "top_clause",
           "named": true
         }
       ]
@@ -2453,6 +2559,11 @@
   },
   {
     "type": "respect_nulls_",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "right_",
     "named": true,
     "fields": {}
   },
@@ -2564,15 +2675,38 @@
     }
   },
   {
+    "type": "select_order_by_clause",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "expression",
+          "named": true
+        },
+        {
+          "type": "order_by_expression",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "select_statement",
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": true,
       "types": [
         {
           "type": "query_expression",
+          "named": true
+        },
+        {
+          "type": "select_order_by_clause",
           "named": true
         }
       ]
@@ -2626,6 +2760,25 @@
         },
         {
           "type": "dml_clause",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "sql_union",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "query_expression",
+          "named": true
+        },
+        {
+          "type": "query_specification",
           "named": true
         }
       ]
@@ -2721,9 +2874,13 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": true,
       "types": [
+        {
+          "type": "join_part",
+          "named": true
+        },
         {
           "type": "table_source_item",
           "named": true
@@ -2736,11 +2893,23 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": true,
       "types": [
         {
+          "type": "as_table_alias",
+          "named": true
+        },
+        {
           "type": "full_table_name",
+          "named": true
+        },
+        {
+          "type": "local_id_",
+          "named": true
+        },
+        {
+          "type": "select_statement",
           "named": true
         }
       ]
@@ -2751,11 +2920,26 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": true,
       "types": [
         {
           "type": "table_source",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "top_clause",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "expression",
           "named": true
         }
       ]
@@ -3044,20 +3228,12 @@
     "named": true
   },
   {
-    "type": "WITH",
-    "named": true
-  },
-  {
     "type": "^",
     "named": false
   },
   {
     "type": "^=",
     "named": false
-  },
-  {
-    "type": "all_",
-    "named": true
   },
   {
     "type": "app_name_",
@@ -3260,10 +3436,6 @@
     "named": true
   },
   {
-    "type": "distinct_",
-    "named": true
-  },
-  {
     "type": "dollar_partition_",
     "named": true
   },
@@ -3412,10 +3584,6 @@
     "named": true
   },
   {
-    "type": "left_",
-    "named": true
-  },
-  {
     "type": "left_shift_",
     "named": true
   },
@@ -3561,10 +3729,6 @@
   },
   {
     "type": "remserver_",
-    "named": true
-  },
-  {
-    "type": "right_",
     "named": true
   },
   {
