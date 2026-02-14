@@ -28,7 +28,7 @@ EXEC (@sql) AS LOGIN = 'sa'
           (execute_body
             (execute_var_string
               (LOCAL_ID_))
-            (AS)
+            (as)
             (LOGIN)
             (string_lit)))))))
 

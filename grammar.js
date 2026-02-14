@@ -342,7 +342,7 @@ module.exports = grammar({
       //TODO execute_option https://learn.microsoft.com/en-us/sql/t-sql/language-elements/execute-transact-sql?view=sql-server-ver15
 
       ,seq(parens(seq($.execute_var_string, repeat(seq(token(','), $.execute_var_string))))
-        ,optional(seq($.AS, choice($.LOGIN,$.USER), token('='), $.string_lit))
+        ,optional(seq($.as, choice($.LOGIN,$.USER), token('='), $.string_lit))
         ,optional(seq($.AT_KEYWORD, field('linkedServer', $.id_))))
       //TODO AT_DATA_SOURCE https://learn.microsoft.com/en-us/sql/t-sql/language-elements/execute-transact-sql?view=sql-server-ver16&redirectedfrom=MSDN#:~:text=AT%20DATA_SOURCE%20data_source_name%20Applies%20to%3A%20SQL%20Server%202019%20(15.x)%20and%20later
     )),
@@ -362,7 +362,6 @@ module.exports = grammar({
 
     RECOMPILE: $ => token(/RECOMPILE/i),
 
-    AS: $ => token(/AS/i),
     LOGIN: $ => token(/LOGIN/i),
     USER: $ => token(/USER/i),
     AT_KEYWORD: $ => token(/AT/i),

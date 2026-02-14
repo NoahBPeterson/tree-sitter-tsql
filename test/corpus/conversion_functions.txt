@@ -24,6 +24,6 @@ SELECT CAST('a' as VARCHAR)
                               (primitive_expression
                                 (primitive_constant
                                   (string_lit))))
-                            (AS)
+                            (as)
                             (data_type
                               (varchar_))))))))))))))))
