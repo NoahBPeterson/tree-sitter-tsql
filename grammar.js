@@ -47,6 +47,11 @@ module.exports = grammar({
     [$.batch]
   ],
 
+  extras: $ => [
+    /\s/,
+    $.comment,
+  ],
+
   ...precedences,
 
   rules: {
@@ -63,6 +68,14 @@ module.exports = grammar({
       ,//TODO seq($.batch_level_statement, repeat($.go_statement))
        //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L46-L51
     ),
+
+    // Comments
+    // Single-line: -- until end of line
+    // Multi-line:  /* ... */
+    comment: $ => token(choice(
+      seq('--', /.*/)
+      ,seq('/*', /[^*]*\*+([^/*][^*]*\*+)*/, '/')
+    )),
 
     //https://learn.microsoft.com/en-us/sql/t-sql/language-elements/sql-server-utilities-statements-go?view=sql-server-ver16
     go_statement: $ => seq(token(/GO/i), optional(field("count", $.integer))),
