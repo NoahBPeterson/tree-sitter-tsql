@@ -141,16 +141,188 @@ module.exports = grammar({
 
     //TODO batch_level_statement: $ => 'TODO', //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L46-L51
 
-    sql_clauses: $ => choice(
+    sql_clauses: $ => prec.right(choice(
       seq($.dml_clause, optional(SEMI))
+      ,seq($.cfl_statement, optional(SEMI))
       ,seq($.another_statement, optional(SEMI))
       //TODO https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L53-L61
+    )),
+
+    //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L250-L264
+    cfl_statement: $ => choice(
+      $.block_statement
+      ,$.if_statement
+      ,$.while_statement
+      ,$.return_statement
+      ,$.break_statement
+      ,$.continue_statement
+      ,$.try_catch_statement
+      ,$.throw_statement
+      ,$.print_statement
+      ,$.raiseerror_statement
+      //TODO goto_statement, label_statement, waitfor_statement
+    ),
+
+    //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L251
+    block_statement: $ => seq(
+      token(/BEGIN/i), repeat($.sql_clauses), token(/END/i)
+    ),
+
+    //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L255
+    if_statement: $ => prec.right(seq(
+      token(/IF/i), $.search_condition
+      ,$.sql_clauses
+      ,optional(seq(token(/ELSE/i), $.sql_clauses))
+    )),
+
+    //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L262
+    while_statement: $ => seq(
+      token(/WHILE/i), $.search_condition, $.sql_clauses
+    ),
+
+    //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L258
+    return_statement: $ => prec.right(seq(token(/RETURN/i), optional($.expression))),
+
+    break_statement: $ => token(/BREAK/i),
+    continue_statement: $ => token(/CONTINUE/i),
+
+    //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L260
+    try_catch_statement: $ => seq(
+      token(/BEGIN/i), token(/TRY/i)
+      ,repeat($.sql_clauses)
+      ,token(/END/i), token(/TRY/i)
+      ,token(/BEGIN/i), token(/CATCH/i)
+      ,repeat($.sql_clauses)
+      ,token(/END/i), token(/CATCH/i)
+    ),
+
+    //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L259
+    throw_statement: $ => prec.right(seq(
+      token(/THROW/i)
+      ,optional(seq($.expression, token(','), $.expression, token(','), $.expression))
+    )),
+
+    //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L256
+    print_statement: $ => seq(token(/PRINT/i), $.expression),
+
+    //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L257
+    raiseerror_statement: $ => prec.right(seq(
+      token(/RAISERROR/i), token('(')
+      ,$.expression, token(','), $.expression, token(','), $.expression
+      ,repeat(seq(token(','), $.expression))
+      ,token(')')
+      ,optional(seq(token(/WITH/i), $.raiserror_option, repeat(seq(token(','), $.raiserror_option))))
+    )),
+
+    raiserror_option: $ => choice(
+      token(/LOG/i), token(/NOWAIT/i), token(/SETERROR/i)
     ),
 
     another_statement: $ => choice(
-
-      //TODO https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L350
       $.execute_statement
+      ,$.declare_statement
+      ,$.set_statement
+      ,$.use_statement
+      ,$.transaction_statement
+      ,$.cursor_statement
+      //TODO https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L350
+    ),
+
+    //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L2981
+    declare_statement: $ => seq(
+      token(/DECLARE/i)
+      ,$.declare_local, repeat(seq(token(','), $.declare_local))
+    ),
+
+    declare_local: $ => seq(
+      $.LOCAL_ID_, $.data_type, optional(seq(token('='), $.expression))
+    ),
+
+    //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L3398
+    set_statement: $ => choice(
+      seq(token(/SET/i), $.LOCAL_ID_, choice(token('='), $.assignment_operator), $.expression)
+      ,$.set_special
+    ),
+
+    //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L3402
+    set_special: $ => seq(
+      token(/SET/i)
+      ,choice(
+        seq($.set_on_off_option, choice(token(/ON/i), token(/OFF/i)))
+        ,seq(token(/TRANSACTION/i), token(/ISOLATION/i), token(/LEVEL/i)
+          ,choice(
+            seq(token(/READ/i), token(/UNCOMMITTED/i))
+            ,seq(token(/READ/i), token(/COMMITTED/i))
+            ,seq(token(/REPEATABLE/i), token(/READ/i))
+            ,token(/SNAPSHOT/i)
+            ,token(/SERIALIZABLE/i)
+          ))
+        ,seq(token(/IDENTITY_INSERT/i), $.full_table_name, choice(token(/ON/i), token(/OFF/i)))
+        ,seq(token(/ROWCOUNT/i), $.expression)
+      )
+    ),
+
+    set_on_off_option: $ => choice(
+      token(/ANSI_DEFAULTS/i)
+      ,token(/ANSI_NULLS/i)
+      ,token(/ANSI_NULL_DFLT_OFF/i)
+      ,token(/ANSI_NULL_DFLT_ON/i)
+      ,token(/ANSI_PADDING/i)
+      ,token(/ANSI_WARNINGS/i)
+      ,token(/ARITHABORT/i)
+      ,token(/ARITHIGNORE/i)
+      ,token(/CONCAT_NULL_YIELDS_NULL/i)
+      ,token(/CURSOR_CLOSE_ON_COMMIT/i)
+      ,token(/FMTONLY/i)
+      ,token(/FORCEPLAN/i)
+      ,token(/IMPLICIT_TRANSACTIONS/i)
+      ,token(/NOCOUNT/i)
+      ,token(/NOEXEC/i)
+      ,token(/NUMERIC_ROUNDABORT/i)
+      ,token(/PARSEONLY/i)
+      ,token(/QUOTED_IDENTIFIER/i)
+      ,token(/REMOTE_PROC_TRANSACTIONS/i)
+      ,token(/SHOWPLAN_ALL/i)
+      ,token(/SHOWPLAN_TEXT/i)
+      ,token(/SHOWPLAN_XML/i)
+      ,token(/STATISTICS_IO/i)
+      ,token(/STATISTICS_XML/i)
+      ,token(/STATISTICS_PROFILE/i)
+      ,token(/STATISTICS_TIME/i)
+      ,token(/XACT_ABORT/i)
+    ),
+
+    //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L367
+    use_statement: $ => seq(token(/USE/i), $.id_),
+
+    //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L3409
+    transaction_statement: $ => prec.right(choice(
+      seq(token(/BEGIN/i), optional(token(/DISTRIBUTED/i)), token(/TRAN(SACTION)?/i), optional($.id_))
+      ,seq(token(/COMMIT/i), choice(token(/TRAN(SACTION)?/i), token(/WORK/i)), optional($.id_))
+      ,seq(token(/ROLLBACK/i), choice(token(/TRAN(SACTION)?/i), token(/WORK/i)), optional($.id_))
+      ,seq(token(/SAVE/i), token(/TRAN(SACTION)?/i), $.id_)
+    )),
+
+    //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L2994
+    cursor_statement: $ => choice(
+      seq(token(/DECLARE/i), $.id_, token(/CURSOR/i)
+        ,optional(choice(token(/LOCAL/i), token(/GLOBAL/i)))
+        ,optional(choice(token(/FORWARD_ONLY/i), token(/SCROLL/i)))
+        ,optional(choice(token(/STATIC/i), token(/KEYSET/i), token(/DYNAMIC/i), token(/FAST_FORWARD/i)))
+        ,optional(choice(token(/READ_ONLY/i), token(/SCROLL_LOCKS/i), token(/OPTIMISTIC/i)))
+        ,token(/FOR/i), $.select_statement
+      )
+      ,seq(token(/OPEN/i), $.id_)
+      ,seq(token(/FETCH/i)
+        ,optional(choice(token(/NEXT/i), token(/PRIOR/i), token(/FIRST/i), token(/LAST/i)
+          ,seq(token(/ABSOLUTE/i), $.expression)
+          ,seq(token(/RELATIVE/i), $.expression)
+        ))
+        ,token(/FROM/i), $.id_
+        ,optional(seq(token(/INTO/i), $.LOCAL_ID_, repeat(seq(token(','), $.LOCAL_ID_))))
+      )
+      ,seq(token(/CLOSE/i), $.id_)
+      ,seq(token(/DEALLOCATE/i), $.id_)
     ),
 
     // https://msdn.microsoft.com/en-us/library/ms188332.aspx
@@ -477,12 +649,12 @@ module.exports = grammar({
       ,optional(seq(token(/WITH/i), token(/TIES/i)))
     ),
 
-    select_order_by_clause: $ => seq(
+    select_order_by_clause: $ => prec.right(seq(
       token(/ORDER/i), token(/BY/i)
       ,$.order_by_expression, repeat(seq(token(','), $.order_by_expression))
       ,optional(seq(token(/OFFSET/i), $.expression, token(/ROWS/i)))
       ,optional(seq(token(/FETCH/i), choice(token(/FIRST/i), token(/NEXT/i)), $.expression, token(/ROWS/i), token(/ONLY/i)))
-    ),
+    )),
 
     select: $ => token(/SELECT/i),
     //https://learn.microsoft.com/en-us/sql/t-sql/queries/select-clause-transact-sql?view=sql-server-ver16&redirectedfrom=MSDN

@@ -1,0 +1,41 @@
+=====================================
+BEGIN TRANSACTION
+=====================================
+
+BEGIN TRANSACTION
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (transaction_statement)))))
+
+=====================================
+COMMIT TRANSACTION
+=====================================
+
+COMMIT TRANSACTION
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (transaction_statement)))))
+
+=====================================
+ROLLBACK TRANSACTION
+=====================================
+
+ROLLBACK TRANSACTION
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (transaction_statement)))))

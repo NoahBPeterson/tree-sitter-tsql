@@ -1,0 +1,58 @@
+=====================================
+Full MERGE statement
+=====================================
+
+MERGE INTO target AS t USING source AS s ON t.id = s.id WHEN MATCHED THEN UPDATE SET t.name = s.name WHEN NOT MATCHED THEN INSERT (id, name) VALUES (s.id, s.name)
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (merge_statement
+          (full_table_name
+            (id_))
+          (as_table_alias
+            (id_))
+          (table_source
+            (table_source_item
+              (full_table_name
+                (id_))
+              (as_table_alias
+                (id_))))
+          (search_condition
+            (predicate
+              (expression
+                (full_column_name
+                  (id_)
+                  (id_)))
+              (comparison_operator)
+              (expression
+                (full_column_name
+                  (id_)
+                  (id_)))))
+          (when_matches
+            (merge_matched
+              (update_elem
+                (full_column_name
+                  (id_)
+                  (id_))
+                (expression
+                  (full_column_name
+                    (id_)
+                    (id_))))))
+          (when_matches
+            (merge_not_matched
+              (column_name_list
+                (id_)
+                (id_))
+              (expression_list_
+                (expression
+                  (full_column_name
+                    (id_)
+                    (id_)))
+                (expression
+                  (full_column_name
+                    (id_)
+                    (id_)))))))))))

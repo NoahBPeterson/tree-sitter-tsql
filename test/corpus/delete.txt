@@ -1,0 +1,67 @@
+=====================================
+DELETE FROM WHERE
+=====================================
+
+DELETE FROM users WHERE id = 1
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (delete_statement
+          (delete_target
+            (full_table_name
+              (id_)))
+          (search_condition
+            (predicate
+              (expression
+                (full_column_name
+                  (id_)))
+              (comparison_operator)
+              (expression
+                (primitive_expression
+                  (primitive_constant
+                    (decimal_)))))))))))
+
+=====================================
+DELETE with FROM join
+=====================================
+
+DELETE u FROM users u INNER JOIN tmp t ON u.id = t.id
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (delete_statement
+          (delete_target
+            (full_table_name
+              (id_)))
+          (table_sources
+            (table_source
+              (table_source_item
+                (full_table_name
+                  (id_))
+                (as_table_alias
+                  (id_)))
+              (join_part
+                (table_source_item
+                  (full_table_name
+                    (id_))
+                  (as_table_alias
+                    (id_)))
+                (search_condition
+                  (predicate
+                    (expression
+                      (full_column_name
+                        (id_)
+                        (id_)))
+                    (comparison_operator)
+                    (expression
+                      (full_column_name
+                        (id_)
+                        (id_)))))))))))))

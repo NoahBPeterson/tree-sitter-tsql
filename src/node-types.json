@@ -268,7 +268,27 @@
       "required": true,
       "types": [
         {
+          "type": "cursor_statement",
+          "named": true
+        },
+        {
+          "type": "declare_statement",
+          "named": true
+        },
+        {
           "type": "execute_statement",
+          "named": true
+        },
+        {
+          "type": "set_statement",
+          "named": true
+        },
+        {
+          "type": "transaction_statement",
+          "named": true
+        },
+        {
+          "type": "use_statement",
           "named": true
         }
       ]
@@ -379,6 +399,21 @@
         },
         {
           "type": "set_bit_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "block_statement",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "sql_clauses",
           "named": true
         }
       ]
@@ -899,6 +934,57 @@
     }
   },
   {
+    "type": "cfl_statement",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "block_statement",
+          "named": true
+        },
+        {
+          "type": "break_statement",
+          "named": true
+        },
+        {
+          "type": "continue_statement",
+          "named": true
+        },
+        {
+          "type": "if_statement",
+          "named": true
+        },
+        {
+          "type": "print_statement",
+          "named": true
+        },
+        {
+          "type": "raiseerror_statement",
+          "named": true
+        },
+        {
+          "type": "return_statement",
+          "named": true
+        },
+        {
+          "type": "throw_statement",
+          "named": true
+        },
+        {
+          "type": "try_catch_statement",
+          "named": true
+        },
+        {
+          "type": "while_statement",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "collation_",
     "named": true,
     "fields": {
@@ -1130,6 +1216,33 @@
     }
   },
   {
+    "type": "cursor_statement",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "LOCAL_ID_",
+          "named": true
+        },
+        {
+          "type": "expression",
+          "named": true
+        },
+        {
+          "type": "id_",
+          "named": true
+        },
+        {
+          "type": "select_statement",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "data_type",
     "named": true,
     "fields": {},
@@ -1256,6 +1369,44 @@
     "type": "decimal_",
     "named": true,
     "fields": {}
+  },
+  {
+    "type": "declare_local",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "LOCAL_ID_",
+          "named": true
+        },
+        {
+          "type": "data_type",
+          "named": true
+        },
+        {
+          "type": "expression",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "declare_statement",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "declare_local",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "default",
@@ -2223,6 +2374,25 @@
     }
   },
   {
+    "type": "if_statement",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "search_condition",
+          "named": true
+        },
+        {
+          "type": "sql_clauses",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "ignore_nulls_",
     "named": true,
     "fields": {}
@@ -2943,6 +3113,21 @@
     }
   },
   {
+    "type": "print_statement",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "expression",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "query_expression",
     "named": true,
     "fields": {},
@@ -3024,6 +3209,30 @@
     }
   },
   {
+    "type": "raiseerror_statement",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "expression",
+          "named": true
+        },
+        {
+          "type": "raiserror_option",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "raiserror_option",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "ranking_windowed_function",
     "named": true,
     "fields": {},
@@ -3067,6 +3276,21 @@
     "type": "respect_nulls_",
     "named": true,
     "fields": {}
+  },
+  {
+    "type": "return_statement",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "expression",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "right_",
@@ -3276,6 +3500,61 @@
     }
   },
   {
+    "type": "set_on_off_option",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "set_special",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "expression",
+          "named": true
+        },
+        {
+          "type": "full_table_name",
+          "named": true
+        },
+        {
+          "type": "set_on_off_option",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "set_statement",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "LOCAL_ID_",
+          "named": true
+        },
+        {
+          "type": "assignment_operator",
+          "named": true
+        },
+        {
+          "type": "expression",
+          "named": true
+        },
+        {
+          "type": "set_special",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "sql_clauses",
     "named": true,
     "fields": {},
@@ -3285,6 +3564,10 @@
       "types": [
         {
           "type": "another_statement",
+          "named": true
+        },
+        {
+          "type": "cfl_statement",
           "named": true
         },
         {
@@ -3500,6 +3783,21 @@
     }
   },
   {
+    "type": "throw_statement",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "expression",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "top_clause",
     "named": true,
     "fields": {},
@@ -3509,6 +3807,36 @@
       "types": [
         {
           "type": "expression",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "transaction_statement",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "id_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "try_catch_statement",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "sql_clauses",
           "named": true
         }
       ]
@@ -3716,6 +4044,21 @@
     }
   },
   {
+    "type": "use_statement",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "id_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "value_list",
     "named": true,
     "fields": {},
@@ -3748,6 +4091,25 @@
         },
         {
           "type": "search_condition",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "while_statement",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "search_condition",
+          "named": true
+        },
+        {
+          "type": "sql_clauses",
           "named": true
         }
       ]
@@ -4079,6 +4441,10 @@
     "named": true
   },
   {
+    "type": "break_statement",
+    "named": true
+  },
+  {
     "type": "cast_",
     "named": true
   },
@@ -4112,6 +4478,10 @@
   },
   {
     "type": "comment",
+    "named": true
+  },
+  {
+    "type": "continue_statement",
     "named": true
   },
   {

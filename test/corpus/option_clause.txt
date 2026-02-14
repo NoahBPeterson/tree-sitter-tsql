@@ -1,0 +1,65 @@
+=====================================
+OPTION RECOMPILE
+=====================================
+
+SELECT id FROM users OPTION (RECOMPILE)
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (full_column_name
+                          (id_))))))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_)))))))
+            (option_clause
+              (query_hint))))))))
+
+=====================================
+OPTION MAXDOP
+=====================================
+
+SELECT id FROM users OPTION (MAXDOP 4)
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (full_column_name
+                          (id_))))))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_)))))))
+            (option_clause
+              (query_hint
+                (expression
+                  (primitive_expression
+                    (primitive_constant
+                      (decimal_))))))))))))
