@@ -1072,6 +1072,86 @@
     }
   },
   {
+    "type": "column_constraint",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "id_",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "default",
+          "named": true
+        },
+        {
+          "type": "expression",
+          "named": true
+        },
+        {
+          "type": "full_table_name",
+          "named": true
+        },
+        {
+          "type": "id_",
+          "named": true
+        },
+        {
+          "type": "search_condition",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "column_definition",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "id_",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "column_constraint",
+          "named": true
+        },
+        {
+          "type": "data_type",
+          "named": true
+        },
+        {
+          "type": "identity_column",
+          "named": true
+        },
+        {
+          "type": "null_notnull",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "column_name_list",
     "named": true,
     "fields": {},
@@ -1250,6 +1330,25 @@
     }
   },
   {
+    "type": "create_table",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "full_table_name",
+          "named": true
+        },
+        {
+          "type": "table_element",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "cursor_statement",
     "named": true,
     "fields": {},
@@ -1394,6 +1493,21 @@
         },
         {
           "type": "varchar_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ddl_clause",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "create_table",
           "named": true
         }
       ]
@@ -2420,6 +2534,21 @@
     }
   },
   {
+    "type": "identity_column",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "decimal_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "if_statement",
     "named": true,
     "fields": {},
@@ -2745,6 +2874,21 @@
     "type": "next_value_for_",
     "named": true,
     "fields": {}
+  },
+  {
+    "type": "null_notnull",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "null_",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "nullif_function",
@@ -3659,6 +3803,10 @@
           "named": true
         },
         {
+          "type": "ddl_clause",
+          "named": true
+        },
+        {
           "type": "dml_clause",
           "named": true
         }
@@ -3728,6 +3876,59 @@
       "types": [
         {
           "type": "expression",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "table_constraint",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "id_",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "column_name_list",
+          "named": true
+        },
+        {
+          "type": "full_table_name",
+          "named": true
+        },
+        {
+          "type": "search_condition",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "table_element",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "column_definition",
+          "named": true
+        },
+        {
+          "type": "table_constraint",
           "named": true
         }
       ]

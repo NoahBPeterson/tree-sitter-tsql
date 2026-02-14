@@ -1,0 +1,282 @@
+=====================================
+CREATE TABLE basic
+=====================================
+
+CREATE TABLE Products (
+    ProductId int,
+    ProductName varchar(100)
+)
+
+-----
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_table
+          (full_table_name
+            (id_))
+          (table_element
+            (column_definition
+              (id_)
+              (data_type
+                (int_))))
+          (table_element
+            (column_definition
+              (id_)
+              (data_type
+                (varchar_)
+                (decimal_)))))))))
+
+=====================================
+CREATE TABLE with IDENTITY
+=====================================
+
+CREATE TABLE Orders (
+    OrderId int IDENTITY(1,1)
+)
+
+-----
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_table
+          (full_table_name
+            (id_))
+          (table_element
+            (column_definition
+              (id_)
+              (data_type
+                (int_))
+              (identity_column
+                (decimal_)
+                (decimal_)))))))))
+
+=====================================
+CREATE TABLE with NOT NULL and PRIMARY KEY
+=====================================
+
+CREATE TABLE Artists (
+    ArtistId int IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    ArtistName nvarchar(255) NOT NULL,
+    ActiveFrom date
+)
+
+-----
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_table
+          (full_table_name
+            (id_))
+          (table_element
+            (column_definition
+              (id_)
+              (data_type
+                (int_))
+              (identity_column
+                (decimal_)
+                (decimal_))
+              (null_notnull
+                (null_))
+              (column_constraint)))
+          (table_element
+            (column_definition
+              (id_)
+              (data_type
+                (nvarchar_)
+                (decimal_))
+              (null_notnull
+                (null_))))
+          (table_element
+            (column_definition
+              (id_)
+              (data_type
+                (date_)))))))))
+
+=====================================
+CREATE TABLE with DEFAULT
+=====================================
+
+CREATE TABLE Settings (
+    SettingId int NOT NULL,
+    Value nvarchar(100) DEFAULT N'unknown'
+)
+
+-----
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_table
+          (full_table_name
+            (id_))
+          (table_element
+            (column_definition
+              (id_)
+              (data_type
+                (int_))
+              (null_notnull
+                (null_))))
+          (table_element
+            (column_definition
+              (id_)
+              (data_type
+                (nvarchar_)
+                (decimal_))
+              (column_constraint
+                (default)
+                (expression
+                  (primitive_expression
+                    (primitive_constant
+                      (string_lit))))))))))))
+
+=====================================
+CREATE TABLE with table-level PRIMARY KEY
+=====================================
+
+CREATE TABLE OrderItems (
+    OrderId int NOT NULL,
+    ProductId int NOT NULL,
+    CONSTRAINT PK_OrderItems PRIMARY KEY (OrderId, ProductId)
+)
+
+-----
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_table
+          (full_table_name
+            (id_))
+          (table_element
+            (column_definition
+              (id_)
+              (data_type
+                (int_))
+              (null_notnull
+                (null_))))
+          (table_element
+            (column_definition
+              (id_)
+              (data_type
+                (int_))
+              (null_notnull
+                (null_))))
+          (table_element
+            (table_constraint
+              (id_)
+              (column_name_list
+                (id_)
+                (id_)))))))))
+
+=====================================
+CREATE TABLE with FOREIGN KEY REFERENCES
+=====================================
+
+CREATE TABLE Orders (
+    OrderId int NOT NULL PRIMARY KEY,
+    CustomerId int NOT NULL REFERENCES Customers(CustomerId)
+)
+
+-----
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_table
+          (full_table_name
+            (id_))
+          (table_element
+            (column_definition
+              (id_)
+              (data_type
+                (int_))
+              (null_notnull
+                (null_))
+              (column_constraint)))
+          (table_element
+            (column_definition
+              (id_)
+              (data_type
+                (int_))
+              (null_notnull
+                (null_))
+              (column_constraint
+                (full_table_name
+                  (id_))
+                (id_)))))))))
+
+=====================================
+CREATE TABLE with CHECK constraint
+=====================================
+
+CREATE TABLE Employees (
+    EmployeeId int NOT NULL,
+    Age int CHECK (Age >= 18),
+    CONSTRAINT CHK_Age CHECK (Age >= 18 AND Age <= 65)
+)
+
+-----
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_table
+          (full_table_name
+            (id_))
+          (table_element
+            (column_definition
+              (id_)
+              (data_type
+                (int_))
+              (null_notnull
+                (null_))))
+          (table_element
+            (column_definition
+              (id_)
+              (data_type
+                (int_))
+              (column_constraint
+                (search_condition
+                  (predicate
+                    (expression
+                      (full_column_name
+                        (id_)))
+                    (comparison_operator)
+                    (expression
+                      (primitive_expression
+                        (primitive_constant
+                          (decimal_)))))))))
+          (table_element
+            (table_constraint
+              (id_)
+              (search_condition
+                (search_condition
+                  (predicate
+                    (expression
+                      (full_column_name
+                        (id_)))
+                    (comparison_operator)
+                    (expression
+                      (primitive_expression
+                        (primitive_constant
+                          (decimal_))))))
+                (search_condition
+                  (predicate
+                    (expression
+                      (full_column_name
+                        (id_)))
+                    (comparison_operator)
+                    (expression
+                      (primitive_expression
+                        (primitive_constant
+                          (decimal_))))))))))))))
