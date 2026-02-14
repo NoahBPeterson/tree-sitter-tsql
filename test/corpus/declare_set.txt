@@ -1,0 +1,75 @@
+=====================================
+DECLARE variable
+=====================================
+
+DECLARE @var INT
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (declare_statement
+          (declare_local
+            (LOCAL_ID_)
+            (data_type
+              (int_))))))))
+
+=====================================
+DECLARE with default value
+=====================================
+
+DECLARE @var VARCHAR(50) = 'value'
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (declare_statement
+          (declare_local
+            (LOCAL_ID_)
+            (data_type
+              (varchar_)
+              (decimal_))
+            (expression
+              (primitive_expression
+                (primitive_constant
+                  (string_lit))))))))))
+
+=====================================
+SET variable
+=====================================
+
+SET @var = 1
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (set_statement
+          (LOCAL_ID_)
+          (expression
+            (primitive_expression
+              (primitive_constant
+                (decimal_)))))))))
+
+=====================================
+SET NOCOUNT ON
+=====================================
+
+SET NOCOUNT ON
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (set_statement
+          (set_special
+            (set_on_off_option)))))))

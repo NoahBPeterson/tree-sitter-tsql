@@ -1,0 +1,87 @@
+=====================================
+PIVOT
+=====================================
+
+SELECT pvt.id FROM sales PIVOT (SUM(amount) FOR quarter IN ([Q1], [Q2])) AS pvt
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (full_column_name
+                          (id_)
+                          (id_))))))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_))
+                      (pivot_clause
+                        (aggregate_functions
+                          (sum_)
+                          (all_distinct_expression
+                            (expression
+                              (full_column_name
+                                (id_)))))
+                        (full_column_name
+                          (id_))
+                        (column_alias_list
+                          (column_alias
+                            (id_))
+                          (column_alias
+                            (id_)))
+                        (as_table_alias
+                          (id_))))))))))))))
+
+=====================================
+UNPIVOT
+=====================================
+
+SELECT unpvt.id FROM sales UNPIVOT (amount FOR quarter IN ([Q1], [Q2])) AS unpvt
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (full_column_name
+                          (id_)
+                          (id_))))))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_))
+                      (unpivot_clause
+                        (full_column_name
+                          (id_))
+                        (full_column_name
+                          (id_))
+                        (column_alias_list
+                          (column_alias
+                            (id_))
+                          (column_alias
+                            (id_)))
+                        (as_table_alias
+                          (id_))))))))))))))

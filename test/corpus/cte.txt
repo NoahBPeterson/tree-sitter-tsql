@@ -1,0 +1,165 @@
+=====================================
+Simple CTE
+=====================================
+
+WITH cte AS (SELECT id FROM users) SELECT id FROM cte
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (with_expression
+            (common_table_expression
+              (id_)
+              (select_statement
+                (query_expression
+                  (query_specification
+                    (select)
+                    (select_list
+                      (select_list_elem
+                        (expression_elem
+                          (expression
+                            (full_column_name
+                              (id_))))))
+                    (table_sources
+                      (table_source
+                        (table_source_item
+                          (full_table_name
+                            (id_))))))))))
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (full_column_name
+                          (id_))))))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_)))))))))))))
+
+=====================================
+CTE with column list
+=====================================
+
+WITH cte (col1, col2) AS (SELECT id, name FROM users) SELECT col1 FROM cte
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (with_expression
+            (common_table_expression
+              (id_)
+              (column_name_list
+                (id_)
+                (id_))
+              (select_statement
+                (query_expression
+                  (query_specification
+                    (select)
+                    (select_list
+                      (select_list_elem
+                        (expression_elem
+                          (expression
+                            (full_column_name
+                              (id_)))))
+                      (select_list_elem
+                        (expression_elem
+                          (expression
+                            (full_column_name
+                              (id_))))))
+                    (table_sources
+                      (table_source
+                        (table_source_item
+                          (full_table_name
+                            (id_))))))))))
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (full_column_name
+                          (id_))))))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_)))))))))))))
+
+=====================================
+Multiple CTEs
+=====================================
+
+WITH a AS (SELECT id FROM t1), b AS (SELECT id FROM t2) SELECT id FROM a
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (with_expression
+            (common_table_expression
+              (id_)
+              (select_statement
+                (query_expression
+                  (query_specification
+                    (select)
+                    (select_list
+                      (select_list_elem
+                        (expression_elem
+                          (expression
+                            (full_column_name
+                              (id_))))))
+                    (table_sources
+                      (table_source
+                        (table_source_item
+                          (full_table_name
+                            (id_)))))))))
+            (common_table_expression
+              (id_)
+              (select_statement
+                (query_expression
+                  (query_specification
+                    (select)
+                    (select_list
+                      (select_list_elem
+                        (expression_elem
+                          (expression
+                            (full_column_name
+                              (id_))))))
+                    (table_sources
+                      (table_source
+                        (table_source_item
+                          (full_table_name
+                            (id_))))))))))
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (full_column_name
+                          (id_))))))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_)))))))))))))

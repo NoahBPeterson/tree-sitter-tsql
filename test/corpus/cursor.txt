@@ -1,0 +1,90 @@
+=====================================
+DECLARE CURSOR
+=====================================
+
+DECLARE mycursor CURSOR FOR SELECT id FROM users
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (cursor_statement
+          (id_)
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (full_column_name
+                          (id_))))))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_)))))))))))))
+
+=====================================
+OPEN cursor
+=====================================
+
+OPEN mycursor
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (cursor_statement
+          (id_))))))
+
+=====================================
+FETCH NEXT FROM INTO
+=====================================
+
+FETCH NEXT FROM mycursor INTO @id
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (cursor_statement
+          (id_)
+          (LOCAL_ID_))))))
+
+=====================================
+CLOSE cursor
+=====================================
+
+CLOSE mycursor
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (cursor_statement
+          (id_))))))
+
+=====================================
+DEALLOCATE cursor
+=====================================
+
+DEALLOCATE mycursor
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (cursor_statement
+          (id_))))))
