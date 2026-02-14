@@ -46,6 +46,8 @@ module.exports = grammar({
   conflicts: $ => [
     [$.batch]
     ,[$.table_source_item]
+    ,[$.table_source]
+    ,[$.output_dml_list_elem]
     ,[$.top_clause, $.bracket_expression]
   ],
 
@@ -214,7 +216,131 @@ module.exports = grammar({
 
     dml_clause: $ => choice(
       $.select_statement_standalone
+      ,$.insert_statement
+      ,$.update_statement
+      ,$.delete_statement
+      ,$.merge_statement
       //TODO https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L63-L70
+    ),
+
+    //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L2161
+    insert_statement: $ => seq(
+      optional($.with_expression)
+      ,token(/INSERT/i)
+      ,optional($.top_clause)
+      ,optional(token(/INTO/i))
+      ,$.full_table_name
+      ,optional(seq(token('('), $.column_name_list, token(')')))
+      ,optional($.output_clause)
+      ,$.insert_statement_value
+    ),
+
+    //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L2168
+    insert_statement_value: $ => choice(
+      seq(token(/VALUES/i), $.value_list, repeat(seq(token(','), $.value_list)))
+      ,$.select_statement
+      ,seq(token(/DEFAULT/i), token(/VALUES/i))
+      ,$.execute_statement
+    ),
+
+    value_list: $ => seq(token('('), $.expression_list_, token(')')),
+
+    //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L2195
+    update_statement: $ => seq(
+      optional($.with_expression)
+      ,token(/UPDATE/i)
+      ,optional($.top_clause)
+      ,$.update_target
+      ,token(/SET/i)
+      ,$.update_elem, repeat(seq(token(','), $.update_elem))
+      ,optional($.output_clause)
+      ,optional(seq(token(/FROM/i), $.table_sources))
+      ,optional(seq(token(/WHERE/i), $.search_condition))
+    ),
+
+    update_target: $ => choice(
+      $.full_table_name
+      ,$.local_id_
+    ),
+
+    //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L2221
+    update_elem: $ => choice(
+      seq($.full_column_name, token('='), $.expression)
+      ,seq($.full_column_name, $.assignment_operator, $.expression)
+      ,seq($.LOCAL_ID_, token('='), $.expression)
+    ),
+
+    //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L2148
+    delete_statement: $ => seq(
+      optional($.with_expression)
+      ,token(/DELETE/i)
+      ,optional($.top_clause)
+      ,optional(token(/FROM/i))
+      ,$.delete_target
+      ,optional($.output_clause)
+      ,optional(seq(token(/FROM/i), $.table_sources))
+      ,optional(seq(token(/WHERE/i), $.search_condition))
+    ),
+
+    delete_target: $ => choice(
+      $.full_table_name
+      ,$.local_id_
+    ),
+
+    //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L2127
+    merge_statement: $ => seq(
+      optional($.with_expression)
+      ,token(/MERGE/i)
+      ,optional(token(/INTO/i))
+      ,$.full_table_name
+      ,optional($.as_table_alias)
+      ,token(/USING/i)
+      ,$.table_source
+      ,token(/ON/i)
+      ,$.search_condition
+      ,repeat1($.when_matches)
+      ,optional($.output_clause)
+    ),
+
+    //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L2132
+    when_matches: $ => choice(
+      seq(token(/WHEN/i), token(/MATCHED/i), optional(seq(token(/AND/i), $.search_condition))
+        ,token(/THEN/i), $.merge_matched)
+      ,seq(token(/WHEN/i), token(/NOT/i), token(/MATCHED/i), optional(seq(token(/BY/i), token(/TARGET/i)))
+        ,optional(seq(token(/AND/i), $.search_condition))
+        ,token(/THEN/i), $.merge_not_matched)
+      ,seq(token(/WHEN/i), token(/NOT/i), token(/MATCHED/i), token(/BY/i), token(/SOURCE/i)
+        ,optional(seq(token(/AND/i), $.search_condition))
+        ,token(/THEN/i), $.merge_matched)
+    ),
+
+    //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L2138
+    merge_matched: $ => choice(
+      seq(token(/UPDATE/i), token(/SET/i), $.update_elem, repeat(seq(token(','), $.update_elem)))
+      ,token(/DELETE/i)
+    ),
+
+    //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L2143
+    merge_not_matched: $ => seq(
+      token(/INSERT/i)
+      ,optional(seq(token('('), $.column_name_list, token(')')))
+      ,token(/VALUES/i), token('('), $.expression_list_, token(')')
+    ),
+
+    //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L2228
+    output_clause: $ => seq(
+      token(/OUTPUT/i)
+      ,$.output_dml_list_elem, repeat(seq(token(','), $.output_dml_list_elem))
+      ,optional(seq(token(/INTO/i), $.full_table_name, optional(seq(token('('), $.column_name_list, token(')')))))
+    ),
+
+    output_dml_list_elem: $ => seq(
+      choice(
+        seq(token(/INSERTED/i), DOT, choice($.id_, $.asterisk))
+        ,seq(token(/DELETED/i), DOT, choice($.id_, $.asterisk))
+        ,$.expression
+      )
+      ,optional($.as_column_alias)
     ),
 
     select_statement_standalone: $ => seq(
