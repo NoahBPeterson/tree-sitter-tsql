@@ -158,7 +158,7 @@ module.exports = grammar({
     execute: $ => token(/EXEC(UTE)?/i),
 
     // https://learn.microsoft.com/en-us/sql/t-sql/language-elements/execute-transact-sql?view=sql-server-ver15
-    execute_body: $ => prec.left(choice(
+    execute_body: $ => prec.right(choice(
       seq(optional(seq(field('return_status',$.LOCAL_ID_), token(/=/)))
         , choice($.func_proc_name_server_database_schema, $.execute_var_string)
         , optional($.execute_statement_arg)
@@ -218,9 +218,27 @@ module.exports = grammar({
     ),
 
     select_statement_standalone: $ => seq(
-      //TODO with_expression https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L2183
+      optional($.with_expression),
       $.select_statement
     ),
+
+    //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L3955
+    with_expression: $ => seq(
+      token(/WITH/i)
+      ,$.common_table_expression, repeat(seq(token(','), $.common_table_expression))
+    ),
+
+    //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L3959
+    common_table_expression: $ => seq(
+      field('cte_name', $.id_)
+      ,optional(seq(token('('), $.column_name_list, token(')')))
+      ,token(/AS/i)
+      ,token('(')
+      ,$.select_statement
+      ,token(')')
+    ),
+
+    column_name_list: $ => seq($.id_, repeat(seq(token(','), $.id_))),
 
     select_statement: $ => prec.left(seq(
       $.query_expression
@@ -278,23 +296,37 @@ module.exports = grammar({
     //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L4119
     select_list: $ => seq($.select_list_elem, repeat(seq(token(','), $.select_list_elem))),
 
-    //TODO REDO THIS ONE
+    //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L4143-L4148
     select_list_elem: $ => choice(
       $.asterisk
+      ,seq(field('table', $.id_), DOT, $.asterisk)  // qualified asterisk: table.*
       ,$.udt_elem
       ,seq($.LOCAL_ID_, choice($.assignment_operator, token('=')), $.expression)
       ,$.expression_elem
-      //TODO https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L4143-L4148
     ),
 
-    //TODO
-    groupby: $ => seq($.groupby_, choice(
+    //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L4018
+    groupby: $ => seq($.groupby_, optional(token(/ALL/i)),
       field('groupBys',seq($.group_by_item, repeat(seq(token(','), $.group_by_item))))
-    )),
+    ),
 
-    //TODO
+    //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L4018-L4019
     group_by_item: $ => choice(
       $.expression
+      ,seq(token(/ROLLUP/i), token('('), $.expression_list_, token(')'))
+      ,seq(token(/CUBE/i), token('('), $.expression_list_, token(')'))
+      ,$.grouping_sets_item
+    ),
+
+    //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L4019
+    grouping_sets_item: $ => seq(
+      token(/GROUPING/i), token(/SETS/i)
+      ,token('('), $.grouping_set, repeat(seq(token(','), $.grouping_set)), token(')')
+    ),
+
+    grouping_set: $ => choice(
+      seq(token('('), optional($.expression_list_), token(')'))
+      ,$.expression
     ),
 
     groupby_: $ => token(/GROUP BY/i),
@@ -360,9 +392,34 @@ module.exports = grammar({
         //TODO table-valued functions, OPENROWSET, OPENQUERY, etc.
       )
       ,optional($.as_table_alias)
+      ,optional($.with_table_hints)
     ),
 
     as_table_alias: $ => seq(optional(token(/AS/i)), $.id_),
+
+    //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L4173
+    with_table_hints: $ => seq(
+      token(/WITH/i), token('('), $.table_hint, repeat(seq(token(','), $.table_hint)), token(')')
+    ),
+
+    table_hint: $ => choice(
+      token(/NOLOCK/i)
+      ,token(/READUNCOMMITTED/i)
+      ,token(/READCOMMITTED/i)
+      ,token(/READCOMMITTEDLOCK/i)
+      ,token(/REPEATABLEREAD/i)
+      ,token(/SERIALIZABLE/i)
+      ,token(/SNAPSHOT/i)
+      ,token(/TABLOCK/i)
+      ,token(/TABLOCKX/i)
+      ,token(/UPDLOCK/i)
+      ,token(/ROWLOCK/i)
+      ,token(/PAGLOCK/i)
+      ,token(/HOLDLOCK/i)
+      ,token(/NOWAIT/i)
+      ,token(/XLOCK/i)
+      //TODO INDEX, FORCESEEK, FORCESCAN, SPATIAL_WINDOW_MAX_CELLS
+    ),
 
     join_part: $ => choice(
       seq(optional($.join_hint), token(/JOIN/i), $.table_source_item, token(/ON/i), $.search_condition)
