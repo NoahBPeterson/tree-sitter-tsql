@@ -27,3 +27,219 @@ SELECT CAST('a' as VARCHAR)
                             (as)
                             (data_type
                               (varchar_))))))))))))))))
+
+=================================================
+Conversion Function CONVERT
+=================================================
+SELECT CONVERT(INT, '123')
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (function_call
+                          (conversion_functions
+                            (convert_)
+                            (data_type
+                              (int_))
+                            (expression
+                              (primitive_expression
+                                (primitive_constant
+                                  (string_lit))))))))))))))))))
+
+=================================================
+Conversion Function CONVERT with style
+=================================================
+SELECT CONVERT(VARCHAR(10), 123, 1)
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (function_call
+                          (conversion_functions
+                            (convert_)
+                            (data_type
+                              (varchar_)
+                              (decimal_))
+                            (expression
+                              (primitive_expression
+                                (primitive_constant
+                                  (decimal_))))
+                            (expression
+                              (primitive_expression
+                                (primitive_constant
+                                  (decimal_))))))))))))))))))
+
+=================================================
+Conversion Function TRY_CAST
+=================================================
+SELECT TRY_CAST('123' AS INT)
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (function_call
+                          (conversion_functions
+                            (try_cast_)
+                            (expression
+                              (primitive_expression
+                                (primitive_constant
+                                  (string_lit))))
+                            (as)
+                            (data_type
+                              (int_))))))))))))))))
+
+=================================================
+Conversion Function TRY_CONVERT
+=================================================
+SELECT TRY_CONVERT(INT, '123')
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (function_call
+                          (conversion_functions
+                            (try_convert_)
+                            (data_type
+                              (int_))
+                            (expression
+                              (primitive_expression
+                                (primitive_constant
+                                  (string_lit))))))))))))))))))
+
+=================================================
+Conversion Function PARSE
+=================================================
+SELECT PARSE('2023-01-01' AS DATE)
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (function_call
+                          (conversion_functions
+                            (parse_)
+                            (expression
+                              (primitive_expression
+                                (primitive_constant
+                                  (string_lit))))
+                            (as)
+                            (data_type
+                              (date_))))))))))))))))
+
+=================================================
+Conversion Function PARSE with USING culture
+=================================================
+SELECT PARSE('$123.45' AS MONEY USING 'en-US')
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (function_call
+                          (conversion_functions
+                            (parse_)
+                            (expression
+                              (primitive_expression
+                                (primitive_constant
+                                  (string_lit))))
+                            (as)
+                            (data_type
+                              (moneyty_))
+                            (expression
+                              (primitive_expression
+                                (primitive_constant
+                                  (string_lit))))))))))))))))))
+
+=================================================
+Conversion Function TRY_PARSE
+=================================================
+SELECT TRY_PARSE('bad' AS INT)
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (function_call
+                          (conversion_functions
+                            (try_parse_)
+                            (expression
+                              (primitive_expression
+                                (primitive_constant
+                                  (string_lit))))
+                            (as)
+                            (data_type
+                              (int_))))))))))))))))
