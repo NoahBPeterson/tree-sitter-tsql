@@ -10,6 +10,11 @@
     "fields": {}
   },
   {
+    "type": "RECOMPILE",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "RESULT_SETS",
     "named": true,
     "fields": {}
@@ -910,6 +915,21 @@
     }
   },
   {
+    "type": "column_alias_list",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "column_alias",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "column_name_list",
     "named": true,
     "fields": {},
@@ -956,6 +976,11 @@
   },
   {
     "type": "comparison_operator",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "concat_",
     "named": true,
     "fields": {}
   },
@@ -1554,6 +1579,25 @@
     "fields": {}
   },
   {
+    "type": "for_clause",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "json_common_directives",
+          "named": true
+        },
+        {
+          "type": "xml_common_directives",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "full_column_name",
     "named": true,
     "fields": {
@@ -2076,6 +2120,36 @@
     }
   },
   {
+    "type": "json_common_directives",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "json_option",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "json_option",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "string_lit",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "keyword",
     "named": true,
     "fields": {}
@@ -2245,6 +2319,40 @@
     }
   },
   {
+    "type": "optimize_for_arg",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "LOCAL_ID_",
+          "named": true
+        },
+        {
+          "type": "constant",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "option_clause",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "query_hint",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "order_by_clause",
     "named": true,
     "fields": {},
@@ -2389,6 +2497,64 @@
     }
   },
   {
+    "type": "pivot_clause",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "aggregate_functions",
+          "named": true
+        },
+        {
+          "type": "as_table_alias",
+          "named": true
+        },
+        {
+          "type": "column_alias_list",
+          "named": true
+        },
+        {
+          "type": "full_column_name",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "predicate",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "comparison_operator",
+          "named": true
+        },
+        {
+          "type": "expression",
+          "named": true
+        },
+        {
+          "type": "expression_list_",
+          "named": true
+        },
+        {
+          "type": "null_",
+          "named": true
+        },
+        {
+          "type": "subquery",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "primitive_constant",
     "named": true,
     "fields": {},
@@ -2468,6 +2634,29 @@
         },
         {
           "type": "sql_union",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "query_hint",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "expression",
+          "named": true
+        },
+        {
+          "type": "optimize_for_arg",
+          "named": true
+        },
+        {
+          "type": "string_lit",
           "named": true
         }
       ]
@@ -2685,6 +2874,14 @@
       "required": true,
       "types": [
         {
+          "type": "for_clause",
+          "named": true
+        },
+        {
+          "type": "option_clause",
+          "named": true
+        },
+        {
           "type": "query_expression",
           "named": true
         },
@@ -2901,7 +3098,19 @@
           "named": true
         },
         {
+          "type": "pivot_clause",
+          "named": true
+        },
+        {
           "type": "select_statement",
+          "named": true
+        },
+        {
+          "type": "table_valued_function",
+          "named": true
+        },
+        {
+          "type": "unpivot_clause",
           "named": true
         },
         {
@@ -2921,6 +3130,25 @@
       "types": [
         {
           "type": "table_source",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "table_valued_function",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "expression_list_",
+          "named": true
+        },
+        {
+          "type": "func_proc_name_database_schema",
           "named": true
         }
       ]
@@ -3020,6 +3248,44 @@
     }
   },
   {
+    "type": "unary_operator_expression",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "expression",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "unpivot_clause",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "as_table_alias",
+          "named": true
+        },
+        {
+          "type": "column_alias_list",
+          "named": true
+        },
+        {
+          "type": "full_column_name",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "window_frame_bound",
     "named": true,
     "fields": {},
@@ -3103,6 +3369,52 @@
     "fields": {}
   },
   {
+    "type": "xml_common_directives",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "string_lit",
+          "named": true
+        },
+        {
+          "type": "xml_option",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "xml_option",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "string_lit",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "!<",
+    "named": false
+  },
+  {
+    "type": "!=",
+    "named": false
+  },
+  {
+    "type": "!>",
+    "named": false
+  },
+  {
     "type": "$",
     "named": false
   },
@@ -3180,10 +3492,6 @@
   },
   {
     "type": "PLUS",
-    "named": true
-  },
-  {
-    "type": "RECOMPILE",
     "named": true
   },
   {
@@ -3304,10 +3612,6 @@
   },
   {
     "type": "comment",
-    "named": true
-  },
-  {
-    "type": "concat_",
     "named": true
   },
   {
