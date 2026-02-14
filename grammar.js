@@ -157,7 +157,43 @@ module.exports = grammar({
 
     ddl_clause: $ => choice(
       $.create_table
+      ,$.alter_database
       // Future: $.alter_table, $.drop_table, $.create_index, etc.
+    ),
+
+    //https://learn.microsoft.com/en-us/sql/t-sql/statements/alter-database-transact-sql-file-and-filegroup-options
+    alter_database: $ => seq(
+      token(/ALTER/i), token(/DATABASE/i),
+      $.id_,
+      choice(
+        $.alter_database_add_file,
+        //TODO: SET, MODIFY NAME, MODIFY FILE, ADD/REMOVE FILEGROUP, COLLATE, etc.
+      )
+    ),
+
+    alter_database_add_file: $ => seq(
+      token(/ADD/i), optional(token(/LOG/i)), token(/FILE/i),
+      $.database_filespec, repeat(seq(token(','), $.database_filespec)),
+      optional(seq(token(/TO/i), token(/FILEGROUP/i), $.id_))
+    ),
+
+    database_filespec: $ => seq(
+      token('('),
+      $.database_filespec_option, repeat(seq(token(','), $.database_filespec_option)),
+      token(')')
+    ),
+
+    database_filespec_option: $ => choice(
+      seq(token(/NAME/i), token('='), $.id_),
+      seq(token(/FILENAME/i), token('='), $.string_lit),
+      seq(token(/SIZE/i), token('='), $.file_size),
+      seq(token(/MAXSIZE/i), token('='), choice($.file_size, token(/UNLIMITED/i))),
+      seq(token(/FILEGROWTH/i), token('='), $.file_size),
+    ),
+
+    file_size: $ => seq(
+      $.decimal_,
+      optional(choice(token(/KB/i), token(/MB/i), token(/GB/i), token(/TB/i), token('%')))
     ),
 
     //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L1479

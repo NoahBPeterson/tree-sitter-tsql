@@ -176,6 +176,44 @@
     }
   },
   {
+    "type": "alter_database",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "alter_database_add_file",
+          "named": true
+        },
+        {
+          "type": "id_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "alter_database_add_file",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "database_filespec",
+          "named": true
+        },
+        {
+          "type": "id_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "analytic_windowed_functions",
     "named": true,
     "fields": {},
@@ -1499,6 +1537,44 @@
     }
   },
   {
+    "type": "database_filespec",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "database_filespec_option",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "database_filespec_option",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "file_size",
+          "named": true
+        },
+        {
+          "type": "id_",
+          "named": true
+        },
+        {
+          "type": "string_lit",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "ddl_clause",
     "named": true,
     "fields": {},
@@ -1506,6 +1582,10 @@
       "multiple": false,
       "required": true,
       "types": [
+        {
+          "type": "alter_database",
+          "named": true
+        },
         {
           "type": "create_table",
           "named": true
@@ -2008,6 +2088,21 @@
       "types": [
         {
           "type": "expression",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "file_size",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "decimal_",
           "named": true
         }
       ]
