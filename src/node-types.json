@@ -980,6 +980,25 @@
     }
   },
   {
+    "type": "coalesce_function",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "coalesce_",
+          "named": true
+        },
+        {
+          "type": "expression",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "collation_",
     "named": true,
     "fields": {
@@ -1200,11 +1219,31 @@
           "named": true
         },
         {
+          "type": "convert_",
+          "named": true
+        },
+        {
           "type": "data_type",
           "named": true
         },
         {
           "type": "expression",
+          "named": true
+        },
+        {
+          "type": "parse_",
+          "named": true
+        },
+        {
+          "type": "try_cast_",
+          "named": true
+        },
+        {
+          "type": "try_convert_",
+          "named": true
+        },
+        {
+          "type": "try_parse_",
           "named": true
         }
       ]
@@ -2141,6 +2180,10 @@
           "named": true
         },
         {
+          "type": "coalesce_function",
+          "named": true
+        },
+        {
           "type": "collation_functions",
           "named": true
         },
@@ -2158,6 +2201,14 @@
         },
         {
           "type": "hierarchyid_static_method",
+          "named": true
+        },
+        {
+          "type": "iif_function",
+          "named": true
+        },
+        {
+          "type": "nullif_function",
           "named": true
         },
         {
@@ -2391,6 +2442,29 @@
     "type": "ignore_nulls_",
     "named": true,
     "fields": {}
+  },
+  {
+    "type": "iif_function",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "expression",
+          "named": true
+        },
+        {
+          "type": "iif_",
+          "named": true
+        },
+        {
+          "type": "search_condition",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "insert_statement",
@@ -2671,6 +2745,25 @@
     "type": "next_value_for_",
     "named": true,
     "fields": {}
+  },
+  {
+    "type": "nullif_function",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "expression",
+          "named": true
+        },
+        {
+          "type": "nullif_",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "odbc_scalar_functions",
@@ -4456,6 +4549,10 @@
     "named": true
   },
   {
+    "type": "coalesce_",
+    "named": true
+  },
+  {
     "type": "col_length_",
     "named": true
   },
@@ -4477,6 +4574,10 @@
   },
   {
     "type": "continue_statement",
+    "named": true
+  },
+  {
+    "type": "convert_",
     "named": true
   },
   {
@@ -4668,6 +4769,10 @@
     "named": true
   },
   {
+    "type": "iif_",
+    "named": true
+  },
+  {
     "type": "image_",
     "named": true
   },
@@ -4769,6 +4874,10 @@
   },
   {
     "type": "null_",
+    "named": true
+  },
+  {
+    "type": "nullif_",
     "named": true
   },
   {
@@ -4953,6 +5062,18 @@
   },
   {
     "type": "truncate_",
+    "named": true
+  },
+  {
+    "type": "try_cast_",
+    "named": true
+  },
+  {
+    "type": "try_convert_",
+    "named": true
+  },
+  {
+    "type": "try_parse_",
     "named": true
   },
   {

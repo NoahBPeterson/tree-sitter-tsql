@@ -952,6 +952,10 @@ module.exports = grammar({
       ,$.built_in_functions
       //TODO built_in_function ~~200 rules https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L4291
 
+      ,$.iif_function
+      ,$.coalesce_function
+      ,$.nullif_function
+
       ,choice(
         seq($.scalar_function_name, parens(optional($.expression_list_)))
         ,seq(choice($.binary_checksum_, $.checksum_), parens(choice($.asterisk, $.expression_list_))) //TODO MOVE TO BUILTINS
@@ -967,6 +971,18 @@ module.exports = grammar({
       ,$.configuration_functions
       ,$.conversion_functions
     ),
+
+    // IIF(search_condition, true_val, false_val) — first arg is search_condition
+    iif_function: $ => seq($.iif_, token('('), $.search_condition, token(','), $.expression, token(','), $.expression, token(')')),
+    iif_: $ => token(/IIF/i),
+
+    // COALESCE(expression, expression [, ...]) — at least 2 args
+    coalesce_function: $ => seq($.coalesce_, token('('), $.expression, token(','), $.expression, repeat(seq(token(','), $.expression)), token(')')),
+    coalesce_: $ => token(/COALESCE/i),
+
+    // NULLIF(expression, expression)
+    nullif_function: $ => seq($.nullif_, token('('), $.expression, token(','), $.expression, token(')')),
+    nullif_: $ => token(/NULLIF/i),
 
     ...built_in_functions,
     ...odbc_scalar_functions,
