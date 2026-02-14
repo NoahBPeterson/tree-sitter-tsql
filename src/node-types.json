@@ -1,10 +1,5 @@
 [
   {
-    "type": "AS",
-    "named": true,
-    "fields": {}
-  },
-  {
     "type": "LOCAL_ID_",
     "named": true,
     "fields": {}
@@ -1197,7 +1192,7 @@
       "required": true,
       "types": [
         {
-          "type": "AS",
+          "type": "as",
           "named": true
         },
         {
@@ -1533,10 +1528,6 @@
       "required": true,
       "types": [
         {
-          "type": "AS",
-          "named": true
-        },
-        {
           "type": "AT_KEYWORD",
           "named": true
         },
@@ -1550,6 +1541,10 @@
         },
         {
           "type": "WITH",
+          "named": true
+        },
+        {
+          "type": "as",
           "named": true
         },
         {

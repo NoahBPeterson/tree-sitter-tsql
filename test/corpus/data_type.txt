@@ -24,7 +24,7 @@ SELECT CAST('3' as tinyint)
                               (primitive_expression
                                 (primitive_constant
                                   (string_lit))))
-                            (AS)
+                            (as)
                             (data_type
                               (tinyint_))))))))))))))))
 
@@ -54,7 +54,7 @@ SELECT CAST('3' as smallint)
                               (primitive_expression
                                 (primitive_constant
                                   (string_lit))))
-                            (AS)
+                            (as)
                             (data_type
                               (smallint_))))))))))))))))
 
@@ -84,7 +84,7 @@ SELECT CAST('3' as int)
                               (primitive_expression
                                 (primitive_constant
                                   (string_lit))))
-                            (AS)
+                            (as)
                             (data_type
                               (int_))))))))))))))))
 
@@ -114,7 +114,7 @@ SELECT CAST('3' as bigint)
                               (primitive_expression
                                 (primitive_constant
                                   (string_lit))))
-                            (AS)
+                            (as)
                             (data_type
                               (bigint_))))))))))))))))
 
@@ -144,7 +144,7 @@ SELECT CAST('1' as DECIMAL(16))
                               (primitive_expression
                                 (primitive_constant
                                   (string_lit))))
-                            (AS)
+                            (as)
                             (data_type
                               (decimalty_)
                               (decimal_))))))))))))))))
@@ -175,7 +175,7 @@ SELECT CAST('1' as DECIMAL(16,2))
                               (primitive_expression
                                 (primitive_constant
                                   (string_lit))))
-                            (AS)
+                            (as)
                             (data_type
                               (decimalty_)
                               (decimal_)
@@ -207,7 +207,7 @@ SELECT CAST('1' as NUMERIC(16))
                               (primitive_expression
                                 (primitive_constant
                                   (string_lit))))
-                            (AS)
+                            (as)
                             (data_type
                               (numeric_)
                               (decimal_))))))))))))))))
@@ -238,7 +238,7 @@ SELECT CAST('1' as NUMERIC(16,2))
                               (primitive_expression
                                 (primitive_constant
                                   (string_lit))))
-                            (AS)
+                            (as)
                             (data_type
                               (numeric_)
                               (decimal_)
@@ -270,7 +270,7 @@ SELECT CAST('1' as MONEY)
                               (primitive_expression
                                 (primitive_constant
                                   (string_lit))))
-                            (AS)
+                            (as)
                             (data_type
                               (moneyty_))))))))))))))))
 
@@ -300,7 +300,7 @@ SELECT CAST('1' as SMALLMONEY)
                               (primitive_expression
                                 (primitive_constant
                                   (string_lit))))
-                            (AS)
+                            (as)
                             (data_type
                               (smallmoney_))))))))))))))))
 
@@ -330,7 +330,7 @@ SELECT CAST('1' as FLOAT)
                               (primitive_expression
                                 (primitive_constant
                                   (string_lit))))
-                            (AS)
+                            (as)
                             (data_type
                               (floatty_))))))))))))))))
 
@@ -360,7 +360,7 @@ SELECT CAST('1' as FLOAT(16))
                               (primitive_expression
                                 (primitive_constant
                                   (string_lit))))
-                            (AS)
+                            (as)
                             (data_type
                               (floatty_)
                               (decimal_))))))))))))))))
@@ -391,7 +391,7 @@ SELECT CAST('1' as REAL)
                               (primitive_expression
                                 (primitive_constant
                                   (string_lit))))
-                            (AS)
+                            (as)
                             (data_type
                               (realty_))))))))))))))))
 
@@ -421,7 +421,7 @@ SELECT CAST('1' as REAL(16))
                               (primitive_expression
                                 (primitive_constant
                                   (string_lit))))
-                            (AS)
+                            (as)
                             (data_type
                               (realty_)
                               (decimal_))))))))))))))))
@@ -452,7 +452,7 @@ SELECT CAST('1' as CHAR)
                               (primitive_expression
                                 (primitive_constant
                                   (string_lit))))
-                            (AS)
+                            (as)
                             (data_type
                               (char_))))))))))))))))
 
@@ -482,7 +482,7 @@ SELECT CAST('1' as CHAR(3))
                               (primitive_expression
                                 (primitive_constant
                                   (string_lit))))
-                            (AS)
+                            (as)
                             (data_type
                               (char_)
                               (decimal_))))))))))))))))
@@ -513,7 +513,7 @@ SELECT CAST('1' as VARCHAR)
                               (primitive_expression
                                 (primitive_constant
                                   (string_lit))))
-                            (AS)
+                            (as)
                             (data_type
                               (varchar_))))))))))))))))
 
@@ -543,7 +543,7 @@ SELECT CAST('1' as VARCHAR(16))
                               (primitive_expression
                                 (primitive_constant
                                   (string_lit))))
-                            (AS)
+                            (as)
                             (data_type
                               (varchar_)
                               (decimal_))))))))))))))))
@@ -574,7 +574,7 @@ SELECT CAST('1' as VARCHAR(Max))
                               (primitive_expression
                                 (primitive_constant
                                   (string_lit))))
-                            (AS)
+                            (as)
                             (data_type
                               (varchar_)
                               (max_))))))))))))))))
@@ -605,7 +605,7 @@ SELECT CAST('1' as TEXT)
                               (primitive_expression
                                 (primitive_constant
                                   (string_lit))))
-                            (AS)
+                            (as)
                             (data_type
                               (text_))))))))))))))))
 
@@ -635,7 +635,7 @@ SELECT CAST('1' as NCHAR)
                               (primitive_expression
                                 (primitive_constant
                                   (string_lit))))
-                            (AS)
+                            (as)
                             (data_type
                               (nchar_))))))))))))))))
 
@@ -665,7 +665,7 @@ SELECT CAST('1' as NCHAR(4))
                               (primitive_expression
                                 (primitive_constant
                                   (string_lit))))
-                            (AS)
+                            (as)
                             (data_type
                               (nchar_)
                               (decimal_))))))))))))))))
@@ -696,7 +696,7 @@ SELECT CAST('1' as NVARCHAR)
                               (primitive_expression
                                 (primitive_constant
                                   (string_lit))))
-                            (AS)
+                            (as)
                             (data_type
                               (nvarchar_))))))))))))))))
 
@@ -726,7 +726,7 @@ SELECT CAST('1' as NVARCHAR(4))
                               (primitive_expression
                                 (primitive_constant
                                   (string_lit))))
-                            (AS)
+                            (as)
                             (data_type
                               (nvarchar_)
                               (decimal_))))))))))))))))
@@ -757,7 +757,7 @@ SELECT CAST('1' as NVARCHAR(MAX))
                               (primitive_expression
                                 (primitive_constant
                                   (string_lit))))
-                            (AS)
+                            (as)
                             (data_type
                               (nvarchar_)
                               (max_))))))))))))))))
@@ -788,7 +788,7 @@ SELECT CAST('1' as NTEXT)
                               (primitive_expression
                                 (primitive_constant
                                   (string_lit))))
-                            (AS)
+                            (as)
                             (data_type
                               (ntext_))))))))))))))))
 
@@ -818,7 +818,7 @@ SELECT CAST('1' as BINARY)
                               (primitive_expression
                                 (primitive_constant
                                   (string_lit))))
-                            (AS)
+                            (as)
                             (data_type
                               (binary_))))))))))))))))
 
@@ -848,7 +848,7 @@ SELECT CAST('1' as BINARY(4))
                               (primitive_expression
                                 (primitive_constant
                                   (string_lit))))
-                            (AS)
+                            (as)
                             (data_type
                               (binary_)
                               (decimal_))))))))))))))))
@@ -879,7 +879,7 @@ SELECT CAST('1' as VARBINARY)
                               (primitive_expression
                                 (primitive_constant
                                   (string_lit))))
-                            (AS)
+                            (as)
                             (data_type
                               (varbinary_))))))))))))))))
 
@@ -909,7 +909,7 @@ SELECT CAST('1' as VARBINARY(4))
                               (primitive_expression
                                 (primitive_constant
                                   (string_lit))))
-                            (AS)
+                            (as)
                             (data_type
                               (varbinary_)
                               (decimal_))))))))))))))))
@@ -940,7 +940,7 @@ SELECT CAST('1' as VARBINARY(MAX))
                               (primitive_expression
                                 (primitive_constant
                                   (string_lit))))
-                            (AS)
+                            (as)
                             (data_type
                               (varbinary_)
                               (max_))))))))))))))))
@@ -971,7 +971,7 @@ SELECT CAST('1' as IMAGE)
                               (primitive_expression
                                 (primitive_constant
                                   (string_lit))))
-                            (AS)
+                            (as)
                             (data_type
                               (image_))))))))))))))))
 
@@ -1001,7 +1001,7 @@ SELECT CAST('01/01/01' as DATE)
                               (primitive_expression
                                 (primitive_constant
                                   (string_lit))))
-                            (AS)
+                            (as)
                             (data_type
                               (date_))))))))))))))))
 
@@ -1031,7 +1031,7 @@ SELECT CAST('12:25' as TIME)
                               (primitive_expression
                                 (primitive_constant
                                   (string_lit))))
-                            (AS)
+                            (as)
                             (data_type
                               (time_))))))))))))))))
 
@@ -1061,7 +1061,7 @@ SELECT CAST('12:25' as TIME(3))
                               (primitive_expression
                                 (primitive_constant
                                   (string_lit))))
-                            (AS)
+                            (as)
                             (data_type
                               (time_)
                               (decimal_))))))))))))))))
@@ -1092,7 +1092,7 @@ SELECT CAST('12:25' as DATETIME2)
                               (primitive_expression
                                 (primitive_constant
                                   (string_lit))))
-                            (AS)
+                            (as)
                             (data_type
                               (datetime2_))))))))))))))))
 
@@ -1122,7 +1122,7 @@ SELECT CAST('12:25' as DATETIME2(5))
                               (primitive_expression
                                 (primitive_constant
                                   (string_lit))))
-                            (AS)
+                            (as)
                             (data_type
                               (datetime2_)
                               (decimal_))))))))))))))))
@@ -1153,7 +1153,7 @@ SELECT CAST('12:25' as datetimeoffset)
                               (primitive_expression
                                 (primitive_constant
                                   (string_lit))))
-                            (AS)
+                            (as)
                             (data_type
                               (datetimeoffset_))))))))))))))))
 
@@ -1183,7 +1183,7 @@ SELECT CAST('12:25' as datetimeoffset(5))
                               (primitive_expression
                                 (primitive_constant
                                   (string_lit))))
-                            (AS)
+                            (as)
                             (data_type
                               (datetimeoffset_)
                               (decimal_))))))))))))))))
@@ -1214,7 +1214,7 @@ SELECT CAST('12:25' as DATETIME)
                               (primitive_expression
                                 (primitive_constant
                                   (string_lit))))
-                            (AS)
+                            (as)
                             (data_type
                               (datetime_))))))))))))))))
 
@@ -1244,6 +1244,6 @@ SELECT CAST('12:25' as SMALLDATETIME)
                               (primitive_expression
                                 (primitive_constant
                                   (string_lit))))
-                            (AS)
+                            (as)
                             (data_type
                               (smalldatetime_))))))))))))))))

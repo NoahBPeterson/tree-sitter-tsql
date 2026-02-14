@@ -2572,7 +2572,7 @@
                     "members": [
                       {
                         "type": "SYMBOL",
-                        "name": "AS"
+                        "name": "as"
                       },
                       {
                         "type": "CHOICE",
@@ -2716,14 +2716,6 @@
       "content": {
         "type": "PATTERN",
         "value": "RECOMPILE",
-        "flags": "i"
-      }
-    },
-    "AS": {
-      "type": "TOKEN",
-      "content": {
-        "type": "PATTERN",
-        "value": "AS",
         "flags": "i"
       }
     },
@@ -12707,7 +12699,7 @@
                 },
                 {
                   "type": "SYMBOL",
-                  "name": "AS"
+                  "name": "as"
                 },
                 {
                   "type": "SYMBOL",

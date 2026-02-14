@@ -3,7 +3,7 @@ const { parens, parensComma } = require('../utils.js');
 //https://learn.microsoft.com/en-us/sql/t-sql/functions/conversion-functions-transact-sql?view=sql-server-ver16
 module.exports = {
   conversion_functions: $ => choice(
-    seq($.cast_,parens($.expression, $.AS, $.data_type))
+    seq($.cast_,parens($.expression, $.as, $.data_type))
 
   ),
 
