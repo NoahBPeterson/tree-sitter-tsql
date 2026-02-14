@@ -1,0 +1,105 @@
+=====================================
+ALTER DATABASE ADD FILE
+=====================================
+
+ALTER DATABASE Solutions
+ADD FILE
+(
+    NAME = Solutions_dat_2,
+    FILENAME = 'D:\mssql\data\Solutions_dat2.ndf',
+    SIZE = 10MB,
+    MAXSIZE = 100MB,
+    FILEGROWTH = 5%
+)
+
+-----
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_database
+          (id_)
+          (alter_database_add_file
+            (database_filespec
+              (database_filespec_option
+                (id_))
+              (database_filespec_option
+                (string_lit))
+              (database_filespec_option
+                (file_size
+                  (decimal_)))
+              (database_filespec_option
+                (file_size
+                  (decimal_)))
+              (database_filespec_option
+                (file_size
+                  (decimal_))))))))))
+
+=====================================
+ALTER DATABASE ADD LOG FILE with UNLIMITED
+=====================================
+
+ALTER DATABASE MyDB
+ADD LOG FILE
+(
+    NAME = MyDB_log2,
+    FILENAME = 'E:\logs\MyDB_log2.ldf',
+    SIZE = 5MB,
+    MAXSIZE = UNLIMITED,
+    FILEGROWTH = 1MB
+)
+
+-----
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_database
+          (id_)
+          (alter_database_add_file
+            (database_filespec
+              (database_filespec_option
+                (id_))
+              (database_filespec_option
+                (string_lit))
+              (database_filespec_option
+                (file_size
+                  (decimal_)))
+              (database_filespec_option)
+              (database_filespec_option
+                (file_size
+                  (decimal_))))))))))
+
+=====================================
+ALTER DATABASE ADD FILE TO FILEGROUP
+=====================================
+
+ALTER DATABASE MyDB
+ADD FILE
+(
+    NAME = MyDB_dat2,
+    FILENAME = 'D:\data\MyDB_dat2.ndf',
+    SIZE = 50MB
+)
+TO FILEGROUP Secondary
+
+-----
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_database
+          (id_)
+          (alter_database_add_file
+            (database_filespec
+              (database_filespec_option
+                (id_))
+              (database_filespec_option
+                (string_lit))
+              (database_filespec_option
+                (file_size
+                  (decimal_))))
+            (id_)))))))
