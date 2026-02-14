@@ -1258,6 +1258,65 @@
     "fields": {}
   },
   {
+    "type": "default",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "delete_statement",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "delete_target",
+          "named": true
+        },
+        {
+          "type": "output_clause",
+          "named": true
+        },
+        {
+          "type": "search_condition",
+          "named": true
+        },
+        {
+          "type": "table_sources",
+          "named": true
+        },
+        {
+          "type": "top_clause",
+          "named": true
+        },
+        {
+          "type": "with_expression",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "delete_target",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "full_table_name",
+          "named": true
+        },
+        {
+          "type": "local_id_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "distinct_",
     "named": true,
     "fields": {}
@@ -1271,7 +1330,23 @@
       "required": true,
       "types": [
         {
+          "type": "delete_statement",
+          "named": true
+        },
+        {
+          "type": "insert_statement",
+          "named": true
+        },
+        {
+          "type": "merge_statement",
+          "named": true
+        },
+        {
           "type": "select_statement_standalone",
+          "named": true
+        },
+        {
+          "type": "update_statement",
           "named": true
         }
       ]
@@ -2153,6 +2228,64 @@
     "fields": {}
   },
   {
+    "type": "insert_statement",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "column_name_list",
+          "named": true
+        },
+        {
+          "type": "full_table_name",
+          "named": true
+        },
+        {
+          "type": "insert_statement_value",
+          "named": true
+        },
+        {
+          "type": "output_clause",
+          "named": true
+        },
+        {
+          "type": "top_clause",
+          "named": true
+        },
+        {
+          "type": "with_expression",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "insert_statement_value",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "execute_statement",
+          "named": true
+        },
+        {
+          "type": "select_statement",
+          "named": true
+        },
+        {
+          "type": "value_list",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "integer",
     "named": true,
     "fields": {}
@@ -2265,6 +2398,79 @@
     "type": "local_id_",
     "named": true,
     "fields": {}
+  },
+  {
+    "type": "merge_matched",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "update_elem",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "merge_not_matched",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "column_name_list",
+          "named": true
+        },
+        {
+          "type": "expression_list_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "merge_statement",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "as_table_alias",
+          "named": true
+        },
+        {
+          "type": "full_table_name",
+          "named": true
+        },
+        {
+          "type": "output_clause",
+          "named": true
+        },
+        {
+          "type": "search_condition",
+          "named": true
+        },
+        {
+          "type": "table_source",
+          "named": true
+        },
+        {
+          "type": "when_matches",
+          "named": true
+        },
+        {
+          "type": "with_expression",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "money_",
@@ -2474,6 +2680,56 @@
       "types": [
         {
           "type": "collation_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "output_clause",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "column_name_list",
+          "named": true
+        },
+        {
+          "type": "full_table_name",
+          "named": true
+        },
+        {
+          "type": "output_dml_list_elem",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "output_dml_list_elem",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "as_column_alias",
+          "named": true
+        },
+        {
+          "type": "asterisk",
+          "named": true
+        },
+        {
+          "type": "expression",
+          "named": true
+        },
+        {
+          "type": "id_",
           "named": true
         }
       ]
@@ -3375,6 +3631,129 @@
     }
   },
   {
+    "type": "update_elem",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "LOCAL_ID_",
+          "named": true
+        },
+        {
+          "type": "assignment_operator",
+          "named": true
+        },
+        {
+          "type": "expression",
+          "named": true
+        },
+        {
+          "type": "full_column_name",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "update_statement",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "output_clause",
+          "named": true
+        },
+        {
+          "type": "search_condition",
+          "named": true
+        },
+        {
+          "type": "table_sources",
+          "named": true
+        },
+        {
+          "type": "top_clause",
+          "named": true
+        },
+        {
+          "type": "update_elem",
+          "named": true
+        },
+        {
+          "type": "update_target",
+          "named": true
+        },
+        {
+          "type": "with_expression",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "update_target",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "full_table_name",
+          "named": true
+        },
+        {
+          "type": "local_id_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "value_list",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "expression_list_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "when_matches",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "merge_matched",
+          "named": true
+        },
+        {
+          "type": "merge_not_matched",
+          "named": true
+        },
+        {
+          "type": "search_condition",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "window_frame_bound",
     "named": true,
     "fields": {},
@@ -3813,10 +4192,6 @@
   },
   {
     "type": "decimalty_",
-    "named": true
-  },
-  {
-    "type": "default",
     "named": true
   },
   {
