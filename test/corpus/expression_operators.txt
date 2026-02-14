@@ -1,0 +1,203 @@
+==================
+Expression Multiply
+==================
+
+SELECT foo * bar
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (expression
+                          (full_column_name
+                            (id_)))
+                        (asterisk)
+                        (expression
+                          (full_column_name
+                            (id_)))))))))))))))
+
+==================
+Expression Divide
+==================
+
+SELECT foo / bar
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (expression
+                          (full_column_name
+                            (id_)))
+                        (expression
+                          (full_column_name
+                            (id_)))))))))))))))
+
+==================
+Expression Modulo
+==================
+
+SELECT foo % bar
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (expression
+                          (full_column_name
+                            (id_)))
+                        (expression
+                          (full_column_name
+                            (id_)))))))))))))))
+
+==================
+Expression Add
+==================
+
+SELECT foo + bar
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (expression
+                          (full_column_name
+                            (id_)))
+                        (PLUS)
+                        (expression
+                          (full_column_name
+                            (id_)))))))))))))))
+
+==================
+Expression Subtract
+==================
+
+SELECT foo - bar
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (expression
+                          (full_column_name
+                            (id_)))
+                        (expression
+                          (full_column_name
+                            (id_)))))))))))))))
+
+==================
+Expression Precedence Mul before Add
+==================
+
+SELECT a + b * c
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (expression
+                          (full_column_name
+                            (id_)))
+                        (PLUS)
+                        (expression
+                          (expression
+                            (full_column_name
+                              (id_)))
+                          (asterisk)
+                          (expression
+                            (full_column_name
+                              (id_))))))))))))))))
+
+==================
+Expression Bitwise AND
+==================
+
+SELECT a & b
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (expression
+                          (full_column_name
+                            (id_)))
+                        (expression
+                          (full_column_name
+                            (id_)))))))))))))))

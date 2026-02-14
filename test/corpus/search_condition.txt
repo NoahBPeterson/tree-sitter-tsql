@@ -1,0 +1,569 @@
+==================
+Search Condition Comparison Equal
+==================
+
+SELECT foo FROM bar WHERE id = 1
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (full_column_name
+                          (id_))))))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_)))))
+                (search_condition
+                  (predicate
+                    (expression
+                      (full_column_name
+                        (id_)))
+                    (comparison_operator)
+                    (expression
+                      (primitive_expression
+                        (primitive_constant
+                          (decimal_))))))))))))))
+
+==================
+Search Condition AND
+==================
+
+SELECT foo FROM bar WHERE a = 1 AND b = 2
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (full_column_name
+                          (id_))))))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_)))))
+                (search_condition
+                  (search_condition
+                    (predicate
+                      (expression
+                        (full_column_name
+                          (id_)))
+                      (comparison_operator)
+                      (expression
+                        (primitive_expression
+                          (primitive_constant
+                            (decimal_))))))
+                  (search_condition
+                    (predicate
+                      (expression
+                        (full_column_name
+                          (id_)))
+                      (comparison_operator)
+                      (expression
+                        (primitive_expression
+                          (primitive_constant
+                            (decimal_)))))))))))))))
+
+==================
+Search Condition OR
+==================
+
+SELECT foo FROM bar WHERE a = 1 OR b = 2
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (full_column_name
+                          (id_))))))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_)))))
+                (search_condition
+                  (search_condition
+                    (predicate
+                      (expression
+                        (full_column_name
+                          (id_)))
+                      (comparison_operator)
+                      (expression
+                        (primitive_expression
+                          (primitive_constant
+                            (decimal_))))))
+                  (search_condition
+                    (predicate
+                      (expression
+                        (full_column_name
+                          (id_)))
+                      (comparison_operator)
+                      (expression
+                        (primitive_expression
+                          (primitive_constant
+                            (decimal_)))))))))))))))
+
+==================
+Search Condition NOT
+==================
+
+SELECT foo FROM bar WHERE NOT a = 1
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (full_column_name
+                          (id_))))))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_)))))
+                (search_condition
+                  (search_condition
+                    (predicate
+                      (expression
+                        (full_column_name
+                          (id_)))
+                      (comparison_operator)
+                      (expression
+                        (primitive_expression
+                          (primitive_constant
+                            (decimal_)))))))))))))))
+
+==================
+Search Condition BETWEEN
+==================
+
+SELECT foo FROM bar WHERE id BETWEEN 1 AND 10
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (full_column_name
+                          (id_))))))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_)))))
+                (search_condition
+                  (predicate
+                    (expression
+                      (full_column_name
+                        (id_)))
+                    (expression
+                      (primitive_expression
+                        (primitive_constant
+                          (decimal_))))
+                    (expression
+                      (primitive_expression
+                        (primitive_constant
+                          (decimal_))))))))))))))
+
+==================
+Search Condition NOT BETWEEN
+==================
+
+SELECT foo FROM bar WHERE id NOT BETWEEN 1 AND 10
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (full_column_name
+                          (id_))))))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_)))))
+                (search_condition
+                  (predicate
+                    (expression
+                      (full_column_name
+                        (id_)))
+                    (expression
+                      (primitive_expression
+                        (primitive_constant
+                          (decimal_))))
+                    (expression
+                      (primitive_expression
+                        (primitive_constant
+                          (decimal_))))))))))))))
+
+==================
+Search Condition IN list
+==================
+
+SELECT foo FROM bar WHERE id IN (1, 2, 3)
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (full_column_name
+                          (id_))))))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_)))))
+                (search_condition
+                  (predicate
+                    (expression
+                      (full_column_name
+                        (id_)))
+                    (expression_list_
+                      (expression
+                        (primitive_expression
+                          (primitive_constant
+                            (decimal_))))
+                      (expression
+                        (primitive_expression
+                          (primitive_constant
+                            (decimal_))))
+                      (expression
+                        (primitive_expression
+                          (primitive_constant
+                            (decimal_)))))))))))))))
+
+==================
+Search Condition IN subquery
+==================
+
+SELECT foo FROM bar WHERE id IN (SELECT id FROM baz)
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (full_column_name
+                          (id_))))))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_)))))
+                (search_condition
+                  (predicate
+                    (expression
+                      (full_column_name
+                        (id_)))
+                    (subquery
+                      (select_statement
+                        (query_expression
+                          (query_specification
+                            (select)
+                            (select_list
+                              (select_list_elem
+                                (expression_elem
+                                  (expression
+                                    (full_column_name
+                                      (id_))))))
+                            (table_sources
+                              (table_source
+                                (table_source_item
+                                  (full_table_name
+                                    (id_)))))))))))))))))))
+
+==================
+Search Condition LIKE
+==================
+
+SELECT foo FROM bar WHERE name LIKE '%test%'
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (full_column_name
+                          (id_))))))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_)))))
+                (search_condition
+                  (predicate
+                    (expression
+                      (full_column_name
+                        (id_)))
+                    (expression
+                      (primitive_expression
+                        (primitive_constant
+                          (string_lit))))))))))))))
+
+==================
+Search Condition IS NULL
+==================
+
+SELECT foo FROM bar WHERE name IS NULL
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (full_column_name
+                          (id_))))))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_)))))
+                (search_condition
+                  (predicate
+                    (expression
+                      (full_column_name
+                        (id_)))
+                    (null_)))))))))))
+
+==================
+Search Condition IS NOT NULL
+==================
+
+SELECT foo FROM bar WHERE name IS NOT NULL
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (full_column_name
+                          (id_))))))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_)))))
+                (search_condition
+                  (predicate
+                    (expression
+                      (full_column_name
+                        (id_)))
+                    (null_)))))))))))
+
+==================
+Search Condition EXISTS
+==================
+
+SELECT foo FROM bar WHERE EXISTS (SELECT 1 FROM baz)
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (full_column_name
+                          (id_))))))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_)))))
+                (search_condition
+                  (predicate
+                    (subquery
+                      (select_statement
+                        (query_expression
+                          (query_specification
+                            (select)
+                            (select_list
+                              (select_list_elem
+                                (expression_elem
+                                  (expression
+                                    (primitive_expression
+                                      (primitive_constant
+                                        (decimal_)))))))
+                            (table_sources
+                              (table_source
+                                (table_source_item
+                                  (full_table_name
+                                    (id_)))))))))))))))))))
+
+==================
+Search Condition HAVING
+==================
+
+SELECT COUNT(*), dept FROM emp GROUP BY dept HAVING COUNT(*) > 5
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (function_call
+                          (aggregate_functions
+                            (count_)
+                            (asterisk))))))
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (full_column_name
+                          (id_))))))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_)))))
+                (groupby
+                  (groupby_)
+                  (group_by_item
+                    (expression
+                      (full_column_name
+                        (id_)))))
+                (search_condition
+                  (predicate
+                    (expression
+                      (function_call
+                        (aggregate_functions
+                          (count_)
+                          (asterisk))))
+                    (comparison_operator)
+                    (expression
+                      (primitive_expression
+                        (primitive_constant
+                          (decimal_))))))))))))))

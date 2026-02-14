@@ -355,6 +355,25 @@
     }
   },
   {
+    "type": "bracket_expression",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "expression",
+          "named": true
+        },
+        {
+          "type": "subquery",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "built_in_functions",
     "named": true,
     "fields": {
@@ -827,6 +846,29 @@
     }
   },
   {
+    "type": "case_expression",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "expression",
+          "named": true
+        },
+        {
+          "type": "switch_search_condition_section",
+          "named": true
+        },
+        {
+          "type": "switch_section",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "collation_",
     "named": true,
     "fields": {
@@ -883,6 +925,11 @@
         }
       ]
     }
+  },
+  {
+    "type": "comparison_operator",
+    "named": true,
+    "fields": {}
   },
   {
     "type": "configuration_functions",
@@ -1389,9 +1436,29 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": true,
       "types": [
+        {
+          "type": "PLUS",
+          "named": true
+        },
+        {
+          "type": "asterisk",
+          "named": true
+        },
+        {
+          "type": "bracket_expression",
+          "named": true
+        },
+        {
+          "type": "case_expression",
+          "named": true
+        },
+        {
+          "type": "expression",
+          "named": true
+        },
         {
           "type": "full_column_name",
           "named": true
@@ -1402,6 +1469,10 @@
         },
         {
           "type": "primitive_expression",
+          "named": true
+        },
+        {
+          "type": "unary_operator_expression",
           "named": true
         }
       ]
@@ -2198,6 +2269,37 @@
     }
   },
   {
+    "type": "predicate",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "comparison_operator",
+          "named": true
+        },
+        {
+          "type": "expression",
+          "named": true
+        },
+        {
+          "type": "expression_list_",
+          "named": true
+        },
+        {
+          "type": "null_",
+          "named": true
+        },
+        {
+          "type": "subquery",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "primitive_constant",
     "named": true,
     "fields": {},
@@ -2288,6 +2390,10 @@
       "types": [
         {
           "type": "groupby",
+          "named": true
+        },
+        {
+          "type": "search_condition",
           "named": true
         },
         {
@@ -2383,6 +2489,25 @@
         },
         {
           "type": "right_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "search_condition",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "predicate",
+          "named": true
+        },
+        {
+          "type": "search_condition",
           "named": true
         }
       ]
@@ -2501,6 +2626,55 @@
         },
         {
           "type": "dml_clause",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "subquery",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "select_statement",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "switch_search_condition_section",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "expression",
+          "named": true
+        },
+        {
+          "type": "search_condition",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "switch_section",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "expression",
           "named": true
         }
       ]
@@ -2666,6 +2840,21 @@
     }
   },
   {
+    "type": "unary_operator_expression",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "expression",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "window_frame_bound",
     "named": true,
     "fields": {},
@@ -2719,11 +2908,31 @@
     "fields": {}
   },
   {
+    "type": "!<",
+    "named": false
+  },
+  {
+    "type": "!=",
+    "named": false
+  },
+  {
+    "type": "!>",
+    "named": false
+  },
+  {
     "type": "$",
     "named": false
   },
   {
+    "type": "%",
+    "named": false
+  },
+  {
     "type": "%=",
+    "named": false
+  },
+  {
+    "type": "&",
     "named": false
   },
   {
@@ -2763,6 +2972,10 @@
     "named": false
   },
   {
+    "type": "/",
+    "named": false
+  },
+  {
     "type": "/=",
     "named": false
   },
@@ -2775,7 +2988,27 @@
     "named": false
   },
   {
+    "type": "<",
+    "named": false
+  },
+  {
+    "type": "<=",
+    "named": false
+  },
+  {
+    "type": "<>",
+    "named": false
+  },
+  {
     "type": "=",
+    "named": false
+  },
+  {
+    "type": ">",
+    "named": false
+  },
+  {
+    "type": ">=",
     "named": false
   },
   {
@@ -2813,6 +3046,10 @@
   {
     "type": "WITH",
     "named": true
+  },
+  {
+    "type": "^",
+    "named": false
   },
   {
     "type": "^=",
@@ -3451,11 +3688,23 @@
     "named": false
   },
   {
+    "type": "|",
+    "named": false
+  },
+  {
     "type": "|=",
     "named": false
   },
   {
+    "type": "||",
+    "named": false
+  },
+  {
     "type": "}",
+    "named": false
+  },
+  {
+    "type": "~",
     "named": false
   }
 ]

@@ -1,0 +1,9 @@
+{
+  "tree-sitter-vscode.languageConfigs": [
+    {
+      "lang": "sql",
+      "parser": "./tree-sitter-TSQL.wasm",
+      "highlights": "./queries/highlights.scm"
+    }
+  ]
+}

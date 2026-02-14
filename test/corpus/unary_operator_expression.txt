@@ -1,0 +1,77 @@
+==================
+Unary Minus
+==================
+
+SELECT -foo
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (unary_operator_expression
+                          (expression
+                            (full_column_name
+                              (id_))))))))))))))))
+
+==================
+Unary Plus
+==================
+
+SELECT +foo
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (unary_operator_expression
+                          (expression
+                            (full_column_name
+                              (id_))))))))))))))))
+
+==================
+Unary Bitwise NOT
+==================
+
+SELECT ~foo
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (unary_operator_expression
+                          (expression
+                            (full_column_name
+                              (id_))))))))))))))))
