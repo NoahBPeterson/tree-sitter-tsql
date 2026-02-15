@@ -15,6 +15,11 @@
     "fields": {}
   },
   {
+    "type": "USER",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "WITH",
     "named": true,
     "fields": {}
@@ -1163,6 +1168,62 @@
         {
           "type": "create_table",
           "named": true
+        },
+        {
+          "type": "drop_database",
+          "named": true
+        },
+        {
+          "type": "drop_function",
+          "named": true
+        },
+        {
+          "type": "drop_index",
+          "named": true
+        },
+        {
+          "type": "drop_login",
+          "named": true
+        },
+        {
+          "type": "drop_procedure",
+          "named": true
+        },
+        {
+          "type": "drop_schema",
+          "named": true
+        },
+        {
+          "type": "drop_sequence",
+          "named": true
+        },
+        {
+          "type": "drop_statistics",
+          "named": true
+        },
+        {
+          "type": "drop_synonym",
+          "named": true
+        },
+        {
+          "type": "drop_table",
+          "named": true
+        },
+        {
+          "type": "drop_trigger",
+          "named": true
+        },
+        {
+          "type": "drop_type",
+          "named": true
+        },
+        {
+          "type": "drop_user",
+          "named": true
+        },
+        {
+          "type": "drop_view",
+          "named": true
         }
       ]
     }
@@ -1300,6 +1361,239 @@
         },
         {
           "type": "update_statement",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "drop_database",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "id_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "drop_function",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "func_proc_name_server_database_schema",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "drop_index",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "drop_index_item",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "drop_index_item",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "full_table_name",
+          "named": true
+        },
+        {
+          "type": "id_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "drop_login",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "LOGIN",
+          "named": true
+        },
+        {
+          "type": "id_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "drop_procedure",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "func_proc_name_server_database_schema",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "drop_schema",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "id_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "drop_sequence",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "full_table_name",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "drop_statistics",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "full_table_name",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "drop_synonym",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "full_table_name",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "drop_table",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "full_table_name",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "drop_trigger",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "full_table_name",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "drop_type",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "full_table_name",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "drop_user",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "id_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "drop_view",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "full_table_name",
           "named": true
         }
       ]
@@ -4599,10 +4893,6 @@
   },
   {
     "type": "UNDEFINED",
-    "named": true
-  },
-  {
-    "type": "USER",
     "named": true
   },
   {

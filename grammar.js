@@ -167,7 +167,21 @@ module.exports = grammar({
     ddl_clause: $ => choice(
       $.create_table
       ,$.alter_database
-      // Future: $.alter_table, $.drop_table, $.create_index, etc.
+      ,$.drop_table
+      ,$.drop_view
+      ,$.drop_procedure
+      ,$.drop_function
+      ,$.drop_index
+      ,$.drop_trigger
+      ,$.drop_database
+      ,$.drop_schema
+      ,$.drop_sequence
+      ,$.drop_type
+      ,$.drop_user
+      ,$.drop_login
+      ,$.drop_synonym
+      ,$.drop_statistics
+      // Future: $.alter_table, $.create_index, etc.
     ),
 
     //https://learn.microsoft.com/en-us/sql/t-sql/statements/alter-database-transact-sql-file-and-filegroup-options
@@ -204,6 +218,34 @@ module.exports = grammar({
       $.decimal_,
       optional(choice(token(/KB/i), token(/MB/i), token(/GB/i), token(/TB/i), token('%')))
     ),
+
+    // =====================
+    // DROP statements
+    // =====================
+
+    // Pattern A — multi-name with IF EXISTS
+    drop_table: $ => seq(token(/DROP/i), token(/TABLE/i), optional($._if_exists), $.full_table_name, repeat(seq(',', $.full_table_name))),
+    drop_view: $ => seq(token(/DROP/i), token(/VIEW/i), optional($._if_exists), $.full_table_name, repeat(seq(',', $.full_table_name))),
+    drop_procedure: $ => seq(token(/DROP/i), choice(token(/PROC/i), token(/PROCEDURE/i)), optional($._if_exists), $.func_proc_name_server_database_schema, repeat(seq(',', $.func_proc_name_server_database_schema))),
+    drop_function: $ => seq(token(/DROP/i), token(/FUNCTION/i), optional($._if_exists), $.func_proc_name_server_database_schema, repeat(seq(',', $.func_proc_name_server_database_schema))),
+    drop_trigger: $ => seq(token(/DROP/i), token(/TRIGGER/i), optional($._if_exists), $.full_table_name, repeat(seq(',', $.full_table_name))),
+    drop_database: $ => seq(token(/DROP/i), token(/DATABASE/i), optional($._if_exists), $.id_, repeat(seq(',', $.id_))),
+    drop_sequence: $ => seq(token(/DROP/i), token(/SEQUENCE/i), optional($._if_exists), $.full_table_name, repeat(seq(',', $.full_table_name))),
+    drop_synonym: $ => seq(token(/DROP/i), token(/SYNONYM/i), optional($._if_exists), $.full_table_name),
+
+    // Pattern B — simple name
+    drop_schema: $ => seq(token(/DROP/i), token(/SCHEMA/i), optional($._if_exists), $.id_),
+    drop_type: $ => seq(token(/DROP/i), token(/TYPE/i), optional($._if_exists), $.full_table_name),
+    drop_user: $ => seq(token(/DROP/i), token(/USER/i), optional($._if_exists), $.id_),
+    drop_login: $ => seq(token(/DROP/i), $.LOGIN, $.id_),
+    drop_statistics: $ => seq(token(/DROP/i), token(/STATISTICS/i), $.full_table_name, repeat(seq(',', $.full_table_name))),
+
+    // Pattern C — INDEX with ON
+    drop_index: $ => seq(token(/DROP/i), token(/INDEX/i), optional($._if_exists), $.drop_index_item, repeat(seq(',', $.drop_index_item))),
+    drop_index_item: $ => seq($.id_, token(/ON/i), $.full_table_name),
+
+    // Shared helper
+    _if_exists: $ => seq(token(/IF/i), token(/EXISTS/i)),
 
     //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L1479
     create_table: $ => seq(
