@@ -19,7 +19,6 @@ SELECT LEFT_SHIFT(5,2);
                       (expression
                         (function_call
                           (bit_manipulation_functions
-                            (left_shift_)
                             (expression
                               (primitive_expression
                                 (primitive_constant
@@ -81,7 +80,6 @@ SELECT RIGHT_SHIFT(5,2)
                       (expression
                         (function_call
                           (bit_manipulation_functions
-                            (right_shift_)
                             (expression
                               (primitive_expression
                                 (primitive_constant
@@ -170,7 +168,6 @@ SELECT GET_BIT(5,2)
                       (expression
                         (function_call
                           (bit_manipulation_functions
-                            (get_bit_)
                             (expression
                               (primitive_expression
                                 (primitive_constant

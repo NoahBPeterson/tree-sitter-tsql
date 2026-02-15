@@ -257,8 +257,7 @@ SELECT {fn DAYNAME(GETDATE())};
                             (dayname_)
                             (expression
                               (function_call
-                                (datetime_functions
-                                  (getdate_))))))))))))))))))
+                                (datetime_functions)))))))))))))))))
 
 =====================================
 ODBC Scalar Functions DAYOFMONTH
@@ -284,8 +283,7 @@ SELECT {fn DAYOFMONTH(GETDATE())};
                             (dayofmonth_)
                             (expression
                               (function_call
-                                (datetime_functions
-                                  (getdate_))))))))))))))))))
+                                (datetime_functions)))))))))))))))))
 
 =====================================
 ODBC Scalar Functions DAYOFWEEK
@@ -311,8 +309,7 @@ SELECT {fn DAYOFWEEK(GETDATE())};
                             (dayofweek_)
                             (expression
                               (function_call
-                                (datetime_functions
-                                  (getdate_))))))))))))))))))
+                                (datetime_functions)))))))))))))))))
 
 =====================================
 ODBC Scalar Functions HOUR
@@ -338,8 +335,7 @@ SELECT {fn HOUR(GETDATE())};
                             (hour_)
                             (expression
                               (function_call
-                                (datetime_functions
-                                  (getdate_))))))))))))))))))
+                                (datetime_functions)))))))))))))))))
 
 =====================================
 ODBC Scalar Functions MINUTE
@@ -365,8 +361,7 @@ SELECT {fn MINUTE(GETDATE())};
                             (minute_)
                             (expression
                               (function_call
-                                (datetime_functions
-                                  (getdate_))))))))))))))))))
+                                (datetime_functions)))))))))))))))))
 
 =====================================
 ODBC Scalar Functions SECOND
@@ -392,8 +387,7 @@ SELECT {fn SECOND(GETDATE())};
                             (second_)
                             (expression
                               (function_call
-                                (datetime_functions
-                                  (getdate_))))))))))))))))))
+                                (datetime_functions)))))))))))))))))
 
 =====================================
 ODBC Scalar Functions MONTHNAME
@@ -419,8 +413,7 @@ SELECT {fn MONTHNAME(GETDATE())};
                             (monthname_)
                             (expression
                               (function_call
-                                (datetime_functions
-                                  (getdate_))))))))))))))))))
+                                (datetime_functions)))))))))))))))))
 
 =====================================
 ODBC Scalar Functions QUARTER
@@ -446,8 +439,7 @@ SELECT {fn QUARTER(GETDATE())};
                             (quarter_)
                             (expression
                               (function_call
-                                (datetime_functions
-                                  (getdate_))))))))))))))))))
+                                (datetime_functions)))))))))))))))))
 
 =====================================
 ODBC Scalar Functions WEEK
@@ -473,5 +465,4 @@ SELECT {fn WEEK(GETDATE())};
                             (week_)
                             (expression
                               (function_call
-                                (datetime_functions
-                                  (getdate_))))))))))))))))))
+                                (datetime_functions)))))))))))))))))

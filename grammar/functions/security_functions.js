@@ -3,52 +3,58 @@ const { parens, parensComma } = require('../utils.js');
 module.exports = {
   // https://learn.microsoft.com/en-us/sql/t-sql/functions/security-functions-transact-sql
   security_functions: $ => choice(
-    seq($.certencoded_, parens($.expression))
-    ,seq($.certprivatekey_, parens($.expression, optional(seq(token(','), $.expression))))
-    ,$.current_user_
-    ,seq($.database_principal_id_, parens(optional($.expression)))
-    ,seq($.has_dbaccess_, parens($.expression))
-    ,seq($.has_perms_by_name_, parens($.expression, token(','), $.expression, token(','), $.expression, optional(seq(token(','), $.expression, optional(seq(token(','), $.expression))))))
-    ,seq($.is_member_, parens($.expression))
-    ,seq($.is_rolemember_, parens($.expression, optional(seq(token(','), $.expression))))
-    ,seq($.is_srvrolemember_, parens($.expression, optional(seq(token(','), $.expression))))
-    ,seq($.loginproperty_, parensComma($.expression, $.expression))
+    // bare keywords (no parens)
+    $._security_bare
+    // 0-or-1 arg
+    ,seq($._security_0or1, parens(optional($.expression)))
+    // 1-arg
+    ,seq($._security_1arg, parens($.expression))
+    // 1-or-2 arg
+    ,seq($._security_1or2, parens($.expression, optional(seq(token(','), $.expression))))
+    // 2-arg
+    ,seq($._security_2arg, parensComma($.expression, $.expression))
+    // Keep individual: special signatures
     ,seq($.original_login_, parens())
+    ,seq($.has_perms_by_name_, parens($.expression, token(','), $.expression, token(','), $.expression, optional(seq(token(','), $.expression, optional(seq(token(','), $.expression))))))
     ,seq($.permissions_, parens(optional(seq($.expression, optional(seq(token(','), $.expression))))))
-    ,seq($.pwdencrypt_, parens($.expression))
-    ,seq($.pwdcompare_, parensComma($.expression, $.expression))
-    ,$.session_user_
-    ,seq($.sessionproperty_, parens($.expression))
-    ,seq($.suser_id_, parens(optional($.expression)))
-    ,seq($.suser_name_, parens(optional($.expression)))
-    ,seq($.suser_sid_, parens(optional($.expression)))
-    ,seq($.suser_sname_, parens(optional($.expression)))
-    ,$.system_user_
-    ,seq($.user_id_, parens(optional($.expression)))
-    ,seq($.user_name_, parens(optional($.expression)))
   ),
 
-  certencoded_: $ => token(/CERTENCODED/i),
-  certprivatekey_: $ => token(/CERTPRIVATEKEY/i),
-  current_user_: $ => token(/CURRENT_USER/i),
-  database_principal_id_: $ => token(/DATABASE_PRINCIPAL_ID/i),
-  has_dbaccess_: $ => token(/HAS_DBACCESS/i),
-  has_perms_by_name_: $ => token(/HAS_PERMS_BY_NAME/i),
-  is_member_: $ => token(/IS_MEMBER/i),
-  is_rolemember_: $ => token(/IS_ROLEMEMBER/i),
-  is_srvrolemember_: $ => token(/IS_SRVROLEMEMBER/i),
-  loginproperty_: $ => token(/LOGINPROPERTY/i),
+  _security_bare: $ => token(choice(
+    /CURRENT_USER/i,
+    /SESSION_USER/i,
+    /SYSTEM_USER/i,
+  )),
+
+  _security_0or1: $ => token(choice(
+    /DATABASE_PRINCIPAL_ID/i,
+    /SUSER_ID/i,
+    /SUSER_NAME/i,
+    /SUSER_SID/i,
+    /SUSER_SNAME/i,
+    /USER_ID/i,
+    /USER_NAME/i,
+  )),
+
+  _security_1arg: $ => token(choice(
+    /CERTENCODED/i,
+    /HAS_DBACCESS/i,
+    /IS_MEMBER/i,
+    /PWDENCRYPT/i,
+    /SESSIONPROPERTY/i,
+  )),
+
+  _security_1or2: $ => token(choice(
+    /CERTPRIVATEKEY/i,
+    /IS_ROLEMEMBER/i,
+    /IS_SRVROLEMEMBER/i,
+  )),
+
+  _security_2arg: $ => token(choice(
+    /LOGINPROPERTY/i,
+    /PWDCOMPARE/i,
+  )),
+
   original_login_: $ => token(/ORIGINAL_LOGIN/i),
+  has_perms_by_name_: $ => token(/HAS_PERMS_BY_NAME/i),
   permissions_: $ => token(/PERMISSIONS/i),
-  pwdencrypt_: $ => token(/PWDENCRYPT/i),
-  pwdcompare_: $ => token(/PWDCOMPARE/i),
-  session_user_: $ => token(/SESSION_USER/i),
-  sessionproperty_: $ => token(/SESSIONPROPERTY/i),
-  suser_id_: $ => token(/SUSER_ID/i),
-  suser_name_: $ => token(/SUSER_NAME/i),
-  suser_sid_: $ => token(/SUSER_SID/i),
-  suser_sname_: $ => token(/SUSER_SNAME/i),
-  system_user_: $ => token(/SYSTEM_USER/i),
-  user_id_: $ => token(/USER_ID/i),
-  user_name_: $ => token(/USER_NAME/i),
 };

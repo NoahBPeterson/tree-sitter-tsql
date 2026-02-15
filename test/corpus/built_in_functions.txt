@@ -17,8 +17,7 @@ SELECT APP_NAME()
                     (expression_elem
                       (expression
                         (function_call
-                          (built_in_functions
-                            (app_name_)))))))))))))))
+                          (built_in_functions))))))))))))))
 
 =================================================
 builtin APPLOCK_MODE()
@@ -40,7 +39,6 @@ SELECT APPLOCK_MODE('public','Form1','Transaction')
                       (expression
                         (function_call
                           (built_in_functions
-                            (applock_mode_)
                             (expression
                               (primitive_expression
                                 (primitive_constant
@@ -75,7 +73,6 @@ SELECT APPLOCK_TEST('public','Form1','Shared','Transaction')
                       (expression
                         (function_call
                           (built_in_functions
-                            (applock_test_)
                             (expression
                               (primitive_expression
                                 (primitive_constant
@@ -113,7 +110,6 @@ SELECT ASSEMBLYPROPERTY ('HelloWorld' , 'PublicKey');
                       (expression
                         (function_call
                           (built_in_functions
-                            (assemblyproperty_)
                             (expression
                               (primitive_expression
                                 (primitive_constant
@@ -143,7 +139,6 @@ SELECT COL_LENGTH ('t1', 'c1');
                       (expression
                         (function_call
                           (built_in_functions
-                            (col_length_)
                             (expression
                               (primitive_expression
                                 (primitive_constant
@@ -173,7 +168,6 @@ SELECT COL_NAME(1029578706, 1);
                       (expression
                         (function_call
                           (built_in_functions
-                            (col_name_)
                             (expression
                               (primitive_expression
                                 (primitive_constant
@@ -203,7 +197,6 @@ SELECT COLUMNPROPERTY(1029578706, 'Type', 'PRECISION');
                       (expression
                         (function_call
                           (built_in_functions
-                            (columnproperty_)
                             (expression
                               (primitive_expression
                                 (primitive_constant
@@ -237,7 +230,6 @@ SELECT DATABASEPROPERTYEX('AdventureWorks2022', 'IsAutoShrink');
                       (expression
                         (function_call
                           (built_in_functions
-                            (databasepropertyex_)
                             (expression
                               (primitive_expression
                                 (primitive_constant
@@ -267,8 +259,7 @@ SELECT DB_ID('AdventureWorks2022');
                     (expression_elem
                       (expression
                         (function_call
-                          (built_in_functions
-                            (db_id_)))))))))))))
+                          (built_in_functions))))))))))))
     (sql_clauses
       (dml_clause
         (select_statement_standalone
@@ -282,7 +273,6 @@ SELECT DB_ID('AdventureWorks2022');
                       (expression
                         (function_call
                           (built_in_functions
-                            (db_id_)
                             (expression
                               (primitive_expression
                                 (primitive_constant
@@ -308,8 +298,7 @@ SELECT DB_NAME(3);
                     (expression_elem
                       (expression
                         (function_call
-                          (built_in_functions
-                            (db_name_)))))))))))))
+                          (built_in_functions))))))))))))
     (sql_clauses
       (dml_clause
         (select_statement_standalone
@@ -323,7 +312,6 @@ SELECT DB_NAME(3);
                       (expression
                         (function_call
                           (built_in_functions
-                            (db_name_)
                             (expression
                               (primitive_expression
                                 (primitive_constant
@@ -349,7 +337,6 @@ SELECT FILE_ID('AdventureWorks2022_Data');
                       (expression
                         (function_call
                           (built_in_functions
-                            (file_id_)
                             (expression
                               (primitive_expression
                                 (primitive_constant
@@ -375,7 +362,6 @@ SELECT FILE_IDEX('AdventureWorks2022_Data');
                       (expression
                         (function_call
                           (built_in_functions
-                            (file_idex_)
                             (expression
                               (primitive_expression
                                 (primitive_constant
@@ -401,7 +387,6 @@ SELECT FILE_NAME(1);
                       (expression
                         (function_call
                           (built_in_functions
-                            (file_name_)
                             (expression
                               (primitive_expression
                                 (primitive_constant
@@ -427,7 +412,6 @@ SELECT FILEGROUP_ID('PRIMARY');
                       (expression
                         (function_call
                           (built_in_functions
-                            (filegroup_id_)
                             (expression
                               (primitive_expression
                                 (primitive_constant
@@ -453,7 +437,6 @@ SELECT FILEGROUP_NAME(1);
                       (expression
                         (function_call
                           (built_in_functions
-                            (filegroup_name_)
                             (expression
                               (primitive_expression
                                 (primitive_constant
@@ -479,7 +462,6 @@ SELECT FILEGROUPPROPERTY('PRIMARY', 'IsDefault');
                       (expression
                         (function_call
                           (built_in_functions
-                            (filegroupproperty_)
                             (expression
                               (primitive_expression
                                 (primitive_constant
@@ -509,7 +491,6 @@ SELECT FILEPROPERTY('AdventureWorks2022_Data', 'IsPrimaryFile');
                       (expression
                         (function_call
                           (built_in_functions
-                            (fileproperty_)
                             (expression
                               (primitive_expression
                                 (primitive_constant
@@ -539,7 +520,6 @@ SELECT FILEPROPERTYEX(name, 'IsPageBlob');
                       (expression
                         (function_call
                           (built_in_functions
-                            (filepropertyex_)
                             (expression
                               (full_column_name
                                 (id_)))
@@ -569,7 +549,6 @@ SELECT FULLTEXTCATALOGPROPERTY('Cat_Desc', 'ItemCount');
                       (expression
                         (function_call
                           (built_in_functions
-                            (fulltextcatalogproperty_)
                             (expression
                               (primitive_expression
                                 (primitive_constant
@@ -599,7 +578,6 @@ SELECT FULLTEXTSERVICEPROPERTY('VerifySignature');
                       (expression
                         (function_call
                           (built_in_functions
-                            (fulltextserviceproperty_)
                             (expression
                               (primitive_expression
                                 (primitive_constant
@@ -625,7 +603,6 @@ SELECT INDEX_COL(N'AdventureWorks2022.Sales.SalesOrderDetail', 1,1);
                       (expression
                         (function_call
                           (built_in_functions
-                            (indexcol_)
                             (expression
                               (primitive_expression
                                 (primitive_constant
@@ -659,7 +636,6 @@ SELECT INDEXKEY_PROPERTY(1,1,1,'ColumnId');
                       (expression
                         (function_call
                           (built_in_functions
-                            (indexkey_property_)
                             (expression
                               (primitive_expression
                                 (primitive_constant
@@ -697,7 +673,6 @@ SELECT INDEXPROPERTY(1,'PK_FOO','IsClustered');
                       (expression
                         (function_call
                           (built_in_functions
-                            (indexproperty_)
                             (expression
                               (primitive_expression
                                 (primitive_constant
@@ -756,7 +731,6 @@ SELECT OBJECT_DEFINITION(1);
                       (expression
                         (function_call
                           (built_in_functions
-                            (object_definition_)
                             (expression
                               (primitive_expression
                                 (primitive_constant
@@ -782,7 +756,6 @@ SELECT OBJECT_ID('dbo.foo', 'U');
                       (expression
                         (function_call
                           (built_in_functions
-                            (object_id_)
                             (expression
                               (primitive_expression
                                 (primitive_constant
@@ -812,7 +785,6 @@ SELECT OBJECT_NAME(1,1);
                       (expression
                         (function_call
                           (built_in_functions
-                            (object_name_)
                             (expression
                               (primitive_expression
                                 (primitive_constant
@@ -842,7 +814,6 @@ SELECT OBJECT_SCHEMA_NAME(1,1);
                       (expression
                         (function_call
                           (built_in_functions
-                            (object_schema_name_)
                             (expression
                               (primitive_expression
                                 (primitive_constant
@@ -872,7 +843,6 @@ SELECT OBJECT_SCHEMA_NAME(1,'IsAnsiNullsOn');
                       (expression
                         (function_call
                           (built_in_functions
-                            (object_schema_name_)
                             (expression
                               (primitive_expression
                                 (primitive_constant
@@ -902,7 +872,6 @@ SELECT OBJECTPROPERTYEX(1,'IsAnsiNullsOn');
                       (expression
                         (function_call
                           (built_in_functions
-                            (objectpropertyex_)
                             (expression
                               (primitive_expression
                                 (primitive_constant
@@ -931,8 +900,7 @@ SELECT ORIGINAL_DB_NAME();
                     (expression_elem
                       (expression
                         (function_call
-                          (built_in_functions
-                            (original_db_name_)))))))))))))))
+                          (built_in_functions))))))))))))))
 
 =================================================
 builtin PARSENAME()
@@ -954,7 +922,6 @@ SELECT PARSENAME('foo', 1);
                       (expression
                         (function_call
                           (built_in_functions
-                            (parsename_)
                             (expression
                               (primitive_expression
                                 (primitive_constant
