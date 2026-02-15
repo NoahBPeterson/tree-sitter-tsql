@@ -1,0 +1,1075 @@
+=====================================
+DROP TABLE basic
+=====================================
+
+DROP TABLE MyTable
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_table
+          (full_table_name
+            (id_)))))))
+
+=====================================
+DROP TABLE schema-qualified
+=====================================
+
+DROP TABLE dbo.MyTable
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_table
+          (full_table_name
+            (id_)
+            (id_)))))))
+
+=====================================
+DROP TABLE IF EXISTS
+=====================================
+
+DROP TABLE IF EXISTS dbo.MyTable
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_table
+          (full_table_name
+            (id_)
+            (id_)))))))
+
+=====================================
+DROP TABLE multiple names
+=====================================
+
+DROP TABLE dbo.Table1, dbo.Table2, dbo.Table3
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_table
+          (full_table_name
+            (id_)
+            (id_))
+          (full_table_name
+            (id_)
+            (id_))
+          (full_table_name
+            (id_)
+            (id_)))))))
+
+=====================================
+DROP TABLE IF EXISTS bracket identifiers
+=====================================
+
+DROP TABLE IF EXISTS [My Table], [dbo].[Another Table]
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_table
+          (full_table_name
+            (id_))
+          (full_table_name
+            (id_)
+            (id_)))))))
+
+=====================================
+DROP TABLE three-part name
+=====================================
+
+DROP TABLE mydb.dbo.MyTable
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_table
+          (full_table_name
+            (id_)
+            (id_)
+            (id_)))))))
+
+=====================================
+DROP TABLE four-part name
+=====================================
+
+DROP TABLE server1.mydb.dbo.MyTable
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_table
+          (full_table_name
+            (id_)
+            (id_)
+            (id_)
+            (id_)))))))
+
+=====================================
+DROP TABLE case insensitive
+=====================================
+
+drop table mytable
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_table
+          (full_table_name
+            (id_)))))))
+
+=====================================
+DROP TABLE IF EXISTS many names
+=====================================
+
+DROP TABLE IF EXISTS dbo.T1, dbo.T2, dbo.T3, dbo.T4, dbo.T5
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_table
+          (full_table_name
+            (id_)
+            (id_))
+          (full_table_name
+            (id_)
+            (id_))
+          (full_table_name
+            (id_)
+            (id_))
+          (full_table_name
+            (id_)
+            (id_))
+          (full_table_name
+            (id_)
+            (id_)))))))
+
+=====================================
+DROP TABLE temp table
+=====================================
+
+DROP TABLE #TempTable
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_table
+          (full_table_name
+            (id_)))))))
+
+=====================================
+DROP TABLE global temp table
+=====================================
+
+DROP TABLE ##GlobalTemp
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_table
+          (full_table_name
+            (id_)))))))
+
+=====================================
+DROP VIEW basic
+=====================================
+
+DROP VIEW dbo.MyView
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_view
+          (full_table_name
+            (id_)
+            (id_)))))))
+
+=====================================
+DROP VIEW IF EXISTS multiple
+=====================================
+
+DROP VIEW IF EXISTS dbo.V1, dbo.V2
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_view
+          (full_table_name
+            (id_)
+            (id_))
+          (full_table_name
+            (id_)
+            (id_)))))))
+
+=====================================
+DROP VIEW simple name
+=====================================
+
+DROP VIEW MyView
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_view
+          (full_table_name
+            (id_)))))))
+
+=====================================
+DROP VIEW bracket identifiers
+=====================================
+
+DROP VIEW [dbo].[My View]
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_view
+          (full_table_name
+            (id_)
+            (id_)))))))
+
+=====================================
+DROP PROCEDURE basic
+=====================================
+
+DROP PROCEDURE dbo.MyProc
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_procedure
+          (func_proc_name_server_database_schema
+            (func_proc_name_database_schema
+              (func_proc_name_schema
+                (id_)
+                (id_)))))))))
+
+=====================================
+DROP PROC abbreviation
+=====================================
+
+DROP PROC dbo.MyProc
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_procedure
+          (func_proc_name_server_database_schema
+            (func_proc_name_database_schema
+              (func_proc_name_schema
+                (id_)
+                (id_)))))))))
+
+=====================================
+DROP PROCEDURE IF EXISTS multiple
+=====================================
+
+DROP PROCEDURE IF EXISTS dbo.P1, dbo.P2
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_procedure
+          (func_proc_name_server_database_schema
+            (func_proc_name_database_schema
+              (func_proc_name_schema
+                (id_)
+                (id_))))
+          (func_proc_name_server_database_schema
+            (func_proc_name_database_schema
+              (func_proc_name_schema
+                (id_)
+                (id_)))))))))
+
+=====================================
+DROP PROC simple name
+=====================================
+
+DROP PROC MyProc
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_procedure
+          (func_proc_name_server_database_schema
+            (func_proc_name_database_schema
+              (func_proc_name_schema
+                (id_)))))))))
+
+=====================================
+DROP PROCEDURE three-part name
+=====================================
+
+DROP PROCEDURE mydb.dbo.MyProc
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_procedure
+          (func_proc_name_server_database_schema
+            (func_proc_name_database_schema
+              (id_)
+              (id_)
+              (id_))))))))
+
+=====================================
+DROP PROCEDURE four-part linked server
+=====================================
+
+DROP PROCEDURE server1.mydb.dbo.MyProc
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_procedure
+          (func_proc_name_server_database_schema
+            (id_)
+            (id_)
+            (id_)
+            (id_)))))))
+
+=====================================
+DROP PROC IF EXISTS bracket identifiers
+=====================================
+
+DROP PROC IF EXISTS [dbo].[My Proc]
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_procedure
+          (func_proc_name_server_database_schema
+            (func_proc_name_database_schema
+              (func_proc_name_schema
+                (id_)
+                (id_)))))))))
+
+=====================================
+DROP FUNCTION basic
+=====================================
+
+DROP FUNCTION dbo.MyFunc
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_function
+          (func_proc_name_server_database_schema
+            (func_proc_name_database_schema
+              (func_proc_name_schema
+                (id_)
+                (id_)))))))))
+
+=====================================
+DROP FUNCTION IF EXISTS multiple
+=====================================
+
+DROP FUNCTION IF EXISTS dbo.F1, dbo.F2
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_function
+          (func_proc_name_server_database_schema
+            (func_proc_name_database_schema
+              (func_proc_name_schema
+                (id_)
+                (id_))))
+          (func_proc_name_server_database_schema
+            (func_proc_name_database_schema
+              (func_proc_name_schema
+                (id_)
+                (id_)))))))))
+
+=====================================
+DROP FUNCTION simple name
+=====================================
+
+DROP FUNCTION MyFunc
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_function
+          (func_proc_name_server_database_schema
+            (func_proc_name_database_schema
+              (func_proc_name_schema
+                (id_)))))))))
+
+=====================================
+DROP FUNCTION three-part name
+=====================================
+
+DROP FUNCTION mydb.dbo.MyFunc
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_function
+          (func_proc_name_server_database_schema
+            (func_proc_name_database_schema
+              (id_)
+              (id_)
+              (id_))))))))
+
+=====================================
+DROP TRIGGER basic
+=====================================
+
+DROP TRIGGER dbo.MyTrigger
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_trigger
+          (full_table_name
+            (id_)
+            (id_)))))))
+
+=====================================
+DROP TRIGGER IF EXISTS multiple
+=====================================
+
+DROP TRIGGER IF EXISTS dbo.TR1, dbo.TR2
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_trigger
+          (full_table_name
+            (id_)
+            (id_))
+          (full_table_name
+            (id_)
+            (id_)))))))
+
+=====================================
+DROP TRIGGER simple name
+=====================================
+
+DROP TRIGGER MyTrigger
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_trigger
+          (full_table_name
+            (id_)))))))
+
+=====================================
+DROP DATABASE basic
+=====================================
+
+DROP DATABASE MyDB
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_database
+          (id_))))))
+
+=====================================
+DROP DATABASE IF EXISTS multiple
+=====================================
+
+DROP DATABASE IF EXISTS DB1, DB2
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_database
+          (id_)
+          (id_))))))
+
+=====================================
+DROP DATABASE IF EXISTS bracket identifier
+=====================================
+
+DROP DATABASE IF EXISTS [My Database]
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_database
+          (id_))))))
+
+=====================================
+DROP DATABASE multiple without IF EXISTS
+=====================================
+
+DROP DATABASE DB1, DB2, DB3
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_database
+          (id_)
+          (id_)
+          (id_))))))
+
+=====================================
+DROP SCHEMA basic
+=====================================
+
+DROP SCHEMA MySchema
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_schema
+          (id_))))))
+
+=====================================
+DROP SCHEMA IF EXISTS bracket identifier
+=====================================
+
+DROP SCHEMA IF EXISTS [My Schema]
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_schema
+          (id_))))))
+
+=====================================
+DROP SEQUENCE basic
+=====================================
+
+DROP SEQUENCE dbo.MySeq
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_sequence
+          (full_table_name
+            (id_)
+            (id_)))))))
+
+=====================================
+DROP SEQUENCE IF EXISTS multiple
+=====================================
+
+DROP SEQUENCE IF EXISTS dbo.S1, dbo.S2
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_sequence
+          (full_table_name
+            (id_)
+            (id_))
+          (full_table_name
+            (id_)
+            (id_)))))))
+
+=====================================
+DROP SEQUENCE simple name
+=====================================
+
+DROP SEQUENCE MySeq
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_sequence
+          (full_table_name
+            (id_)))))))
+
+=====================================
+DROP TYPE basic
+=====================================
+
+DROP TYPE dbo.MyType
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_type
+          (full_table_name
+            (id_)
+            (id_)))))))
+
+=====================================
+DROP TYPE IF EXISTS bracket identifier
+=====================================
+
+DROP TYPE IF EXISTS [dbo].[MyType]
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_type
+          (full_table_name
+            (id_)
+            (id_)))))))
+
+=====================================
+DROP TYPE simple name
+=====================================
+
+DROP TYPE MyType
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_type
+          (full_table_name
+            (id_)))))))
+
+=====================================
+DROP USER basic
+=====================================
+
+DROP USER MyUser
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_user
+          (id_))))))
+
+=====================================
+DROP USER IF EXISTS bracket identifier
+=====================================
+
+DROP USER IF EXISTS [My User]
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_user
+          (id_))))))
+
+=====================================
+DROP LOGIN basic
+=====================================
+
+DROP LOGIN MyLogin
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_login
+          (LOGIN)
+          (id_))))))
+
+=====================================
+DROP LOGIN bracket identifier
+=====================================
+
+DROP LOGIN [MyLogin]
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_login
+          (LOGIN)
+          (id_))))))
+
+=====================================
+DROP SYNONYM basic
+=====================================
+
+DROP SYNONYM dbo.MySynonym
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_synonym
+          (full_table_name
+            (id_)
+            (id_)))))))
+
+=====================================
+DROP SYNONYM IF EXISTS simple name
+=====================================
+
+DROP SYNONYM IF EXISTS MySynonym
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_synonym
+          (full_table_name
+            (id_)))))))
+
+=====================================
+DROP SYNONYM bracket identifiers
+=====================================
+
+DROP SYNONYM [dbo].[My Synonym]
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_synonym
+          (full_table_name
+            (id_)
+            (id_)))))))
+
+=====================================
+DROP STATISTICS basic
+=====================================
+
+DROP STATISTICS dbo.MyTable.MyStat
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_statistics
+          (full_table_name
+            (id_)
+            (id_)
+            (id_)))))))
+
+=====================================
+DROP STATISTICS multiple
+=====================================
+
+DROP STATISTICS dbo.T1.S1, dbo.T2.S2
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_statistics
+          (full_table_name
+            (id_)
+            (id_)
+            (id_))
+          (full_table_name
+            (id_)
+            (id_)
+            (id_)))))))
+
+=====================================
+DROP INDEX basic
+=====================================
+
+DROP INDEX IX_MyIndex ON dbo.MyTable
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_index
+          (drop_index_item
+            (id_)
+            (full_table_name
+              (id_)
+              (id_))))))))
+
+=====================================
+DROP INDEX IF EXISTS multiple
+=====================================
+
+DROP INDEX IF EXISTS IX_Idx1 ON dbo.T1, IX_Idx2 ON dbo.T2
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_index
+          (drop_index_item
+            (id_)
+            (full_table_name
+              (id_)
+              (id_)))
+          (drop_index_item
+            (id_)
+            (full_table_name
+              (id_)
+              (id_))))))))
+
+=====================================
+DROP INDEX bracket identifiers
+=====================================
+
+DROP INDEX [IX My Index] ON [dbo].[My Table]
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_index
+          (drop_index_item
+            (id_)
+            (full_table_name
+              (id_)
+              (id_))))))))
+
+=====================================
+DROP INDEX IF EXISTS single
+=====================================
+
+DROP INDEX IF EXISTS IX1 ON dbo.T1
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_index
+          (drop_index_item
+            (id_)
+            (full_table_name
+              (id_)
+              (id_))))))))
+
+=====================================
+DROP INDEX three items
+=====================================
+
+DROP INDEX IX1 ON dbo.T1, IX2 ON dbo.T2, IX3 ON dbo.T3
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_index
+          (drop_index_item
+            (id_)
+            (full_table_name
+              (id_)
+              (id_)))
+          (drop_index_item
+            (id_)
+            (full_table_name
+              (id_)
+              (id_)))
+          (drop_index_item
+            (id_)
+            (full_table_name
+              (id_)
+              (id_))))))))
+
+=====================================
+DROP TABLE with semicolon
+=====================================
+
+DROP TABLE dbo.MyTable;
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_table
+          (full_table_name
+            (id_)
+            (id_)))))))
+
+=====================================
+DROP VIEW IF EXISTS with semicolon
+=====================================
+
+DROP VIEW IF EXISTS dbo.V1;
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_view
+          (full_table_name
+            (id_)
+            (id_)))))))
+
+=====================================
+DROP PROCEDURE with semicolon
+=====================================
+
+DROP PROCEDURE dbo.P1;
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_procedure
+          (func_proc_name_server_database_schema
+            (func_proc_name_database_schema
+              (func_proc_name_schema
+                (id_)
+                (id_)))))))))
+
+=====================================
+DROP INDEX with semicolon
+=====================================
+
+DROP INDEX IX1 ON dbo.T1;
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_index
+          (drop_index_item
+            (id_)
+            (full_table_name
+              (id_)
+              (id_))))))))
