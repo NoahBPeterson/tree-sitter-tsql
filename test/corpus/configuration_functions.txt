@@ -18,8 +18,7 @@ SELECT @@DATEFIRST;
                     (expression_elem
                       (expression
                         (function_call
-                          (configuration_functions
-                            (datefirst_)))))))))))))))
+                          (configuration_functions))))))))))))))
 
 =================================================
 Configuration Function DBTS
@@ -41,8 +40,7 @@ SELECT @@DBTS;
                     (expression_elem
                       (expression
                         (function_call
-                          (configuration_functions
-                            (dbts_)))))))))))))))
+                          (configuration_functions))))))))))))))
 
 =================================================
 Configuration Function LANGID
@@ -64,8 +62,7 @@ SELECT @@LANGID;
                     (expression_elem
                       (expression
                         (function_call
-                          (configuration_functions
-                            (langid_)))))))))))))))
+                          (configuration_functions))))))))))))))
 
 =================================================
 Configuration Function LANGUAGE
@@ -87,8 +84,7 @@ SELECT @@LANGUAGE;
                     (expression_elem
                       (expression
                         (function_call
-                          (configuration_functions
-                            (language_)))))))))))))))
+                          (configuration_functions))))))))))))))
 
 =================================================
 Configuration Function LOCK_TIMEOUT
@@ -110,8 +106,7 @@ SELECT @@LOCK_TIMEOUT;
                     (expression_elem
                       (expression
                         (function_call
-                          (configuration_functions
-                            (lock_timeout_)))))))))))))))
+                          (configuration_functions))))))))))))))
 
 =================================================
 Configuration Function MAX_CONNECTIONS
@@ -133,8 +128,7 @@ SELECT @@MAX_CONNECTIONS;
                     (expression_elem
                       (expression
                         (function_call
-                          (configuration_functions
-                            (max_connections_)))))))))))))))
+                          (configuration_functions))))))))))))))
 
 =================================================
 Configuration Function MAX_PRECISION
@@ -156,8 +150,7 @@ SELECT @@MAX_PRECISION;
                     (expression_elem
                       (expression
                         (function_call
-                          (configuration_functions
-                            (max_precision_)))))))))))))))
+                          (configuration_functions))))))))))))))
 
 =================================================
 Configuration Function NESTLEVEL
@@ -179,8 +172,7 @@ SELECT @@NESTLEVEL;
                     (expression_elem
                       (expression
                         (function_call
-                          (configuration_functions
-                            (nestlevel_)))))))))))))))
+                          (configuration_functions))))))))))))))
 
 =================================================
 Configuration Function OPTIONS
@@ -202,8 +194,7 @@ SELECT @@OPTIONS;
                     (expression_elem
                       (expression
                         (function_call
-                          (configuration_functions
-                            (options_)))))))))))))))
+                          (configuration_functions))))))))))))))
 
 =================================================
 Configuration Function REMSERVER
@@ -225,8 +216,7 @@ SELECT @@REMSERVER;
                     (expression_elem
                       (expression
                         (function_call
-                          (configuration_functions
-                            (remserver_)))))))))))))))
+                          (configuration_functions))))))))))))))
 
 =================================================
 Configuration Function SERVERNAME
@@ -248,8 +238,7 @@ SELECT @@SERVERNAME;
                     (expression_elem
                       (expression
                         (function_call
-                          (configuration_functions
-                            (servername_)))))))))))))))
+                          (configuration_functions))))))))))))))
 
 =================================================
 Configuration Function SERVICENAME
@@ -271,8 +260,7 @@ SELECT @@SERVICENAME;
                     (expression_elem
                       (expression
                         (function_call
-                          (configuration_functions
-                            (servicename_)))))))))))))))
+                          (configuration_functions))))))))))))))
 
 =================================================
 Configuration Function SPID
@@ -294,8 +282,7 @@ SELECT @@SPID;
                     (expression_elem
                       (expression
                         (function_call
-                          (configuration_functions
-                            (spid_)))))))))))))))
+                          (configuration_functions))))))))))))))
 
 =================================================
 Configuration Function TEXTSIZE
@@ -317,8 +304,7 @@ SELECT @@TEXTSIZE;
                     (expression_elem
                       (expression
                         (function_call
-                          (configuration_functions
-                            (textsize_)))))))))))))))
+                          (configuration_functions))))))))))))))
 
 =================================================
 Configuration Function VERSION
@@ -340,5 +326,4 @@ SELECT @@VERSION;
                     (expression_elem
                       (expression
                         (function_call
-                          (configuration_functions
-                            (version_)))))))))))))))
+                          (configuration_functions))))))))))))))

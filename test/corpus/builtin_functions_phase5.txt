@@ -21,7 +21,6 @@ SELECT LEN('hello')
                       (expression
                         (function_call
                           (string_functions
-                            (len_)
                             (expression
                               (primitive_expression
                                 (primitive_constant
@@ -50,7 +49,6 @@ SELECT DATEADD(day, 1, GETDATE())
                       (expression
                         (function_call
                           (datetime_functions
-                            (dateadd_)
                             (datepart)
                             (expression
                               (primitive_expression
@@ -58,8 +56,7 @@ SELECT DATEADD(day, 1, GETDATE())
                                   (decimal_))))
                             (expression
                               (function_call
-                                (datetime_functions
-                                  (getdate_))))))))))))))))))
+                                (datetime_functions)))))))))))))))))
 
 =====================================
 Math function ABS
@@ -84,7 +81,6 @@ SELECT ABS(-5)
                       (expression
                         (function_call
                           (math_functions
-                            (abs_)
                             (expression
                               (unary_operator_expression
                                 (expression
@@ -180,7 +176,6 @@ SELECT GREATEST(1, 2, 3)
                       (expression
                         (function_call
                           (logical_functions
-                            (greatest_)
                             (expression
                               (primitive_expression
                                 (primitive_constant
@@ -216,14 +211,12 @@ SELECT CURRENT_USER, SUSER_NAME()
                     (expression_elem
                       (expression
                         (function_call
-                          (security_functions
-                            (current_user_))))))
+                          (security_functions)))))
                   (select_list_elem
                     (expression_elem
                       (expression
                         (function_call
-                          (security_functions
-                            (suser_name_)))))))))))))))
+                          (security_functions))))))))))))))
 
 =====================================
 Cursor functions @@CURSOR_ROWS and @@FETCH_STATUS
@@ -247,14 +240,12 @@ SELECT @@CURSOR_ROWS, @@FETCH_STATUS
                     (expression_elem
                       (expression
                         (function_call
-                          (cursor_functions
-                            (cursor_rows_))))))
+                          (cursor_functions)))))
                   (select_list_elem
                     (expression_elem
                       (expression
                         (function_call
-                          (cursor_functions
-                            (fetch_status_)))))))))))))))
+                          (cursor_functions))))))))))))))
 
 =====================================
 Data type function DATALENGTH
@@ -279,7 +270,6 @@ SELECT DATALENGTH('hello')
                       (expression
                         (function_call
                           (datatype_functions
-                            (datalength_)
                             (expression
                               (primitive_expression
                                 (primitive_constant
