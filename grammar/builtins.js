@@ -173,7 +173,31 @@ module.exports = {
                                     ,field('object_piece', $.expression)))
 
 
-      //TODO https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L4406-L4783
+      // SCHEMA_ID
+      ,seq($.schema_id_, parens(optional(field('schema_name', $.expression))))
+
+      // SCHEMA_NAME
+      ,seq($.schema_name_, parens(optional(field('schema_id', $.expression))))
+
+      // SCOPE_IDENTITY
+      ,seq($.scope_identity_, parens())
+
+      // SERVERPROPERTY
+      ,seq($.serverproperty_, parens(field('property', $.expression)))
+
+      // STATS_DATE
+      ,seq($.stats_date_, parensComma(field('object_id', $.expression)
+                                      ,field('stats_id', $.expression)))
+
+      // TYPE_ID
+      ,seq($.type_id_, parens(field('type_name', $.expression)))
+
+      // TYPE_NAME
+      ,seq($.type_name_, parens(field('type_id', $.expression)))
+
+      // TYPEPROPERTY
+      ,seq($.typeproperty_, parensComma(field('type', $.expression)
+                                        ,field('property', $.expression)))
     ),
 
     app_name_: $ => token(/APP_NAME/i),
@@ -208,5 +232,13 @@ module.exports = {
     objectpropertyex_: $ => token(/OBJECTPROPERTYEX/i),
     original_db_name_: $ => token(/ORIGINAL_DB_NAME/i),
     parsename_: $ => token(/PARSENAME/i),
+    schema_id_: $ => token(/SCHEMA_ID/i),
+    schema_name_: $ => token(/SCHEMA_NAME/i),
+    scope_identity_: $ => token(/SCOPE_IDENTITY/i),
+    serverproperty_: $ => token(/SERVERPROPERTY/i),
+    stats_date_: $ => token(/STATS_DATE/i),
+    type_id_: $ => token(/TYPE_ID/i),
+    type_name_: $ => token(/TYPE_NAME/i),
+    typeproperty_: $ => token(/TYPEPROPERTY/i),
 
 };

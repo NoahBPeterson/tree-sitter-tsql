@@ -7,6 +7,15 @@ const bit_manipulation_functions = require('./grammar/functions/bit_manipulation
 const collation_functions = require('./grammar/functions/collation_functions.js');
 const configuration_functions = require('./grammar/functions/configuration_functions.js');
 const conversion_functions = require('./grammar/functions/conversion_functions.js');
+const cursor_functions = require('./grammar/functions/cursor_functions.js');
+const datatype_functions = require('./grammar/functions/datatype_functions.js');
+const datetime_functions = require('./grammar/functions/datetime_functions.js');
+const json_functions = require('./grammar/functions/json_functions.js');
+const logical_functions = require('./grammar/functions/logical_functions.js');
+const math_functions = require('./grammar/functions/math_functions.js');
+const security_functions = require('./grammar/functions/security_functions.js');
+const string_functions = require('./grammar/functions/string_functions.js');
+const system_functions = require('./grammar/functions/system_functions.js');
 const data_type = require('./grammar/data_types.js');
 
 /// <reference types="tree-sitter-cli/dsl" />
@@ -1080,6 +1089,15 @@ module.exports = grammar({
       ,$.collation_functions
       ,$.configuration_functions
       ,$.conversion_functions
+      ,$.cursor_functions
+      ,$.datatype_functions
+      ,$.datetime_functions
+      ,$.json_functions
+      ,$.logical_functions
+      ,$.math_functions
+      ,$.security_functions
+      ,$.string_functions
+      ,$.system_functions
     ),
 
     // IIF(search_condition, true_val, false_val) — first arg is search_condition
@@ -1102,6 +1120,15 @@ module.exports = grammar({
     ...collation_functions,
     ...configuration_functions,
     ...conversion_functions,
+    ...cursor_functions,
+    ...datatype_functions,
+    ...datetime_functions,
+    ...json_functions,
+    ...logical_functions,
+    ...math_functions,
+    ...security_functions,
+    ...string_functions,
+    ...system_functions,
     ...data_type,
 
     //https://learn.microsoft.com/en-us/sql/t-sql/data-types/hierarchyid-data-type-method-reference?view=sql-server-ver16
