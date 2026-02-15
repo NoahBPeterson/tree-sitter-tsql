@@ -765,12 +765,42 @@
           }
         ]
       },
+      "schema_id": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "expression",
+            "named": true
+          }
+        ]
+      },
+      "schema_name": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "expression",
+            "named": true
+          }
+        ]
+      },
       "sequence_name": {
         "multiple": false,
         "required": false,
         "types": [
           {
             "type": "table_name",
+            "named": true
+          }
+        ]
+      },
+      "stats_id": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "expression",
             "named": true
           }
         ]
@@ -786,6 +816,36 @@
         ]
       },
       "table_id": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "expression",
+            "named": true
+          }
+        ]
+      },
+      "type": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "expression",
+            "named": true
+          }
+        ]
+      },
+      "type_id": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "expression",
+            "named": true
+          }
+        ]
+      },
+      "type_name": {
         "multiple": false,
         "required": false,
         "types": [
@@ -938,6 +998,38 @@
         },
         {
           "type": "parsename_",
+          "named": true
+        },
+        {
+          "type": "schema_id_",
+          "named": true
+        },
+        {
+          "type": "schema_name_",
+          "named": true
+        },
+        {
+          "type": "scope_identity_",
+          "named": true
+        },
+        {
+          "type": "serverproperty_",
+          "named": true
+        },
+        {
+          "type": "stats_date_",
+          "named": true
+        },
+        {
+          "type": "type_id_",
+          "named": true
+        },
+        {
+          "type": "type_name_",
+          "named": true
+        },
+        {
+          "type": "typeproperty_",
           "named": true
         }
       ]
@@ -1387,6 +1479,33 @@
     }
   },
   {
+    "type": "cursor_functions",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "cursor_rows_",
+          "named": true
+        },
+        {
+          "type": "cursor_status_",
+          "named": true
+        },
+        {
+          "type": "expression",
+          "named": true
+        },
+        {
+          "type": "fetch_status_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "cursor_statement",
     "named": true,
     "fields": {},
@@ -1573,6 +1692,182 @@
         }
       ]
     }
+  },
+  {
+    "type": "datatype_functions",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "datalength_",
+          "named": true
+        },
+        {
+          "type": "expression",
+          "named": true
+        },
+        {
+          "type": "ident_current_",
+          "named": true
+        },
+        {
+          "type": "ident_incr_",
+          "named": true
+        },
+        {
+          "type": "ident_seed_",
+          "named": true
+        },
+        {
+          "type": "sql_variant_property_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "datepart",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "datetime_functions",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "current_timestamp_",
+          "named": true
+        },
+        {
+          "type": "current_timezone_",
+          "named": true
+        },
+        {
+          "type": "current_timezone_id_",
+          "named": true
+        },
+        {
+          "type": "date_bucket_",
+          "named": true
+        },
+        {
+          "type": "dateadd_",
+          "named": true
+        },
+        {
+          "type": "datediff_",
+          "named": true
+        },
+        {
+          "type": "datediff_big_",
+          "named": true
+        },
+        {
+          "type": "datefromparts_",
+          "named": true
+        },
+        {
+          "type": "datename_",
+          "named": true
+        },
+        {
+          "type": "datepart",
+          "named": true
+        },
+        {
+          "type": "datepart_",
+          "named": true
+        },
+        {
+          "type": "datetime2fromparts_",
+          "named": true
+        },
+        {
+          "type": "datetimefromparts_",
+          "named": true
+        },
+        {
+          "type": "datetimeoffsetfromparts_",
+          "named": true
+        },
+        {
+          "type": "datetrunc_",
+          "named": true
+        },
+        {
+          "type": "day_",
+          "named": true
+        },
+        {
+          "type": "eomonth_",
+          "named": true
+        },
+        {
+          "type": "expression",
+          "named": true
+        },
+        {
+          "type": "getdate_",
+          "named": true
+        },
+        {
+          "type": "getutcdate_",
+          "named": true
+        },
+        {
+          "type": "isdate_",
+          "named": true
+        },
+        {
+          "type": "month_",
+          "named": true
+        },
+        {
+          "type": "smalldatetimefromparts_",
+          "named": true
+        },
+        {
+          "type": "switchoffset_",
+          "named": true
+        },
+        {
+          "type": "sysdatetime_",
+          "named": true
+        },
+        {
+          "type": "sysdatetimeoffset_",
+          "named": true
+        },
+        {
+          "type": "sysutcdatetime_",
+          "named": true
+        },
+        {
+          "type": "timefromparts_",
+          "named": true
+        },
+        {
+          "type": "todatetimeoffset_",
+          "named": true
+        },
+        {
+          "type": "year_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "day_",
+    "named": true,
+    "fields": {}
   },
   {
     "type": "ddl_clause",
@@ -2381,6 +2676,18 @@
           "named": true
         },
         {
+          "type": "cursor_functions",
+          "named": true
+        },
+        {
+          "type": "datatype_functions",
+          "named": true
+        },
+        {
+          "type": "datetime_functions",
+          "named": true
+        },
+        {
           "type": "expression_list_",
           "named": true
         },
@@ -2390,6 +2697,18 @@
         },
         {
           "type": "iif_function",
+          "named": true
+        },
+        {
+          "type": "json_functions",
+          "named": true
+        },
+        {
+          "type": "logical_functions",
+          "named": true
+        },
+        {
+          "type": "math_functions",
           "named": true
         },
         {
@@ -2410,6 +2729,18 @@
         },
         {
           "type": "scalar_function_name",
+          "named": true
+        },
+        {
+          "type": "security_functions",
+          "named": true
+        },
+        {
+          "type": "string_functions",
+          "named": true
+        },
+        {
+          "type": "system_functions",
           "named": true
         }
       ]
@@ -2588,6 +2919,11 @@
         }
       ]
     }
+  },
+  {
+    "type": "hour_",
+    "named": true,
+    "fields": {}
   },
   {
     "type": "id_",
@@ -2773,6 +3109,68 @@
     }
   },
   {
+    "type": "json_functions",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "expression",
+          "named": true
+        },
+        {
+          "type": "isjson_",
+          "named": true
+        },
+        {
+          "type": "json_array_",
+          "named": true
+        },
+        {
+          "type": "json_key_value_",
+          "named": true
+        },
+        {
+          "type": "json_modify_",
+          "named": true
+        },
+        {
+          "type": "json_object_",
+          "named": true
+        },
+        {
+          "type": "json_path_exists_",
+          "named": true
+        },
+        {
+          "type": "json_query_",
+          "named": true
+        },
+        {
+          "type": "json_value_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "json_key_value_",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "expression",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "json_option",
     "named": true,
     "fields": {},
@@ -2837,6 +3235,141 @@
     "type": "local_id_",
     "named": true,
     "fields": {}
+  },
+  {
+    "type": "log_",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "logical_functions",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "expression",
+          "named": true
+        },
+        {
+          "type": "greatest_",
+          "named": true
+        },
+        {
+          "type": "least_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "math_functions",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "abs_",
+          "named": true
+        },
+        {
+          "type": "acos_",
+          "named": true
+        },
+        {
+          "type": "asin_",
+          "named": true
+        },
+        {
+          "type": "atan_",
+          "named": true
+        },
+        {
+          "type": "atn2_",
+          "named": true
+        },
+        {
+          "type": "ceiling_",
+          "named": true
+        },
+        {
+          "type": "cos_",
+          "named": true
+        },
+        {
+          "type": "cot_",
+          "named": true
+        },
+        {
+          "type": "degrees_",
+          "named": true
+        },
+        {
+          "type": "exp_",
+          "named": true
+        },
+        {
+          "type": "expression",
+          "named": true
+        },
+        {
+          "type": "floor_",
+          "named": true
+        },
+        {
+          "type": "log10_",
+          "named": true
+        },
+        {
+          "type": "log_",
+          "named": true
+        },
+        {
+          "type": "pi_",
+          "named": true
+        },
+        {
+          "type": "power_",
+          "named": true
+        },
+        {
+          "type": "radians_",
+          "named": true
+        },
+        {
+          "type": "rand_",
+          "named": true
+        },
+        {
+          "type": "round_",
+          "named": true
+        },
+        {
+          "type": "sign_",
+          "named": true
+        },
+        {
+          "type": "sin_",
+          "named": true
+        },
+        {
+          "type": "sqrt_",
+          "named": true
+        },
+        {
+          "type": "square_",
+          "named": true
+        },
+        {
+          "type": "tan_",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "merge_matched",
@@ -2912,6 +3445,11 @@
     }
   },
   {
+    "type": "minute_",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "money_",
     "named": true,
     "fields": {
@@ -2940,6 +3478,11 @@
         }
       ]
     }
+  },
+  {
+    "type": "month_",
+    "named": true,
+    "fields": {}
   },
   {
     "type": "next_value_for_",
@@ -3431,6 +3974,11 @@
     }
   },
   {
+    "type": "quarter_",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "query_expression",
     "named": true,
     "fields": {},
@@ -3629,6 +4177,137 @@
         },
         {
           "type": "right_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "search_condition",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "predicate",
+          "named": true
+        },
+        {
+          "type": "search_condition",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "second_",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "security_functions",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "certencoded_",
+          "named": true
+        },
+        {
+          "type": "certprivatekey_",
+          "named": true
+        },
+        {
+          "type": "current_user_",
+          "named": true
+        },
+        {
+          "type": "database_principal_id_",
+          "named": true
+        },
+        {
+          "type": "expression",
+          "named": true
+        },
+        {
+          "type": "has_dbaccess_",
+          "named": true
+        },
+        {
+          "type": "has_perms_by_name_",
+          "named": true
+        },
+        {
+          "type": "is_member_",
+          "named": true
+        },
+        {
+          "type": "is_rolemember_",
+          "named": true
+        },
+        {
+          "type": "is_srvrolemember_",
+          "named": true
+        },
+        {
+          "type": "loginproperty_",
+          "named": true
+        },
+        {
+          "type": "original_login_",
+          "named": true
+        },
+        {
+          "type": "permissions_",
+          "named": true
+        },
+        {
+          "type": "pwdcompare_",
+          "named": true
+        },
+        {
+          "type": "pwdencrypt_",
+          "named": true
+        },
+        {
+          "type": "session_user_",
+          "named": true
+        },
+        {
+          "type": "sessionproperty_",
+          "named": true
+        },
+        {
+          "type": "suser_id_",
+          "named": true
+        },
+        {
+          "type": "suser_name_",
+          "named": true
+        },
+        {
+          "type": "suser_sid_",
+          "named": true
+        },
+        {
+          "type": "suser_sname_",
+          "named": true
+        },
+        {
+          "type": "system_user_",
+          "named": true
+        },
+        {
+          "type": "user_id_",
+          "named": true
+        },
+        {
+          "type": "user_name_",
           "named": true
         }
       ]
@@ -3881,6 +4560,129 @@
     }
   },
   {
+    "type": "string_functions",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "ascii_",
+          "named": true
+        },
+        {
+          "type": "char_",
+          "named": true
+        },
+        {
+          "type": "charindex_",
+          "named": true
+        },
+        {
+          "type": "concat_",
+          "named": true
+        },
+        {
+          "type": "concat_ws_",
+          "named": true
+        },
+        {
+          "type": "difference_",
+          "named": true
+        },
+        {
+          "type": "expression",
+          "named": true
+        },
+        {
+          "type": "format_",
+          "named": true
+        },
+        {
+          "type": "len_",
+          "named": true
+        },
+        {
+          "type": "lower_",
+          "named": true
+        },
+        {
+          "type": "ltrim_",
+          "named": true
+        },
+        {
+          "type": "nchar_",
+          "named": true
+        },
+        {
+          "type": "patindex_",
+          "named": true
+        },
+        {
+          "type": "quotename_",
+          "named": true
+        },
+        {
+          "type": "replace_",
+          "named": true
+        },
+        {
+          "type": "replicate_",
+          "named": true
+        },
+        {
+          "type": "reverse_",
+          "named": true
+        },
+        {
+          "type": "rtrim_",
+          "named": true
+        },
+        {
+          "type": "soundex_",
+          "named": true
+        },
+        {
+          "type": "space_",
+          "named": true
+        },
+        {
+          "type": "str_",
+          "named": true
+        },
+        {
+          "type": "string_escape_",
+          "named": true
+        },
+        {
+          "type": "stuff_",
+          "named": true
+        },
+        {
+          "type": "substring_",
+          "named": true
+        },
+        {
+          "type": "translate_",
+          "named": true
+        },
+        {
+          "type": "trim_",
+          "named": true
+        },
+        {
+          "type": "unicode_",
+          "named": true
+        },
+        {
+          "type": "upper_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "subquery",
     "named": true,
     "fields": {},
@@ -3924,6 +4726,121 @@
       "types": [
         {
           "type": "expression",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "system_functions",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "compress_",
+          "named": true
+        },
+        {
+          "type": "connectionproperty_",
+          "named": true
+        },
+        {
+          "type": "context_info_",
+          "named": true
+        },
+        {
+          "type": "current_request_id_",
+          "named": true
+        },
+        {
+          "type": "current_transaction_id_",
+          "named": true
+        },
+        {
+          "type": "decompress_",
+          "named": true
+        },
+        {
+          "type": "error_line_",
+          "named": true
+        },
+        {
+          "type": "error_message_",
+          "named": true
+        },
+        {
+          "type": "error_number_",
+          "named": true
+        },
+        {
+          "type": "error_procedure_",
+          "named": true
+        },
+        {
+          "type": "error_severity_",
+          "named": true
+        },
+        {
+          "type": "error_state_",
+          "named": true
+        },
+        {
+          "type": "expression",
+          "named": true
+        },
+        {
+          "type": "formatmessage_",
+          "named": true
+        },
+        {
+          "type": "get_filestream_transaction_context_",
+          "named": true
+        },
+        {
+          "type": "getansinull_",
+          "named": true
+        },
+        {
+          "type": "host_id_",
+          "named": true
+        },
+        {
+          "type": "host_name_",
+          "named": true
+        },
+        {
+          "type": "isnull_",
+          "named": true
+        },
+        {
+          "type": "isnumeric_",
+          "named": true
+        },
+        {
+          "type": "min_active_rowversion_",
+          "named": true
+        },
+        {
+          "type": "newid_",
+          "named": true
+        },
+        {
+          "type": "newsequentialid_",
+          "named": true
+        },
+        {
+          "type": "rowcount_big_",
+          "named": true
+        },
+        {
+          "type": "session_context_",
+          "named": true
+        },
+        {
+          "type": "xact_state_",
           "named": true
         }
       ]
@@ -4411,6 +5328,11 @@
     }
   },
   {
+    "type": "week_",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "when_matches",
     "named": true,
     "fields": {},
@@ -4570,6 +5492,11 @@
     }
   },
   {
+    "type": "year_",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "!<",
     "named": false
   },
@@ -4630,6 +5557,10 @@
     "named": false
   },
   {
+    "type": ":",
+    "named": false
+  },
+  {
     "type": "::",
     "named": false
   },
@@ -4678,6 +5609,14 @@
     "named": false
   },
   {
+    "type": "abs_",
+    "named": true
+  },
+  {
+    "type": "acos_",
+    "named": true
+  },
+  {
     "type": "app_name_",
     "named": true
   },
@@ -4706,11 +5645,27 @@
     "named": true
   },
   {
+    "type": "ascii_",
+    "named": true
+  },
+  {
+    "type": "asin_",
+    "named": true
+  },
+  {
     "type": "assemblyproperty_",
     "named": true
   },
   {
     "type": "asterisk",
+    "named": true
+  },
+  {
+    "type": "atan_",
+    "named": true
+  },
+  {
+    "type": "atn2_",
     "named": true
   },
   {
@@ -4754,7 +5709,23 @@
     "named": true
   },
   {
+    "type": "ceiling_",
+    "named": true
+  },
+  {
+    "type": "certencoded_",
+    "named": true
+  },
+  {
+    "type": "certprivatekey_",
+    "named": true
+  },
+  {
     "type": "char_",
+    "named": true
+  },
+  {
+    "type": "charindex_",
     "named": true
   },
   {
@@ -4790,11 +5761,35 @@
     "named": true
   },
   {
+    "type": "compress_",
+    "named": true
+  },
+  {
+    "type": "concat_ws_",
+    "named": true
+  },
+  {
+    "type": "connectionproperty_",
+    "named": true
+  },
+  {
+    "type": "context_info_",
+    "named": true
+  },
+  {
     "type": "continue_statement",
     "named": true
   },
   {
     "type": "convert_",
+    "named": true
+  },
+  {
+    "type": "cos_",
+    "named": true
+  },
+  {
+    "type": "cot_",
     "named": true
   },
   {
@@ -4818,7 +5813,39 @@
     "named": true
   },
   {
+    "type": "current_request_id_",
+    "named": true
+  },
+  {
     "type": "current_time_",
+    "named": true
+  },
+  {
+    "type": "current_timestamp_",
+    "named": true
+  },
+  {
+    "type": "current_timezone_",
+    "named": true
+  },
+  {
+    "type": "current_timezone_id_",
+    "named": true
+  },
+  {
+    "type": "current_transaction_id_",
+    "named": true
+  },
+  {
+    "type": "current_user_",
+    "named": true
+  },
+  {
+    "type": "cursor_rows_",
+    "named": true
+  },
+  {
+    "type": "cursor_status_",
     "named": true
   },
   {
@@ -4826,7 +5853,15 @@
     "named": true
   },
   {
+    "type": "database_principal_id_",
+    "named": true
+  },
+  {
     "type": "databasepropertyex_",
+    "named": true
+  },
+  {
+    "type": "datalength_",
     "named": true
   },
   {
@@ -4834,7 +5869,35 @@
     "named": true
   },
   {
+    "type": "date_bucket_",
+    "named": true
+  },
+  {
+    "type": "dateadd_",
+    "named": true
+  },
+  {
+    "type": "datediff_",
+    "named": true
+  },
+  {
+    "type": "datediff_big_",
+    "named": true
+  },
+  {
     "type": "datefirst_",
+    "named": true
+  },
+  {
+    "type": "datefromparts_",
+    "named": true
+  },
+  {
+    "type": "datename_",
+    "named": true
+  },
+  {
+    "type": "datepart_",
     "named": true
   },
   {
@@ -4842,11 +5905,27 @@
     "named": true
   },
   {
+    "type": "datetime2fromparts_",
+    "named": true
+  },
+  {
     "type": "datetime_",
     "named": true
   },
   {
+    "type": "datetimefromparts_",
+    "named": true
+  },
+  {
     "type": "datetimeoffset_",
+    "named": true
+  },
+  {
+    "type": "datetimeoffsetfromparts_",
+    "named": true
+  },
+  {
+    "type": "datetrunc_",
     "named": true
   },
   {
@@ -4878,11 +5957,23 @@
     "named": true
   },
   {
+    "type": "decompress_",
+    "named": true
+  },
+  {
+    "type": "degrees_",
+    "named": true
+  },
+  {
     "type": "dense_rank_",
     "named": true
   },
   {
     "type": "desc_",
+    "named": true
+  },
+  {
+    "type": "difference_",
     "named": true
   },
   {
@@ -4894,7 +5985,43 @@
     "named": true
   },
   {
+    "type": "eomonth_",
+    "named": true
+  },
+  {
+    "type": "error_line_",
+    "named": true
+  },
+  {
+    "type": "error_message_",
+    "named": true
+  },
+  {
+    "type": "error_number_",
+    "named": true
+  },
+  {
+    "type": "error_procedure_",
+    "named": true
+  },
+  {
+    "type": "error_severity_",
+    "named": true
+  },
+  {
+    "type": "error_state_",
+    "named": true
+  },
+  {
     "type": "execute",
+    "named": true
+  },
+  {
+    "type": "exp_",
+    "named": true
+  },
+  {
+    "type": "fetch_status_",
     "named": true
   },
   {
@@ -4938,6 +6065,18 @@
     "named": true
   },
   {
+    "type": "floor_",
+    "named": true
+  },
+  {
+    "type": "format_",
+    "named": true
+  },
+  {
+    "type": "formatmessage_",
+    "named": true
+  },
+  {
     "type": "fulltextcatalogproperty_",
     "named": true
   },
@@ -4954,11 +6093,23 @@
     "named": true
   },
   {
+    "type": "get_filestream_transaction_context_",
+    "named": true
+  },
+  {
     "type": "get_reparented_value_",
     "named": true
   },
   {
     "type": "getancestor_",
+    "named": true
+  },
+  {
+    "type": "getansinull_",
+    "named": true
+  },
+  {
+    "type": "getdate_",
     "named": true
   },
   {
@@ -4970,6 +6121,14 @@
     "named": true
   },
   {
+    "type": "getutcdate_",
+    "named": true
+  },
+  {
+    "type": "greatest_",
+    "named": true
+  },
+  {
     "type": "groupby_",
     "named": true
   },
@@ -4978,11 +6137,35 @@
     "named": true
   },
   {
+    "type": "has_dbaccess_",
+    "named": true
+  },
+  {
+    "type": "has_perms_by_name_",
+    "named": true
+  },
+  {
     "type": "hierachyid_",
     "named": true
   },
   {
-    "type": "hour_",
+    "type": "host_id_",
+    "named": true
+  },
+  {
+    "type": "host_name_",
+    "named": true
+  },
+  {
+    "type": "ident_current_",
+    "named": true
+  },
+  {
+    "type": "ident_incr_",
+    "named": true
+  },
+  {
+    "type": "ident_seed_",
     "named": true
   },
   {
@@ -5014,6 +6197,58 @@
     "named": true
   },
   {
+    "type": "is_member_",
+    "named": true
+  },
+  {
+    "type": "is_rolemember_",
+    "named": true
+  },
+  {
+    "type": "is_srvrolemember_",
+    "named": true
+  },
+  {
+    "type": "isdate_",
+    "named": true
+  },
+  {
+    "type": "isjson_",
+    "named": true
+  },
+  {
+    "type": "isnull_",
+    "named": true
+  },
+  {
+    "type": "isnumeric_",
+    "named": true
+  },
+  {
+    "type": "json_array_",
+    "named": true
+  },
+  {
+    "type": "json_modify_",
+    "named": true
+  },
+  {
+    "type": "json_object_",
+    "named": true
+  },
+  {
+    "type": "json_path_exists_",
+    "named": true
+  },
+  {
+    "type": "json_query_",
+    "named": true
+  },
+  {
+    "type": "json_value_",
+    "named": true
+  },
+  {
     "type": "lag_",
     "named": true
   },
@@ -5034,6 +6269,10 @@
     "named": true
   },
   {
+    "type": "least_",
+    "named": true
+  },
+  {
     "type": "left_shift_",
     "named": true
   },
@@ -5042,7 +6281,27 @@
     "named": true
   },
   {
+    "type": "len_",
+    "named": true
+  },
+  {
     "type": "lock_timeout_",
+    "named": true
+  },
+  {
+    "type": "log10_",
+    "named": true
+  },
+  {
+    "type": "loginproperty_",
+    "named": true
+  },
+  {
+    "type": "lower_",
+    "named": true
+  },
+  {
+    "type": "ltrim_",
     "named": true
   },
   {
@@ -5062,7 +6321,7 @@
     "named": true
   },
   {
-    "type": "minute_",
+    "type": "min_active_rowversion_",
     "named": true
   },
   {
@@ -5079,6 +6338,14 @@
   },
   {
     "type": "nestlevel_",
+    "named": true
+  },
+  {
+    "type": "newid_",
+    "named": true
+  },
+  {
+    "type": "newsequentialid_",
     "named": true
   },
   {
@@ -5146,6 +6413,10 @@
     "named": true
   },
   {
+    "type": "original_login_",
+    "named": true
+  },
+  {
     "type": "parameter_",
     "named": true
   },
@@ -5155,6 +6426,10 @@
   },
   {
     "type": "parsename_",
+    "named": true
+  },
+  {
+    "type": "patindex_",
     "named": true
   },
   {
@@ -5170,7 +6445,35 @@
     "named": true
   },
   {
-    "type": "quarter_",
+    "type": "permissions_",
+    "named": true
+  },
+  {
+    "type": "pi_",
+    "named": true
+  },
+  {
+    "type": "power_",
+    "named": true
+  },
+  {
+    "type": "pwdcompare_",
+    "named": true
+  },
+  {
+    "type": "pwdencrypt_",
+    "named": true
+  },
+  {
+    "type": "quotename_",
+    "named": true
+  },
+  {
+    "type": "radians_",
+    "named": true
+  },
+  {
+    "type": "rand_",
     "named": true
   },
   {
@@ -5186,6 +6489,18 @@
     "named": true
   },
   {
+    "type": "replace_",
+    "named": true
+  },
+  {
+    "type": "replicate_",
+    "named": true
+  },
+  {
+    "type": "reverse_",
+    "named": true
+  },
+  {
     "type": "right_shift_",
     "named": true
   },
@@ -5194,11 +6509,31 @@
     "named": true
   },
   {
+    "type": "round_",
+    "named": true
+  },
+  {
     "type": "row_number_",
     "named": true
   },
   {
-    "type": "second_",
+    "type": "rowcount_big_",
+    "named": true
+  },
+  {
+    "type": "rtrim_",
+    "named": true
+  },
+  {
+    "type": "schema_id_",
+    "named": true
+  },
+  {
+    "type": "schema_name_",
+    "named": true
+  },
+  {
+    "type": "scope_identity_",
     "named": true
   },
   {
@@ -5210,7 +6545,23 @@
     "named": true
   },
   {
+    "type": "serverproperty_",
+    "named": true
+  },
+  {
     "type": "servicename_",
+    "named": true
+  },
+  {
+    "type": "session_context_",
+    "named": true
+  },
+  {
+    "type": "session_user_",
+    "named": true
+  },
+  {
+    "type": "sessionproperty_",
     "named": true
   },
   {
@@ -5218,7 +6569,19 @@
     "named": true
   },
   {
+    "type": "sign_",
+    "named": true
+  },
+  {
+    "type": "sin_",
+    "named": true
+  },
+  {
     "type": "smalldatetime_",
+    "named": true
+  },
+  {
+    "type": "smalldatetimefromparts_",
     "named": true
   },
   {
@@ -5230,7 +6593,31 @@
     "named": true
   },
   {
+    "type": "soundex_",
+    "named": true
+  },
+  {
+    "type": "space_",
+    "named": true
+  },
+  {
     "type": "spid_",
+    "named": true
+  },
+  {
+    "type": "sql_variant_property_",
+    "named": true
+  },
+  {
+    "type": "sqrt_",
+    "named": true
+  },
+  {
+    "type": "square_",
+    "named": true
+  },
+  {
+    "type": "stats_date_",
     "named": true
   },
   {
@@ -5242,7 +6629,15 @@
     "named": true
   },
   {
+    "type": "str_",
+    "named": true
+  },
+  {
     "type": "string_agg_",
+    "named": true
+  },
+  {
+    "type": "string_escape_",
     "named": true
   },
   {
@@ -5250,7 +6645,55 @@
     "named": true
   },
   {
+    "type": "stuff_",
+    "named": true
+  },
+  {
+    "type": "substring_",
+    "named": true
+  },
+  {
     "type": "sum_",
+    "named": true
+  },
+  {
+    "type": "suser_id_",
+    "named": true
+  },
+  {
+    "type": "suser_name_",
+    "named": true
+  },
+  {
+    "type": "suser_sid_",
+    "named": true
+  },
+  {
+    "type": "suser_sname_",
+    "named": true
+  },
+  {
+    "type": "switchoffset_",
+    "named": true
+  },
+  {
+    "type": "sysdatetime_",
+    "named": true
+  },
+  {
+    "type": "sysdatetimeoffset_",
+    "named": true
+  },
+  {
+    "type": "system_user_",
+    "named": true
+  },
+  {
+    "type": "sysutcdatetime_",
+    "named": true
+  },
+  {
+    "type": "tan_",
     "named": true
   },
   {
@@ -5270,11 +6713,27 @@
     "named": true
   },
   {
+    "type": "timefromparts_",
+    "named": true
+  },
+  {
     "type": "tinyint_",
     "named": true
   },
   {
+    "type": "todatetimeoffset_",
+    "named": true
+  },
+  {
     "type": "tostring_",
+    "named": true
+  },
+  {
+    "type": "translate_",
+    "named": true
+  },
+  {
+    "type": "trim_",
     "named": true
   },
   {
@@ -5291,6 +6750,34 @@
   },
   {
     "type": "try_parse_",
+    "named": true
+  },
+  {
+    "type": "type_id_",
+    "named": true
+  },
+  {
+    "type": "type_name_",
+    "named": true
+  },
+  {
+    "type": "typeproperty_",
+    "named": true
+  },
+  {
+    "type": "unicode_",
+    "named": true
+  },
+  {
+    "type": "upper_",
+    "named": true
+  },
+  {
+    "type": "user_id_",
+    "named": true
+  },
+  {
+    "type": "user_name_",
     "named": true
   },
   {
@@ -5314,7 +6801,7 @@
     "named": true
   },
   {
-    "type": "week_",
+    "type": "xact_state_",
     "named": true
   },
   {

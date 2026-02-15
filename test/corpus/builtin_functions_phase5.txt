@@ -1,0 +1,286 @@
+=====================================
+String function LEN
+=====================================
+
+SELECT LEN('hello')
+
+-----
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (function_call
+                          (string_functions
+                            (len_)
+                            (expression
+                              (primitive_expression
+                                (primitive_constant
+                                  (string_lit))))))))))))))))))
+
+=====================================
+DateTime function DATEADD with datepart
+=====================================
+
+SELECT DATEADD(day, 1, GETDATE())
+
+-----
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (function_call
+                          (datetime_functions
+                            (dateadd_)
+                            (datepart)
+                            (expression
+                              (primitive_expression
+                                (primitive_constant
+                                  (decimal_))))
+                            (expression
+                              (function_call
+                                (datetime_functions
+                                  (getdate_))))))))))))))))))
+
+=====================================
+Math function ABS
+=====================================
+
+SELECT ABS(-5)
+
+-----
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (function_call
+                          (math_functions
+                            (abs_)
+                            (expression
+                              (unary_operator_expression
+                                (expression
+                                  (primitive_expression
+                                    (primitive_constant
+                                      (decimal_))))))))))))))))))))
+
+=====================================
+System function ISNULL
+=====================================
+
+SELECT ISNULL(NULL, 'default')
+
+-----
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (function_call
+                          (system_functions
+                            (isnull_)
+                            (expression
+                              (primitive_expression
+                                (null_)))
+                            (expression
+                              (primitive_expression
+                                (primitive_constant
+                                  (string_lit))))))))))))))))))
+
+=====================================
+JSON function JSON_VALUE
+=====================================
+
+SELECT JSON_VALUE('{"a":1}', '$.a')
+
+-----
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (function_call
+                          (json_functions
+                            (json_value_)
+                            (expression
+                              (primitive_expression
+                                (primitive_constant
+                                  (string_lit))))
+                            (expression
+                              (primitive_expression
+                                (primitive_constant
+                                  (string_lit))))))))))))))))))
+
+=====================================
+Logical function GREATEST
+=====================================
+
+SELECT GREATEST(1, 2, 3)
+
+-----
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (function_call
+                          (logical_functions
+                            (greatest_)
+                            (expression
+                              (primitive_expression
+                                (primitive_constant
+                                  (decimal_))))
+                            (expression
+                              (primitive_expression
+                                (primitive_constant
+                                  (decimal_))))
+                            (expression
+                              (primitive_expression
+                                (primitive_constant
+                                  (decimal_))))))))))))))))))
+
+=====================================
+Security functions CURRENT_USER and SUSER_NAME
+=====================================
+
+SELECT CURRENT_USER, SUSER_NAME()
+
+-----
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (function_call
+                          (security_functions
+                            (current_user_))))))
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (function_call
+                          (security_functions
+                            (suser_name_)))))))))))))))
+
+=====================================
+Cursor functions @@CURSOR_ROWS and @@FETCH_STATUS
+=====================================
+
+SELECT @@CURSOR_ROWS, @@FETCH_STATUS
+
+-----
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (function_call
+                          (cursor_functions
+                            (cursor_rows_))))))
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (function_call
+                          (cursor_functions
+                            (fetch_status_)))))))))))))))
+
+=====================================
+Data type function DATALENGTH
+=====================================
+
+SELECT DATALENGTH('hello')
+
+-----
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (function_call
+                          (datatype_functions
+                            (datalength_)
+                            (expression
+                              (primitive_expression
+                                (primitive_constant
+                                  (string_lit))))))))))))))))))
