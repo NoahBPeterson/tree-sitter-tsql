@@ -1,0 +1,3609 @@
+=====================================
+ERROR SELECT bare keyword
+=====================================
+
+SELECT
+
+-------------------------------------
+
+(ERROR
+  (ERROR
+    (select)))
+
+=====================================
+ERROR SELECT leading comma
+=====================================
+
+SELECT ,
+
+-------------------------------------
+
+(tsql_file
+  (ERROR
+    (select)))
+
+=====================================
+ERROR SELECT trailing comma
+=====================================
+
+SELECT a,
+
+-------------------------------------
+
+(tsql_file
+  (ERROR
+    (query_specification
+      (select)
+      (select_list
+        (select_list_elem
+          (expression_elem
+            (expression
+              (full_column_name
+                (id_))))))))
+  (ERROR))
+
+=====================================
+ERROR SELECT double comma
+=====================================
+
+SELECT a,,b
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (full_column_name
+                          (id_)))))
+                  (ERROR)
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (full_column_name
+                          (id_))))))))))))))
+
+=====================================
+ERROR SELECT FROM no table
+=====================================
+
+SELECT * FROM
+
+-------------------------------------
+
+(tsql_file
+  (ERROR
+    (query_specification
+      (select)
+      (select_list
+        (select_list_elem
+          (asterisk)))))
+  (ERROR))
+
+=====================================
+ERROR SELECT WHERE no condition
+=====================================
+
+SELECT * FROM t WHERE
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_))))))))))))
+  (ERROR))
+
+=====================================
+ERROR SELECT ORDER no BY
+=====================================
+
+SELECT * FROM t ORDER
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_))))))))))))
+  (ERROR))
+
+=====================================
+ERROR SELECT ORDER BY no expression
+=====================================
+
+SELECT * FROM t ORDER BY
+
+-------------------------------------
+
+(ERROR
+  (query_expression
+    (query_specification
+      (select)
+      (select_list
+        (select_list_elem
+          (asterisk)))
+      (table_sources
+        (table_source
+          (table_source_item
+            (full_table_name
+              (id_))))))))
+
+=====================================
+ERROR SELECT GROUP BY no expression
+=====================================
+
+SELECT * FROM t GROUP BY
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_)))))))))))
+    (ERROR
+      (groupby_))
+    (go_statement
+      (MISSING "go_statement_token1"))))
+
+=====================================
+ERROR SELECT HAVING no condition
+=====================================
+
+SELECT * FROM t HAVING
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_))))))))))))
+  (ERROR))
+
+=====================================
+ERROR SELECT OFFSET no row count
+=====================================
+
+SELECT * FROM t ORDER BY a OFFSET
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_)))))))
+            (select_order_by_clause
+              (order_by_expression
+                (expression
+                  (full_column_name
+                    (id_))))))))))
+  (ERROR))
+
+=====================================
+ERROR SELECT FETCH incomplete
+=====================================
+
+SELECT * FROM t ORDER BY a OFFSET 5 ROWS FETCH
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_)))))))
+            (select_order_by_clause
+              (order_by_expression
+                (expression
+                  (full_column_name
+                    (id_))))
+              (expression
+                (primitive_expression
+                  (primitive_constant
+                    (decimal_))))))))))
+  (ERROR))
+
+=====================================
+ERROR SELECT DISTINCT no columns
+=====================================
+
+SELECT DISTINCT
+
+-------------------------------------
+
+(ERROR
+  (select))
+
+=====================================
+ERROR SELECT UNION no second query
+=====================================
+
+SELECT * FROM t1 UNION
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_))))))))))))
+  (ERROR))
+
+=====================================
+ERROR SELECT INTERSECT no second query
+=====================================
+
+SELECT * FROM t1 INTERSECT
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_))))))))))))
+  (ERROR))
+
+=====================================
+ERROR SELECT EXCEPT no second query
+=====================================
+
+SELECT * FROM t1 EXCEPT
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_))))))))))))
+  (ERROR))
+
+=====================================
+ERROR binary operator missing right operand
+=====================================
+
+SELECT 1 +
+
+-------------------------------------
+
+(ERROR
+  (select)
+  (expression
+    (primitive_expression
+      (primitive_constant
+        (decimal_))))
+  (PLUS))
+
+=====================================
+ERROR binary operator no left context
+=====================================
+
+SELECT * 2
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk))))))))))
+  (ERROR))
+
+=====================================
+ERROR chained operators no final operand
+=====================================
+
+SELECT 1 + + +
+
+-------------------------------------
+
+(ERROR
+  (select)
+  (expression
+    (primitive_expression
+      (primitive_constant
+        (decimal_))))
+  (PLUS))
+
+=====================================
+ERROR unclosed parenthesis
+=====================================
+
+SELECT (
+
+-------------------------------------
+
+(tsql_file
+  (ERROR
+    (select)))
+
+=====================================
+ERROR unmatched close parenthesis
+=====================================
+
+SELECT )
+
+-------------------------------------
+
+(tsql_file
+  (ERROR
+    (select)))
+
+=====================================
+ERROR bitwise NOT no operand
+=====================================
+
+SELECT ~
+
+-------------------------------------
+
+(ERROR
+  (select))
+
+=====================================
+ERROR two expressions no operator
+=====================================
+
+SELECT 1 2
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (primitive_expression
+                          (primitive_constant
+                            (decimal_))))))))))))))
+  (ERROR))
+
+=====================================
+ERROR assignment operator in select list
+=====================================
+
+SELECT 1 = 2
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (ERROR)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (primitive_expression
+                          (primitive_constant
+                            (decimal_)))))))))))))))
+
+=====================================
+ERROR CASE no WHEN clauses
+=====================================
+
+SELECT CASE END
+
+-------------------------------------
+
+(tsql_file
+  (ERROR
+    (select)
+    (id_)))
+
+=====================================
+ERROR CASE WHEN no condition
+=====================================
+
+SELECT CASE WHEN THEN 1 END
+
+-------------------------------------
+
+(tsql_file
+  (ERROR
+    (select)
+    (id_)))
+
+=====================================
+ERROR CASE WHEN no THEN
+=====================================
+
+SELECT CASE WHEN 1=1 END
+
+-------------------------------------
+
+(tsql_file
+  (ERROR
+    (select)
+    (search_condition
+      (predicate
+        (expression
+          (primitive_expression
+            (primitive_constant
+              (decimal_))))
+        (comparison_operator)
+        (expression
+          (primitive_expression
+            (primitive_constant
+              (decimal_))))))))
+
+=====================================
+ERROR simple CASE WHEN no match value
+=====================================
+
+SELECT CASE 1 WHEN THEN 2 END
+
+-------------------------------------
+
+(tsql_file
+  (ERROR
+    (select)
+    (expression
+      (primitive_expression
+        (primitive_constant
+          (decimal_))))
+    (id_)))
+
+=====================================
+ERROR CASE no END
+=====================================
+
+SELECT CASE 1
+
+-------------------------------------
+
+(tsql_file
+  (ERROR
+    (select)))
+
+=====================================
+ERROR AND no left operand
+=====================================
+
+SELECT * FROM t WHERE AND
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_))))))))))))
+  (ERROR
+    (id_)))
+
+=====================================
+ERROR AND no right operand
+=====================================
+
+SELECT * FROM t WHERE 1=1 AND
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_)))))
+                (search_condition
+                  (predicate
+                    (expression
+                      (primitive_expression
+                        (primitive_constant
+                          (decimal_))))
+                    (comparison_operator)
+                    (expression
+                      (primitive_expression
+                        (primitive_constant
+                          (decimal_)))))))))))))
+  (ERROR))
+
+=====================================
+ERROR OR no left operand
+=====================================
+
+SELECT * FROM t WHERE OR 1=1
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_)))))
+                (search_condition
+                  (predicate
+                    (expression
+                      (full_column_name
+                        (id_)))
+                    (ERROR)
+                    (comparison_operator)
+                    (expression
+                      (primitive_expression
+                        (primitive_constant
+                          (decimal_))))))))))))))
+
+=====================================
+ERROR NOT no operand
+=====================================
+
+SELECT * FROM t WHERE NOT
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_))))))))))))
+  (ERROR))
+
+=====================================
+ERROR BETWEEN no range
+=====================================
+
+SELECT * FROM t WHERE a BETWEEN
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_))))))))))))
+  (ERROR
+    (expression
+      (full_column_name
+        (id_)))))
+
+=====================================
+ERROR BETWEEN no AND
+=====================================
+
+SELECT * FROM t WHERE a BETWEEN 1
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_))))))))))))
+  (ERROR
+    (expression
+      (full_column_name
+        (id_)))))
+
+=====================================
+ERROR BETWEEN AND no upper bound
+=====================================
+
+SELECT * FROM t WHERE a BETWEEN 1 AND
+
+-------------------------------------
+
+(ERROR
+  (select)
+  (select_list
+    (select_list_elem
+      (asterisk)))
+  (table_sources
+    (table_source
+      (table_source_item
+        (full_table_name
+          (id_)))))
+  (expression
+    (full_column_name
+      (id_)))
+  (expression
+    (primitive_expression
+      (primitive_constant
+        (decimal_)))))
+
+=====================================
+ERROR IN no list
+=====================================
+
+SELECT * FROM t WHERE a IN
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_))))))))))))
+  (ERROR
+    (expression
+      (full_column_name
+        (id_)))))
+
+=====================================
+ERROR IN unclosed paren
+=====================================
+
+SELECT * FROM t WHERE a IN (
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_))))))))))))
+  (ERROR
+    (expression
+      (full_column_name
+        (id_)))))
+
+=====================================
+ERROR LIKE no pattern
+=====================================
+
+SELECT * FROM t WHERE a LIKE
+
+-------------------------------------
+
+(ERROR
+  (select)
+  (select_list
+    (select_list_elem
+      (asterisk)))
+  (table_sources
+    (table_source
+      (table_source_item
+        (full_table_name
+          (id_)))))
+  (expression
+    (full_column_name
+      (id_))))
+
+=====================================
+ERROR EXISTS no subquery
+=====================================
+
+SELECT * FROM t WHERE EXISTS
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_))))))))))))
+  (ERROR))
+
+=====================================
+ERROR EXISTS unclosed paren
+=====================================
+
+SELECT * FROM t WHERE EXISTS (
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_))))))))))))
+  (ERROR))
+
+=====================================
+ERROR comparison no right side
+=====================================
+
+SELECT * FROM t WHERE a >
+
+-------------------------------------
+
+(ERROR
+  (select)
+  (select_list
+    (select_list_elem
+      (asterisk)))
+  (table_sources
+    (table_source
+      (table_source_item
+        (full_table_name
+          (id_)))))
+  (expression
+    (full_column_name
+      (id_)))
+  (comparison_operator))
+
+=====================================
+ERROR JOIN no table
+=====================================
+
+SELECT * FROM t1 JOIN
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_))))))))))))
+  (ERROR))
+
+=====================================
+ERROR JOIN no ON
+=====================================
+
+SELECT * FROM t1 JOIN t2
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_))))))))))))
+  (ERROR
+    (full_table_name
+      (id_))))
+
+=====================================
+ERROR JOIN ON no condition
+=====================================
+
+SELECT * FROM t1 JOIN t2 ON
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_))))))))))))
+  (ERROR
+    (table_source_item
+      (full_table_name
+        (id_)))))
+
+=====================================
+ERROR LEFT without JOIN
+=====================================
+
+SELECT * FROM t1 LEFT
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_))))))))))))
+  (ERROR))
+
+=====================================
+ERROR INNER without JOIN
+=====================================
+
+SELECT * FROM t1 INNER
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_))))))))))))
+  (ERROR))
+
+=====================================
+ERROR CROSS without JOIN
+=====================================
+
+SELECT * FROM t1 CROSS
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_))))))))))))
+  (ERROR))
+
+=====================================
+ERROR JOIN missing table before ON
+=====================================
+
+SELECT * FROM t1 JOIN ON 1=1
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (ERROR
+                  (select_list
+                    (select_list_elem
+                      (asterisk)))
+                  (table_source_item
+                    (full_table_name
+                      (id_)))
+                  (id_))
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (primitive_expression
+                          (primitive_constant
+                            (decimal_)))))))))))))))
+
+=====================================
+ERROR INSERT INTO no table
+=====================================
+
+INSERT INTO
+
+-------------------------------------
+
+(tsql_file
+  (ERROR))
+
+=====================================
+ERROR INSERT INTO no values
+=====================================
+
+INSERT INTO t
+
+-------------------------------------
+
+(tsql_file
+  (ERROR
+    (id_)))
+
+=====================================
+ERROR INSERT VALUES no list
+=====================================
+
+INSERT INTO t VALUES
+
+-------------------------------------
+
+(tsql_file
+  (ERROR
+    (full_table_name
+      (id_))))
+
+=====================================
+ERROR INSERT VALUES unclosed paren
+=====================================
+
+INSERT INTO t VALUES (
+
+-------------------------------------
+
+(tsql_file
+  (ERROR
+    (full_table_name
+      (id_))))
+
+=====================================
+ERROR INSERT VALUES trailing comma
+=====================================
+
+INSERT INTO t VALUES (1,)
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (insert_statement
+          (full_table_name
+            (id_))
+          (insert_statement_value
+            (value_list
+              (expression_list_
+                (expression
+                  (primitive_expression
+                    (primitive_constant
+                      (decimal_)))))
+              (ERROR))))))))
+
+=====================================
+ERROR INSERT column list leading comma
+=====================================
+
+INSERT INTO t (,a) VALUES (1)
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (insert_statement
+          (full_table_name
+            (id_))
+          (ERROR)
+          (column_name_list
+            (id_))
+          (insert_statement_value
+            (value_list
+              (expression_list_
+                (expression
+                  (primitive_expression
+                    (primitive_constant
+                      (decimal_))))))))))))
+
+=====================================
+ERROR UPDATE bare
+=====================================
+
+UPDATE
+
+-------------------------------------
+
+(tsql_file
+  (ERROR))
+
+=====================================
+ERROR UPDATE no SET
+=====================================
+
+UPDATE t
+
+-------------------------------------
+
+(tsql_file
+  (ERROR
+    (id_)))
+
+=====================================
+ERROR UPDATE SET no assignments
+=====================================
+
+UPDATE t SET
+
+-------------------------------------
+
+(tsql_file
+  (ERROR
+    (update_target
+      (full_table_name
+        (id_)))))
+
+=====================================
+ERROR UPDATE SET trailing comma
+=====================================
+
+UPDATE t SET a = 1,
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (update_statement
+          (update_target
+            (full_table_name
+              (id_)))
+          (update_elem
+            (full_column_name
+              (id_))
+            (expression
+              (primitive_expression
+                (primitive_constant
+                  (decimal_)))))))))
+  (ERROR))
+
+=====================================
+ERROR UPDATE missing table
+=====================================
+
+UPDATE SET a = 1
+
+-------------------------------------
+
+(tsql_file
+  (ERROR
+    (id_)))
+
+=====================================
+ERROR DELETE bare
+=====================================
+
+DELETE
+
+-------------------------------------
+
+(tsql_file
+  (ERROR))
+
+=====================================
+ERROR DELETE FROM no table
+=====================================
+
+DELETE FROM
+
+-------------------------------------
+
+(ERROR)
+
+=====================================
+ERROR DELETE WHERE no condition
+=====================================
+
+DELETE FROM t WHERE
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (delete_statement
+          (delete_target
+            (full_table_name
+              (id_)))))))
+  (ERROR))
+
+=====================================
+ERROR DELETE FROM WHERE no join table
+=====================================
+
+DELETE t FROM WHERE 1=1
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (delete_statement
+          (delete_target
+            (full_table_name
+              (id_)))
+          (table_sources
+            (table_source
+              (table_source_item
+                (full_table_name
+                  (id_)))))))))
+  (ERROR))
+
+=====================================
+ERROR MERGE no USING
+=====================================
+
+MERGE INTO t
+
+-------------------------------------
+
+(tsql_file
+  (ERROR
+    (full_table_name
+      (id_))))
+
+=====================================
+ERROR MERGE no ON
+=====================================
+
+MERGE INTO t USING s
+
+-------------------------------------
+
+(ERROR
+  (full_table_name
+    (id_))
+  (table_source
+    (table_source_item
+      (full_table_name
+        (id_)))))
+
+=====================================
+ERROR MERGE ON no condition
+=====================================
+
+MERGE INTO t USING s ON
+
+-------------------------------------
+
+(tsql_file
+  (ERROR
+    (full_table_name
+      (id_))
+    (table_source
+      (table_source_item
+        (full_table_name
+          (id_))))))
+
+=====================================
+ERROR MERGE no WHEN clause
+=====================================
+
+MERGE INTO t USING s ON 1=1
+
+-------------------------------------
+
+(tsql_file
+  (ERROR
+    (full_table_name
+      (id_))
+    (table_source
+      (table_source_item
+        (full_table_name
+          (id_))))
+    (search_condition
+      (predicate
+        (expression
+          (primitive_expression
+            (primitive_constant
+              (decimal_))))
+        (comparison_operator)
+        (expression
+          (primitive_expression
+            (primitive_constant
+              (decimal_))))))))
+
+=====================================
+ERROR MERGE WHEN MATCHED no THEN
+=====================================
+
+MERGE INTO t USING s ON 1=1 WHEN MATCHED
+
+-------------------------------------
+
+(tsql_file
+  (ERROR
+    (full_table_name
+      (id_))
+    (table_source
+      (table_source_item
+        (full_table_name
+          (id_))))
+    (search_condition
+      (predicate
+        (expression
+          (primitive_expression
+            (primitive_constant
+              (decimal_))))
+        (comparison_operator)
+        (expression
+          (primitive_expression
+            (primitive_constant
+              (decimal_))))))))
+
+=====================================
+ERROR MERGE NOT MATCHED INSERT no VALUES
+=====================================
+
+MERGE INTO t USING s ON 1=1 WHEN NOT MATCHED THEN INSERT
+
+-------------------------------------
+
+(tsql_file
+  (ERROR
+    (full_table_name
+      (id_))
+    (table_source
+      (table_source_item
+        (full_table_name
+          (id_))))
+    (search_condition
+      (predicate
+        (expression
+          (primitive_expression
+            (primitive_constant
+              (decimal_))))
+        (comparison_operator)
+        (expression
+          (primitive_expression
+            (primitive_constant
+              (decimal_))))))))
+
+=====================================
+ERROR CTE no name
+=====================================
+
+WITH AS (SELECT 1)
+
+-------------------------------------
+
+(tsql_file
+  (ERROR
+    (id_)
+    (column_name_list
+      (id_))
+    (ERROR)))
+
+=====================================
+ERROR CTE no AS
+=====================================
+
+WITH cte
+
+-------------------------------------
+
+(tsql_file
+  (ERROR
+    (id_)))
+
+=====================================
+ERROR CTE AS no query
+=====================================
+
+WITH cte AS
+
+-------------------------------------
+
+(tsql_file
+  (ERROR
+    (id_)))
+
+=====================================
+ERROR CTE unclosed paren
+=====================================
+
+WITH cte AS (
+
+-------------------------------------
+
+(tsql_file
+  (ERROR
+    (id_)))
+
+=====================================
+ERROR CTE empty query
+=====================================
+
+WITH cte AS ()
+
+-------------------------------------
+
+(tsql_file
+  (ERROR
+    (id_)))
+
+=====================================
+ERROR CTE trailing comma
+=====================================
+
+WITH cte AS (SELECT 1),
+
+-------------------------------------
+
+(tsql_file
+  (ERROR
+    (common_table_expression
+      (id_)
+      (select_statement
+        (query_expression
+          (query_specification
+            (select)
+            (select_list
+              (select_list_elem
+                (expression_elem
+                  (expression
+                    (primitive_expression
+                      (primitive_constant
+                        (decimal_)))))))))))))
+
+=====================================
+ERROR CTE no main query
+=====================================
+
+WITH cte AS (SELECT 1)
+
+-------------------------------------
+
+(tsql_file
+  (ERROR
+    (with_expression
+      (common_table_expression
+        (id_)
+        (select_statement
+          (query_expression
+            (query_specification
+              (select)
+              (select_list
+                (select_list_elem
+                  (expression_elem
+                    (expression
+                      (primitive_expression
+                        (primitive_constant
+                          (decimal_))))))))))))))
+
+=====================================
+ERROR CREATE TABLE no name
+=====================================
+
+CREATE TABLE
+
+-------------------------------------
+
+(tsql_file
+  (ERROR))
+
+=====================================
+ERROR CREATE TABLE no columns
+=====================================
+
+CREATE TABLE t
+
+-------------------------------------
+
+(tsql_file
+  (ERROR
+    (id_)))
+
+=====================================
+ERROR CREATE TABLE unclosed paren
+=====================================
+
+CREATE TABLE t (
+
+-------------------------------------
+
+(tsql_file
+  (ERROR
+    (full_table_name
+      (id_))))
+
+=====================================
+ERROR CREATE TABLE empty columns
+=====================================
+
+CREATE TABLE t ()
+
+-------------------------------------
+
+(tsql_file
+  (ERROR
+    (full_table_name
+      (id_))))
+
+=====================================
+ERROR CREATE TABLE trailing comma
+=====================================
+
+CREATE TABLE t (a INT,)
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_table
+          (full_table_name
+            (id_))
+          (table_element
+            (column_definition
+              (id_)
+              (data_type
+                (int_))))
+          (ERROR))))))
+
+=====================================
+ERROR CREATE TABLE leading comma
+=====================================
+
+CREATE TABLE t (,a INT)
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_table
+          (full_table_name
+            (id_))
+          (ERROR)
+          (table_element
+            (column_definition
+              (id_)
+              (data_type
+                (int_)))))))))
+
+=====================================
+ERROR CREATE TABLE no comma between cols
+=====================================
+
+CREATE TABLE t (a INT b INT)
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_table
+          (full_table_name
+            (id_))
+          (table_element
+            (column_definition
+              (id_)
+              (data_type
+                (int_))))
+          (ERROR
+            (int_)))))))
+
+=====================================
+ERROR CREATE TABLE PRIMARY KEY no cols
+=====================================
+
+CREATE TABLE t (PRIMARY KEY)
+
+-------------------------------------
+
+(tsql_file
+  (ERROR
+    (full_table_name
+      (id_))))
+
+=====================================
+ERROR CREATE TABLE named PK no cols
+=====================================
+
+CREATE TABLE t (CONSTRAINT pk PRIMARY KEY)
+
+-------------------------------------
+
+(tsql_file
+  (ERROR
+    (full_table_name
+      (id_))
+    (id_)))
+
+=====================================
+ERROR CREATE TABLE REFERENCES no target
+=====================================
+
+CREATE TABLE t (a INT REFERENCES)
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_table
+          (full_table_name
+            (id_))
+          (table_element
+            (column_definition
+              (id_)
+              (data_type
+                (int_))))
+          (ERROR))))))
+
+=====================================
+ERROR CREATE TABLE CHECK no expression
+=====================================
+
+CREATE TABLE t (a INT CHECK)
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_table
+          (full_table_name
+            (id_))
+          (table_element
+            (column_definition
+              (id_)
+              (data_type
+                (int_))))
+          (ERROR))))))
+
+=====================================
+ERROR CREATE TABLE CHECK empty parens
+=====================================
+
+CREATE TABLE t (a INT CHECK ()
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_table
+          (full_table_name
+            (id_))
+          (table_element
+            (column_definition
+              (id_)
+              (data_type
+                (int_))))
+          (ERROR))))))
+
+=====================================
+ERROR CREATE TABLE IDENTITY empty parens
+=====================================
+
+CREATE TABLE t (a INT IDENTITY()
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_table
+          (full_table_name
+            (id_))
+          (table_element
+            (column_definition
+              (id_)
+              (data_type
+                (int_))
+              (identity_column)))
+          (ERROR))))))
+
+=====================================
+ERROR CREATE TABLE DEFAULT no expression
+=====================================
+
+CREATE TABLE t (a INT DEFAULT)
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_table
+          (full_table_name
+            (id_))
+          (table_element
+            (column_definition
+              (id_)
+              (data_type
+                (int_))))
+          (ERROR
+            (default)))))))
+
+=====================================
+ERROR DROP bare
+=====================================
+
+DROP
+
+-------------------------------------
+
+(tsql_file
+  (ERROR))
+
+=====================================
+ERROR DROP TABLE no name
+=====================================
+
+DROP TABLE
+
+-------------------------------------
+
+(ERROR)
+
+=====================================
+ERROR DROP VIEW no name
+=====================================
+
+DROP VIEW
+
+-------------------------------------
+
+(ERROR)
+
+=====================================
+ERROR DROP PROCEDURE no name
+=====================================
+
+DROP PROCEDURE
+
+-------------------------------------
+
+(ERROR)
+
+=====================================
+ERROR DROP FUNCTION no name
+=====================================
+
+DROP FUNCTION
+
+-------------------------------------
+
+(ERROR)
+
+=====================================
+ERROR DROP INDEX no name
+=====================================
+
+DROP INDEX
+
+-------------------------------------
+
+(tsql_file
+  (ERROR))
+
+=====================================
+ERROR DROP INDEX no ON
+=====================================
+
+DROP INDEX ix1
+
+-------------------------------------
+
+(tsql_file
+  (ERROR
+    (id_)))
+
+=====================================
+ERROR DROP DATABASE no name
+=====================================
+
+DROP DATABASE
+
+-------------------------------------
+
+(tsql_file
+  (ERROR))
+
+=====================================
+ERROR DROP SCHEMA no name
+=====================================
+
+DROP SCHEMA
+
+-------------------------------------
+
+(tsql_file
+  (ERROR))
+
+=====================================
+ERROR DROP TABLE IF without EXISTS
+=====================================
+
+DROP TABLE IF
+
+-------------------------------------
+
+(tsql_file
+  (ERROR))
+
+=====================================
+ERROR DROP TABLE EXISTS without IF
+=====================================
+
+DROP TABLE EXISTS t
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_table
+          (full_table_name
+            (id_))))))
+  (ERROR
+    (id_)))
+
+=====================================
+ERROR DROP TABLE trailing comma
+=====================================
+
+DROP TABLE dbo.t1,
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_table
+          (full_table_name
+            (id_)
+            (id_))))))
+  (ERROR))
+
+=====================================
+ERROR DROP invalid object type
+=====================================
+
+DROP BANANA t
+
+-------------------------------------
+
+(tsql_file
+  (ERROR)
+  (execute_body_batch
+    (func_proc_name_server_database_schema
+      (func_proc_name_database_schema
+        (func_proc_name_schema
+          (id_))))
+    (execute_statement_arg
+      (execute_statement_arg_unnamed
+        (execute_parameter
+          (id_))))))
+
+=====================================
+ERROR ALTER DATABASE no name
+=====================================
+
+ALTER DATABASE
+
+-------------------------------------
+
+(tsql_file
+  (ERROR))
+
+=====================================
+ERROR ALTER DATABASE no action
+=====================================
+
+ALTER DATABASE db
+
+-------------------------------------
+
+(tsql_file
+  (ERROR
+    (id_)))
+
+=====================================
+ERROR ALTER DATABASE ADD no FILE
+=====================================
+
+ALTER DATABASE db ADD
+
+-------------------------------------
+
+(tsql_file
+  (ERROR
+    (id_)))
+
+=====================================
+ERROR ALTER DATABASE ADD FILE no spec
+=====================================
+
+ALTER DATABASE db ADD FILE
+
+-------------------------------------
+
+(tsql_file
+  (ERROR
+    (id_)))
+
+=====================================
+ERROR ALTER DATABASE filespec unclosed
+=====================================
+
+ALTER DATABASE db ADD FILE (
+
+-------------------------------------
+
+(tsql_file
+  (ERROR
+    (id_)))
+
+=====================================
+ERROR ALTER DATABASE filespec empty
+=====================================
+
+ALTER DATABASE db ADD FILE ()
+
+-------------------------------------
+
+(tsql_file
+  (ERROR
+    (id_)))
+
+=====================================
+ERROR ALTER DATABASE NAME no value
+=====================================
+
+ALTER DATABASE db ADD FILE (NAME)
+
+-------------------------------------
+
+(tsql_file
+  (ERROR
+    (id_)))
+
+=====================================
+ERROR DECLARE bare
+=====================================
+
+DECLARE
+
+-------------------------------------
+
+(tsql_file
+  (ERROR))
+
+=====================================
+ERROR DECLARE no @ prefix
+=====================================
+
+DECLARE INT
+
+-------------------------------------
+
+(tsql_file
+  (ERROR
+    (id_)))
+
+=====================================
+ERROR DECLARE trailing comma
+=====================================
+
+DECLARE @v INT,
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (declare_statement
+          (declare_local
+            (LOCAL_ID_)
+            (data_type
+              (int_)))))))
+  (ERROR))
+
+=====================================
+ERROR SET bare
+=====================================
+
+SET
+
+-------------------------------------
+
+(tsql_file
+  (ERROR))
+
+=====================================
+ERROR SET variable no assignment
+=====================================
+
+SET @v
+
+-------------------------------------
+
+(tsql_file
+  (ERROR
+    (LOCAL_ID_)))
+
+=====================================
+ERROR BEGIN without END
+=====================================
+
+BEGIN
+
+-------------------------------------
+
+(tsql_file
+  (ERROR))
+
+=====================================
+ERROR IF no condition
+=====================================
+
+IF
+
+-------------------------------------
+
+(tsql_file
+  (ERROR))
+
+=====================================
+ERROR WHILE no condition
+=====================================
+
+WHILE
+
+-------------------------------------
+
+(tsql_file
+  (ERROR))
+
+=====================================
+ERROR TRY without CATCH
+=====================================
+
+BEGIN TRY END TRY
+
+-------------------------------------
+
+(tsql_file
+  (ERROR))
+
+=====================================
+ERROR CATCH without TRY
+=====================================
+
+BEGIN CATCH END CATCH
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (cfl_statement
+        (block_statement
+          (ERROR)))))
+  (ERROR
+    (id_)))
+
+=====================================
+ERROR THROW incomplete two args
+=====================================
+
+THROW 50000,
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (cfl_statement
+        (throw_statement))))
+  (ERROR
+    (expression
+      (primitive_expression
+        (primitive_constant
+          (decimal_))))))
+
+=====================================
+ERROR THROW incomplete three args
+=====================================
+
+THROW 50000, 'msg'
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (cfl_statement
+        (throw_statement))))
+  (ERROR
+    (expression
+      (primitive_expression
+        (primitive_constant
+          (decimal_))))
+    (expression
+      (primitive_expression
+        (primitive_constant
+          (string_lit))))))
+
+=====================================
+ERROR RAISERROR bare
+=====================================
+
+RAISERROR
+
+-------------------------------------
+
+(tsql_file
+  (ERROR))
+
+=====================================
+ERROR RAISERROR unclosed paren
+=====================================
+
+RAISERROR(
+
+-------------------------------------
+
+(tsql_file
+  (ERROR))
+
+=====================================
+ERROR RAISERROR one argument
+=====================================
+
+RAISERROR(50000)
+
+-------------------------------------
+
+(tsql_file
+  (ERROR
+    (expression
+      (primitive_expression
+        (primitive_constant
+          (decimal_))))))
+
+=====================================
+ERROR RAISERROR two arguments
+=====================================
+
+RAISERROR(50000, 16)
+
+-------------------------------------
+
+(tsql_file
+  (ERROR
+    (expression
+      (primitive_expression
+        (primitive_constant
+          (decimal_))))
+    (expression
+      (primitive_expression
+        (primitive_constant
+          (decimal_))))))
+
+=====================================
+ERROR PRINT no expression
+=====================================
+
+PRINT
+
+-------------------------------------
+
+(tsql_file
+  (ERROR))
+
+=====================================
+ERROR COMMIT bare
+=====================================
+
+COMMIT
+
+-------------------------------------
+
+(tsql_file
+  (ERROR))
+
+=====================================
+ERROR SAVE bare
+=====================================
+
+SAVE
+
+-------------------------------------
+
+(tsql_file
+  (ERROR))
+
+=====================================
+ERROR DECLARE CURSOR no name
+=====================================
+
+DECLARE CURSOR
+
+-------------------------------------
+
+(tsql_file
+  (ERROR
+    (id_)))
+
+=====================================
+ERROR DECLARE CURSOR no FOR
+=====================================
+
+DECLARE c CURSOR
+
+-------------------------------------
+
+(tsql_file
+  (ERROR
+    (id_)))
+
+=====================================
+ERROR DECLARE CURSOR FOR no SELECT
+=====================================
+
+DECLARE c CURSOR FOR
+
+-------------------------------------
+
+(tsql_file
+  (ERROR
+    (id_)))
+
+=====================================
+ERROR OPEN no cursor name
+=====================================
+
+OPEN
+
+-------------------------------------
+
+(tsql_file
+  (ERROR))
+
+=====================================
+ERROR CLOSE no cursor name
+=====================================
+
+CLOSE
+
+-------------------------------------
+
+(tsql_file
+  (ERROR))
+
+=====================================
+ERROR DEALLOCATE no cursor name
+=====================================
+
+DEALLOCATE
+
+-------------------------------------
+
+(tsql_file
+  (ERROR))
+
+=====================================
+ERROR FETCH bare
+=====================================
+
+FETCH
+
+-------------------------------------
+
+(tsql_file
+  (ERROR))
+
+=====================================
+ERROR FETCH no cursor name
+=====================================
+
+FETCH NEXT FROM
+
+-------------------------------------
+
+(ERROR)
+
+=====================================
+ERROR FETCH INTO no variables
+=====================================
+
+FETCH NEXT FROM c INTO
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (cursor_statement
+          (id_)))))
+  (ERROR))
+
+=====================================
+ERROR EXEC bare
+=====================================
+
+EXEC
+
+-------------------------------------
+
+(tsql_file
+  (ERROR
+    (execute)))
+
+=====================================
+ERROR EXEC param no value
+=====================================
+
+EXEC dbo.proc @a =
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (execute_statement
+          (execute)
+          (execute_body
+            (func_proc_name_server_database_schema
+              (func_proc_name_database_schema
+                (func_proc_name_schema
+                  (id_)
+                  (id_))))
+            (execute_statement_arg
+              (execute_statement_arg_unnamed
+                (execute_parameter
+                  (LOCAL_ID_)))))))))
+  (ERROR))
+
+=====================================
+ERROR EXEC leading comma
+=====================================
+
+EXEC dbo.proc ,
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (execute_statement
+          (execute)
+          (execute_body
+            (func_proc_name_server_database_schema
+              (func_proc_name_database_schema
+                (func_proc_name_schema
+                  (id_)
+                  (id_)))))))))
+  (ERROR))
+
+=====================================
+ERROR EXEC AT no server
+=====================================
+
+EXEC (@sql) AT
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (execute_statement
+          (execute)
+          (execute_body
+            (execute_var_string
+              (LOCAL_ID_)))))))
+  (ERROR
+    (AT_KEYWORD)))
+
+=====================================
+ERROR IIF unclosed paren
+=====================================
+
+SELECT IIF(
+
+-------------------------------------
+
+(tsql_file
+  (ERROR
+    (select)
+    (iif_)))
+
+=====================================
+ERROR IIF no arguments
+=====================================
+
+SELECT IIF()
+
+-------------------------------------
+
+(tsql_file
+  (ERROR
+    (select)
+    (iif_)))
+
+=====================================
+ERROR IIF one argument
+=====================================
+
+SELECT IIF(1=1)
+
+-------------------------------------
+
+(tsql_file
+  (ERROR
+    (select)
+    (iif_)
+    (search_condition
+      (predicate
+        (expression
+          (primitive_expression
+            (primitive_constant
+              (decimal_))))
+        (comparison_operator)
+        (expression
+          (primitive_expression
+            (primitive_constant
+              (decimal_))))))))
+
+=====================================
+ERROR IIF two arguments
+=====================================
+
+SELECT IIF(1=1, 'a')
+
+-------------------------------------
+
+(tsql_file
+  (ERROR
+    (select)
+    (iif_)
+    (search_condition
+      (predicate
+        (expression
+          (primitive_expression
+            (primitive_constant
+              (decimal_))))
+        (comparison_operator)
+        (expression
+          (primitive_expression
+            (primitive_constant
+              (decimal_))))))
+    (expression
+      (primitive_expression
+        (primitive_constant
+          (string_lit))))))
+
+=====================================
+ERROR COALESCE no arguments
+=====================================
+
+SELECT COALESCE()
+
+-------------------------------------
+
+(tsql_file
+  (ERROR
+    (select)
+    (coalesce_)))
+
+=====================================
+ERROR COALESCE one argument
+=====================================
+
+SELECT COALESCE(1)
+
+-------------------------------------
+
+(tsql_file
+  (ERROR
+    (select)
+    (coalesce_)
+    (expression
+      (primitive_expression
+        (primitive_constant
+          (decimal_))))))
+
+=====================================
+ERROR NULLIF no arguments
+=====================================
+
+SELECT NULLIF()
+
+-------------------------------------
+
+(tsql_file
+  (ERROR
+    (select)
+    (nullif_)))
+
+=====================================
+ERROR NULLIF one argument
+=====================================
+
+SELECT NULLIF(1)
+
+-------------------------------------
+
+(tsql_file
+  (ERROR
+    (select)
+    (nullif_)
+    (expression
+      (primitive_expression
+        (primitive_constant
+          (decimal_))))))
+
+=====================================
+ERROR CAST no AS
+=====================================
+
+SELECT CAST(1)
+
+-------------------------------------
+
+(tsql_file
+  (ERROR
+    (select)
+    (cast_)
+    (expression
+      (primitive_expression
+        (primitive_constant
+          (decimal_))))))
+
+=====================================
+ERROR CAST no expression
+=====================================
+
+SELECT CAST( AS INT)
+
+-------------------------------------
+
+(tsql_file
+  (ERROR
+    (select)
+    (cast_)
+    (id_)))
+
+=====================================
+ERROR RANK no OVER
+=====================================
+
+SELECT RANK()
+
+-------------------------------------
+
+(tsql_file
+  (ERROR
+    (select)
+    (rank_)))
+
+=====================================
+ERROR ROW_NUMBER no OVER
+=====================================
+
+SELECT ROW_NUMBER()
+
+-------------------------------------
+
+(tsql_file
+  (ERROR
+    (select)
+    (row_number_)))
+
+=====================================
+ERROR OVER no parens
+=====================================
+
+SELECT ROW_NUMBER() OVER
+
+-------------------------------------
+
+(tsql_file
+  (ERROR
+    (select)
+    (row_number_)))
+
+=====================================
+ERROR OVER unclosed paren
+=====================================
+
+SELECT ROW_NUMBER() OVER (
+
+-------------------------------------
+
+(ERROR
+  (select)
+  (row_number_))
+
+=====================================
+ERROR OVER ORDER no BY
+=====================================
+
+SELECT ROW_NUMBER() OVER (ORDER)
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (function_call
+                          (ranking_windowed_function
+                            (row_number_)
+                            (over_clause
+                              (ERROR))))))))))))))))
+
+=====================================
+ERROR OVER ORDER BY no expression
+=====================================
+
+SELECT ROW_NUMBER() OVER (ORDER BY)
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (function_call
+                          (ranking_windowed_function
+                            (row_number_)
+                            (over_clause
+                              (ERROR))))))))))))))))
+
+=====================================
+ERROR OVER PARTITION no BY
+=====================================
+
+SELECT ROW_NUMBER() OVER (PARTITION)
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (function_call
+                          (ranking_windowed_function
+                            (row_number_)
+                            (over_clause
+                              (ERROR))))))))))))))))
+
+=====================================
+ERROR OVER PARTITION BY no expression
+=====================================
+
+SELECT ROW_NUMBER() OVER (PARTITION BY)
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (function_call
+                          (ranking_windowed_function
+                            (row_number_)
+                            (over_clause
+                              (ERROR))))))))))))))))
+
+=====================================
+ERROR OVER ROWS no extent
+=====================================
+
+SELECT SUM(a) OVER (ROWS)
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (function_call
+                          (aggregate_functions
+                            (sum_)
+                            (all_distinct_expression
+                              (expression
+                                (full_column_name
+                                  (id_))))
+                            (over_clause
+                              (ERROR))))))))))))))))
+
+=====================================
+ERROR OVER ROWS BETWEEN no bounds
+=====================================
+
+SELECT SUM(a) OVER (ROWS BETWEEN)
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (function_call
+                          (aggregate_functions
+                            (sum_)
+                            (all_distinct_expression
+                              (expression
+                                (full_column_name
+                                  (id_))))
+                            (over_clause
+                              (ERROR))))))))))))))))
+
+=====================================
+ERROR OVER ROWS BETWEEN no upper bound
+=====================================
+
+SELECT SUM(a) OVER (ROWS BETWEEN UNBOUNDED PRECEDING AND)
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (function_call
+                          (aggregate_functions
+                            (sum_)
+                            (all_distinct_expression
+                              (expression
+                                (full_column_name
+                                  (id_))))
+                            (over_clause
+                              (ERROR
+                                (window_frame_bound
+                                  (window_frame_preceding))))))))))))))))))
+
+=====================================
+ERROR VARCHAR unclosed paren
+=====================================
+
+DECLARE @v VARCHAR(
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (declare_statement
+          (declare_local
+            (LOCAL_ID_)
+            (data_type
+              (varchar_)))))))
+  (ERROR))
+
+=====================================
+ERROR DECIMAL empty precision
+=====================================
+
+DECLARE @v DECIMAL(,)
+
+-------------------------------------
+
+(tsql_file
+  (ERROR
+    (LOCAL_ID_)
+    (decimalty_)))
+
+=====================================
+ERROR derived table unclosed
+=====================================
+
+SELECT * FROM (
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk))))))))))
+  (ERROR))
+
+=====================================
+ERROR derived table empty
+=====================================
+
+SELECT * FROM ()
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk))))))))))
+  (ERROR))
+
+=====================================
+ERROR derived table unclosed with query
+=====================================
+
+SELECT * FROM (SELECT * FROM t
+
+-------------------------------------
+
+(ERROR
+  (select)
+  (select_list
+    (select_list_elem
+      (asterisk)))
+  (select_statement
+    (query_expression
+      (query_specification
+        (select)
+        (select_list
+          (select_list_elem
+            (asterisk)))
+        (table_sources
+          (table_source
+            (table_source_item
+              (full_table_name
+                (id_)))))))))
+
+=====================================
+ERROR PIVOT no parens
+=====================================
+
+SELECT * FROM t PIVOT
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_))))))))))))
+  (ERROR))
+
+=====================================
+ERROR PIVOT unclosed paren
+=====================================
+
+SELECT * FROM t PIVOT (
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_))))))))))))
+  (ERROR))
+
+=====================================
+ERROR PIVOT empty body
+=====================================
+
+SELECT * FROM t PIVOT ()
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_))))))))))))
+  (ERROR))
+
+=====================================
+ERROR PIVOT FOR no column
+=====================================
+
+SELECT * FROM t PIVOT (SUM(a) FOR)
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_))))))))))))
+  (ERROR
+    (aggregate_functions
+      (sum_)
+      (all_distinct_expression
+        (expression
+          (full_column_name
+            (id_)))))))
+
+=====================================
+ERROR PIVOT IN no values
+=====================================
+
+SELECT * FROM t PIVOT (SUM(a) FOR b IN)
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_))))))))))))
+  (ERROR
+    (aggregate_functions
+      (sum_)
+      (all_distinct_expression
+        (expression
+          (full_column_name
+            (id_)))))
+    (full_column_name
+      (id_))))
+
+=====================================
+ERROR PIVOT IN empty list
+=====================================
+
+SELECT * FROM t PIVOT (SUM(a) FOR b IN ())
+
+-------------------------------------
+
+(tsql_file
+  (ERROR
+    (query_specification
+      (select)
+      (select_list
+        (select_list_elem
+          (asterisk)))
+      (table_sources
+        (table_source
+          (table_source_item
+            (full_table_name
+              (id_))
+            (pivot_clause
+              (aggregate_functions
+                (sum_)
+                (all_distinct_expression
+                  (expression
+                    (full_column_name
+                      (id_)))))
+              (full_column_name
+                (id_))
+              (column_alias_list
+                (column_alias
+                  (id_
+                    (MISSING _word))))
+              (as_table_alias
+                (id_
+                  (MISSING _word))))))))))
+
+=====================================
+ERROR UNPIVOT empty body
+=====================================
+
+SELECT * FROM t UNPIVOT ()
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_))))))))))))
+  (ERROR))
+
+=====================================
+ERROR FOR no format
+=====================================
+
+SELECT * FROM t FOR
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_))))))))))))
+  (ERROR))
+
+=====================================
+ERROR FOR XML no mode
+=====================================
+
+SELECT * FROM t FOR XML
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_))))))))))))
+  (ERROR))
+
+=====================================
+ERROR FOR JSON no mode
+=====================================
+
+SELECT * FROM t FOR JSON
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_))))))))))))
+  (ERROR))
+
+=====================================
+ERROR WITH no parens
+=====================================
+
+SELECT * FROM t WITH
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_))))))))))))
+  (ERROR))
+
+=====================================
+ERROR WITH unclosed paren
+=====================================
+
+SELECT * FROM t WITH (
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_))))))))))))
+  (ERROR))
+
+=====================================
+ERROR WITH invalid hint
+=====================================
+
+SELECT * FROM t WITH (BANANA)
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_))))))))))))
+  (ERROR))
+
+=====================================
+ERROR OUTPUT no column list
+=====================================
+
+INSERT INTO t OUTPUT VALUES (1)
+
+-------------------------------------
+
+(ERROR
+  (full_table_name
+    (id_))
+  (output_dml_list_elem
+    (expression
+      (function_call
+        (scalar_function_name
+          (func_proc_name_database_schema
+            (func_proc_name_schema
+              (id_))))
+        (expression_list_
+          (expression
+            (primitive_expression
+              (primitive_constant
+                (decimal_)))))))))
+
+=====================================
+ERROR OUTPUT INSERTED dot no column
+=====================================
+
+INSERT INTO t OUTPUT INSERTED. VALUES (1)
+
+-------------------------------------
+
+(ERROR
+  (full_table_name
+    (id_))
+  (ERROR
+    (output_dml_list_elem
+      (id_)))
+  (output_dml_list_elem
+    (expression
+      (bracket_expression
+        (expression
+          (primitive_expression
+            (primitive_constant
+              (decimal_))))))))
+
+=====================================
+ERROR unterminated string literal
+=====================================
+
+SELECT 'unterminated
+
+-------------------------------------
+
+(tsql_file
+  (ERROR
+    (select)
+    (UNEXPECTED '\0')))
+
+=====================================
+ERROR unterminated N-string literal
+=====================================
+
+SELECT N'unterminated
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (full_column_name
+                          (id_)))))))))))))
+  (ERROR
+    (UNEXPECTED '\0')))
+
+=====================================
+ERROR unclosed bracket identifier
+=====================================
+
+SELECT [unclosed
+
+-------------------------------------
+
+(tsql_file
+  (ERROR
+    (select)
+    (UNEXPECTED '\0')))
+
+=====================================
+ERROR unclosed quoted identifier
+=====================================
+
+SELECT "unclosed
+
+-------------------------------------
+
+(tsql_file
+  (ERROR
+    (select)
+    (UNEXPECTED '\0')))
+

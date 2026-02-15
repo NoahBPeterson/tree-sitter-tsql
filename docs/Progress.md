@@ -780,3 +780,322 @@ These sections are fully implemented with test corpus coverage:
 - [x] **Transaction Statements** — BEGIN/COMMIT/ROLLBACK/SAVE TRANSACTION (grammar.js)
 - [x] **Cursor Statements** — DECLARE CURSOR, OPEN, FETCH, CLOSE, DEALLOCATE (grammar.js)
 - [x] **USE Statement** — `USE database_name` (grammar.js)
+
+---
+
+## Phase 8 — Negative (Error) Tests
+
+> Tests that assert known-invalid SQL produces `(ERROR)` nodes. Ensures the parser
+> rejects bad syntax rather than silently accepting it. **0 of these exist today.**
+
+### 8.1 SELECT Statement Errors
+
+- [x] `SELECT` — bare SELECT with no columns
+- [x] `SELECT ,` — leading comma in select list
+- [x] `SELECT a,` — trailing comma in select list
+- [x] `SELECT a,,b` — double comma in select list
+- [ ] `SELECT FROM t` — missing select list before FROM
+- [x] `SELECT * FROM` — FROM with no table
+- [ ] `SELECT * WHERE 1=1` — WHERE without FROM
+- [x] `SELECT * FROM t WHERE` — WHERE with no condition
+- [x] `SELECT * FROM t ORDER` — ORDER without BY
+- [x] `SELECT * FROM t ORDER BY` — ORDER BY with no expressions
+- [ ] `SELECT * FROM t GROUP` — GROUP without BY
+- [x] `SELECT * FROM t GROUP BY` — GROUP BY with no expressions
+- [x] `SELECT * FROM t HAVING` — HAVING with no condition
+- [x] `SELECT * FROM t ORDER BY a OFFSET` — OFFSET missing row count
+- [ ] `SELECT * FROM t ORDER BY a OFFSET 5` — OFFSET without ROWS
+- [x] `SELECT * FROM t ORDER BY a OFFSET 5 ROWS FETCH` — FETCH incomplete
+- [ ] `SELECT TOP FROM t` — TOP missing expression
+- [ ] `SELECT TOP ( FROM t` — TOP unclosed paren
+- [x] `SELECT DISTINCT` — DISTINCT with no columns
+- [x] `SELECT * FROM t1 UNION` — UNION with no second query
+- [x] `SELECT * FROM t1 INTERSECT` — INTERSECT with no second query
+- [x] `SELECT * FROM t1 EXCEPT` — EXCEPT with no second query
+
+### 8.2 Expression Errors
+
+- [x] `SELECT 1 +` — binary operator missing right operand
+- [x] `SELECT * 2` — binary operator missing left operand context
+- [x] `SELECT 1 + + +` — chained operators with no final operand
+- [x] `SELECT (` — unclosed parenthesis
+- [x] `SELECT )` — unmatched close parenthesis
+- [ ] `SELECT (1+2` — unclosed parenthesized expression
+- [ ] `SELECT 1 + (2 * )` — empty right side inside parens
+- [x] `SELECT ~` — bitwise NOT with no operand
+- [x] `SELECT 1 2` — two expressions with no operator between
+- [x] `SELECT 1 = 2` — assignment operator in select list (not comparison context)
+
+### 8.3 CASE Expression Errors
+
+- [x] `SELECT CASE END` — CASE with no WHEN clauses
+- [x] `SELECT CASE WHEN THEN 1 END` — WHEN missing condition
+- [ ] `SELECT CASE WHEN 1=1 THEN END` — THEN missing result expression
+- [x] `SELECT CASE WHEN 1=1 END` — WHEN without THEN
+- [x] `SELECT CASE 1 WHEN THEN 2 END` — simple CASE WHEN missing match value
+- [x] `SELECT CASE 1` — CASE never closed (no END)
+- [ ] `SELECT CASE WHEN 1=1 THEN 1 ELSE END` — ELSE with no expression
+
+### 8.4 Search Condition / Predicate Errors
+
+- [x] `SELECT * FROM t WHERE AND` — AND with no left operand
+- [x] `SELECT * FROM t WHERE 1=1 AND` — AND with no right operand
+- [x] `SELECT * FROM t WHERE OR 1=1` — OR with no left operand
+- [x] `SELECT * FROM t WHERE NOT` — NOT with no operand
+- [x] `SELECT * FROM t WHERE a BETWEEN` — BETWEEN missing range
+- [x] `SELECT * FROM t WHERE a BETWEEN 1` — BETWEEN missing AND
+- [x] `SELECT * FROM t WHERE a BETWEEN 1 AND` — BETWEEN AND missing upper bound
+- [x] `SELECT * FROM t WHERE a IN` — IN missing list
+- [x] `SELECT * FROM t WHERE a IN (` — IN unclosed paren
+- [ ] `SELECT * FROM t WHERE a IN ()` — IN empty list
+- [x] `SELECT * FROM t WHERE a LIKE` — LIKE missing pattern
+- [ ] `SELECT * FROM t WHERE a IS` — IS without NULL/NOT NULL
+- [x] `SELECT * FROM t WHERE EXISTS` — EXISTS missing subquery
+- [x] `SELECT * FROM t WHERE EXISTS (` — EXISTS unclosed paren
+- [x] `SELECT * FROM t WHERE a >` — comparison missing right side
+- [ ] `SELECT * FROM t WHERE > 1` — comparison missing left side
+
+### 8.5 JOIN Errors
+
+- [x] `SELECT * FROM t1 JOIN` — JOIN missing table
+- [x] `SELECT * FROM t1 JOIN t2` — JOIN missing ON
+- [x] `SELECT * FROM t1 JOIN t2 ON` — ON missing condition
+- [x] `SELECT * FROM t1 LEFT` — LEFT without JOIN
+- [x] `SELECT * FROM t1 INNER` — INNER without JOIN
+- [x] `SELECT * FROM t1 CROSS` — CROSS without JOIN/APPLY
+- [x] `SELECT * FROM t1 JOIN ON 1=1` — JOIN missing table name before ON
+
+### 8.6 INSERT Statement Errors
+
+- [x] `INSERT INTO` — missing table name
+- [x] `INSERT INTO t` — missing VALUES/SELECT/DEFAULT VALUES
+- [x] `INSERT INTO t VALUES` — VALUES missing value list
+- [x] `INSERT INTO t VALUES (` — unclosed VALUES paren
+- [ ] `INSERT INTO t VALUES ()` — empty VALUES list
+- [ ] `INSERT INTO t (a,b) VALUES (1)` — column count mismatch (parser may not catch, but good to document)
+- [x] `INSERT INTO t VALUES (1,)` — trailing comma in VALUES
+- [x] `INSERT INTO t (,a) VALUES (1)` — leading comma in column list
+- [ ] `INSERT INTO t () VALUES (1)` — empty column list
+
+### 8.7 UPDATE Statement Errors
+
+- [x] `UPDATE` — missing table name
+- [x] `UPDATE t` — missing SET clause
+- [x] `UPDATE t SET` — SET with no assignments
+- [ ] `UPDATE t SET a =` — SET assignment missing value
+- [ ] `UPDATE t SET = 1` — SET missing column name
+- [x] `UPDATE t SET a = 1,` — trailing comma in SET list
+- [x] `UPDATE SET a = 1` — missing table name after UPDATE
+
+### 8.8 DELETE Statement Errors
+
+- [x] `DELETE` — bare DELETE with no target
+- [x] `DELETE FROM` — FROM with no table
+- [x] `DELETE FROM t WHERE` — WHERE with no condition
+- [x] `DELETE t FROM WHERE 1=1` — second FROM missing table in join
+
+### 8.9 MERGE Statement Errors
+
+- [x] `MERGE INTO t` — missing USING
+- [x] `MERGE INTO t USING s` — missing ON
+- [x] `MERGE INTO t USING s ON` — ON missing condition
+- [x] `MERGE INTO t USING s ON 1=1` — missing WHEN clause
+- [x] `MERGE INTO t USING s ON 1=1 WHEN MATCHED` — WHEN MATCHED missing THEN
+- [ ] `MERGE INTO t USING s ON 1=1 WHEN MATCHED THEN` — THEN missing action
+- [x] `MERGE INTO t USING s ON 1=1 WHEN NOT MATCHED THEN INSERT` — INSERT missing VALUES
+
+### 8.10 CTE Errors
+
+- [x] `WITH AS (SELECT 1)` — CTE missing name
+- [x] `WITH cte` — CTE missing AS
+- [x] `WITH cte AS` — CTE AS missing query
+- [x] `WITH cte AS (` — CTE unclosed paren
+- [x] `WITH cte AS ()` — CTE empty query
+- [x] `WITH cte AS (SELECT 1),` — trailing comma, no subsequent CTE or query
+- [x] `WITH cte AS (SELECT 1)` — CTE with no main query after it
+
+### 8.11 CREATE TABLE Errors
+
+- [x] `CREATE TABLE` — missing table name
+- [x] `CREATE TABLE t` — missing column definitions
+- [x] `CREATE TABLE t (` — unclosed paren
+- [x] `CREATE TABLE t ()` — empty column list
+- [x] `CREATE TABLE t (a)` — column missing data type
+- [x] `CREATE TABLE t (a INT,)` — trailing comma
+- [x] `CREATE TABLE t (,a INT)` — leading comma
+- [x] `CREATE TABLE t (a INT b INT)` — missing comma between columns
+- [x] `CREATE TABLE t (PRIMARY KEY)` — PRIMARY KEY missing column list
+- [x] `CREATE TABLE t (CONSTRAINT pk PRIMARY KEY)` — named PK missing column list
+- [x] `CREATE TABLE t (a INT REFERENCES)` — REFERENCES missing target table
+- [x] `CREATE TABLE t (a INT CHECK)` — CHECK missing expression
+- [x] `CREATE TABLE t (a INT CHECK ()` — CHECK empty expression
+- [x] `CREATE TABLE t (a INT IDENTITY()` — IDENTITY empty parens
+- [x] `CREATE TABLE t (a INT DEFAULT)` — DEFAULT missing expression
+
+### 8.12 DROP Statement Errors
+
+- [x] `DROP` — DROP with no object type
+- [x] `DROP TABLE` — missing object name
+- [x] `DROP VIEW` — missing view name
+- [x] `DROP PROCEDURE` — missing procedure name
+- [x] `DROP FUNCTION` — missing function name
+- [x] `DROP INDEX` — missing index name
+- [x] `DROP INDEX ix1` — DROP INDEX missing ON
+- [ ] `DROP INDEX ix1 ON` — DROP INDEX ON missing table
+- [x] `DROP DATABASE` — missing database name
+- [x] `DROP SCHEMA` — missing schema name
+- [x] `DROP TABLE IF` — IF without EXISTS
+- [x] `DROP TABLE EXISTS t` — EXISTS without IF
+- [x] `DROP TABLE dbo.t1,` — trailing comma
+- [x] `DROP BANANA t` — DROP with invalid object type keyword
+
+### 8.13 ALTER DATABASE Errors
+
+- [x] `ALTER DATABASE` — missing database name
+- [x] `ALTER DATABASE db` — missing action clause
+- [x] `ALTER DATABASE db ADD` — ADD without FILE
+- [x] `ALTER DATABASE db ADD FILE` — ADD FILE missing filespec
+- [x] `ALTER DATABASE db ADD FILE (` — unclosed filespec paren
+- [x] `ALTER DATABASE db ADD FILE ()` — empty filespec
+- [x] `ALTER DATABASE db ADD FILE (NAME)` — NAME missing = value
+
+### 8.14 DECLARE / SET Errors
+
+- [x] `DECLARE` — missing variable
+- [x] `DECLARE @v` — missing data type
+- [x] `DECLARE INT` — missing @ prefix on variable name
+- [x] `DECLARE @v INT,` — trailing comma
+- [x] `SET` — bare SET with no variable
+- [x] `SET @v` — SET variable missing = and value
+- [ ] `SET @v =` — SET assignment missing value
+- [ ] `SET NOCOUNT` — SET option missing ON/OFF
+
+### 8.15 Control Flow Errors
+
+- [x] `BEGIN` — BEGIN without END
+- [ ] `END` — END without BEGIN
+- [x] `IF` — IF missing condition
+- [ ] `IF 1=1` — IF missing THEN body (sql_clauses)
+- [x] `WHILE` — WHILE missing condition
+- [ ] `WHILE 1=1` — WHILE missing body
+- [x] `BEGIN TRY END TRY` — TRY/CATCH missing CATCH block
+- [x] `BEGIN CATCH END CATCH` — CATCH without preceding TRY
+- [x] `THROW 50000,` — THROW incomplete arguments (need 3)
+- [x] `THROW 50000, 'msg'` — THROW missing third argument (severity)
+- [x] `RAISERROR` — RAISERROR missing arguments
+- [x] `RAISERROR(` — RAISERROR unclosed paren
+- [x] `RAISERROR(50000)` — RAISERROR missing severity and state
+- [x] `RAISERROR(50000, 16)` — RAISERROR missing state
+- [x] `PRINT` — PRINT missing expression
+
+### 8.16 Transaction Errors
+
+- [ ] `COMMIT` — bare COMMIT (may or may not be valid — verify)
+- [ ] `BEGIN TRANSACTION DISTRIBUTED` — wrong keyword order (should be BEGIN DISTRIBUTED TRANSACTION)
+- [ ] `SAVE` — bare SAVE without TRANSACTION
+
+### 8.17 Cursor Errors
+
+- [x] `DECLARE CURSOR` — missing cursor name before CURSOR
+- [x] `DECLARE c CURSOR` — cursor missing FOR SELECT
+- [x] `DECLARE c CURSOR FOR` — FOR missing SELECT statement
+- [x] `OPEN` — OPEN missing cursor name
+- [x] `CLOSE` — CLOSE missing cursor name
+- [x] `DEALLOCATE` — DEALLOCATE missing cursor name
+- [x] `FETCH` — bare FETCH (missing FROM/NEXT)
+- [x] `FETCH NEXT FROM` — FETCH FROM missing cursor name
+- [x] `FETCH NEXT FROM c INTO` — INTO missing variable list
+
+### 8.18 EXECUTE Statement Errors
+
+- [x] `EXEC` — EXEC missing procedure name or string
+- [x] `EXEC dbo.proc @a =` — named parameter missing value
+- [x] `EXEC dbo.proc ,` — leading comma in argument list
+- [x] `EXEC (@sql) AT` — AT missing linked server name
+
+### 8.19 Function Call Errors
+
+- [x] `SELECT IIF(` — IIF unclosed
+- [x] `SELECT IIF()` — IIF no arguments
+- [x] `SELECT IIF(1=1)` — IIF missing then/else args
+- [x] `SELECT IIF(1=1, 'a')` — IIF missing else arg
+- [x] `SELECT COALESCE()` — COALESCE no arguments
+- [x] `SELECT COALESCE(1)` — COALESCE single argument (needs 2+)
+- [x] `SELECT NULLIF()` — NULLIF no arguments
+- [x] `SELECT NULLIF(1)` — NULLIF single argument (needs 2)
+- [x] `SELECT CAST(1)` — CAST missing AS clause
+- [x] `SELECT CAST(1 AS)` — CAST AS missing data type
+- [x] `SELECT CAST( AS INT)` — CAST missing expression
+- [ ] `SELECT CONVERT(INT,)` — CONVERT missing expression
+- [x] `SELECT CONVERT(,1)` — CONVERT missing target type
+- [ ] `SELECT DATEADD(, 1, GETDATE())` — DATEADD missing datepart
+- [ ] `SELECT LEN()` — LEN no arguments
+- [x] `SELECT RANK()` — RANK missing OVER clause
+- [x] `SELECT ROW_NUMBER()` — ROW_NUMBER missing OVER clause
+- [ ] `SELECT COUNT(*)` — COUNT(*) missing OVER when used as analytic (verify if error)
+
+### 8.20 OVER Clause Errors
+
+- [x] `SELECT ROW_NUMBER() OVER` — OVER missing parens
+- [x] `SELECT ROW_NUMBER() OVER (` — OVER unclosed paren
+- [x] `SELECT ROW_NUMBER() OVER (ORDER)` — ORDER without BY
+- [x] `SELECT ROW_NUMBER() OVER (ORDER BY)` — ORDER BY missing expression
+- [x] `SELECT ROW_NUMBER() OVER (PARTITION)` — PARTITION without BY
+- [x] `SELECT ROW_NUMBER() OVER (PARTITION BY)` — PARTITION BY missing expression
+- [x] `SELECT SUM(a) OVER (ROWS)` — ROWS missing frame extent
+- [x] `SELECT SUM(a) OVER (ROWS BETWEEN)` — BETWEEN missing bounds
+- [x] `SELECT SUM(a) OVER (ROWS BETWEEN UNBOUNDED PRECEDING AND)` — AND missing upper bound
+
+### 8.21 Data Type Errors
+
+- [x] `DECLARE @v VARCHAR(` — unclosed precision paren
+- [x] `DECLARE @v DECIMAL(,)` — empty precision and scale
+- [ ] `DECLARE @v NUMERIC()` — empty precision
+- [ ] `DECLARE @v VARCHAR()` — empty length
+
+### 8.22 Subquery Errors
+
+- [ ] `SELECT (SELECT)` — subquery with no columns
+- [ ] `SELECT (SELECT *)` — subquery with no FROM (may be valid in T-SQL — verify)
+- [x] `SELECT * FROM (` — derived table unclosed
+- [x] `SELECT * FROM ()` — empty derived table
+- [x] `SELECT * FROM (SELECT * FROM t` — derived table unclosed
+- [ ] `SELECT * WHERE a IN (SELECT)` — IN subquery missing columns
+
+### 8.23 PIVOT / UNPIVOT Errors
+
+- [x] `SELECT * FROM t PIVOT` — PIVOT missing parens
+- [x] `SELECT * FROM t PIVOT (` — PIVOT unclosed
+- [x] `SELECT * FROM t PIVOT ()` — PIVOT empty body
+- [x] `SELECT * FROM t PIVOT (SUM(a) FOR)` — FOR missing column
+- [x] `SELECT * FROM t PIVOT (SUM(a) FOR b IN)` — IN missing value list
+- [x] `SELECT * FROM t PIVOT (SUM(a) FOR b IN ())` — IN empty list
+- [x] `SELECT * FROM t UNPIVOT ()` — UNPIVOT empty body
+
+### 8.24 FOR Clause Errors
+
+- [x] `SELECT * FROM t FOR` — FOR with no format (XML/JSON/BROWSE)
+- [x] `SELECT * FROM t FOR XML` — FOR XML missing mode (RAW/AUTO/PATH/EXPLICIT)
+- [x] `SELECT * FROM t FOR JSON` — FOR JSON missing mode (PATH/AUTO)
+
+### 8.25 Table Hints Errors
+
+- [x] `SELECT * FROM t WITH` — WITH missing parens
+- [x] `SELECT * FROM t WITH (` — WITH unclosed paren
+- [ ] `SELECT * FROM t WITH ()` — WITH empty hints
+- [x] `SELECT * FROM t WITH (BANANA)` — invalid hint keyword
+
+### 8.26 OUTPUT Clause Errors
+
+- [x] `INSERT INTO t OUTPUT VALUES (1)` — OUTPUT missing column list
+- [x] `INSERT INTO t OUTPUT INSERTED. VALUES (1)` — OUTPUT INSERTED dot with no column name
+
+### 8.27 String Literal Errors
+
+- [x] `SELECT 'unterminated` — unterminated string literal
+- [x] `SELECT N'unterminated` — unterminated N-prefixed string
+
+### 8.28 Identifier Errors
+
+- [x] `SELECT [unclosed` — unclosed bracket identifier
+- [x] `SELECT "unclosed` — unclosed quoted identifier
