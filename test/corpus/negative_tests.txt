@@ -1420,8 +1420,7 @@ MERGE INTO t
 
 (tsql_file
   (ERROR
-    (full_table_name
-      (id_))))
+    (id_)))
 
 =====================================
 ERROR MERGE no ON
@@ -3607,3 +3606,96 @@ SELECT "unclosed
     (select)
     (UNEXPECTED '\0')))
 
+=====================================
+ERROR ALTER TABLE missing name and action
+=====================================
+
+ALTER TABLE
+
+-------------------------------------
+
+(tsql_file
+  (ERROR))
+
+=====================================
+ERROR ALTER TABLE ADD missing column def
+=====================================
+
+ALTER TABLE Orders ADD
+
+-------------------------------------
+
+(tsql_file
+  (ERROR
+    (full_table_name
+      (id_))))
+
+=====================================
+ERROR ALTER TABLE ALTER COLUMN missing name
+=====================================
+
+ALTER TABLE Orders ALTER COLUMN
+
+-------------------------------------
+
+(tsql_file
+  (ERROR
+    (full_table_name
+      (id_))))
+
+=====================================
+ERROR ALTER TABLE DROP missing keyword
+=====================================
+
+ALTER TABLE Orders DROP
+
+-------------------------------------
+
+(tsql_file
+  (ERROR
+    (full_table_name
+      (id_))))
+
+=====================================
+ERROR ALTER TABLE SET missing options
+=====================================
+
+ALTER TABLE Orders SET
+
+-------------------------------------
+
+(tsql_file
+  (ERROR
+    (full_table_name
+      (id_))))
+
+=====================================
+ERROR ALTER TABLE SWITCH missing TO
+=====================================
+
+ALTER TABLE Orders SWITCH
+
+-------------------------------------
+
+(tsql_file
+  (ERROR
+    (full_table_name
+      (id_))))
+
+=====================================
+ERROR ALTER TABLE REBUILD WITH missing parens
+=====================================
+
+ALTER TABLE Orders REBUILD WITH
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_table
+          (full_table_name
+            (id_))
+          (alter_table_rebuild)))))
+  (ERROR))
