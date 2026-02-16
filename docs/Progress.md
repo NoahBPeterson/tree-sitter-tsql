@@ -546,16 +546,16 @@
 
 ### 6.2 ALTER TABLE (Parser L573-L650)
 
-- [ ] `ALTER TABLE table ADD column_definition` (Parser L574)
-- [ ] `ALTER TABLE table ALTER COLUMN col data_type [NULL|NOT NULL]` (Parser L580)
-- [ ] `ALTER TABLE table DROP COLUMN col` (Parser L585)
-- [ ] `ALTER TABLE table ADD CONSTRAINT ...` (Parser L590)
-- [ ] `ALTER TABLE table DROP CONSTRAINT name` (Parser L595)
-- [ ] `ALTER TABLE table ENABLE|DISABLE TRIGGER` (Parser L600)
-- [ ] `ALTER TABLE table CHECK|NOCHECK CONSTRAINT` (Parser L605)
-- [ ] `ALTER TABLE table SWITCH PARTITION` (Parser L610)
-- [ ] `ALTER TABLE table REBUILD` (Parser L620)
-- [ ] `ALTER TABLE table SET (LOCK_ESCALATION = ...)` (Parser L625)
+- [x] `ALTER TABLE table ADD column_definition` (Parser L574)
+- [x] `ALTER TABLE table ALTER COLUMN col data_type [NULL|NOT NULL]` (Parser L580)
+- [x] `ALTER TABLE table DROP COLUMN col` (Parser L585)
+- [x] `ALTER TABLE table ADD CONSTRAINT ...` (Parser L590)
+- [x] `ALTER TABLE table DROP CONSTRAINT name` (Parser L595)
+- [x] `ALTER TABLE table ENABLE|DISABLE TRIGGER` (Parser L600)
+- [x] `ALTER TABLE table CHECK|NOCHECK CONSTRAINT` (Parser L605)
+- [x] `ALTER TABLE table SWITCH PARTITION` (Parser L610)
+- [x] `ALTER TABLE table REBUILD` (Parser L620)
+- [x] `ALTER TABLE table SET (LOCK_ESCALATION = ...)` (Parser L625)
 
 ### 6.3 DROP Statements (Parser L2076-L2125)
 

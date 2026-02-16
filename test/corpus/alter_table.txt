@@ -1,0 +1,629 @@
+================================================================================
+ALTER TABLE - ADD column
+================================================================================
+ALTER TABLE dbo.Employees ADD Email VARCHAR(100) NOT NULL;
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_table
+          (full_table_name
+            (id_)
+            (id_))
+          (alter_table_add
+            (table_element
+              (column_definition
+                (id_)
+                (data_type
+                  (varchar_)
+                  (decimal_))
+                (null_notnull
+                  (null_))))))))))
+
+================================================================================
+ALTER TABLE - ADD multiple columns
+================================================================================
+ALTER TABLE Employees ADD FirstName VARCHAR(50), LastName VARCHAR(50);
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_table
+          (full_table_name
+            (id_))
+          (alter_table_add
+            (table_element
+              (column_definition
+                (id_)
+                (data_type
+                  (varchar_)
+                  (decimal_))))
+            (table_element
+              (column_definition
+                (id_)
+                (data_type
+                  (varchar_)
+                  (decimal_))))))))))
+
+================================================================================
+ALTER TABLE - ADD DEFAULT constraint with FOR
+================================================================================
+ALTER TABLE dbo.Orders ADD CONSTRAINT DF_Status DEFAULT 'Pending' FOR Status;
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_table
+          (full_table_name
+            (id_)
+            (id_))
+          (alter_table_add
+            (table_element
+              (table_constraint
+                (id_)
+                (default)
+                (expression
+                  (primitive_expression
+                    (primitive_constant
+                      (string_lit))))
+                (id_)))))))))
+
+================================================================================
+ALTER TABLE - ADD mixed columns and constraints
+================================================================================
+ALTER TABLE Products ADD Price DECIMAL(10,2), CONSTRAINT CK_Price CHECK (Price > 0);
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_table
+          (full_table_name
+            (id_))
+          (alter_table_add
+            (table_element
+              (column_definition
+                (id_)
+                (data_type
+                  (decimalty_)
+                  (decimal_)
+                  (decimal_))))
+            (table_element
+              (table_constraint
+                (id_)
+                (search_condition
+                  (predicate
+                    (expression
+                      (full_column_name
+                        (id_)))
+                    (comparison_operator)
+                    (expression
+                      (primitive_expression
+                        (primitive_constant
+                          (decimal_))))))))))))))
+
+================================================================================
+ALTER TABLE - ALTER COLUMN basic
+================================================================================
+ALTER TABLE dbo.Employees ALTER COLUMN Name VARCHAR(200);
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_table
+          (full_table_name
+            (id_)
+            (id_))
+          (alter_table_alter_column
+            (id_)
+            (data_type
+              (varchar_)
+              (decimal_))))))))
+
+================================================================================
+ALTER TABLE - ALTER COLUMN with NOT NULL
+================================================================================
+ALTER TABLE Employees ALTER COLUMN Email VARCHAR(255) NOT NULL;
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_table
+          (full_table_name
+            (id_))
+          (alter_table_alter_column
+            (id_)
+            (data_type
+              (varchar_)
+              (decimal_))
+            (null_notnull
+              (null_))))))))
+
+================================================================================
+ALTER TABLE - ALTER COLUMN with NULL
+================================================================================
+ALTER TABLE Employees ALTER COLUMN Phone VARCHAR(20) NULL;
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_table
+          (full_table_name
+            (id_))
+          (alter_table_alter_column
+            (id_)
+            (data_type
+              (varchar_)
+              (decimal_))
+            (null_notnull
+              (null_))))))))
+
+================================================================================
+ALTER TABLE - DROP COLUMN single
+================================================================================
+ALTER TABLE dbo.Employees DROP COLUMN OldColumn;
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_table
+          (full_table_name
+            (id_)
+            (id_))
+          (alter_table_drop
+            (id_)))))))
+
+================================================================================
+ALTER TABLE - DROP COLUMN multiple
+================================================================================
+ALTER TABLE Employees DROP COLUMN Col1, Col2, Col3;
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_table
+          (full_table_name
+            (id_))
+          (alter_table_drop
+            (id_)
+            (id_)
+            (id_)))))))
+
+================================================================================
+ALTER TABLE - DROP COLUMN IF EXISTS
+================================================================================
+ALTER TABLE Employees DROP COLUMN IF EXISTS OldCol;
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_table
+          (full_table_name
+            (id_))
+          (alter_table_drop
+            (id_)))))))
+
+================================================================================
+ALTER TABLE - DROP CONSTRAINT single
+================================================================================
+ALTER TABLE Orders DROP CONSTRAINT FK_Orders_Customers;
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_table
+          (full_table_name
+            (id_))
+          (alter_table_drop
+            (id_)))))))
+
+================================================================================
+ALTER TABLE - DROP CONSTRAINT multiple
+================================================================================
+ALTER TABLE Orders DROP CONSTRAINT CK_Amount, CK_Status;
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_table
+          (full_table_name
+            (id_))
+          (alter_table_drop
+            (id_)
+            (id_)))))))
+
+================================================================================
+ALTER TABLE - DROP CONSTRAINT IF EXISTS
+================================================================================
+ALTER TABLE Orders DROP CONSTRAINT IF EXISTS CK_Old;
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_table
+          (full_table_name
+            (id_))
+          (alter_table_drop
+            (id_)))))))
+
+================================================================================
+ALTER TABLE - CHECK CONSTRAINT named
+================================================================================
+ALTER TABLE Orders CHECK CONSTRAINT CK_Amount;
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_table
+          (full_table_name
+            (id_))
+          (alter_table_check_constraint
+            (id_)))))))
+
+================================================================================
+ALTER TABLE - CHECK CONSTRAINT ALL
+================================================================================
+ALTER TABLE Orders CHECK CONSTRAINT ALL;
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_table
+          (full_table_name
+            (id_))
+          (alter_table_check_constraint))))))
+
+================================================================================
+ALTER TABLE - NOCHECK CONSTRAINT named
+================================================================================
+ALTER TABLE Orders NOCHECK CONSTRAINT FK_Orders;
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_table
+          (full_table_name
+            (id_))
+          (alter_table_check_constraint
+            (id_)))))))
+
+================================================================================
+ALTER TABLE - NOCHECK CONSTRAINT ALL
+================================================================================
+ALTER TABLE Orders NOCHECK CONSTRAINT ALL;
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_table
+          (full_table_name
+            (id_))
+          (alter_table_check_constraint))))))
+
+================================================================================
+ALTER TABLE - ENABLE TRIGGER named
+================================================================================
+ALTER TABLE Orders ENABLE TRIGGER TR_Insert;
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_table
+          (full_table_name
+            (id_))
+          (alter_table_trigger
+            (id_)))))))
+
+================================================================================
+ALTER TABLE - ENABLE TRIGGER ALL
+================================================================================
+ALTER TABLE Orders ENABLE TRIGGER ALL;
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_table
+          (full_table_name
+            (id_))
+          (alter_table_trigger))))))
+
+================================================================================
+ALTER TABLE - DISABLE TRIGGER named
+================================================================================
+ALTER TABLE Orders DISABLE TRIGGER TR_Update;
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_table
+          (full_table_name
+            (id_))
+          (alter_table_trigger
+            (id_)))))))
+
+================================================================================
+ALTER TABLE - DISABLE TRIGGER ALL
+================================================================================
+ALTER TABLE Orders DISABLE TRIGGER ALL;
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_table
+          (full_table_name
+            (id_))
+          (alter_table_trigger))))))
+
+================================================================================
+ALTER TABLE - SWITCH basic
+================================================================================
+ALTER TABLE dbo.Source SWITCH TO dbo.Target;
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_table
+          (full_table_name
+            (id_)
+            (id_))
+          (alter_table_switch
+            (full_table_name
+              (id_)
+              (id_))))))))
+
+================================================================================
+ALTER TABLE - SWITCH with PARTITION
+================================================================================
+ALTER TABLE dbo.Source SWITCH PARTITION 1 TO dbo.Target PARTITION 1;
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_table
+          (full_table_name
+            (id_)
+            (id_))
+          (alter_table_switch
+            (expression
+              (primitive_expression
+                (primitive_constant
+                  (decimal_))))
+            (full_table_name
+              (id_)
+              (id_))
+            (expression
+              (primitive_expression
+                (primitive_constant
+                  (decimal_))))))))))
+
+================================================================================
+ALTER TABLE - REBUILD basic
+================================================================================
+ALTER TABLE dbo.Employees REBUILD;
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_table
+          (full_table_name
+            (id_)
+            (id_))
+          (alter_table_rebuild))))))
+
+================================================================================
+ALTER TABLE - REBUILD WITH single option
+================================================================================
+ALTER TABLE dbo.Employees REBUILD WITH (DATA_COMPRESSION = PAGE);
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_table
+          (full_table_name
+            (id_)
+            (id_))
+          (alter_table_rebuild
+            (alter_table_option
+              (id_)
+              (id_))))))))
+
+================================================================================
+ALTER TABLE - REBUILD WITH multiple options
+================================================================================
+ALTER TABLE dbo.Employees REBUILD WITH (DATA_COMPRESSION = PAGE, ONLINE = ON);
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_table
+          (full_table_name
+            (id_)
+            (id_))
+          (alter_table_rebuild
+            (alter_table_option
+              (id_)
+              (id_))
+            (alter_table_option
+              (id_))))))))
+
+================================================================================
+ALTER TABLE - SET LOCK_ESCALATION TABLE
+================================================================================
+ALTER TABLE dbo.Employees SET (LOCK_ESCALATION = TABLE);
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_table
+          (full_table_name
+            (id_)
+            (id_))
+          (alter_table_set))))))
+
+================================================================================
+ALTER TABLE - SET LOCK_ESCALATION AUTO
+================================================================================
+ALTER TABLE dbo.Employees SET (LOCK_ESCALATION = AUTO);
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_table
+          (full_table_name
+            (id_)
+            (id_))
+          (alter_table_set))))))
+
+================================================================================
+ALTER TABLE - SET LOCK_ESCALATION DISABLE
+================================================================================
+ALTER TABLE dbo.Employees SET (LOCK_ESCALATION = DISABLE);
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_table
+          (full_table_name
+            (id_)
+            (id_))
+          (alter_table_set))))))
+
+================================================================================
+ALTER TABLE - three-part name
+================================================================================
+ALTER TABLE mydb.dbo.Employees ADD Col1 INT;
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_table
+          (full_table_name
+            (id_)
+            (id_)
+            (id_))
+          (alter_table_add
+            (table_element
+              (column_definition
+                (id_)
+                (data_type
+                  (int_))))))))))
+
+================================================================================
+ALTER TABLE - CHECK CONSTRAINT multiple named
+================================================================================
+ALTER TABLE Orders CHECK CONSTRAINT CK1, CK2;
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_table
+          (full_table_name
+            (id_))
+          (alter_table_check_constraint
+            (id_)
+            (id_)))))))
+
+================================================================================
+ALTER TABLE - ENABLE TRIGGER multiple named
+================================================================================
+ALTER TABLE Orders ENABLE TRIGGER TR1, TR2, TR3;
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_table
+          (full_table_name
+            (id_))
+          (alter_table_trigger
+            (id_)
+            (id_)
+            (id_)))))))
+
+================================================================================
+ALTER TABLE - ADD FOREIGN KEY constraint
+================================================================================
+ALTER TABLE dbo.Orders ADD CONSTRAINT FK_Cust FOREIGN KEY (CustID) REFERENCES dbo.Customers(CustID);
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_table
+          (full_table_name
+            (id_)
+            (id_))
+          (alter_table_add
+            (table_element
+              (table_constraint
+                (id_)
+                (column_name_list
+                  (id_))
+                (full_table_name
+                  (id_)
+                  (id_))
+                (column_name_list
+                  (id_))))))))))

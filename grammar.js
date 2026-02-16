@@ -181,7 +181,8 @@ module.exports = grammar({
       ,$.drop_login
       ,$.drop_synonym
       ,$.drop_statistics
-      // Future: $.alter_table, $.create_index, etc.
+      ,$.alter_table
+      // Future: $.create_index, etc.
     ),
 
     //https://learn.microsoft.com/en-us/sql/t-sql/statements/alter-database-transact-sql-file-and-filegroup-options
@@ -217,6 +218,78 @@ module.exports = grammar({
     file_size: $ => seq(
       $.decimal_,
       optional(choice(token(/KB/i), token(/MB/i), token(/GB/i), token(/TB/i), token('%')))
+    ),
+
+    // =====================
+    // ALTER TABLE
+    // =====================
+
+    //https://learn.microsoft.com/en-us/sql/t-sql/statements/alter-table-transact-sql
+    alter_table: $ => seq(
+      token(/ALTER/i), token(/TABLE/i),
+      $.full_table_name,
+      choice(
+        $.alter_table_add,
+        $.alter_table_alter_column,
+        $.alter_table_drop,
+        $.alter_table_check_constraint,
+        $.alter_table_trigger,
+        $.alter_table_switch,
+        $.alter_table_rebuild,
+        $.alter_table_set,
+      )
+    ),
+
+    alter_table_add: $ => seq(
+      token(/ADD/i),
+      $.table_element, repeat(seq(',', $.table_element))
+    ),
+
+    alter_table_alter_column: $ => seq(
+      token(/ALTER/i), token(/COLUMN/i),
+      $.id_, $.data_type,
+      optional($.null_notnull),
+    ),
+
+    alter_table_drop: $ => choice(
+      seq(token(/DROP/i), token(/COLUMN/i), optional($._if_exists),
+        $.id_, repeat(seq(',', $.id_))),
+      seq(token(/DROP/i), token(/CONSTRAINT/i), optional($._if_exists),
+        $.id_, repeat(seq(',', $.id_))),
+    ),
+
+    alter_table_check_constraint: $ => seq(
+      choice(token(/CHECK/i), token(/NOCHECK/i)),
+      token(/CONSTRAINT/i),
+      choice(token(/ALL/i), seq($.id_, repeat(seq(',', $.id_)))),
+    ),
+
+    alter_table_trigger: $ => seq(
+      choice(token(/ENABLE/i), token(/DISABLE/i)),
+      token(/TRIGGER/i),
+      choice(token(/ALL/i), seq($.id_, repeat(seq(',', $.id_)))),
+    ),
+
+    alter_table_switch: $ => seq(
+      token(/SWITCH/i),
+      optional(seq(token(/PARTITION/i), $.expression)),
+      token(/TO/i), $.full_table_name,
+      optional(seq(token(/PARTITION/i), $.expression)),
+    ),
+
+    alter_table_rebuild: $ => prec.right(seq(
+      token(/REBUILD/i),
+      optional(seq(token(/WITH/i), '(', $.alter_table_option, repeat(seq(',', $.alter_table_option)), ')')),
+    )),
+
+    alter_table_set: $ => seq(
+      token(/SET/i), '(',
+      token(/LOCK_ESCALATION/i), '=', choice(token(/TABLE/i), token(/AUTO/i), token(/DISABLE/i)),
+      ')',
+    ),
+
+    alter_table_option: $ => seq(
+      $.id_, '=', choice($.id_, $.decimal_, token(/ON/i), token(/OFF/i)),
     ),
 
     // =====================
@@ -308,6 +381,7 @@ module.exports = grammar({
           token(/REFERENCES/i), $.full_table_name,
           optional(seq(token('('), $.column_name_list, token(')')))),
         seq(token(/CHECK/i), token('('), $.search_condition, token(')')),
+        seq($.default, $.expression, token(/FOR/i), $.id_),
       )
     ),
 

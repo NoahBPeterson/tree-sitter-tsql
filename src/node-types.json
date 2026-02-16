@@ -219,6 +219,194 @@
     }
   },
   {
+    "type": "alter_table",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "alter_table_add",
+          "named": true
+        },
+        {
+          "type": "alter_table_alter_column",
+          "named": true
+        },
+        {
+          "type": "alter_table_check_constraint",
+          "named": true
+        },
+        {
+          "type": "alter_table_drop",
+          "named": true
+        },
+        {
+          "type": "alter_table_rebuild",
+          "named": true
+        },
+        {
+          "type": "alter_table_set",
+          "named": true
+        },
+        {
+          "type": "alter_table_switch",
+          "named": true
+        },
+        {
+          "type": "alter_table_trigger",
+          "named": true
+        },
+        {
+          "type": "full_table_name",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "alter_table_add",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "table_element",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "alter_table_alter_column",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "data_type",
+          "named": true
+        },
+        {
+          "type": "id_",
+          "named": true
+        },
+        {
+          "type": "null_notnull",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "alter_table_check_constraint",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "id_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "alter_table_drop",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "id_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "alter_table_option",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "decimal_",
+          "named": true
+        },
+        {
+          "type": "id_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "alter_table_rebuild",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "alter_table_option",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "alter_table_set",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "alter_table_switch",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "expression",
+          "named": true
+        },
+        {
+          "type": "full_table_name",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "alter_table_trigger",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "id_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "analytic_windowed_functions",
     "named": true,
     "fields": {},
@@ -1163,6 +1351,10 @@
       "types": [
         {
           "type": "alter_database",
+          "named": true
+        },
+        {
+          "type": "alter_table",
           "named": true
         },
         {
@@ -4142,7 +4334,19 @@
           "named": true
         },
         {
+          "type": "default",
+          "named": true
+        },
+        {
+          "type": "expression",
+          "named": true
+        },
+        {
           "type": "full_table_name",
+          "named": true
+        },
+        {
+          "type": "id_",
           "named": true
         },
         {
