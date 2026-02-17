@@ -166,7 +166,18 @@ module.exports = grammar({
 
     ddl_clause: $ => choice(
       $.create_table
+      ,$.create_index
+      ,$.create_or_alter_procedure
+      ,$.create_or_alter_function
+      ,$.create_or_alter_view
+      ,$.create_or_alter_trigger
+      ,$.create_schema
+      ,$.create_type
+      ,$.create_sequence
+      ,$.create_synonym
+      ,$.truncate_table
       ,$.alter_database
+      ,$.alter_table
       ,$.drop_table
       ,$.drop_view
       ,$.drop_procedure
@@ -181,8 +192,6 @@ module.exports = grammar({
       ,$.drop_login
       ,$.drop_synonym
       ,$.drop_statistics
-      ,$.alter_table
-      // Future: $.create_index, etc.
     ),
 
     //https://learn.microsoft.com/en-us/sql/t-sql/statements/alter-database-transact-sql-file-and-filegroup-options
@@ -319,6 +328,185 @@ module.exports = grammar({
 
     // Shared helper
     _if_exists: $ => seq(token(/IF/i), token(/EXISTS/i)),
+    create_or_alter: $ => choice(
+      seq(token(/CREATE/i), optional(seq(token(/OR/i), token(/ALTER/i)))),
+      token(/ALTER/i),
+    ),
+
+    // =====================
+    // CREATE INDEX
+    // =====================
+
+    create_index: $ => prec.right(seq(
+      token(/CREATE/i),
+      optional(token(/UNIQUE/i)),
+      optional(choice(token(/CLUSTERED/i), token(/NONCLUSTERED/i))),
+      token(/INDEX/i),
+      $.id_,
+      token(/ON/i),
+      $.full_table_name,
+      '(', $.column_name_list_ordered, ')',
+      optional(seq(token(/INCLUDE/i), '(', $.column_name_list, ')')),
+      optional(seq(token(/WHERE/i), $.search_condition)),
+      optional(seq(token(/WITH/i), '(', $.alter_table_option, repeat(seq(',', $.alter_table_option)), ')')),
+      optional(seq(token(/ON/i), $.id_)),
+    )),
+
+    column_name_list_ordered: $ => seq(
+      $.id_, optional(choice(token(/ASC/i), token(/DESC/i))),
+      repeat(seq(',', $.id_, optional(choice(token(/ASC/i), token(/DESC/i))))),
+    ),
+
+    // =====================
+    // CREATE/ALTER PROCEDURE
+    // =====================
+
+    create_or_alter_procedure: $ => prec.right(seq(
+      $.create_or_alter,
+      choice(token(/PROCEDURE/i), token(/PROC/i)),
+      $.func_proc_name_server_database_schema,
+      optional(seq($.procedure_param, repeat(seq(',', $.procedure_param)))),
+      optional(seq(token(/WITH/i), $.proc_option, repeat(seq(',', $.proc_option)))),
+      token(/AS/i),
+      repeat1($.sql_clauses),
+    )),
+
+    procedure_param: $ => seq(
+      $.LOCAL_ID_,
+      $.data_type,
+      optional(token(/VARYING/i)),
+      optional(seq('=', $.expression)),
+      optional(choice($.OUTPUT, token(/READONLY/i))),
+    ),
+
+    proc_option: $ => choice(
+      token(/ENCRYPTION/i),
+      seq(token(/EXECUTE/i), token(/AS/i), choice(token(/CALLER/i), token(/SELF/i), token(/OWNER/i), STRING)),
+      token(/RECOMPILE/i),
+    ),
+
+    // =====================
+    // CREATE/ALTER FUNCTION
+    // =====================
+
+    create_or_alter_function: $ => prec.right(seq(
+      $.create_or_alter,
+      token(/FUNCTION/i),
+      $.func_proc_name_server_database_schema,
+      '(', optional(seq($.procedure_param, repeat(seq(',', $.procedure_param)))), ')',
+      $.func_return,
+      optional(seq(token(/WITH/i), $.proc_option, repeat(seq(',', $.proc_option)))),
+      token(/AS/i),
+      choice(
+        // Scalar / multi-statement TVF: BEGIN ... RETURN expr ... END
+        seq($.block_statement),
+        // Inline TVF: RETURN ( select_statement )
+        seq(token(/RETURN/i), '(', $.select_statement, ')'),
+      ),
+    )),
+
+    func_return: $ => seq(
+      token(/RETURNS/i),
+      choice(
+        // Scalar function
+        $.data_type,
+        // Inline TVF
+        token(/TABLE/i),
+        // Multi-statement TVF
+        seq($.LOCAL_ID_, token(/TABLE/i), '(', $.table_element, repeat(seq(',', $.table_element)), ')'),
+      ),
+    ),
+
+    // =====================
+    // CREATE/ALTER VIEW
+    // =====================
+
+    create_or_alter_view: $ => prec.right(seq(
+      $.create_or_alter,
+      token(/VIEW/i),
+      $.full_table_name,
+      optional(seq('(', $.column_name_list, ')')),
+      optional(seq(token(/WITH/i), $.view_attribute, repeat(seq(',', $.view_attribute)))),
+      token(/AS/i),
+      $.select_statement,
+      optional(seq(token(/WITH/i), token(/CHECK/i), token(/OPTION/i))),
+    )),
+
+    view_attribute: $ => choice(
+      token(/SCHEMABINDING/i),
+      token(/ENCRYPTION/i),
+      token(/VIEW_METADATA/i),
+    ),
+
+    // =====================
+    // CREATE/ALTER TRIGGER (DML)
+    // =====================
+
+    create_or_alter_trigger: $ => prec.right(seq(
+      $.create_or_alter,
+      token(/TRIGGER/i),
+      $.full_table_name,
+      token(/ON/i),
+      $.full_table_name,
+      choice(
+        token(/AFTER/i),
+        seq(token(/INSTEAD/i), token(/OF/i)),
+        token(/FOR/i),
+      ),
+      $.dml_trigger_operation, repeat(seq(',', $.dml_trigger_operation)),
+      optional(seq(token(/NOT/i), token(/FOR/i), token(/REPLICATION/i))),
+      token(/AS/i),
+      repeat1($.sql_clauses),
+    )),
+
+    dml_trigger_operation: $ => choice(
+      token(/INSERT/i),
+      token(/UPDATE/i),
+      token(/DELETE/i),
+    ),
+
+    // =====================
+    // Other DDL (Schema, Type, Sequence, Synonym, Truncate)
+    // =====================
+
+    create_schema: $ => seq(
+      token(/CREATE/i), token(/SCHEMA/i),
+      $.id_,
+      optional(seq(token(/AUTHORIZATION/i), $.id_)),
+    ),
+
+    create_type: $ => seq(
+      token(/CREATE/i), token(/TYPE/i),
+      $.full_table_name,
+      choice(
+        seq(token(/FROM/i), $.data_type, optional($.null_notnull)),
+        seq(token(/AS/i), token(/TABLE/i), '(', $.table_element, repeat(seq(',', $.table_element)), ')'),
+      ),
+    ),
+
+    create_sequence: $ => prec.right(seq(
+      token(/CREATE/i), token(/SEQUENCE/i),
+      $.full_table_name,
+      optional(seq(token(/AS/i), $.data_type)),
+      optional(seq(token(/START/i), token(/WITH/i), $.decimal_)),
+      optional(seq(token(/INCREMENT/i), token(/BY/i), $.decimal_)),
+      optional(choice(seq(token(/MINVALUE/i), $.decimal_), seq(token(/NO/i), token(/MINVALUE/i)))),
+      optional(choice(seq(token(/MAXVALUE/i), $.decimal_), seq(token(/NO/i), token(/MAXVALUE/i)))),
+      optional(choice(token(/CYCLE/i), seq(token(/NO/i), token(/CYCLE/i)))),
+      optional(choice(seq(token(/CACHE/i), $.decimal_), seq(token(/NO/i), token(/CACHE/i)))),
+    )),
+
+    create_synonym: $ => seq(
+      token(/CREATE/i), token(/SYNONYM/i),
+      $.full_table_name,
+      token(/FOR/i),
+      $.full_table_name,
+    ),
+
+    truncate_table: $ => seq(
+      token(/TRUNCATE/i), token(/TABLE/i),
+      $.full_table_name,
+    ),
 
     //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L1479
     create_table: $ => seq(

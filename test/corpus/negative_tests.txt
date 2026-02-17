@@ -1028,8 +1028,7 @@ SELECT * FROM t1 JOIN t2
                       (full_table_name
                         (id_))))))))))))
   (ERROR
-    (full_table_name
-      (id_))))
+    (id_)))
 
 =====================================
 ERROR JOIN ON no condition
@@ -1159,21 +1158,16 @@ SELECT * FROM t1 JOIN ON 1=1
             (query_expression
               (query_specification
                 (select)
-                (ERROR
-                  (select_list
-                    (select_list_elem
-                      (asterisk)))
-                  (table_source_item
-                    (full_table_name
-                      (id_)))
-                  (id_))
                 (select_list
                   (select_list_elem
-                    (expression_elem
-                      (expression
-                        (primitive_expression
-                          (primitive_constant
-                            (decimal_)))))))))))))))
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_))))))))))))
+  (ERROR
+    (id_)))
 
 =====================================
 ERROR INSERT INTO no table
@@ -1418,8 +1412,8 @@ MERGE INTO t
 
 -------------------------------------
 
-(tsql_file
-  (ERROR
+(ERROR
+  (full_table_name
     (id_)))
 
 =====================================
@@ -3107,18 +3101,17 @@ SELECT * FROM (SELECT * FROM t
   (select_list
     (select_list_elem
       (asterisk)))
-  (select_statement
-    (query_expression
-      (query_specification
-        (select)
-        (select_list
-          (select_list_elem
-            (asterisk)))
-        (table_sources
-          (table_source
-            (table_source_item
-              (full_table_name
-                (id_)))))))))
+  (query_expression
+    (query_specification
+      (select)
+      (select_list
+        (select_list_elem
+          (asterisk)))
+      (table_sources
+        (table_source
+          (table_source_item
+            (full_table_name
+              (id_))))))))
 
 =====================================
 ERROR PIVOT no parens
@@ -3503,21 +3496,23 @@ INSERT INTO t OUTPUT VALUES (1)
 
 -------------------------------------
 
-(ERROR
-  (full_table_name
-    (id_))
-  (output_dml_list_elem
-    (expression
-      (function_call
-        (scalar_function_name
-          (func_proc_name_database_schema
-            (func_proc_name_schema
-              (id_))))
-        (expression_list_
-          (expression
-            (primitive_expression
-              (primitive_constant
-                (decimal_)))))))))
+(tsql_file
+  (ERROR
+    (full_table_name
+      (id_))
+    (output_clause
+      (output_dml_list_elem
+        (expression
+          (function_call
+            (scalar_function_name
+              (func_proc_name_database_schema
+                (func_proc_name_schema
+                  (id_))))
+            (expression_list_
+              (expression
+                (primitive_expression
+                  (primitive_constant
+                    (decimal_)))))))))))
 
 =====================================
 ERROR OUTPUT INSERTED dot no column
@@ -3527,19 +3522,21 @@ INSERT INTO t OUTPUT INSERTED. VALUES (1)
 
 -------------------------------------
 
-(ERROR
-  (full_table_name
-    (id_))
+(tsql_file
   (ERROR
-    (output_dml_list_elem
-      (id_)))
-  (output_dml_list_elem
-    (expression
-      (bracket_expression
+    (full_table_name
+      (id_))
+    (output_clause
+      (ERROR
+        (output_dml_list_elem
+          (id_)))
+      (output_dml_list_elem
         (expression
-          (primitive_expression
-            (primitive_constant
-              (decimal_))))))))
+          (bracket_expression
+            (expression
+              (primitive_expression
+                (primitive_constant
+                  (decimal_))))))))))
 
 =====================================
 ERROR unterminated string literal
@@ -3699,3 +3696,211 @@ ALTER TABLE Orders REBUILD WITH
             (id_))
           (alter_table_rebuild)))))
   (ERROR))
+
+=====================================
+ERROR CREATE INDEX no name
+=====================================
+
+CREATE INDEX ON t (a)
+
+-------------------------------------
+
+(tsql_file
+  (ERROR
+    (id_)))
+
+=====================================
+ERROR CREATE PROCEDURE no name
+=====================================
+
+CREATE PROCEDURE AS SELECT 1
+
+-------------------------------------
+
+(tsql_file
+  (ERROR
+    (create_or_alter)
+    (id_))
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (primitive_expression
+                          (primitive_constant
+                            (decimal_)))))))))))))))
+
+=====================================
+ERROR CREATE FUNCTION no name
+=====================================
+
+CREATE FUNCTION RETURNS INT AS BEGIN RETURN 1 END
+
+-------------------------------------
+
+(tsql_file
+  (ERROR
+    (create_or_alter)
+    (id_)
+    (int_))
+  (batch
+    (sql_clauses
+      (cfl_statement
+        (block_statement
+          (sql_clauses
+            (cfl_statement
+              (return_statement
+                (expression
+                  (primitive_expression
+                    (primitive_constant
+                      (decimal_))))))))))))
+
+=====================================
+ERROR CREATE VIEW no name
+=====================================
+
+CREATE VIEW AS SELECT 1
+
+-------------------------------------
+
+(tsql_file
+  (ERROR
+    (create_or_alter)
+    (id_))
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (primitive_expression
+                          (primitive_constant
+                            (decimal_)))))))))))))))
+
+=====================================
+ERROR CREATE TRIGGER no name
+=====================================
+
+CREATE TRIGGER ON t AFTER INSERT AS SELECT 1
+
+-------------------------------------
+
+(tsql_file
+  (ERROR
+    (create_or_alter)
+    (id_))
+  (batch
+    (sql_clauses
+      (dml_clause
+        (insert_statement
+          (full_table_name
+            (id_))
+          (insert_statement_value
+            (select_statement
+              (query_expression
+                (query_specification
+                  (select)
+                  (select_list
+                    (select_list_elem
+                      (expression_elem
+                        (expression
+                          (primitive_expression
+                            (primitive_constant
+                              (decimal_))))))))))))))))
+
+=====================================
+ERROR CREATE SCHEMA no name
+=====================================
+
+CREATE SCHEMA
+
+-------------------------------------
+
+(tsql_file
+  (ERROR))
+
+=====================================
+ERROR CREATE TYPE no source
+=====================================
+
+CREATE TYPE FROM INT
+
+-------------------------------------
+
+(tsql_file
+  (ERROR
+    (id_)
+    (int_)))
+
+=====================================
+ERROR CREATE SYNONYM no target
+=====================================
+
+CREATE SYNONYM FOR dbo.t
+
+-------------------------------------
+
+(tsql_file
+  (ERROR
+    (full_table_name
+      (id_)
+      (ERROR)
+      (id_))))
+
+=====================================
+ERROR TRUNCATE no TABLE keyword
+=====================================
+
+TRUNCATE dbo.t
+
+-------------------------------------
+
+(tsql_file
+  (ERROR)
+  (execute_body_batch
+    (func_proc_name_server_database_schema
+      (func_proc_name_database_schema
+        (func_proc_name_schema
+          (id_)
+          (id_))))))
+
+=====================================
+ERROR CREATE FUNCTION no RETURNS
+=====================================
+
+CREATE FUNCTION dbo.f () RETURNS AS BEGIN RETURN 1 END
+
+-------------------------------------
+
+(tsql_file
+  (ERROR
+    (create_or_alter)
+    (func_proc_name_server_database_schema
+      (func_proc_name_database_schema
+        (func_proc_name_schema
+          (id_)
+          (id_)))))
+  (batch
+    (sql_clauses
+      (cfl_statement
+        (block_statement
+          (sql_clauses
+            (cfl_statement
+              (return_statement
+                (expression
+                  (primitive_expression
+                    (primitive_constant
+                      (decimal_))))))))))))
