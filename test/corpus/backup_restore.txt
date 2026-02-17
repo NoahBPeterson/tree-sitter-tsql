@@ -1,0 +1,379 @@
+=====================================
+BACKUP DATABASE - simple
+=====================================
+
+BACKUP DATABASE MyDB TO DISK = '/tmp/mydb.bak'
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (backup_statement
+          (id_)
+          (backup_device_spec
+            (string_lit)))))))
+
+=====================================
+BACKUP DATABASE - with options
+=====================================
+
+BACKUP DATABASE MyDB TO DISK = '/tmp/mydb.bak' WITH COMPRESSION, STATS = 10
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (backup_statement
+          (id_)
+          (backup_device_spec
+            (string_lit))
+          (WITH)
+          (backup_option
+            (id_))
+          (backup_option
+            (id_)
+            (expression
+              (primitive_expression
+                (primitive_constant
+                  (decimal_))))))))))
+
+=====================================
+BACKUP DATABASE - multiple devices
+=====================================
+
+BACKUP DATABASE MyDB TO DISK = '/tmp/mydb1.bak', DISK = '/tmp/mydb2.bak'
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (backup_statement
+          (id_)
+          (backup_device_spec
+            (string_lit))
+          (backup_device_spec
+            (string_lit)))))))
+
+=====================================
+BACKUP DATABASE - with FILE and FILEGROUP
+=====================================
+
+BACKUP DATABASE MyDB FILE = 'MyFile1', FILEGROUP = 'MyFG1' TO DISK = '/tmp/mydb.bak'
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (backup_statement
+          (id_)
+          (string_lit)
+          (string_lit)
+          (backup_device_spec
+            (string_lit)))))))
+
+=====================================
+BACKUP DATABASE - with MIRROR TO
+=====================================
+
+BACKUP DATABASE MyDB TO DISK = '/tmp/mydb.bak' MIRROR TO DISK = '/tmp/mirror.bak' WITH FORMAT
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (backup_statement
+          (id_)
+          (backup_device_spec
+            (string_lit))
+          (backup_device_spec
+            (string_lit))
+          (WITH)
+          (backup_option
+            (id_)))))))
+
+=====================================
+BACKUP DATABASE - to URL with options
+=====================================
+
+BACKUP DATABASE MyDB TO URL = 'https://account.blob.core.windows.net/backups/mydb.bak' WITH CREDENTIAL = 'MyCredential', COMPRESSION
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (backup_statement
+          (id_)
+          (backup_device_spec
+            (string_lit))
+          (WITH)
+          (backup_option
+            (id_)
+            (expression
+              (primitive_expression
+                (primitive_constant
+                  (string_lit)))))
+          (backup_option
+            (id_)))))))
+
+=====================================
+BACKUP DATABASE - DIFFERENTIAL with named options
+=====================================
+
+BACKUP DATABASE MyDB TO DISK = '/tmp/mydb.bak' WITH DIFFERENTIAL, NAME = 'Daily Diff Backup', DESCRIPTION = 'Differential backup'
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (backup_statement
+          (id_)
+          (backup_device_spec
+            (string_lit))
+          (WITH)
+          (backup_option
+            (id_))
+          (backup_option
+            (id_)
+            (expression
+              (primitive_expression
+                (primitive_constant
+                  (string_lit)))))
+          (backup_option
+            (id_)
+            (expression
+              (primitive_expression
+                (primitive_constant
+                  (string_lit))))))))))
+
+=====================================
+BACKUP LOG - simple
+=====================================
+
+BACKUP LOG MyDB TO DISK = '/tmp/mydb_log.trn'
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (backup_statement
+          (id_)
+          (backup_device_spec
+            (string_lit)))))))
+
+=====================================
+BACKUP LOG - with options
+=====================================
+
+BACKUP LOG MyDB TO DISK = '/tmp/mydb_log.trn' WITH NO_TRUNCATE, NORECOVERY
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (backup_statement
+          (id_)
+          (backup_device_spec
+            (string_lit))
+          (WITH)
+          (backup_option
+            (id_))
+          (backup_option
+            (id_)))))))
+
+=====================================
+BACKUP CERTIFICATE - without PRIVATE KEY
+=====================================
+
+BACKUP CERTIFICATE MyCert TO FILE = '/tmp/cert.cer'
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (backup_statement
+          (id_)
+          (string_lit))))))
+
+=====================================
+BACKUP CERTIFICATE - with PRIVATE KEY
+=====================================
+
+BACKUP CERTIFICATE MyCert TO FILE = '/tmp/cert.cer' WITH PRIVATE KEY (FILE = '/tmp/cert.pvk', ENCRYPTION BY PASSWORD = 'StrongP@ss1')
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (backup_statement
+          (id_)
+          (string_lit)
+          (WITH)
+          (string_lit)
+          (id_)
+          (string_lit))))))
+
+=====================================
+BACKUP MASTER KEY
+=====================================
+
+BACKUP MASTER KEY TO FILE = '/tmp/master.key' ENCRYPTION BY PASSWORD = 'StrongP@ss1'
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (backup_statement
+          (string_lit)
+          (id_)
+          (string_lit))))))
+
+=====================================
+BACKUP SERVICE MASTER KEY
+=====================================
+
+BACKUP SERVICE MASTER KEY TO FILE = '/tmp/smk.key' ENCRYPTION BY PASSWORD = 'StrongP@ss1'
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (backup_statement
+          (string_lit)
+          (id_)
+          (string_lit))))))
+
+=====================================
+RESTORE DATABASE - simple
+=====================================
+
+RESTORE DATABASE MyDB FROM DISK = '/tmp/mydb.bak'
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (restore_statement
+          (id_)
+          (backup_device_spec
+            (string_lit)))))))
+
+=====================================
+RESTORE DATABASE - with options
+=====================================
+
+RESTORE DATABASE MyDB FROM DISK = '/tmp/mydb.bak' WITH NORECOVERY, REPLACE, STATS = 5
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (restore_statement
+          (id_)
+          (backup_device_spec
+            (string_lit))
+          (WITH)
+          (backup_option
+            (id_))
+          (backup_option
+            (id_))
+          (backup_option
+            (id_)
+            (expression
+              (primitive_expression
+                (primitive_constant
+                  (decimal_))))))))))
+
+=====================================
+RESTORE LOG - with NORECOVERY
+=====================================
+
+RESTORE LOG MyDB FROM DISK = '/tmp/mydb_log.trn' WITH NORECOVERY
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (restore_statement
+          (id_)
+          (backup_device_spec
+            (string_lit))
+          (WITH)
+          (backup_option
+            (id_)))))))
+
+=====================================
+RESTORE DATABASE - multiple devices
+=====================================
+
+RESTORE DATABASE MyDB FROM DISK = '/tmp/mydb1.bak', DISK = '/tmp/mydb2.bak'
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (restore_statement
+          (id_)
+          (backup_device_spec
+            (string_lit))
+          (backup_device_spec
+            (string_lit)))))))
+
+=====================================
+RESTORE DATABASE - from URL with options
+=====================================
+
+RESTORE DATABASE MyDB FROM URL = 'https://account.blob.core.windows.net/backups/mydb.bak' WITH CREDENTIAL = 'MyCredential', REPLACE
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (restore_statement
+          (id_)
+          (backup_device_spec
+            (string_lit))
+          (WITH)
+          (backup_option
+            (id_)
+            (expression
+              (primitive_expression
+                (primitive_constant
+                  (string_lit)))))
+          (backup_option
+            (id_)))))))

@@ -494,6 +494,10 @@
       "required": true,
       "types": [
         {
+          "type": "backup_statement",
+          "named": true
+        },
+        {
           "type": "checkpoint_statement",
           "named": true
         },
@@ -519,6 +523,10 @@
         },
         {
           "type": "reconfigure_statement",
+          "named": true
+        },
+        {
+          "type": "restore_statement",
           "named": true
         },
         {
@@ -588,6 +596,71 @@
     "type": "assignment_operator",
     "named": true,
     "fields": {}
+  },
+  {
+    "type": "backup_device_spec",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "string_lit",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "backup_option",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "expression",
+          "named": true
+        },
+        {
+          "type": "id_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "backup_statement",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "WITH",
+          "named": true
+        },
+        {
+          "type": "backup_device_spec",
+          "named": true
+        },
+        {
+          "type": "backup_option",
+          "named": true
+        },
+        {
+          "type": "id_",
+          "named": true
+        },
+        {
+          "type": "string_lit",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "batch",
@@ -4317,6 +4390,33 @@
     "type": "respect_nulls_",
     "named": true,
     "fields": {}
+  },
+  {
+    "type": "restore_statement",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "WITH",
+          "named": true
+        },
+        {
+          "type": "backup_device_spec",
+          "named": true
+        },
+        {
+          "type": "backup_option",
+          "named": true
+        },
+        {
+          "type": "id_",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "return_statement",
