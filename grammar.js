@@ -192,6 +192,16 @@ module.exports = grammar({
       ,$.drop_login
       ,$.drop_synonym
       ,$.drop_statistics
+      ,$.create_login
+      ,$.alter_login
+      ,$.create_user
+      ,$.alter_user
+      ,$.create_role
+      ,$.alter_role
+      ,$.drop_role
+      ,$.create_server_role
+      ,$.alter_server_role
+      ,$.drop_server_role
     ),
 
     //https://learn.microsoft.com/en-us/sql/t-sql/statements/alter-database-transact-sql-file-and-filegroup-options
@@ -508,6 +518,99 @@ module.exports = grammar({
       $.full_table_name,
     ),
 
+    // =====================
+    // CREATE/ALTER LOGIN
+    // =====================
+
+    create_login: $ => prec.right(seq(
+      token(/CREATE/i), $.LOGIN,
+      $.id_,
+      choice(
+        seq($.WITH, $.login_option, repeat(seq(',', $.login_option))),
+        seq(token(/FROM/i), token(/WINDOWS/i),
+          optional(seq($.WITH, $.login_option, repeat(seq(',', $.login_option))))),
+      ),
+    )),
+
+    alter_login: $ => prec.right(seq(
+      token(/ALTER/i), $.LOGIN,
+      $.id_,
+      choice(
+        seq($.WITH, $.login_option, repeat(seq(',', $.login_option))),
+        token(/ENABLE/i),
+        token(/DISABLE/i),
+      ),
+    )),
+
+    login_option: $ => seq($.id_, optional(seq('=', $.expression))),
+
+    // =====================
+    // CREATE/ALTER USER
+    // =====================
+
+    create_user: $ => prec.right(seq(
+      token(/CREATE/i), $.USER,
+      $.id_,
+      optional(choice(
+        seq(token(/FOR/i), $.LOGIN, $.id_),
+        seq(token(/WITHOUT/i), $.LOGIN),
+      )),
+      optional(seq($.WITH, $.login_option, repeat(seq(',', $.login_option)))),
+    )),
+
+    alter_user: $ => prec.right(seq(
+      token(/ALTER/i), $.USER,
+      $.id_,
+      $.WITH, $.login_option, repeat(seq(',', $.login_option)),
+    )),
+
+    // =====================
+    // CREATE/ALTER/DROP ROLE
+    // =====================
+
+    create_role: $ => prec.right(seq(
+      token(/CREATE/i), token(/ROLE/i),
+      $.id_,
+      optional(seq(token(/AUTHORIZATION/i), $.id_)),
+    )),
+
+    alter_role: $ => prec.right(seq(
+      token(/ALTER/i), token(/ROLE/i),
+      $.id_,
+      choice(
+        seq(token(/ADD/i), token(/MEMBER/i), $.id_),
+        seq(token(/DROP/i), token(/MEMBER/i), $.id_),
+        seq($.WITH, token(/NAME/i), '=', $.id_),
+      ),
+    )),
+
+    drop_role: $ => seq(
+      token(/DROP/i), token(/ROLE/i), optional($._if_exists), $.id_,
+    ),
+
+    // =====================
+    // CREATE/ALTER/DROP SERVER ROLE
+    // =====================
+
+    create_server_role: $ => prec.right(seq(
+      token(/CREATE/i), token(/SERVER/i), token(/ROLE/i),
+      $.id_,
+      optional(seq(token(/AUTHORIZATION/i), $.id_)),
+    )),
+
+    alter_server_role: $ => prec.right(seq(
+      token(/ALTER/i), token(/SERVER/i), token(/ROLE/i),
+      $.id_,
+      choice(
+        seq(token(/ADD/i), token(/MEMBER/i), $.id_),
+        seq(token(/DROP/i), token(/MEMBER/i), $.id_),
+      ),
+    )),
+
+    drop_server_role: $ => seq(
+      token(/DROP/i), token(/SERVER/i), token(/ROLE/i), $.id_,
+    ),
+
     //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L1479
     create_table: $ => seq(
       token(/CREATE/i), token(/TABLE/i),
@@ -657,6 +760,9 @@ module.exports = grammar({
       ,$.dbcc_statement
       ,$.backup_statement
       ,$.restore_statement
+      ,$.grant_statement
+      ,$.deny_statement
+      ,$.revoke_statement
       //TODO https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L350
     ),
 
@@ -856,6 +962,47 @@ module.exports = grammar({
     backup_option: $ => seq(
       $.id_, optional(seq('=', $.expression)),
     ),
+
+    // =====================
+    // GRANT / DENY / REVOKE
+    // =====================
+
+    grant_statement: $ => prec.right(seq(
+      token(/GRANT/i),
+      $.id_, repeat(seq(',', $.id_)),
+      optional(seq(token(/ON/i),
+        optional(seq($.id_, DOUBLE_COLON)),
+        $.full_table_name)),
+      token(/TO/i),
+      $.id_, repeat(seq(',', $.id_)),
+      optional(seq($.WITH, token(/GRANT/i), token(/OPTION/i))),
+      optional(seq(token(/AS/i), $.id_)),
+    )),
+
+    deny_statement: $ => prec.right(seq(
+      token(/DENY/i),
+      $.id_, repeat(seq(',', $.id_)),
+      optional(seq(token(/ON/i),
+        optional(seq($.id_, DOUBLE_COLON)),
+        $.full_table_name)),
+      token(/TO/i),
+      $.id_, repeat(seq(',', $.id_)),
+      optional(token(/CASCADE/i)),
+      optional(seq(token(/AS/i), $.id_)),
+    )),
+
+    revoke_statement: $ => prec.right(seq(
+      token(/REVOKE/i),
+      optional(seq(token(/GRANT/i), token(/OPTION/i), token(/FOR/i))),
+      $.id_, repeat(seq(',', $.id_)),
+      optional(seq(token(/ON/i),
+        optional(seq($.id_, DOUBLE_COLON)),
+        $.full_table_name)),
+      choice(token(/TO/i), token(/FROM/i)),
+      $.id_, repeat(seq(',', $.id_)),
+      optional(token(/CASCADE/i)),
+      optional(seq(token(/AS/i), $.id_)),
+    )),
 
     // https://msdn.microsoft.com/en-us/library/ms188332.aspx
     // https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L3141

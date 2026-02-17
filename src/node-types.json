@@ -219,6 +219,67 @@
     }
   },
   {
+    "type": "alter_login",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "LOGIN",
+          "named": true
+        },
+        {
+          "type": "WITH",
+          "named": true
+        },
+        {
+          "type": "id_",
+          "named": true
+        },
+        {
+          "type": "login_option",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "alter_role",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "WITH",
+          "named": true
+        },
+        {
+          "type": "id_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "alter_server_role",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "id_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "alter_table",
     "named": true,
     "fields": {},
@@ -407,6 +468,33 @@
     }
   },
   {
+    "type": "alter_user",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "USER",
+          "named": true
+        },
+        {
+          "type": "WITH",
+          "named": true
+        },
+        {
+          "type": "id_",
+          "named": true
+        },
+        {
+          "type": "login_option",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "analytic_windowed_functions",
     "named": true,
     "fields": {},
@@ -514,7 +602,15 @@
           "named": true
         },
         {
+          "type": "deny_statement",
+          "named": true
+        },
+        {
           "type": "execute_statement",
+          "named": true
+        },
+        {
+          "type": "grant_statement",
           "named": true
         },
         {
@@ -527,6 +623,10 @@
         },
         {
           "type": "restore_statement",
+          "named": true
+        },
+        {
+          "type": "revoke_statement",
           "named": true
         },
         {
@@ -1212,6 +1312,33 @@
     }
   },
   {
+    "type": "create_login",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "LOGIN",
+          "named": true
+        },
+        {
+          "type": "WITH",
+          "named": true
+        },
+        {
+          "type": "id_",
+          "named": true
+        },
+        {
+          "type": "login_option",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "create_or_alter",
     "named": true,
     "fields": {}
@@ -1345,6 +1472,21 @@
     }
   },
   {
+    "type": "create_role",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "id_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "create_schema",
     "named": true,
     "fields": {},
@@ -1377,6 +1519,21 @@
         },
         {
           "type": "full_table_name",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "create_server_role",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "id_",
           "named": true
         }
       ]
@@ -1438,6 +1595,37 @@
         },
         {
           "type": "table_element",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "create_user",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "LOGIN",
+          "named": true
+        },
+        {
+          "type": "USER",
+          "named": true
+        },
+        {
+          "type": "WITH",
+          "named": true
+        },
+        {
+          "type": "id_",
+          "named": true
+        },
+        {
+          "type": "login_option",
           "named": true
         }
       ]
@@ -1782,11 +1970,31 @@
           "named": true
         },
         {
+          "type": "alter_login",
+          "named": true
+        },
+        {
+          "type": "alter_role",
+          "named": true
+        },
+        {
+          "type": "alter_server_role",
+          "named": true
+        },
+        {
           "type": "alter_table",
           "named": true
         },
         {
+          "type": "alter_user",
+          "named": true
+        },
+        {
           "type": "create_index",
+          "named": true
+        },
+        {
+          "type": "create_login",
           "named": true
         },
         {
@@ -1806,11 +2014,19 @@
           "named": true
         },
         {
+          "type": "create_role",
+          "named": true
+        },
+        {
           "type": "create_schema",
           "named": true
         },
         {
           "type": "create_sequence",
+          "named": true
+        },
+        {
+          "type": "create_server_role",
           "named": true
         },
         {
@@ -1823,6 +2039,10 @@
         },
         {
           "type": "create_type",
+          "named": true
+        },
+        {
+          "type": "create_user",
           "named": true
         },
         {
@@ -1846,11 +2066,19 @@
           "named": true
         },
         {
+          "type": "drop_role",
+          "named": true
+        },
+        {
           "type": "drop_schema",
           "named": true
         },
         {
           "type": "drop_sequence",
+          "named": true
+        },
+        {
+          "type": "drop_server_role",
           "named": true
         },
         {
@@ -1985,6 +2213,25 @@
         },
         {
           "type": "local_id_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "deny_statement",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "full_table_name",
+          "named": true
+        },
+        {
+          "type": "id_",
           "named": true
         }
       ]
@@ -2135,6 +2382,21 @@
     }
   },
   {
+    "type": "drop_role",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "id_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "drop_schema",
     "named": true,
     "fields": {},
@@ -2159,6 +2421,21 @@
       "types": [
         {
           "type": "full_table_name",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "drop_server_role",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "id_",
           "named": true
         }
       ]
@@ -3053,6 +3330,29 @@
     }
   },
   {
+    "type": "grant_statement",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "WITH",
+          "named": true
+        },
+        {
+          "type": "full_table_name",
+          "named": true
+        },
+        {
+          "type": "id_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "group_by_item",
     "named": true,
     "fields": {},
@@ -3556,6 +3856,25 @@
       "types": [
         {
           "type": "expression",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "login_option",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "expression",
+          "named": true
+        },
+        {
+          "type": "id_",
           "named": true
         }
       ]
@@ -4428,6 +4747,25 @@
       "types": [
         {
           "type": "expression",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "revoke_statement",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "full_table_name",
+          "named": true
+        },
+        {
+          "type": "id_",
           "named": true
         }
       ]

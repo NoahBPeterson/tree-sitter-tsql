@@ -1,0 +1,555 @@
+=====================================
+GRANT SELECT ON table TO user
+=====================================
+
+GRANT SELECT ON dbo.MyTable TO MyUser
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (grant_statement
+          (id_)
+          (full_table_name
+            (id_)
+            (id_))
+          (id_))))))
+
+=====================================
+GRANT multiple permissions on schema.table
+=====================================
+
+GRANT SELECT, INSERT, UPDATE ON Sales.Orders TO AppUser
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (grant_statement
+          (id_)
+          (id_)
+          (id_)
+          (full_table_name
+            (id_)
+            (id_))
+          (id_))))))
+
+=====================================
+GRANT ON SCHEMA::name
+=====================================
+
+GRANT SELECT ON SCHEMA::Sales TO ReportUser
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (grant_statement
+          (id_)
+          (id_)
+          (full_table_name
+            (id_))
+          (id_))))))
+
+=====================================
+GRANT EXECUTE WITH GRANT OPTION
+=====================================
+
+GRANT EXECUTE ON dbo.MyProc TO AppUser WITH GRANT OPTION
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (grant_statement
+          (id_)
+          (full_table_name
+            (id_)
+            (id_))
+          (id_)
+          (WITH))))))
+
+=====================================
+GRANT to multiple principals
+=====================================
+
+GRANT SELECT TO user1, user2
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (grant_statement
+          (id_)
+          (id_)
+          (id_))))))
+
+=====================================
+GRANT CONNECT
+=====================================
+
+GRANT CONNECT TO AppUser
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (grant_statement
+          (id_)
+          (id_))))))
+
+=====================================
+DENY SELECT ON table
+=====================================
+
+DENY SELECT ON dbo.SecretTable TO LimitedUser
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (deny_statement
+          (id_)
+          (full_table_name
+            (id_)
+            (id_))
+          (id_))))))
+
+=====================================
+DENY multiple permissions CASCADE
+=====================================
+
+DENY INSERT, DELETE ON Sales.Orders TO ReadOnlyUser CASCADE
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (deny_statement
+          (id_)
+          (id_)
+          (full_table_name
+            (id_)
+            (id_))
+          (id_))))))
+
+=====================================
+REVOKE SELECT FROM user
+=====================================
+
+REVOKE SELECT ON dbo.MyTable FROM AppUser
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (revoke_statement
+          (id_)
+          (full_table_name
+            (id_)
+            (id_))
+          (id_))))))
+
+=====================================
+REVOKE GRANT OPTION FOR CASCADE
+=====================================
+
+REVOKE GRANT OPTION FOR SELECT ON dbo.MyTable FROM AppUser CASCADE
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (revoke_statement
+          (id_)
+          (full_table_name
+            (id_)
+            (id_))
+          (id_))))))
+
+=====================================
+REVOKE with TO variant
+=====================================
+
+REVOKE SELECT ON dbo.MyTable TO AppUser
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (revoke_statement
+          (id_)
+          (full_table_name
+            (id_)
+            (id_))
+          (id_))))))
+
+=====================================
+CREATE LOGIN with password
+=====================================
+
+CREATE LOGIN MyLogin WITH PASSWORD = 'P@ssw0rd!'
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_login
+          (LOGIN)
+          (id_)
+          (WITH)
+          (login_option
+            (id_)
+            (expression
+              (primitive_expression
+                (primitive_constant
+                  (string_lit))))))))))
+
+=====================================
+CREATE LOGIN with multiple options
+=====================================
+
+CREATE LOGIN MyLogin WITH PASSWORD = 'P@ss', DEFAULT_DATABASE = MyDB
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_login
+          (LOGIN)
+          (id_)
+          (WITH)
+          (login_option
+            (id_)
+            (expression
+              (primitive_expression
+                (primitive_constant
+                  (string_lit)))))
+          (login_option
+            (id_)
+            (expression
+              (full_column_name
+                (id_)))))))))
+
+=====================================
+CREATE LOGIN FROM WINDOWS
+=====================================
+
+CREATE LOGIN [DOMAIN\User] FROM WINDOWS
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_login
+          (LOGIN)
+          (id_))))))
+
+=====================================
+CREATE LOGIN FROM WINDOWS WITH options
+=====================================
+
+CREATE LOGIN [DOMAIN\User] FROM WINDOWS WITH DEFAULT_DATABASE = MyDB
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_login
+          (LOGIN)
+          (id_)
+          (WITH)
+          (login_option
+            (id_)
+            (expression
+              (full_column_name
+                (id_)))))))))
+
+=====================================
+ALTER LOGIN WITH PASSWORD
+=====================================
+
+ALTER LOGIN MyLogin WITH PASSWORD = 'NewP@ss'
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_login
+          (LOGIN)
+          (id_)
+          (WITH)
+          (login_option
+            (id_)
+            (expression
+              (primitive_expression
+                (primitive_constant
+                  (string_lit))))))))))
+
+=====================================
+ALTER LOGIN ENABLE
+=====================================
+
+ALTER LOGIN MyLogin ENABLE
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_login
+          (LOGIN)
+          (id_))))))
+
+=====================================
+ALTER LOGIN DISABLE
+=====================================
+
+ALTER LOGIN MyLogin DISABLE
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_login
+          (LOGIN)
+          (id_))))))
+
+=====================================
+CREATE USER FOR LOGIN WITH options
+=====================================
+
+CREATE USER MyUser FOR LOGIN MyLogin WITH DEFAULT_SCHEMA = dbo
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_user
+          (USER)
+          (id_)
+          (LOGIN)
+          (id_)
+          (WITH)
+          (login_option
+            (id_)
+            (expression
+              (full_column_name
+                (id_)))))))))
+
+=====================================
+CREATE USER WITHOUT LOGIN
+=====================================
+
+CREATE USER MyUser WITHOUT LOGIN
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_user
+          (USER)
+          (id_)
+          (LOGIN))))))
+
+=====================================
+ALTER USER WITH options
+=====================================
+
+ALTER USER MyUser WITH DEFAULT_SCHEMA = Sales
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_user
+          (USER)
+          (id_)
+          (WITH)
+          (login_option
+            (id_)
+            (expression
+              (full_column_name
+                (id_)))))))))
+
+=====================================
+CREATE ROLE simple
+=====================================
+
+CREATE ROLE Readers
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_role
+          (id_))))))
+
+=====================================
+CREATE ROLE with AUTHORIZATION
+=====================================
+
+CREATE ROLE Readers AUTHORIZATION dbo
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_role
+          (id_)
+          (id_))))))
+
+=====================================
+ALTER ROLE ADD MEMBER
+=====================================
+
+ALTER ROLE Readers ADD MEMBER MyUser
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_role
+          (id_)
+          (id_))))))
+
+=====================================
+ALTER ROLE DROP MEMBER
+=====================================
+
+ALTER ROLE Readers DROP MEMBER MyUser
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_role
+          (id_)
+          (id_))))))
+
+=====================================
+ALTER ROLE WITH NAME
+=====================================
+
+ALTER ROLE OldName WITH NAME = NewName
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_role
+          (id_)
+          (WITH)
+          (id_))))))
+
+=====================================
+DROP ROLE IF EXISTS
+=====================================
+
+DROP ROLE IF EXISTS TempRole
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_role
+          (id_))))))
+
+=====================================
+CREATE SERVER ROLE
+=====================================
+
+CREATE SERVER ROLE AppAdmins
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_server_role
+          (id_))))))
+
+=====================================
+ALTER SERVER ROLE ADD MEMBER
+=====================================
+
+ALTER SERVER ROLE AppAdmins ADD MEMBER MyLogin
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_server_role
+          (id_)
+          (id_))))))
+
+=====================================
+DROP SERVER ROLE
+=====================================
+
+DROP SERVER ROLE AppAdmins
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_server_role
+          (id_))))))
