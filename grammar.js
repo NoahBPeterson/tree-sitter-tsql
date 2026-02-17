@@ -655,6 +655,8 @@ module.exports = grammar({
       ,$.shutdown_statement
       ,$.checkpoint_statement
       ,$.dbcc_statement
+      ,$.backup_statement
+      ,$.restore_statement
       //TODO https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L350
     ),
 
@@ -783,6 +785,77 @@ module.exports = grammar({
       optional(seq('(', optional(seq($.expression, repeat(seq(',', $.expression)))), ')')),
       optional(seq($.WITH, $.id_, repeat(seq(',', $.id_)))),
     )),
+
+    backup_statement: $ => prec.right(seq(
+      token(/BACKUP/i),
+      choice(
+        // BACKUP DATABASE db [FILE/FILEGROUP specs] TO device [MIRROR TO] [WITH]
+        seq(token(/DATABASE/i), $.id_,
+          optional($._backup_filespec),
+          $._backup_to_clause,
+          optional($._backup_mirror_clause),
+          optional($._backup_with_clause)),
+        // BACKUP LOG db TO device [MIRROR TO] [WITH]
+        seq(token(/LOG/i), $.id_,
+          $._backup_to_clause,
+          optional($._backup_mirror_clause),
+          optional($._backup_with_clause)),
+        // BACKUP CERTIFICATE name TO FILE = 'path' [WITH PRIVATE KEY (...)]
+        seq(token(/CERTIFICATE/i), $.id_,
+          token(/TO/i), token(/FILE/i), '=', $.string_lit,
+          optional(seq($.WITH, token(/PRIVATE/i), token(/KEY/i), '(',
+            token(/FILE/i), '=', $.string_lit, ',',
+            token(/ENCRYPTION/i), token(/BY/i), $.id_, '=', $.string_lit,
+            optional(seq(',', $.id_, token(/BY/i), $.id_, '=', $.string_lit)),
+          ')'))),
+        // BACKUP MASTER KEY TO FILE = 'path' ENCRYPTION BY PASSWORD = 'pwd'
+        seq(token(/MASTER/i), token(/KEY/i),
+          token(/TO/i), token(/FILE/i), '=', $.string_lit,
+          token(/ENCRYPTION/i), token(/BY/i), $.id_, '=', $.string_lit),
+        // BACKUP SERVICE MASTER KEY TO FILE = 'path' ENCRYPTION BY PASSWORD = 'pwd'
+        seq(token(/SERVICE/i), token(/MASTER/i), token(/KEY/i),
+          token(/TO/i), token(/FILE/i), '=', $.string_lit,
+          token(/ENCRYPTION/i), token(/BY/i), $.id_, '=', $.string_lit),
+      ),
+    )),
+
+    _backup_filespec: $ => seq(
+      choice(token(/FILE/i), token(/FILEGROUP/i)), '=', $.string_lit,
+      repeat(seq(',', choice(token(/FILE/i), token(/FILEGROUP/i)), '=', $.string_lit)),
+    ),
+
+    restore_statement: $ => prec.right(seq(
+      token(/RESTORE/i),
+      choice(token(/DATABASE/i), token(/LOG/i)),
+      $.id_,
+      token(/FROM/i),
+      $.backup_device_spec, repeat(seq(',', $.backup_device_spec)),
+      optional($._backup_with_clause),
+    )),
+
+    backup_device_spec: $ => seq(
+      choice(token(/DISK/i), token(/TAPE/i), token(/URL/i)),
+      '=', $.string_lit,
+    ),
+
+    _backup_to_clause: $ => seq(
+      token(/TO/i),
+      $.backup_device_spec, repeat(seq(',', $.backup_device_spec)),
+    ),
+
+    _backup_mirror_clause: $ => seq(
+      token(/MIRROR/i), token(/TO/i),
+      $.backup_device_spec, repeat(seq(',', $.backup_device_spec)),
+    ),
+
+    _backup_with_clause: $ => seq(
+      $.WITH,
+      $.backup_option, repeat(seq(',', $.backup_option)),
+    ),
+
+    backup_option: $ => seq(
+      $.id_, optional(seq('=', $.expression)),
+    ),
 
     // https://msdn.microsoft.com/en-us/library/ms188332.aspx
     // https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L3141
