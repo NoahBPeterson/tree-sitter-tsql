@@ -5468,6 +5468,26 @@
         {
           "type": "SYMBOL",
           "name": "cursor_statement"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "kill_statement"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "reconfigure_statement"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "shutdown_statement"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "checkpoint_statement"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "dbcc_statement"
         }
       ]
     },
@@ -6599,6 +6619,248 @@
           ]
         }
       ]
+    },
+    "kill_statement": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "TOKEN",
+          "content": {
+            "type": "PATTERN",
+            "value": "KILL",
+            "flags": "i"
+          }
+        },
+        {
+          "type": "SYMBOL",
+          "name": "expression"
+        }
+      ]
+    },
+    "reconfigure_statement": {
+      "type": "PREC_RIGHT",
+      "value": 0,
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "TOKEN",
+            "content": {
+              "type": "PATTERN",
+              "value": "RECONFIGURE",
+              "flags": "i"
+            }
+          },
+          {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "WITH"
+                  },
+                  {
+                    "type": "TOKEN",
+                    "content": {
+                      "type": "PATTERN",
+                      "value": "OVERRIDE",
+                      "flags": "i"
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "BLANK"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "shutdown_statement": {
+      "type": "PREC_RIGHT",
+      "value": 0,
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "TOKEN",
+            "content": {
+              "type": "PATTERN",
+              "value": "SHUTDOWN",
+              "flags": "i"
+            }
+          },
+          {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "WITH"
+                  },
+                  {
+                    "type": "TOKEN",
+                    "content": {
+                      "type": "PATTERN",
+                      "value": "NOWAIT",
+                      "flags": "i"
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "BLANK"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "checkpoint_statement": {
+      "type": "PREC_RIGHT",
+      "value": 0,
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "TOKEN",
+            "content": {
+              "type": "PATTERN",
+              "value": "CHECKPOINT",
+              "flags": "i"
+            }
+          },
+          {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "decimal_"
+              },
+              {
+                "type": "BLANK"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "dbcc_statement": {
+      "type": "PREC_RIGHT",
+      "value": 0,
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "TOKEN",
+            "content": {
+              "type": "PATTERN",
+              "value": "DBCC",
+              "flags": "i"
+            }
+          },
+          {
+            "type": "SYMBOL",
+            "name": "id_"
+          },
+          {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "STRING",
+                    "value": "("
+                  },
+                  {
+                    "type": "CHOICE",
+                    "members": [
+                      {
+                        "type": "SEQ",
+                        "members": [
+                          {
+                            "type": "SYMBOL",
+                            "name": "expression"
+                          },
+                          {
+                            "type": "REPEAT",
+                            "content": {
+                              "type": "SEQ",
+                              "members": [
+                                {
+                                  "type": "STRING",
+                                  "value": ","
+                                },
+                                {
+                                  "type": "SYMBOL",
+                                  "name": "expression"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "type": "BLANK"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "STRING",
+                    "value": ")"
+                  }
+                ]
+              },
+              {
+                "type": "BLANK"
+              }
+            ]
+          },
+          {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "WITH"
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "id_"
+                  },
+                  {
+                    "type": "REPEAT",
+                    "content": {
+                      "type": "SEQ",
+                      "members": [
+                        {
+                          "type": "STRING",
+                          "value": ","
+                        },
+                        {
+                          "type": "SYMBOL",
+                          "name": "id_"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "BLANK"
+              }
+            ]
+          }
+        ]
+      }
     },
     "execute_statement": {
       "type": "PREC_LEFT",
@@ -20518,6 +20780,92 @@
         {
           "type": "SYMBOL",
           "name": "smalldatetime_"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_simple_other_type"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "hierachyid_"
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "xml_dt_"
+            },
+            {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "SEQ",
+                  "members": [
+                    {
+                      "type": "STRING",
+                      "value": "("
+                    },
+                    {
+                      "type": "SYMBOL",
+                      "name": "id_"
+                    },
+                    {
+                      "type": "STRING",
+                      "value": ")"
+                    }
+                  ]
+                },
+                {
+                  "type": "BLANK"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "SYMBOL",
+          "name": "cursor_dt_"
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "table_type_dt_"
+            },
+            {
+              "type": "STRING",
+              "value": "("
+            },
+            {
+              "type": "SYMBOL",
+              "name": "table_element"
+            },
+            {
+              "type": "REPEAT",
+              "content": {
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "TOKEN",
+                    "content": {
+                      "type": "STRING",
+                      "value": ","
+                    }
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "table_element"
+                  }
+                ]
+              }
+            },
+            {
+              "type": "STRING",
+              "value": ")"
+            }
+          ]
         }
       ]
     },
@@ -20726,6 +21074,73 @@
       "content": {
         "type": "PATTERN",
         "value": "SMALLDATETIME",
+        "flags": "i"
+      }
+    },
+    "_simple_other_type": {
+      "type": "TOKEN",
+      "content": {
+        "type": "CHOICE",
+        "members": [
+          {
+            "type": "PATTERN",
+            "value": "UNIQUEIDENTIFIER",
+            "flags": "i"
+          },
+          {
+            "type": "PATTERN",
+            "value": "SQL_VARIANT",
+            "flags": "i"
+          },
+          {
+            "type": "PATTERN",
+            "value": "GEOGRAPHY",
+            "flags": "i"
+          },
+          {
+            "type": "PATTERN",
+            "value": "GEOMETRY",
+            "flags": "i"
+          },
+          {
+            "type": "PATTERN",
+            "value": "ROWVERSION",
+            "flags": "i"
+          },
+          {
+            "type": "PATTERN",
+            "value": "TIMESTAMP",
+            "flags": "i"
+          },
+          {
+            "type": "PATTERN",
+            "value": "SYSNAME",
+            "flags": "i"
+          }
+        ]
+      }
+    },
+    "xml_dt_": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PATTERN",
+        "value": "XML",
+        "flags": "i"
+      }
+    },
+    "cursor_dt_": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PATTERN",
+        "value": "CURSOR",
+        "flags": "i"
+      }
+    },
+    "table_type_dt_": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PATTERN",
+        "value": "TABLE",
         "flags": "i"
       }
     },

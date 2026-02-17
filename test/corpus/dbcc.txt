@@ -1,0 +1,167 @@
+=====================================
+DBCC no arguments
+=====================================
+
+DBCC CHECKDB
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (dbcc_statement
+          (id_))))))
+
+=====================================
+DBCC single string argument
+=====================================
+
+DBCC CHECKDB ('MyDatabase')
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (dbcc_statement
+          (id_)
+          (expression
+            (primitive_expression
+              (primitive_constant
+                (string_lit)))))))))
+
+=====================================
+DBCC multiple arguments
+=====================================
+
+DBCC SHRINKFILE (1, 100)
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (dbcc_statement
+          (id_)
+          (expression
+            (primitive_expression
+              (primitive_constant
+                (decimal_))))
+          (expression
+            (primitive_expression
+              (primitive_constant
+                (decimal_)))))))))
+
+=====================================
+DBCC WITH option
+=====================================
+
+DBCC FREEPROCCACHE WITH NO_INFOMSGS
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (dbcc_statement
+          (id_)
+          (WITH)
+          (id_))))))
+
+=====================================
+DBCC with args and multiple WITH options
+=====================================
+
+DBCC CHECKDB ('MyDB') WITH NO_INFOMSGS, ALL_ERRORMSGS
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (dbcc_statement
+          (id_)
+          (expression
+            (primitive_expression
+              (primitive_constant
+                (string_lit))))
+          (WITH)
+          (id_)
+          (id_))))))
+
+=====================================
+DBCC DROPCLEANBUFFERS no args
+=====================================
+
+DBCC DROPCLEANBUFFERS
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (dbcc_statement
+          (id_))))))
+
+=====================================
+DBCC UPDATEUSAGE with numeric arg
+=====================================
+
+DBCC UPDATEUSAGE (0)
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (dbcc_statement
+          (id_)
+          (expression
+            (primitive_expression
+              (primitive_constant
+                (decimal_)))))))))
+
+=====================================
+DBCC SHOW_STATISTICS with two string args
+=====================================
+
+DBCC SHOW_STATISTICS ('dbo.Orders', 'IX_Date')
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (dbcc_statement
+          (id_)
+          (expression
+            (primitive_expression
+              (primitive_constant
+                (string_lit))))
+          (expression
+            (primitive_expression
+              (primitive_constant
+                (string_lit)))))))))
+
+=====================================
+DBCC CHECKALLOC with empty parens
+=====================================
+
+DBCC CHECKALLOC ()
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (dbcc_statement
+          (id_))))))

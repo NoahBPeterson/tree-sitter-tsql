@@ -650,6 +650,11 @@ module.exports = grammar({
       ,$.use_statement
       ,$.transaction_statement
       ,$.cursor_statement
+      ,$.kill_statement
+      ,$.reconfigure_statement
+      ,$.shutdown_statement
+      ,$.checkpoint_statement
+      ,$.dbcc_statement
       //TODO https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L350
     ),
 
@@ -749,6 +754,35 @@ module.exports = grammar({
       ,seq(token(/CLOSE/i), $.id_)
       ,seq(token(/DEALLOCATE/i), $.id_)
     ),
+
+    //https://learn.microsoft.com/en-us/sql/t-sql/language-elements/kill-transact-sql
+    kill_statement: $ => seq(token(/KILL/i), $.expression),
+
+    //https://learn.microsoft.com/en-us/sql/t-sql/language-elements/reconfigure-transact-sql
+    reconfigure_statement: $ => prec.right(seq(
+      token(/RECONFIGURE/i),
+      optional(seq($.WITH, token(/OVERRIDE/i))),
+    )),
+
+    //https://learn.microsoft.com/en-us/sql/t-sql/language-elements/shutdown-transact-sql
+    shutdown_statement: $ => prec.right(seq(
+      token(/SHUTDOWN/i),
+      optional(seq($.WITH, token(/NOWAIT/i))),
+    )),
+
+    //https://learn.microsoft.com/en-us/sql/t-sql/language-elements/checkpoint-transact-sql
+    checkpoint_statement: $ => prec.right(seq(
+      token(/CHECKPOINT/i),
+      optional($.decimal_),
+    )),
+
+    //https://learn.microsoft.com/en-us/sql/t-sql/database-console-commands/dbcc-transact-sql
+    dbcc_statement: $ => prec.right(seq(
+      token(/DBCC/i),
+      $.id_,
+      optional(seq('(', optional(seq($.expression, repeat(seq(',', $.expression)))), ')')),
+      optional(seq($.WITH, $.id_, repeat(seq(',', $.id_)))),
+    )),
 
     // https://msdn.microsoft.com/en-us/library/ms188332.aspx
     // https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L3141

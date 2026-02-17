@@ -646,38 +646,24 @@
 - [x] Unicode strings — NCHAR, NVARCHAR, NTEXT
 - [x] Binary strings — BINARY, VARBINARY, IMAGE
 - [x] Date/Time — DATE, TIME, DATETIME2, DATETIMEOFFSET, DATETIME, SMALLDATETIME
-- [ ] `CURSOR` type
-- [ ] `HIERARCHYID` type
-- [ ] `SQL_VARIANT` type
-- [ ] `TABLE` type (for table-valued parameters)
-- [ ] `XML [(schema_collection)]` type
-- [ ] `GEOGRAPHY` type
-- [ ] `GEOMETRY` type
-- [ ] `ROWVERSION` type
-- [ ] `TIMESTAMP` type
-- [ ] `UNIQUEIDENTIFIER` type
-- [ ] `SYSNAME` type
+- [x] `CURSOR` type
+- [x] `HIERARCHYID` type
+- [x] `SQL_VARIANT` type
+- [x] `TABLE` type (for table-valued parameters)
+- [x] `XML [(schema_collection)]` type
+- [x] `GEOGRAPHY` type
+- [x] `GEOMETRY` type
+- [x] `ROWVERSION` type
+- [x] `TIMESTAMP` type
+- [x] `UNIQUEIDENTIFIER` type
+- [x] `SYSNAME` type
 - [ ] User-defined types (reference by name)
 - [ ] `DOUBLE PRECISION` synonym
 - [ ] `IDENTITY(seed, increment)` specification
 
 ### 7.2 DBCC Commands (Parser L3635-L3652)
 
-- [ ] `DBCC CHECKALLOC` (Parser L3637)
-- [ ] `DBCC CHECKCATALOG` (Parser L3638)
-- [ ] `DBCC CHECKCONSTRAINTS` (Parser L3639)
-- [ ] `DBCC CHECKDB` (Parser L3640)
-- [ ] `DBCC CHECKFILEGROUP` (Parser L3641)
-- [ ] `DBCC CHECKTABLE` (Parser L3642)
-- [ ] `DBCC CLEANTABLE` (Parser L3643)
-- [ ] `DBCC CLONEDATABASE` (Parser L3644)
-- [ ] `DBCC DBREINDEX` (Parser L3645)
-- [ ] `DBCC DLL_FREE` (free DLL) (Parser L3646)
-- [ ] `DBCC DROPCLEANBUFFERS` (Parser L3647)
-- [ ] `DBCC PDW_SHOWSPACEUSED` (Parser L3648)
-- [ ] `DBCC PROCCACHE` (Parser L3649)
-- [ ] `DBCC SHOWCONTIG` (Parser L3650)
-- [ ] `DBCC SHRINKLOG` (Parser L3652)
+- [x] `DBCC` generic rule — `DBCC command [(args)] [WITH options]` (covers all DBCC commands)
 
 ### 7.3 Backup/Restore (Parser L241, L3008-L3117)
 
@@ -719,10 +705,10 @@
 ### 7.7 another_statement — remaining (Parser L350-L368)
 
 - [x] `execute_statement` (grammar.js L135)
-- [ ] `kill_statement` — `KILL session_id` (Parser L359)
-- [ ] `reconfigure_statement` — `RECONFIGURE [WITH OVERRIDE]` (Parser L361)
-- [ ] `shutdown_statement` — `SHUTDOWN [WITH NOWAIT]` (Parser L365)
-- [ ] `checkpoint_statement` — `CHECKPOINT [duration]` (Parser L352)
+- [x] `kill_statement` — `KILL session_id` (Parser L359)
+- [x] `reconfigure_statement` — `RECONFIGURE [WITH OVERRIDE]` (Parser L361)
+- [x] `shutdown_statement` — `SHUTDOWN [WITH NOWAIT]` (Parser L365)
+- [x] `checkpoint_statement` — `CHECKPOINT [duration]` (Parser L352)
 - [ ] `setuser_statement` — `SETUSER ['user']` (Parser L364)
 - [ ] `conversation_statement` — Service Broker conversations (Parser L353)
 - [ ] `message_statement` — Service Broker messages (Parser L360)
@@ -770,7 +756,7 @@ These sections are fully implemented with test corpus coverage:
 - [x] **Batch / GO** — tsql_file, batch, go_statement, execute_body_batch (grammar.js L54-L72)
 - [x] **Select List / Aliases** — select_list, expression_elem, udt_elem, assignment operators, column aliases (grammar.js L231-L297)
 - [x] **Primitive Expressions** — DEFAULT, NULL, @local_var, constants (grammar.js L528-L563)
-- [x] **Data Types (core)** — exact numerics, approximate numerics, char strings, unicode strings, binary strings, date/time (data_types.js)
+- [x] **Data Types (core + extended)** — exact numerics, approximate numerics, char strings, unicode strings, binary strings, date/time, UNIQUEIDENTIFIER, SQL_VARIANT, GEOGRAPHY, GEOMETRY, ROWVERSION, TIMESTAMP, SYSNAME, HIERARCHYID, XML, CURSOR, TABLE (data_types.js)
 - [x] **Built-in Metadata Functions** — 32 functions (builtins.js)
 - [x] **ODBC Scalar Functions (partial)** — 17 functions (odbc_scalar_functions.js)
 - [x] **Conversion Functions** — CAST, CONVERT, TRY_CAST, TRY_CONVERT, PARSE, TRY_PARSE (conversion_functions.js)
@@ -786,6 +772,8 @@ These sections are fully implemented with test corpus coverage:
 - [x] **CREATE/ALTER VIEW** — column list, WITH SCHEMABINDING/ENCRYPTION/VIEW_METADATA, WITH CHECK OPTION (grammar.js)
 - [x] **CREATE/ALTER TRIGGER** — DML triggers: AFTER/INSTEAD OF/FOR, INSERT/UPDATE/DELETE, NOT FOR REPLICATION (grammar.js)
 - [x] **Other DDL** — CREATE SCHEMA, CREATE TYPE (alias + table), CREATE SEQUENCE, CREATE SYNONYM, TRUNCATE TABLE (grammar.js)
+- [x] **Simple Statements** — KILL, RECONFIGURE [WITH OVERRIDE], SHUTDOWN [WITH NOWAIT], CHECKPOINT [duration] (grammar.js)
+- [x] **DBCC** — generic `DBCC command [(args)] [WITH options]` rule (grammar.js)
 
 ---
 

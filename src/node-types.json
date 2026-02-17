@@ -494,7 +494,15 @@
       "required": true,
       "types": [
         {
+          "type": "checkpoint_statement",
+          "named": true
+        },
+        {
           "type": "cursor_statement",
+          "named": true
+        },
+        {
+          "type": "dbcc_statement",
           "named": true
         },
         {
@@ -506,7 +514,19 @@
           "named": true
         },
         {
+          "type": "kill_statement",
+          "named": true
+        },
+        {
+          "type": "reconfigure_statement",
+          "named": true
+        },
+        {
           "type": "set_statement",
+          "named": true
+        },
+        {
+          "type": "shutdown_statement",
           "named": true
         },
         {
@@ -764,6 +784,21 @@
         },
         {
           "type": "while_statement",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "checkpoint_statement",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "decimal_",
           "named": true
         }
       ]
@@ -1336,6 +1371,11 @@
     }
   },
   {
+    "type": "cursor_dt_",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "cursor_functions",
     "named": true,
     "fields": {},
@@ -1387,7 +1427,7 @@
     "fields": {},
     "children": {
       "multiple": true,
-      "required": true,
+      "required": false,
       "types": [
         {
           "type": "bigint_",
@@ -1403,6 +1443,10 @@
         },
         {
           "type": "char_",
+          "named": true
+        },
+        {
+          "type": "cursor_dt_",
           "named": true
         },
         {
@@ -1431,6 +1475,14 @@
         },
         {
           "type": "floatty_",
+          "named": true
+        },
+        {
+          "type": "hierachyid_",
+          "named": true
+        },
+        {
+          "type": "id_",
           "named": true
         },
         {
@@ -1482,6 +1534,14 @@
           "named": true
         },
         {
+          "type": "table_element",
+          "named": true
+        },
+        {
+          "type": "table_type_dt_",
+          "named": true
+        },
+        {
           "type": "text_",
           "named": true
         },
@@ -1499,6 +1559,10 @@
         },
         {
           "type": "varchar_",
+          "named": true
+        },
+        {
+          "type": "xml_dt_",
           "named": true
         }
       ]
@@ -1604,6 +1668,29 @@
         },
         {
           "type": "expression",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "dbcc_statement",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "WITH",
+          "named": true
+        },
+        {
+          "type": "expression",
+          "named": true
+        },
+        {
+          "type": "id_",
           "named": true
         }
       ]
@@ -3321,6 +3408,21 @@
     "fields": {}
   },
   {
+    "type": "kill_statement",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "expression",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "lag_lead_args",
     "named": true,
     "fields": {
@@ -4197,6 +4299,21 @@
     "fields": {}
   },
   {
+    "type": "reconfigure_statement",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "WITH",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "respect_nulls_",
     "named": true,
     "fields": {}
@@ -4505,6 +4622,21 @@
         },
         {
           "type": "set_special",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "shutdown_statement",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "WITH",
           "named": true
         }
       ]
@@ -4865,6 +4997,11 @@
         }
       ]
     }
+  },
+  {
+    "type": "table_type_dt_",
+    "named": true,
+    "fields": {}
   },
   {
     "type": "table_valued_function",
@@ -5349,6 +5486,11 @@
         }
       ]
     }
+  },
+  {
+    "type": "xml_dt_",
+    "named": true,
+    "fields": {}
   },
   {
     "type": "xml_option",
