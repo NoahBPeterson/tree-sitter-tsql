@@ -681,11 +681,22 @@
 
 ### 7.4 Security Statements (Parser L362)
 
-- [ ] `GRANT permission ON object TO principal` (Parser L362)
-- [ ] `DENY permission ON object TO principal`
-- [ ] `REVOKE permission ON object FROM principal`
-- [ ] `GRANT ... WITH GRANT OPTION`
-- [ ] `ADD MEMBER` / `DROP MEMBER` (role membership)
+- [x] `GRANT permission ON object TO principal` (Parser L362)
+- [x] `DENY permission ON object TO principal`
+- [x] `REVOKE permission ON object FROM principal`
+- [x] `GRANT ... WITH GRANT OPTION`
+- [x] `ADD MEMBER` / `DROP MEMBER` (role membership)
+- [x] `CREATE LOGIN name WITH PASSWORD = 'pwd'`
+- [x] `CREATE LOGIN name FROM WINDOWS`
+- [x] `ALTER LOGIN name WITH PASSWORD | ENABLE | DISABLE`
+- [x] `CREATE USER name FOR LOGIN | WITHOUT LOGIN`
+- [x] `ALTER USER name WITH options`
+- [x] `CREATE ROLE name [AUTHORIZATION owner]`
+- [x] `ALTER ROLE name ADD|DROP MEMBER | WITH NAME =`
+- [x] `DROP ROLE [IF EXISTS] name`
+- [x] `CREATE SERVER ROLE name [AUTHORIZATION owner]`
+- [x] `ALTER SERVER ROLE name ADD|DROP MEMBER`
+- [x] `DROP SERVER ROLE name`
 
 ### 7.5 XML Methods (Parser L3905)
 
@@ -712,7 +723,7 @@
 - [ ] `setuser_statement` — `SETUSER ['user']` (Parser L364)
 - [ ] `conversation_statement` — Service Broker conversations (Parser L353)
 - [ ] `message_statement` — Service Broker messages (Parser L360)
-- [ ] `security_statement` — GRANT/DENY/REVOKE (Parser L362)
+- [x] `security_statement` — GRANT/DENY/REVOKE (Parser L362)
 - [ ] `alter_queue` (Parser L351)
 - [ ] `create_contract` (Parser L354)
 - [ ] `create_queue` (Parser L355)
@@ -774,6 +785,8 @@ These sections are fully implemented with test corpus coverage:
 - [x] **Other DDL** — CREATE SCHEMA, CREATE TYPE (alias + table), CREATE SEQUENCE, CREATE SYNONYM, TRUNCATE TABLE (grammar.js)
 - [x] **Simple Statements** — KILL, RECONFIGURE [WITH OVERRIDE], SHUTDOWN [WITH NOWAIT], CHECKPOINT [duration] (grammar.js)
 - [x] **DBCC** — generic `DBCC command [(args)] [WITH options]` rule (grammar.js)
+- [x] **BACKUP/RESTORE** — BACKUP DATABASE/LOG/CERTIFICATE/MASTER KEY/SERVICE MASTER KEY, RESTORE DATABASE/LOG (grammar.js)
+- [x] **Security Statements** — GRANT/DENY/REVOKE, CREATE/ALTER LOGIN, CREATE/ALTER USER, CREATE/ALTER/DROP ROLE, CREATE/ALTER/DROP SERVER ROLE (grammar.js)
 
 ---
 
