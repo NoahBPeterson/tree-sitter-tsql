@@ -1,0 +1,299 @@
+=====================================
+Scalar function
+=====================================
+
+CREATE FUNCTION dbo.AddOne (@X INT)
+RETURNS INT
+AS
+BEGIN
+  RETURN @X + 1
+END;
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_or_alter_function
+          (create_or_alter)
+          (func_proc_name_server_database_schema
+            (func_proc_name_database_schema
+              (func_proc_name_schema
+                (id_)
+                (id_))))
+          (procedure_param
+            (LOCAL_ID_)
+            (data_type
+              (int_)))
+          (func_return
+            (data_type
+              (int_)))
+          (block_statement
+            (sql_clauses
+              (cfl_statement
+                (return_statement
+                  (expression
+                    (expression
+                      (primitive_expression
+                        (LOCAL_ID_)))
+                    (PLUS)
+                    (expression
+                      (primitive_expression
+                        (primitive_constant
+                          (decimal_))))))))))))))
+
+=====================================
+Scalar function with OR ALTER
+=====================================
+
+CREATE OR ALTER FUNCTION dbo.GetName (@Id INT)
+RETURNS NVARCHAR(100)
+AS
+BEGIN
+  RETURN (SELECT Name FROM t WHERE Id = @Id)
+END;
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_or_alter_function
+          (create_or_alter)
+          (func_proc_name_server_database_schema
+            (func_proc_name_database_schema
+              (func_proc_name_schema
+                (id_)
+                (id_))))
+          (procedure_param
+            (LOCAL_ID_)
+            (data_type
+              (int_)))
+          (func_return
+            (data_type
+              (nvarchar_)
+              (decimal_)))
+          (block_statement
+            (sql_clauses
+              (cfl_statement
+                (return_statement
+                  (expression
+                    (bracket_expression
+                      (subquery
+                        (select_statement
+                          (query_expression
+                            (query_specification
+                              (select)
+                              (select_list
+                                (select_list_elem
+                                  (expression_elem
+                                    (expression
+                                      (full_column_name
+                                        (id_))))))
+                              (table_sources
+                                (table_source
+                                  (table_source_item
+                                    (full_table_name
+                                      (id_)))))
+                              (search_condition
+                                (predicate
+                                  (expression
+                                    (full_column_name
+                                      (id_)))
+                                  (comparison_operator)
+                                  (expression
+                                    (primitive_expression
+                                      (LOCAL_ID_))))))))))))))))))))
+
+=====================================
+Inline table-valued function
+=====================================
+
+CREATE FUNCTION dbo.GetActive ()
+RETURNS TABLE
+AS
+RETURN (SELECT * FROM t WHERE Active = 1);
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_or_alter_function
+          (create_or_alter)
+          (func_proc_name_server_database_schema
+            (func_proc_name_database_schema
+              (func_proc_name_schema
+                (id_)
+                (id_))))
+          (func_return)
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_)))))
+                (search_condition
+                  (predicate
+                    (expression
+                      (full_column_name
+                        (id_)))
+                    (comparison_operator)
+                    (expression
+                      (primitive_expression
+                        (primitive_constant
+                          (decimal_))))))))))))))
+
+=====================================
+Inline TVF with params
+=====================================
+
+CREATE FUNCTION dbo.GetByStatus (@Status VARCHAR(20))
+RETURNS TABLE
+AS
+RETURN (SELECT * FROM t WHERE Status = @Status);
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_or_alter_function
+          (create_or_alter)
+          (func_proc_name_server_database_schema
+            (func_proc_name_database_schema
+              (func_proc_name_schema
+                (id_)
+                (id_))))
+          (procedure_param
+            (LOCAL_ID_)
+            (data_type
+              (varchar_)
+              (decimal_)))
+          (func_return)
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_)))))
+                (search_condition
+                  (predicate
+                    (expression
+                      (full_column_name
+                        (id_)))
+                    (comparison_operator)
+                    (expression
+                      (primitive_expression
+                        (LOCAL_ID_)))))))))))))
+
+=====================================
+Multi-statement table-valued function
+=====================================
+
+CREATE FUNCTION dbo.GetRange (@Min INT, @Max INT)
+RETURNS @Result TABLE (Id INT, Name NVARCHAR(100))
+AS
+BEGIN
+  RETURN
+END;
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_or_alter_function
+          (create_or_alter)
+          (func_proc_name_server_database_schema
+            (func_proc_name_database_schema
+              (func_proc_name_schema
+                (id_)
+                (id_))))
+          (procedure_param
+            (LOCAL_ID_)
+            (data_type
+              (int_)))
+          (procedure_param
+            (LOCAL_ID_)
+            (data_type
+              (int_)))
+          (func_return
+            (LOCAL_ID_)
+            (table_element
+              (column_definition
+                (id_)
+                (data_type
+                  (int_))))
+            (table_element
+              (column_definition
+                (id_)
+                (data_type
+                  (nvarchar_)
+                  (decimal_)))))
+          (block_statement
+            (sql_clauses
+              (cfl_statement
+                (return_statement)))))))))
+
+=====================================
+ALTER FUNCTION
+=====================================
+
+ALTER FUNCTION dbo.AddOne (@X INT)
+RETURNS INT
+AS
+BEGIN
+  RETURN @X + 2
+END;
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_or_alter_function
+          (create_or_alter)
+          (func_proc_name_server_database_schema
+            (func_proc_name_database_schema
+              (func_proc_name_schema
+                (id_)
+                (id_))))
+          (procedure_param
+            (LOCAL_ID_)
+            (data_type
+              (int_)))
+          (func_return
+            (data_type
+              (int_)))
+          (block_statement
+            (sql_clauses
+              (cfl_statement
+                (return_statement
+                  (expression
+                    (expression
+                      (primitive_expression
+                        (LOCAL_ID_)))
+                    (PLUS)
+                    (expression
+                      (primitive_expression
+                        (primitive_constant
+                          (decimal_))))))))))))))

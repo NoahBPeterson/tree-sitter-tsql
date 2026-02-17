@@ -1,0 +1,241 @@
+=====================================
+Basic AFTER INSERT trigger
+=====================================
+
+CREATE TRIGGER dbo.trg_Insert ON dbo.Orders
+AFTER INSERT
+AS
+INSERT INTO AuditLog (Action) VALUES ('INSERT');
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_or_alter_trigger
+          (create_or_alter)
+          (full_table_name
+            (id_)
+            (id_))
+          (full_table_name
+            (id_)
+            (id_))
+          (dml_trigger_operation)
+          (sql_clauses
+            (dml_clause
+              (insert_statement
+                (full_table_name
+                  (id_))
+                (column_name_list
+                  (id_))
+                (insert_statement_value
+                  (value_list
+                    (expression_list_
+                      (expression
+                        (primitive_expression
+                          (primitive_constant
+                            (string_lit)))))))))))))))
+
+=====================================
+AFTER UPDATE DELETE
+=====================================
+
+CREATE TRIGGER dbo.trg_Modify ON dbo.Orders
+AFTER UPDATE, DELETE
+AS
+SELECT * FROM inserted;
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_or_alter_trigger
+          (create_or_alter)
+          (full_table_name
+            (id_)
+            (id_))
+          (full_table_name
+            (id_)
+            (id_))
+          (dml_trigger_operation)
+          (dml_trigger_operation)
+          (sql_clauses
+            (dml_clause
+              (select_statement_standalone
+                (select_statement
+                  (query_expression
+                    (query_specification
+                      (select)
+                      (select_list
+                        (select_list_elem
+                          (asterisk)))
+                      (table_sources
+                        (table_source
+                          (table_source_item
+                            (full_table_name
+                              (id_))))))))))))))))
+
+=====================================
+INSTEAD OF trigger
+=====================================
+
+CREATE TRIGGER dbo.trg_Instead ON dbo.Orders
+INSTEAD OF INSERT
+AS
+INSERT INTO Orders SELECT * FROM inserted;
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_or_alter_trigger
+          (create_or_alter)
+          (full_table_name
+            (id_)
+            (id_))
+          (full_table_name
+            (id_)
+            (id_))
+          (dml_trigger_operation)
+          (sql_clauses
+            (dml_clause
+              (insert_statement
+                (full_table_name
+                  (id_))
+                (insert_statement_value
+                  (select_statement
+                    (query_expression
+                      (query_specification
+                        (select)
+                        (select_list
+                          (select_list_elem
+                            (asterisk)))
+                        (table_sources
+                          (table_source
+                            (table_source_item
+                              (full_table_name
+                                (id_)))))))))))))))))
+
+=====================================
+Trigger with NOT FOR REPLICATION
+=====================================
+
+CREATE TRIGGER dbo.trg_NoRepl ON dbo.Orders
+AFTER INSERT
+NOT FOR REPLICATION
+AS
+SELECT 1;
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_or_alter_trigger
+          (create_or_alter)
+          (full_table_name
+            (id_)
+            (id_))
+          (full_table_name
+            (id_)
+            (id_))
+          (dml_trigger_operation)
+          (sql_clauses
+            (dml_clause
+              (select_statement_standalone
+                (select_statement
+                  (query_expression
+                    (query_specification
+                      (select)
+                      (select_list
+                        (select_list_elem
+                          (expression_elem
+                            (expression
+                              (primitive_expression
+                                (primitive_constant
+                                  (decimal_))))))))))))))))))
+
+=====================================
+ALTER TRIGGER
+=====================================
+
+ALTER TRIGGER dbo.trg_Insert ON dbo.Orders
+AFTER INSERT, UPDATE
+AS
+INSERT INTO AuditLog (Action) VALUES ('MODIFIED');
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_or_alter_trigger
+          (create_or_alter)
+          (full_table_name
+            (id_)
+            (id_))
+          (full_table_name
+            (id_)
+            (id_))
+          (dml_trigger_operation)
+          (dml_trigger_operation)
+          (sql_clauses
+            (dml_clause
+              (insert_statement
+                (full_table_name
+                  (id_))
+                (column_name_list
+                  (id_))
+                (insert_statement_value
+                  (value_list
+                    (expression_list_
+                      (expression
+                        (primitive_expression
+                          (primitive_constant
+                            (string_lit)))))))))))))))
+
+=====================================
+CREATE OR ALTER trigger
+=====================================
+
+CREATE OR ALTER TRIGGER dbo.trg_New ON dbo.Orders
+FOR INSERT
+AS
+SELECT 1;
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_or_alter_trigger
+          (create_or_alter)
+          (full_table_name
+            (id_)
+            (id_))
+          (full_table_name
+            (id_)
+            (id_))
+          (dml_trigger_operation)
+          (sql_clauses
+            (dml_clause
+              (select_statement_standalone
+                (select_statement
+                  (query_expression
+                    (query_specification
+                      (select)
+                      (select_list
+                        (select_list_elem
+                          (expression_elem
+                            (expression
+                              (primitive_expression
+                                (primitive_constant
+                                  (decimal_))))))))))))))))))

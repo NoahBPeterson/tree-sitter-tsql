@@ -1,0 +1,278 @@
+=====================================
+Basic view
+=====================================
+
+CREATE VIEW dbo.ActiveUsers
+AS
+SELECT * FROM Users WHERE Active = 1;
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_or_alter_view
+          (create_or_alter)
+          (full_table_name
+            (id_)
+            (id_))
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_)))))
+                (search_condition
+                  (predicate
+                    (expression
+                      (full_column_name
+                        (id_)))
+                    (comparison_operator)
+                    (expression
+                      (primitive_expression
+                        (primitive_constant
+                          (decimal_))))))))))))))
+
+=====================================
+View with column list
+=====================================
+
+CREATE VIEW dbo.UserSummary (Id, FullName)
+AS
+SELECT Id, FirstName + ' ' + LastName FROM Users;
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_or_alter_view
+          (create_or_alter)
+          (full_table_name
+            (id_)
+            (id_))
+          (column_name_list
+            (id_)
+            (id_))
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (full_column_name
+                          (id_)))))
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (expression
+                          (expression
+                            (full_column_name
+                              (id_)))
+                          (PLUS)
+                          (expression
+                            (primitive_expression
+                              (primitive_constant
+                                (string_lit)))))
+                        (PLUS)
+                        (expression
+                          (full_column_name
+                            (id_)))))))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_)))))))))))))
+
+=====================================
+View with SCHEMABINDING
+=====================================
+
+CREATE VIEW dbo.BoundView
+WITH SCHEMABINDING
+AS
+SELECT Id, Name FROM dbo.Products;
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_or_alter_view
+          (create_or_alter)
+          (full_table_name
+            (id_)
+            (id_))
+          (view_attribute)
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (full_column_name
+                          (id_)))))
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (full_column_name
+                          (id_))))))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_)
+                        (id_)))))))))))))
+
+=====================================
+View with CHECK OPTION
+=====================================
+
+CREATE VIEW dbo.ActiveOnly
+AS
+SELECT * FROM Users WHERE Active = 1
+WITH CHECK OPTION;
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_or_alter_view
+          (create_or_alter)
+          (full_table_name
+            (id_)
+            (id_))
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_)))))
+                (search_condition
+                  (predicate
+                    (expression
+                      (full_column_name
+                        (id_)))
+                    (comparison_operator)
+                    (expression
+                      (primitive_expression
+                        (primitive_constant
+                          (decimal_))))))))))))))
+
+=====================================
+View with OR ALTER and multiple attributes
+=====================================
+
+CREATE OR ALTER VIEW dbo.SecureView
+WITH SCHEMABINDING, ENCRYPTION
+AS
+SELECT Id, Name FROM dbo.Products;
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_or_alter_view
+          (create_or_alter)
+          (full_table_name
+            (id_)
+            (id_))
+          (view_attribute)
+          (view_attribute)
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (full_column_name
+                          (id_)))))
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (full_column_name
+                          (id_))))))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_)
+                        (id_)))))))))))))
+
+=====================================
+ALTER VIEW
+=====================================
+
+ALTER VIEW dbo.ActiveUsers
+AS
+SELECT * FROM Users WHERE Active = 1 AND Verified = 1;
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_or_alter_view
+          (create_or_alter)
+          (full_table_name
+            (id_)
+            (id_))
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_)))))
+                (search_condition
+                  (search_condition
+                    (predicate
+                      (expression
+                        (full_column_name
+                          (id_)))
+                      (comparison_operator)
+                      (expression
+                        (primitive_expression
+                          (primitive_constant
+                            (decimal_))))))
+                  (search_condition
+                    (predicate
+                      (expression
+                        (full_column_name
+                          (id_)))
+                      (comparison_operator)
+                      (expression
+                        (primitive_expression
+                          (primitive_constant
+                            (decimal_)))))))))))))))

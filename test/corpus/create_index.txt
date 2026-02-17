@@ -1,0 +1,195 @@
+=====================================
+Basic index
+=====================================
+
+CREATE INDEX IX_Name ON dbo.Employees (LastName);
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_index
+          (id_)
+          (full_table_name
+            (id_)
+            (id_))
+          (column_name_list_ordered
+            (id_)))))))
+
+=====================================
+Unique index
+=====================================
+
+CREATE UNIQUE INDEX IX_Email ON dbo.Users (Email);
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_index
+          (id_)
+          (full_table_name
+            (id_)
+            (id_))
+          (column_name_list_ordered
+            (id_)))))))
+
+=====================================
+Clustered index
+=====================================
+
+CREATE CLUSTERED INDEX IX_PK ON dbo.Orders (OrderID);
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_index
+          (id_)
+          (full_table_name
+            (id_)
+            (id_))
+          (column_name_list_ordered
+            (id_)))))))
+
+=====================================
+Nonclustered index
+=====================================
+
+CREATE NONCLUSTERED INDEX IX_Date ON dbo.Orders (OrderDate DESC);
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_index
+          (id_)
+          (full_table_name
+            (id_)
+            (id_))
+          (column_name_list_ordered
+            (id_)))))))
+
+=====================================
+Multi-column with mixed sort
+=====================================
+
+CREATE INDEX IX_Multi ON dbo.Orders (CustomerID ASC, OrderDate DESC);
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_index
+          (id_)
+          (full_table_name
+            (id_)
+            (id_))
+          (column_name_list_ordered
+            (id_)
+            (id_)))))))
+
+=====================================
+With INCLUDE
+=====================================
+
+CREATE INDEX IX_Cover ON dbo.Orders (CustomerID) INCLUDE (OrderDate, TotalAmount);
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_index
+          (id_)
+          (full_table_name
+            (id_)
+            (id_))
+          (column_name_list_ordered
+            (id_))
+          (column_name_list
+            (id_)
+            (id_)))))))
+
+=====================================
+With WHERE filter
+=====================================
+
+CREATE INDEX IX_Active ON dbo.Users (Email) WHERE IsActive = 1;
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_index
+          (id_)
+          (full_table_name
+            (id_)
+            (id_))
+          (column_name_list_ordered
+            (id_))
+          (search_condition
+            (predicate
+              (expression
+                (full_column_name
+                  (id_)))
+              (comparison_operator)
+              (expression
+                (primitive_expression
+                  (primitive_constant
+                    (decimal_)))))))))))
+
+=====================================
+With options
+=====================================
+
+CREATE UNIQUE NONCLUSTERED INDEX IX_Full ON dbo.Products (ProductName)
+  INCLUDE (Price)
+  WHERE IsActive = 1
+  WITH (PAD_INDEX = ON, FILLFACTOR = 80)
+  ON PRIMARY;
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_index
+          (id_)
+          (full_table_name
+            (id_)
+            (id_))
+          (column_name_list_ordered
+            (id_))
+          (column_name_list
+            (id_))
+          (search_condition
+            (predicate
+              (expression
+                (full_column_name
+                  (id_)))
+              (comparison_operator)
+              (expression
+                (primitive_expression
+                  (primitive_constant
+                    (decimal_))))))
+          (alter_table_option
+            (id_))
+          (alter_table_option
+            (id_)
+            (decimal_))
+          (id_))))))
