@@ -43,6 +43,13 @@ module.exports = {
     seq($.datetimeoffset_, optional(parens($.decimal_))),
     $.datetime_,
     $.smalldatetime_,
+
+    //Other data types
+    $._simple_other_type,
+    $.hierachyid_,
+    seq($.xml_dt_, optional(parens($.id_))),
+    $.cursor_dt_,
+    seq($.table_type_dt_, '(', $.table_element, repeat(seq(COMMA, $.table_element)), ')'),
   ),
 
   //Exact Numerics
@@ -83,10 +90,13 @@ module.exports = {
   datetime_: $ => token(/DATETIME/i),
   smalldatetime_: $ => token(/SMALLDATETIME/i),
 
-  /*
-    TODO Other data types
-    https://learn.microsoft.com/en-us/sql/t-sql/data-types/data-types-transact-sql?view=sql-server-ver16#other-data-types
-  */
-
+  //Other data types
+  _simple_other_type: $ => token(choice(
+    /UNIQUEIDENTIFIER/i, /SQL_VARIANT/i, /GEOGRAPHY/i,
+    /GEOMETRY/i, /ROWVERSION/i, /TIMESTAMP/i, /SYSNAME/i,
+  )),
+  xml_dt_: $ => token(/XML/i),
+  cursor_dt_: $ => token(/CURSOR/i),
+  table_type_dt_: $ => token(/TABLE/i),
 
 };

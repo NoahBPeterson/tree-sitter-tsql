@@ -1,0 +1,121 @@
+=====================================
+KILL with session id
+=====================================
+
+KILL 55
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (kill_statement
+          (expression
+            (primitive_expression
+              (primitive_constant
+                (decimal_)))))))))
+
+=====================================
+KILL with variable
+=====================================
+
+KILL @spid
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (kill_statement
+          (expression
+            (primitive_expression
+              (LOCAL_ID_))))))))
+
+=====================================
+RECONFIGURE basic
+=====================================
+
+RECONFIGURE
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (reconfigure_statement)))))
+
+=====================================
+RECONFIGURE WITH OVERRIDE
+=====================================
+
+RECONFIGURE WITH OVERRIDE
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (reconfigure_statement
+          (WITH))))))
+
+=====================================
+SHUTDOWN basic
+=====================================
+
+SHUTDOWN
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (shutdown_statement)))))
+
+=====================================
+SHUTDOWN WITH NOWAIT
+=====================================
+
+SHUTDOWN WITH NOWAIT
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (shutdown_statement
+          (WITH))))))
+
+=====================================
+CHECKPOINT basic
+=====================================
+
+CHECKPOINT
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (checkpoint_statement)))))
+
+=====================================
+CHECKPOINT with duration
+=====================================
+
+CHECKPOINT 300
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (checkpoint_statement
+          (decimal_))))))

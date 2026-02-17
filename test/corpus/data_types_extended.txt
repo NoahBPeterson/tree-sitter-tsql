@@ -1,0 +1,287 @@
+=====================================
+DECLARE UNIQUEIDENTIFIER variable
+=====================================
+
+DECLARE @u UNIQUEIDENTIFIER
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (declare_statement
+          (declare_local
+            (LOCAL_ID_)
+            (data_type)))))))
+
+=====================================
+DECLARE SQL_VARIANT variable
+=====================================
+
+DECLARE @v SQL_VARIANT
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (declare_statement
+          (declare_local
+            (LOCAL_ID_)
+            (data_type)))))))
+
+=====================================
+DECLARE GEOGRAPHY variable
+=====================================
+
+DECLARE @g GEOGRAPHY
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (declare_statement
+          (declare_local
+            (LOCAL_ID_)
+            (data_type)))))))
+
+=====================================
+DECLARE GEOMETRY variable
+=====================================
+
+DECLARE @g GEOMETRY
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (declare_statement
+          (declare_local
+            (LOCAL_ID_)
+            (data_type)))))))
+
+=====================================
+DECLARE ROWVERSION variable
+=====================================
+
+DECLARE @rv ROWVERSION
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (declare_statement
+          (declare_local
+            (LOCAL_ID_)
+            (data_type)))))))
+
+=====================================
+DECLARE TIMESTAMP variable
+=====================================
+
+DECLARE @ts TIMESTAMP
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (declare_statement
+          (declare_local
+            (LOCAL_ID_)
+            (data_type)))))))
+
+=====================================
+DECLARE SYSNAME variable
+=====================================
+
+DECLARE @s SYSNAME
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (declare_statement
+          (declare_local
+            (LOCAL_ID_)
+            (data_type)))))))
+
+=====================================
+DECLARE HIERARCHYID variable
+=====================================
+
+DECLARE @h HIERARCHYID
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (declare_statement
+          (declare_local
+            (LOCAL_ID_)
+            (data_type
+              (hierachyid_))))))))
+
+=====================================
+DECLARE XML variable
+=====================================
+
+DECLARE @x XML
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (declare_statement
+          (declare_local
+            (LOCAL_ID_)
+            (data_type
+              (xml_dt_))))))))
+
+=====================================
+DECLARE XML with schema collection
+=====================================
+
+DECLARE @xs XML(MySchema)
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (declare_statement
+          (declare_local
+            (LOCAL_ID_)
+            (data_type
+              (xml_dt_)
+              (id_))))))))
+
+=====================================
+DECLARE CURSOR variable
+=====================================
+
+DECLARE @c CURSOR
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (declare_statement
+          (declare_local
+            (LOCAL_ID_)
+            (data_type
+              (cursor_dt_))))))))
+
+=====================================
+DECLARE TABLE variable
+=====================================
+
+DECLARE @t TABLE(id INT, name VARCHAR(50))
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (declare_statement
+          (declare_local
+            (LOCAL_ID_)
+            (data_type
+              (table_type_dt_)
+              (table_element
+                (column_definition
+                  (id_)
+                  (data_type
+                    (int_))))
+              (table_element
+                (column_definition
+                  (id_)
+                  (data_type
+                    (varchar_)
+                    (decimal_)))))))))))
+
+=====================================
+CREATE TABLE with extended types
+=====================================
+
+CREATE TABLE dbo.AllTypes (
+    uid UNIQUEIDENTIFIER,
+    geo GEOGRAPHY,
+    geom GEOMETRY,
+    rv ROWVERSION,
+    x XML,
+    xs XML(MySchema),
+    h HIERARCHYID,
+    sv SQL_VARIANT,
+    sn SYSNAME
+)
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_table
+          (full_table_name
+            (id_)
+            (id_))
+          (table_element
+            (column_definition
+              (id_)
+              (data_type)))
+          (table_element
+            (column_definition
+              (id_)
+              (data_type)))
+          (table_element
+            (column_definition
+              (id_)
+              (data_type)))
+          (table_element
+            (column_definition
+              (id_)
+              (data_type)))
+          (table_element
+            (column_definition
+              (id_)
+              (data_type
+                (xml_dt_))))
+          (table_element
+            (column_definition
+              (id_)
+              (data_type
+                (xml_dt_)
+                (id_))))
+          (table_element
+            (column_definition
+              (id_)
+              (data_type
+                (hierachyid_))))
+          (table_element
+            (column_definition
+              (id_)
+              (data_type)))
+          (table_element
+            (column_definition
+              (id_)
+              (data_type))))))))
