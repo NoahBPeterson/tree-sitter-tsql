@@ -4374,3 +4374,146 @@ CREATE TRIGGER ON DATABASE FOR CREATE_TABLE AS SELECT 1
                         (primitive_expression
                           (primitive_constant
                             (decimal_)))))))))))))))
+
+===========================
+ERROR - ALL missing comparison operator
+===========================
+SELECT * FROM t WHERE x ALL (SELECT 1)
+---
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_)))))
+                (search_condition
+                  (predicate
+                    (expression
+                      (full_column_name
+                        (id_)))
+                    (comparison_operator
+                      (MISSING "="))
+                    (subquery
+                      (select_statement
+                        (query_expression
+                          (query_specification
+                            (select)
+                            (select_list
+                              (select_list_elem
+                                (expression_elem
+                                  (expression
+                                    (primitive_expression
+                                      (primitive_constant
+                                        (decimal_)))))))))))))))))))))
+
+===========================
+ERROR - COLLATE without preceding expression (gap: parses clean)
+===========================
+SELECT COLLATE foo FROM t
+---
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (full_column_name
+                          (id_)))
+                      (as_column_alias
+                        (column_alias
+                          (id_))))))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_)))))))))))))
+
+===========================
+ERROR - computed column AS without expression
+===========================
+CREATE TABLE t (c AS)
+---
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_table
+          (full_table_name
+            (id_))
+          (table_element
+            (column_definition
+              (id_)
+              (expression
+                (full_column_name
+                  (id_
+                    (MISSING _word)))))))))))
+
+===========================
+ERROR - computed column AS without expression mid-list
+===========================
+CREATE TABLE t (a INT, c AS, b INT)
+---
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_table
+          (full_table_name
+            (id_))
+          (table_element
+            (column_definition
+              (id_)
+              (data_type
+                (int_))))
+          (table_element
+            (column_definition
+              (id_)
+              (expression
+                (full_column_name
+                  (id_
+                    (MISSING _word))))))
+          (table_element
+            (column_definition
+              (id_)
+              (data_type
+                (int_)))))))))
+
+===========================
+ERROR - computed column AS with incomplete expression
+===========================
+CREATE TABLE t (c AS +)
+---
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_table
+          (full_table_name
+            (id_))
+          (table_element
+            (column_definition
+              (id_)
+              (expression
+                (unary_operator_expression
+                  (expression
+                    (full_column_name
+                      (id_
+                        (MISSING _word)))))))))))))
