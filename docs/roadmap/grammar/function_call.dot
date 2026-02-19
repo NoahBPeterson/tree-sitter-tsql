@@ -1,6 +1,8 @@
 digraph {
 
   function_call
+    [style=filled
+    ,color=lightgreen]
 
   function_call -> odbc_scalar_function
 

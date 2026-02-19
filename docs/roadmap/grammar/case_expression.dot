@@ -1,3 +1,4 @@
 digraph {
-  case_expression
+  case_expression [style=filled
+    ,color=lightgreen]
 }

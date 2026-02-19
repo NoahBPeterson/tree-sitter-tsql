@@ -1,6 +1,8 @@
 digraph {
   batch
-    [URL="https://github.com/Crary-Systems/tree-sitter-tsql/blob/main/grammar.js#L51"]
+    [URL="https://github.com/Crary-Systems/tree-sitter-tsql/blob/main/grammar.js#L51"
+    ,style=filled
+    ,color=lightgreen]
 
   batch -> go_statement;
   batch -> execute_body_batch;

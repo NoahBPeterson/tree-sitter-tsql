@@ -1,10 +1,11 @@
 digraph {
   select_statement
-    [URL="https://github.com/Crary-Systems/tree-sitter-tsql/blob/1f56e8217a05e0a7e09ce2955aee4c340190c598/grammar.js#L202-L206"]
+    [URL="https://github.com/Crary-Systems/tree-sitter-tsql/blob/1f56e8217a05e0a7e09ce2955aee4c340190c598/grammar.js#L202-L206"
+    ,style=filled
+    ,color=lightgreen]
 
   select_statement -> query_expression
 
-  ##TODO
   select_statement -> select_order_by_clause
   select_statement -> for_clause
   select_statement -> option_clause

@@ -1,4 +1,5 @@
 digraph {
   for_clause
-    [color=gray]
+    [style=filled
+    ,color=lightgreen]
 }

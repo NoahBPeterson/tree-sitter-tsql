@@ -1,4 +1,5 @@
 digraph {
   with_expression
-    [color=gray]
+    [style=filled
+    ,color=lightgreen]
 }

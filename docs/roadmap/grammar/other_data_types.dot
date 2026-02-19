@@ -1,3 +1,4 @@
 digraph {
-  other_data_types
+  other_data_types [style=filled
+    ,color=lightgreen]
 }

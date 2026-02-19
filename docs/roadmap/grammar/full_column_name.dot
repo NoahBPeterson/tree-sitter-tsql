@@ -1,3 +1,4 @@
 digraph {
-  full_column_name
+  full_column_name [style=filled
+    ,color=lightgreen]
 }

@@ -1,6 +1,8 @@
 digraph {
   query_expression
-    [URL="https://github.com/Crary-Systems/tree-sitter-tsql/blob/main/grammar.js#L208-L211"]
+    [style=filled
+    ,color=lightgreen
+    ,URL="https://github.com/Crary-Systems/tree-sitter-tsql/blob/main/grammar.js#L208-L211"]
 
   query_expression -> query_specification
 

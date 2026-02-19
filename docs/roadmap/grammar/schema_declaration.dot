@@ -1,5 +1,5 @@
 digraph {
-  top_clause
+  schema_declaration
     [style=filled
     ,color=lightgreen]
 }

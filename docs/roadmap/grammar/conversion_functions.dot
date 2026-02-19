@@ -1,5 +1,6 @@
 digraph {
-  conversion_functions
+  conversion_functions [style=filled
+    ,color=lightgreen]
 
   conversion_functions -> data_type
 

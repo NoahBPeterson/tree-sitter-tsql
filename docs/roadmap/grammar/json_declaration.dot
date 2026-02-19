@@ -1,5 +1,5 @@
 digraph {
-  top_clause
+  json_declaration
     [style=filled
     ,color=lightgreen]
 }

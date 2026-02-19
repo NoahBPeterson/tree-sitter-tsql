@@ -1,0 +1,11 @@
+digraph {
+  change_table
+    [style=filled
+    ,color=lightgreen
+    ,URL="https://github.com/Crary-Systems/tree-sitter-tsql/blob/main/test/corpus/from_clause_sources.txt"]
+
+  change_table -> table_name
+  change_table -> expression
+  change_table -> full_column_name
+  change_table -> expression_list_
+}

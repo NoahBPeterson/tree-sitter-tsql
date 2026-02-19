@@ -27,7 +27,7 @@ echo "🔍 Checking that first listed node matches filename..."
 while IFS= read -r filepath; do
   filename=$(basename "$filepath" .dot)
   # Ensure file starts with digraph {
-  if ! grep -q '^\s*digraph\s*{' "$filepath"; then
+  if ! grep -q '^[[:space:]]*digraph[[:space:]]*{' "$filepath"; then
     echo "❌ $filepath is missing 'digraph {' declaration"
     FAILED=1
     continue
@@ -35,7 +35,7 @@ while IFS= read -r filepath; do
 
   # Extract first non-empty, non-brace line after 'digraph {'
   first_node=$(awk '
-    /^\s*digraph\s*{/ { in_body=1; next }
+    /^[[:space:]]*digraph[[:space:]]*\{/ { in_body=1; next }
     in_body && NF && $0 !~ /^[{}]/ { print $1; exit }
   ' "$filepath")
   if [ "$first_node" != "$filename" ]; then

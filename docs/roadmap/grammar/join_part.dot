@@ -1,4 +1,4 @@
 digraph {
-  hierarchyid_call [style=filled
+  join_part [style=filled
     ,color=lightgreen]
 }
