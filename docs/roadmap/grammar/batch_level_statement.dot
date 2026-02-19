@@ -9,11 +9,15 @@ digraph {
   batch_level_statement -> create_view
 
   create_or_alter_function
-    [color=gray]
+    [style=filled
+    ,color=lightgreen]
   create_or_alter_procedure
-    [color=gray]
+    [style=filled
+    ,color=lightgreen]
   create_or_alter_trigger
-    [color=gray]
+    [style=filled
+    ,color=lightgreen]
   create_view
-    [color=gray]
+    [style=filled
+    ,color=lightgreen]
 }

@@ -1,3 +1,4 @@
 digraph {
-  unary_operator_expression
+  unary_operator_expression [style=filled
+    ,color=lightgreen]
 }

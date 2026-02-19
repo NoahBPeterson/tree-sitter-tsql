@@ -1,4 +1,5 @@
 digraph {
-  hierarchyid_call [style=filled
+  bulk_option
+    [style=filled
     ,color=lightgreen]
 }

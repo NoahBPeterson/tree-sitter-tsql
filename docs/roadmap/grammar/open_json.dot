@@ -1,0 +1,9 @@
+digraph {
+  open_json
+    [style=filled
+    ,color=lightgreen
+    ,URL="https://github.com/Crary-Systems/tree-sitter-tsql/blob/main/test/corpus/from_clause_sources.txt"]
+
+  open_json -> expression
+  open_json -> json_declaration
+}

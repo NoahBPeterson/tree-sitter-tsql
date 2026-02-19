@@ -1,3 +1,4 @@
 digraph {
-  grouping_sets_item
+  grouping_sets_item [style=filled
+    ,color=lightgreen]
 }

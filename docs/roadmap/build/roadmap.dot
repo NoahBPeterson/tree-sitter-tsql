@@ -4,7 +4,9 @@ digraph Roadmap {
   
   subgraph {
   tsql_file
-    [URL="https://github.com/Crary-Systems/tree-sitter-tsql/blob/main/grammar.js#L46"]
+    [URL="https://github.com/Crary-Systems/tree-sitter-tsql/blob/main/grammar.js#L46"
+    ,style=filled
+    ,color=lightgreen]
 
   tsql_file -> batch
   tsql_file -> execute_body_batch
@@ -13,7 +15,9 @@ digraph Roadmap {
 
   subgraph {
   batch
-    [URL="https://github.com/Crary-Systems/tree-sitter-tsql/blob/main/grammar.js#L51"]
+    [URL="https://github.com/Crary-Systems/tree-sitter-tsql/blob/main/grammar.js#L51"
+    ,style=filled
+    ,color=lightgreen]
 
   batch -> go_statement;
   batch -> execute_body_batch;
@@ -89,40 +93,47 @@ digraph Roadmap {
   ## TODO
   subgraph {
   sql_clauses
-    [URL="https://github.com/Crary-Systems/tree-sitter-tsql/blob/4dda5f0b2a1d0c921fa68dff7fd5ffdb39467df3/grammar.js#L118-L122"]
+    [URL="https://github.com/Crary-Systems/tree-sitter-tsql/blob/4dda5f0b2a1d0c921fa68dff7fd5ffdb39467df3/grammar.js#L118-L122"
+    ,style=filled
+    ,color=lightgreen]
 
   sql_clauses -> dml_clause
 }
 
   subgraph {
   dml_clause
-    [URL="https://github.com/Crary-Systems/tree-sitter-tsql/blob/4dda5f0b2a1d0c921fa68dff7fd5ffdb39467df3/grammar.js#L192-L195"]
+    [URL="https://github.com/Crary-Systems/tree-sitter-tsql/blob/4dda5f0b2a1d0c921fa68dff7fd5ffdb39467df3/grammar.js#L192-L195"
+    ,style=filled
+    ,color=lightgreen]
 
   dml_clause -> select_statement_standalone
 }
 
   subgraph {
   select_statement_standalone
-    [URL="https://github.com/Crary-Systems/tree-sitter-tsql/blob/4dda5f0b2a1d0c921fa68dff7fd5ffdb39467df3/grammar.js#L197-L200"]
+    [URL="https://github.com/Crary-Systems/tree-sitter-tsql/blob/4dda5f0b2a1d0c921fa68dff7fd5ffdb39467df3/grammar.js#L197-L200"
+    ,style=filled
+    ,color=lightgreen]
 
   select_statement_standalone -> select_statement
 
-  ##TODO
   select_statement_standalone -> with_expression
 }
 
   subgraph {
   with_expression
-    [color=gray]
+    [style=filled
+    ,color=lightgreen]
 }
 
   subgraph {
   select_statement
-    [URL="https://github.com/Crary-Systems/tree-sitter-tsql/blob/1f56e8217a05e0a7e09ce2955aee4c340190c598/grammar.js#L202-L206"]
+    [URL="https://github.com/Crary-Systems/tree-sitter-tsql/blob/1f56e8217a05e0a7e09ce2955aee4c340190c598/grammar.js#L202-L206"
+    ,style=filled
+    ,color=lightgreen]
 
   select_statement -> query_expression
 
-  ##TODO
   select_statement -> select_order_by_clause
   select_statement -> for_clause
   select_statement -> option_clause
@@ -130,7 +141,9 @@ digraph Roadmap {
 
   subgraph {
   query_expression
-    [URL="https://github.com/Crary-Systems/tree-sitter-tsql/blob/main/grammar.js#L208-L211"]
+    [style=filled
+    ,color=lightgreen
+    ,URL="https://github.com/Crary-Systems/tree-sitter-tsql/blob/main/grammar.js#L208-L211"]
 
   query_expression -> query_specification
 
@@ -141,27 +154,32 @@ digraph Roadmap {
 
   subgraph {
   for_clause
-    [color=gray]
+    [style=filled
+    ,color=lightgreen]
 }
 
   subgraph {
   option_clause
-    [color=gray]
+    [style=filled
+    ,color=lightgreen]
 }
 
   subgraph {
   select_order_by_clause
-    [color=gray]
+    [style=filled
+    ,color=lightgreen]
 }
 
   subgraph {
   unions
-    [color=gray]
+    [style=filled
+    ,color=lightgreen]
 }
 
   subgraph {
   sql_union
-    [color=gray]
+    [style=filled
+    ,color=lightgreen]
 }
 
 
@@ -174,7 +192,9 @@ digraph Roadmap {
 
   subgraph {
   query_specification
-    [URL="https://github.com/Crary-Systems/tree-sitter-tsql/blob/c1d4d4d9d830cdf8ec41142c705d269b1ea84c8e/grammar.js#L213-L218"]
+    [URL="https://github.com/Crary-Systems/tree-sitter-tsql/blob/c1d4d4d9d830cdf8ec41142c705d269b1ea84c8e/grammar.js#L213-L218"
+    ,style=filled
+    ,color=lightgreen]
 
   query_specification -> top_clause
   query_specification -> select_list
@@ -188,7 +208,7 @@ digraph Roadmap {
   subgraph {
   select_list
     [style=filled
-    ,color=orange
+    ,color=lightgreen
     ,URL="https://github.com/Crary-Systems/tree-sitter-tsql/blob/main/test/corpus/select.txt"]
 
   select_list -> select_list_elem
@@ -196,7 +216,9 @@ digraph Roadmap {
 
   subgraph {
   select_list_elem
-    [URL="https://github.com/Crary-Systems/tree-sitter-tsql/blob/c1d4d4d9d830cdf8ec41142c705d269b1ea84c8e/grammar.js#L225-L232"]
+    [style=filled
+    ,color=lightgreen
+    ,URL="https://github.com/Crary-Systems/tree-sitter-tsql/blob/c1d4d4d9d830cdf8ec41142c705d269b1ea84c8e/grammar.js#L225-L232"]
 
   select_list_elem -> udt_elem
   select_list_elem -> assignment_operator
@@ -207,48 +229,179 @@ digraph Roadmap {
 
   subgraph {
   top_clause
-    [color=gray]
+    [style=filled
+    ,color=lightgreen]
 }
 
 
   subgraph {
-  create_or_alter_function
+  create_or_alter_function [style=filled
+    ,color=lightgreen]
 }
 
   subgraph {
-  create_or_alter_procedure
+  create_or_alter_procedure [style=filled
+    ,color=lightgreen]
 }
 
   subgraph {
-  create_or_alter_trigger
+  create_or_alter_trigger [style=filled
+    ,color=lightgreen]
 }
 
   subgraph {
-  create_view
+  create_view [style=filled
+    ,color=lightgreen]
 }
 
   subgraph {
-  expression_elem
+  expression_elem [style=filled
+    ,color=lightgreen]
 }
 
   subgraph {
-  group_by_item
+  group_by_item [style=filled
+    ,color=lightgreen]
 }
 
   subgraph {
-  grouping_sets_item
+  grouping_sets_item [style=filled
+    ,color=lightgreen]
 }
 
   subgraph {
-  search_condition
+  search_condition [style=filled
+    ,color=lightgreen]
 }
 
   subgraph {
-  table_name
+  table_name [style=filled
+    ,color=lightgreen]
 }
 
   subgraph {
-  table_sources
+  table_sources [style=filled
+    ,color=lightgreen]
+
+  table_sources -> table_source_item
+  table_sources -> join_part
+}
+
+  subgraph {
+  table_source_item [style=filled
+    ,color=lightgreen]
+
+  table_source_item -> open_json
+  table_source_item -> open_xml
+  table_source_item -> rowset_function
+  table_source_item -> openquery
+  table_source_item -> opendatasource
+  table_source_item -> change_table
+  table_source_item -> table_valued_function
+  table_source_item -> full_table_name
+  table_source_item -> tablesample
+}
+
+  subgraph {
+  open_json
+    [style=filled
+    ,color=lightgreen
+    ,URL="https://github.com/Crary-Systems/tree-sitter-tsql/blob/main/test/corpus/from_clause_sources.txt"]
+
+  open_json -> expression
+  open_json -> json_declaration
+}
+
+  subgraph {
+  open_xml
+    [style=filled
+    ,color=lightgreen
+    ,URL="https://github.com/Crary-Systems/tree-sitter-tsql/blob/main/test/corpus/from_clause_sources.txt"]
+
+  open_xml -> expression
+  open_xml -> schema_declaration
+}
+
+  subgraph {
+  rowset_function
+    [style=filled
+    ,color=lightgreen
+    ,URL="https://github.com/Crary-Systems/tree-sitter-tsql/blob/main/test/corpus/from_clause_sources.txt"]
+
+  rowset_function -> expression
+  rowset_function -> bulk_option
+}
+
+  subgraph {
+  openquery
+    [style=filled
+    ,color=lightgreen
+    ,URL="https://github.com/Crary-Systems/tree-sitter-tsql/blob/main/test/corpus/from_clause_sources.txt"]
+
+  openquery -> expression
+}
+
+  subgraph {
+  opendatasource
+    [style=filled
+    ,color=lightgreen
+    ,URL="https://github.com/Crary-Systems/tree-sitter-tsql/blob/main/test/corpus/from_clause_sources.txt"]
+
+  opendatasource -> expression
+}
+
+  subgraph {
+  change_table
+    [style=filled
+    ,color=lightgreen
+    ,URL="https://github.com/Crary-Systems/tree-sitter-tsql/blob/main/test/corpus/from_clause_sources.txt"]
+
+  change_table -> table_name
+  change_table -> expression
+  change_table -> full_column_name
+  change_table -> expression_list_
+}
+
+  subgraph {
+  tablesample
+    [style=filled
+    ,color=lightgreen
+    ,URL="https://github.com/Crary-Systems/tree-sitter-tsql/blob/main/test/corpus/from_clause_sources.txt"]
+
+  tablesample -> expression
+}
+
+  subgraph {
+  bulk_option
+    [style=filled
+    ,color=lightgreen]
+}
+
+  subgraph {
+  json_declaration
+    [style=filled
+    ,color=lightgreen]
+}
+
+  subgraph {
+  schema_declaration
+    [style=filled
+    ,color=lightgreen]
+}
+
+  subgraph {
+  full_table_name [style=filled
+    ,color=lightgreen]
+}
+
+  subgraph {
+  table_valued_function [style=filled
+    ,color=lightgreen]
+}
+
+  subgraph {
+  join_part [style=filled
+    ,color=lightgreen]
 }
 
   subgraph {
@@ -296,7 +449,9 @@ digraph Roadmap {
 
   subgraph {
   expression
-    [URL="https://github.com/Crary-Systems/tree-sitter-tsql/blob/c1d4d4d9d830cdf8ec41142c705d269b1ea84c8e/grammar.js#L320-L326"]
+    [URL="https://github.com/Crary-Systems/tree-sitter-tsql/blob/c1d4d4d9d830cdf8ec41142c705d269b1ea84c8e/grammar.js#L320-L326"
+    ,style=filled
+    ,color=lightgreen]
 
 	expression -> primitive_expression
 	expression -> function_call
@@ -317,19 +472,23 @@ digraph Roadmap {
 }
 
   subgraph {
-  COLLATE
+  COLLATE [style=filled
+    ,color=lightgreen]
 }
 
   subgraph {
-  DOLLAR_ACTION
+  DOLLAR_ACTION [style=filled
+    ,color=lightgreen]
 }
 
   subgraph {
-  bracket_expression
+  bracket_expression [style=filled
+    ,color=lightgreen]
 }
 
   subgraph {
-  case_expression
+  case_expression [style=filled
+    ,color=lightgreen]
 }
 
   subgraph {
@@ -337,12 +496,15 @@ digraph Roadmap {
 }
 
   subgraph {
-  full_column_name
+  full_column_name [style=filled
+    ,color=lightgreen]
 }
 
   subgraph {
 
   function_call
+    [style=filled
+    ,color=lightgreen]
 
   function_call -> odbc_scalar_function
 
@@ -391,7 +553,9 @@ digraph Roadmap {
 
   subgraph {
   groupby
-    [URL="https://github.com/Crary-Systems/tree-sitter-tsql/blob/main/test/corpus/groupby.txt"]
+    [URL="https://github.com/Crary-Systems/tree-sitter-tsql/blob/main/test/corpus/groupby.txt"
+    ,style=filled
+    ,color=lightgreen]
 
   groupby -> group_by_item
   groupby -> grouping_sets_item
@@ -412,7 +576,9 @@ digraph Roadmap {
 
   subgraph {
   built_in_functions
-    [URL="https://github.com/Crary-Systems/tree-sitter-tsql/blob/main/grammar/builtins.js#L180"]
+    [URL="https://github.com/Crary-Systems/tree-sitter-tsql/blob/main/grammar/builtins.js#L180"
+    ,style=filled
+    ,color=lightgreen]
 }
 
   subgraph {
@@ -526,7 +692,8 @@ digraph Roadmap {
 
 
   subgraph {
-  hierarchyid_call
+  hierarchyid_call [style=filled
+    ,color=lightgreen]
 }
 
   subgraph {
@@ -560,11 +727,13 @@ digraph Roadmap {
 }
 
   subgraph {
-  time_zone
+  time_zone [style=filled
+    ,color=lightgreen]
 }
 
   subgraph {
-  unary_operator_expression
+  unary_operator_expression [style=filled
+    ,color=lightgreen]
 }
 
   subgraph {
@@ -609,21 +778,24 @@ digraph Roadmap {
 }
 
   subgraph {
-  conversion_functions
+  conversion_functions [style=filled
+    ,color=lightgreen]
 
   conversion_functions -> data_type
 
 }
 
   subgraph {
-  data_type
+  data_type [style=filled
+    ,color=lightgreen]
 
   data_type -> other_data_types
 }
 
   ## TODO
   subgraph {
-  other_data_types
+  other_data_types [style=filled
+    ,color=lightgreen]
 }
 
 
@@ -639,13 +811,17 @@ digraph Roadmap {
   batch_level_statement -> create_view
 
   create_or_alter_function
-    [color=gray]
+    [style=filled
+    ,color=lightgreen]
   create_or_alter_procedure
-    [color=gray]
+    [style=filled
+    ,color=lightgreen]
   create_or_alter_trigger
-    [color=gray]
+    [style=filled
+    ,color=lightgreen]
   create_view
-    [color=gray]
+    [style=filled
+    ,color=lightgreen]
 }
 
 }

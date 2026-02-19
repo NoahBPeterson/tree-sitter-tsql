@@ -1,3 +1,4 @@
 digraph {
-  bracket_expression
+  bracket_expression [style=filled
+    ,color=lightgreen]
 }

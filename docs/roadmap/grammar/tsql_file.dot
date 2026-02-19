@@ -1,6 +1,8 @@
 digraph {
   tsql_file
-    [URL="https://github.com/Crary-Systems/tree-sitter-tsql/blob/main/grammar.js#L46"]
+    [URL="https://github.com/Crary-Systems/tree-sitter-tsql/blob/main/grammar.js#L46"
+    ,style=filled
+    ,color=lightgreen]
 
   tsql_file -> batch
   tsql_file -> execute_body_batch

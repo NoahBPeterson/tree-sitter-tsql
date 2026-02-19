@@ -1,3 +1,4 @@
 digraph {
-  create_view
+  create_view [style=filled
+    ,color=lightgreen]
 }

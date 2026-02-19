@@ -1,3 +1,4 @@
 digraph {
-  COLLATE
+  COLLATE [style=filled
+    ,color=lightgreen]
 }

@@ -1,3 +1,4 @@
 digraph {
-  expression_elem
+  expression_elem [style=filled
+    ,color=lightgreen]
 }

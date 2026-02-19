@@ -1,3 +1,4 @@
 digraph {
-  create_or_alter_function
+  create_or_alter_function [style=filled
+    ,color=lightgreen]
 }

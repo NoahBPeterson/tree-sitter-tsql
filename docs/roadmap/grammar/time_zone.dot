@@ -1,3 +1,4 @@
 digraph {
-  time_zone
+  time_zone [style=filled
+    ,color=lightgreen]
 }

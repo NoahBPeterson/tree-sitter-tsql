@@ -1,3 +1,4 @@
 digraph {
-  table_name
+  table_name [style=filled
+    ,color=lightgreen]
 }

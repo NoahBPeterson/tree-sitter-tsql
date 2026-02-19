@@ -1,3 +1,4 @@
 digraph {
-  search_condition
+  search_condition [style=filled
+    ,color=lightgreen]
 }

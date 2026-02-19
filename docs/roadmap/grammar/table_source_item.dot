@@ -1,0 +1,14 @@
+digraph {
+  table_source_item [style=filled
+    ,color=lightgreen]
+
+  table_source_item -> open_json
+  table_source_item -> open_xml
+  table_source_item -> rowset_function
+  table_source_item -> openquery
+  table_source_item -> opendatasource
+  table_source_item -> change_table
+  table_source_item -> table_valued_function
+  table_source_item -> full_table_name
+  table_source_item -> tablesample
+}

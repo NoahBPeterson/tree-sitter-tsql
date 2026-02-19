@@ -1,4 +1,4 @@
 digraph {
-  hierarchyid_call [style=filled
+  full_table_name [style=filled
     ,color=lightgreen]
 }

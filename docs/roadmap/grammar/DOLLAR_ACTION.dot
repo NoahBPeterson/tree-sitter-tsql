@@ -1,3 +1,4 @@
 digraph {
-  DOLLAR_ACTION
+  DOLLAR_ACTION [style=filled
+    ,color=lightgreen]
 }

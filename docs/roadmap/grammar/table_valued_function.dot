@@ -1,0 +1,4 @@
+digraph {
+  table_valued_function [style=filled
+    ,color=lightgreen]
+}

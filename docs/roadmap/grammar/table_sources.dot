@@ -1,3 +1,7 @@
 digraph {
-  table_sources
+  table_sources [style=filled
+    ,color=lightgreen]
+
+  table_sources -> table_source_item
+  table_sources -> join_part
 }

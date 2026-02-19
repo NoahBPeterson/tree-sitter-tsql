@@ -1,0 +1,9 @@
+digraph {
+  open_xml
+    [style=filled
+    ,color=lightgreen
+    ,URL="https://github.com/Crary-Systems/tree-sitter-tsql/blob/main/test/corpus/from_clause_sources.txt"]
+
+  open_xml -> expression
+  open_xml -> schema_declaration
+}
