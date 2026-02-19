@@ -427,13 +427,32 @@ SELECT 1 + + +
 
 -------------------------------------
 
-(ERROR
-  (select)
-  (expression
-    (primitive_expression
-      (primitive_constant
-        (decimal_))))
-  (PLUS))
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (expression
+                          (primitive_expression
+                            (primitive_constant
+                              (decimal_))))
+                        (PLUS)
+                        (expression
+                          (unary_operator_expression
+                            (expression
+                              (unary_operator_expression
+                                (expression
+                                  (full_column_name
+                                    (id_
+                                      (MISSING _word))))))))))))))))))))
 
 =====================================
 ERROR unclosed parenthesis
@@ -3904,3 +3923,454 @@ CREATE FUNCTION dbo.f () RETURNS AS BEGIN RETURN 1 END
                   (primitive_expression
                     (primitive_constant
                       (decimal_))))))))))))
+
+===========================
+ERROR - $action bare dollar sign
+===========================
+SELECT $
+---
+(ERROR
+  (select))
+
+===========================
+ERROR - $action space breaks token
+===========================
+SELECT $ action
+---
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (ERROR)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (full_column_name
+                          (id_))))))))))))))
+
+===========================
+ERROR - ALL missing subquery
+===========================
+SELECT * FROM t WHERE x > ALL
+---
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_))))))))))))
+  (ERROR
+    (expression
+      (full_column_name
+        (id_)))
+    (comparison_operator)))
+
+===========================
+ERROR - ALL unclosed paren
+===========================
+SELECT * FROM t WHERE x > ALL (
+---
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_))))))))))))
+  (ERROR
+    (expression
+      (full_column_name
+        (id_)))
+    (comparison_operator)))
+
+===========================
+ERROR - ALL empty subquery
+===========================
+SELECT * FROM t WHERE x > ALL ()
+---
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_))))))))))))
+  (ERROR
+    (expression
+      (full_column_name
+        (id_)))
+    (comparison_operator)))
+
+===========================
+ERROR - SOME with expression list not subquery
+===========================
+SELECT * FROM t WHERE x > SOME (1, 2, 3)
+---
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_))))))))))))
+  (ERROR
+    (expression
+      (full_column_name
+        (id_)))
+    (comparison_operator)))
+
+===========================
+ERROR - COLLATE without collation name
+===========================
+SELECT x COLLATE
+---
+(ERROR
+  (select)
+  (expression
+    (full_column_name
+      (id_))))
+
+===========================
+ERROR - COLLATE with number literal
+===========================
+SELECT x COLLATE 123
+---
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (full_column_name
+                          (id_)))))))))))))
+  (ERROR))
+
+===========================
+ERROR - COLLATE with string literal
+===========================
+SELECT x COLLATE 'Latin1'
+---
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (full_column_name
+                          (id_)))))))))))))
+  (ERROR))
+
+===========================
+ERROR - AT TIME without ZONE
+===========================
+SELECT x AT TIME
+---
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (full_column_name
+                          (id_)))))))))))))
+  (ERROR
+    (AT_KEYWORD)))
+
+===========================
+ERROR - AT TIME ZONE missing expression
+===========================
+SELECT x AT TIME ZONE
+---
+(ERROR
+  (select)
+  (expression
+    (full_column_name
+      (id_)))
+  (AT_KEYWORD))
+
+===========================
+ERROR - AT ZONE missing TIME keyword
+===========================
+SELECT x AT ZONE 'UTC'
+---
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (full_column_name
+                          (id_)))))))))))))
+  (ERROR
+    (AT_KEYWORD)))
+
+===========================
+ERROR - AT TIME ZONE missing preceding expression
+===========================
+SELECT AT TIME ZONE 'UTC'
+---
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (full_column_name
+                          (id_)))
+                      (as_column_alias
+                        (column_alias
+                          (id_)))))))))))))
+  (ERROR
+    (execute_body_batch
+      (func_proc_name_server_database_schema
+        (func_proc_name_database_schema
+          (func_proc_name_schema
+            (id_))))
+      (execute_statement_arg
+        (execute_statement_arg_unnamed
+          (execute_parameter
+            (constant)))))))
+
+===========================
+ERROR - GOTO missing label
+===========================
+GOTO
+---
+(tsql_file
+  (ERROR))
+
+===========================
+ERROR - GOTO string literal instead of identifier
+===========================
+GOTO 'label'
+---
+(tsql_file
+  (ERROR))
+
+===========================
+ERROR - GOTO local variable instead of label
+===========================
+GOTO @var
+---
+(tsql_file
+  (ERROR))
+
+===========================
+ERROR - WAITFOR missing keyword
+===========================
+WAITFOR
+---
+(tsql_file
+  (ERROR))
+
+===========================
+ERROR - WAITFOR DELAY missing expression
+===========================
+WAITFOR DELAY
+---
+(ERROR)
+
+===========================
+ERROR - WAITFOR TIME missing expression
+===========================
+WAITFOR TIME
+---
+(ERROR)
+
+===========================
+ERROR - WAITFOR missing DELAY/TIME keyword
+===========================
+WAITFOR 'time'
+---
+(tsql_file
+  (ERROR))
+
+===========================
+ERROR - computed column AS without column name
+===========================
+CREATE TABLE t (AS a + b)
+---
+(tsql_file
+  (ERROR
+    (full_table_name
+      (id_))
+    (id_)))
+
+===========================
+ERROR - DDL trigger missing FOR clause
+===========================
+CREATE TRIGGER t ON DATABASE
+---
+(tsql_file
+  (ERROR
+    (create_or_alter)
+    (full_table_name
+      (id_))))
+
+===========================
+ERROR - DDL trigger ALL without SERVER
+===========================
+CREATE TRIGGER t ON ALL
+---
+(tsql_file
+  (ERROR
+    (create_or_alter)
+    (full_table_name
+      (id_))))
+
+===========================
+ERROR - DDL trigger FOR without event list
+===========================
+CREATE TRIGGER t ON DATABASE FOR
+---
+(tsql_file
+  (ERROR
+    (create_or_alter)
+    (full_table_name
+      (id_))))
+
+===========================
+ERROR - DDL trigger missing AS and body
+===========================
+CREATE TRIGGER t ON ALL SERVER FOR CREATE_TABLE
+---
+(tsql_file
+  (ERROR
+    (create_or_alter)
+    (full_table_name
+      (id_))
+    (id_)))
+
+===========================
+ERROR - DDL trigger missing event between FOR and AS
+===========================
+CREATE TRIGGER t ON DATABASE FOR AS SELECT 1
+---
+(tsql_file
+  (ERROR
+    (create_or_alter)
+    (full_table_name
+      (id_))
+    (id_))
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (primitive_expression
+                          (primitive_constant
+                            (decimal_)))))))))))))))
+
+===========================
+ERROR - DDL trigger missing name
+===========================
+CREATE TRIGGER ON DATABASE FOR CREATE_TABLE AS SELECT 1
+---
+(tsql_file
+  (ERROR
+    (create_or_alter)
+    (id_))
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (primitive_expression
+                          (primitive_constant
+                            (decimal_)))))))))))))))
