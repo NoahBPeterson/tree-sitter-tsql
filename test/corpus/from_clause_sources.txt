@@ -1,0 +1,586 @@
+=====================================
+OPENJSON basic
+=====================================
+
+SELECT * FROM OPENJSON(@json)
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (open_json
+                        (expression
+                          (primitive_expression
+                            (LOCAL_ID_)))))))))))))))
+
+=====================================
+OPENJSON with path and alias
+=====================================
+
+SELECT * FROM OPENJSON(@json, '$.items') AS j
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (open_json
+                        (expression
+                          (primitive_expression
+                            (LOCAL_ID_)))
+                        (expression
+                          (primitive_expression
+                            (primitive_constant
+                              (string_lit))))
+                        (as_table_alias
+                          (id_))))))))))))))
+
+=====================================
+OPENJSON with WITH clause
+=====================================
+
+SELECT * FROM OPENJSON(@json) WITH (id INT, name NVARCHAR(100) '$.name') AS j
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (open_json
+                        (expression
+                          (primitive_expression
+                            (LOCAL_ID_)))
+                        (json_declaration
+                          (json_column_declaration
+                            (column_declaration
+                              (id_)
+                              (data_type
+                                (int_))))
+                          (json_column_declaration
+                            (column_declaration
+                              (id_)
+                              (data_type
+                                (nvarchar_)
+                                (decimal_))
+                              (string_lit))))
+                        (as_table_alias
+                          (id_))))))))))))))
+
+=====================================
+OPENJSON with AS JSON column
+=====================================
+
+SELECT * FROM OPENJSON(@json) WITH (items NVARCHAR(MAX) '$.items' AS JSON) AS j
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (open_json
+                        (expression
+                          (primitive_expression
+                            (LOCAL_ID_)))
+                        (json_declaration
+                          (json_column_declaration
+                            (column_declaration
+                              (id_)
+                              (data_type
+                                (nvarchar_)
+                                (max_))
+                              (string_lit))))
+                        (as_table_alias
+                          (id_))))))))))))))
+
+=====================================
+OPENXML basic
+=====================================
+
+SELECT * FROM OPENXML(@idoc, '/ROOT/Customer')
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (open_xml
+                        (expression
+                          (primitive_expression
+                            (LOCAL_ID_)))
+                        (expression
+                          (primitive_expression
+                            (primitive_constant
+                              (string_lit))))))))))))))))
+
+=====================================
+OPENXML with flags and schema
+=====================================
+
+SELECT * FROM OPENXML(@idoc, '/ROOT/Customer', 2) WITH (CustomerID VARCHAR(10), ContactName VARCHAR(20)) AS x
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (open_xml
+                        (expression
+                          (primitive_expression
+                            (LOCAL_ID_)))
+                        (expression
+                          (primitive_expression
+                            (primitive_constant
+                              (string_lit))))
+                        (expression
+                          (primitive_expression
+                            (primitive_constant
+                              (decimal_))))
+                        (schema_declaration
+                          (column_declaration
+                            (id_)
+                            (data_type
+                              (varchar_)
+                              (decimal_)))
+                          (column_declaration
+                            (id_)
+                            (data_type
+                              (varchar_)
+                              (decimal_))))
+                        (as_table_alias
+                          (id_))))))))))))))
+
+=====================================
+OPENXML with path mappings
+=====================================
+
+SELECT * FROM OPENXML(@idoc, '/ROOT/Customer', 2) WITH (id INT '$.id', name VARCHAR(50) '$.name')
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (open_xml
+                        (expression
+                          (primitive_expression
+                            (LOCAL_ID_)))
+                        (expression
+                          (primitive_expression
+                            (primitive_constant
+                              (string_lit))))
+                        (expression
+                          (primitive_expression
+                            (primitive_constant
+                              (decimal_))))
+                        (schema_declaration
+                          (column_declaration
+                            (id_)
+                            (data_type
+                              (int_))
+                            (string_lit))
+                          (column_declaration
+                            (id_)
+                            (data_type
+                              (varchar_)
+                              (decimal_))
+                            (string_lit)))))))))))))))
+
+=====================================
+OPENROWSET provider query
+=====================================
+
+SELECT * FROM OPENROWSET('SQLNCLI', 'Server=srv;Trusted_Connection=yes;', 'SELECT * FROM t') AS a
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (rowset_function
+                        (expression
+                          (primitive_expression
+                            (primitive_constant
+                              (string_lit))))
+                        (expression
+                          (primitive_expression
+                            (primitive_constant
+                              (string_lit))))
+                        (expression
+                          (primitive_expression
+                            (primitive_constant
+                              (string_lit)))))
+                      (as_table_alias
+                        (id_)))))))))))))
+
+=====================================
+OPENROWSET BULK with options
+=====================================
+
+SELECT * FROM OPENROWSET(BULK 'C:\data.csv', FORMATFILE = 'C:\fmt.xml') AS t
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (rowset_function
+                        (expression
+                          (primitive_expression
+                            (primitive_constant
+                              (string_lit))))
+                        (bulk_option
+                          (id_)
+                          (expression
+                            (primitive_expression
+                              (primitive_constant
+                                (string_lit))))))
+                      (as_table_alias
+                        (id_)))))))))))))
+
+=====================================
+OPENROWSET BULK with SINGLE_CLOB
+=====================================
+
+SELECT BulkColumn FROM OPENROWSET(BULK 'C:\data.txt', SINGLE_CLOB) AS t
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (full_column_name
+                          (id_))))))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (rowset_function
+                        (expression
+                          (primitive_expression
+                            (primitive_constant
+                              (string_lit))))
+                        (id_))
+                      (as_table_alias
+                        (id_)))))))))))))
+
+=====================================
+OPENQUERY
+=====================================
+
+SELECT * FROM OPENQUERY(LinkedServer, 'SELECT * FROM t') AS q
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (openquery
+                        (id_)
+                        (expression
+                          (primitive_expression
+                            (primitive_constant
+                              (string_lit)))))
+                      (as_table_alias
+                        (id_)))))))))))))
+
+=====================================
+OPENDATASOURCE
+=====================================
+
+SELECT * FROM OPENDATASOURCE('SQLNCLI', 'Data Source=srv;Integrated Security=SSPI').AdventureWorks.HumanResources.Employee
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (opendatasource
+                        (expression
+                          (primitive_expression
+                            (primitive_constant
+                              (string_lit))))
+                        (expression
+                          (primitive_expression
+                            (primitive_constant
+                              (string_lit))))
+                        (id_)
+                        (id_)
+                        (id_)))))))))))))
+
+=====================================
+CHANGETABLE CHANGES
+=====================================
+
+SELECT * FROM CHANGETABLE(CHANGES dbo.Products, @last_sync) AS ct
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (change_table
+                        (table_name
+                          (id_)
+                          (id_))
+                        (expression
+                          (primitive_expression
+                            (LOCAL_ID_))))
+                      (as_table_alias
+                        (id_)))))))))))))
+
+=====================================
+CHANGETABLE VERSION
+=====================================
+
+SELECT * FROM CHANGETABLE(VERSION dbo.Products, (ProductID), (1)) AS ct
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (change_table
+                        (table_name
+                          (id_)
+                          (id_))
+                        (full_column_name
+                          (id_))
+                        (expression_list_
+                          (expression
+                            (primitive_expression
+                              (primitive_constant
+                                (decimal_))))))
+                      (as_table_alias
+                        (id_)))))))))))))
+
+=====================================
+TABLESAMPLE PERCENT
+=====================================
+
+SELECT * FROM t TABLESAMPLE (10 PERCENT)
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_))
+                      (tablesample
+                        (expression
+                          (primitive_expression
+                            (primitive_constant
+                              (decimal_))))))))))))))))
+
+=====================================
+TABLESAMPLE SYSTEM with REPEATABLE
+=====================================
+
+SELECT * FROM t TABLESAMPLE SYSTEM (1000 ROWS) REPEATABLE (42)
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_))
+                      (tablesample
+                        (expression
+                          (primitive_expression
+                            (primitive_constant
+                              (decimal_))))
+                        (expression
+                          (primitive_expression
+                            (primitive_constant
+                              (decimal_))))))))))))))))

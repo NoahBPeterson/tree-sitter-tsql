@@ -1443,13 +1443,11 @@ MERGE INTO t USING s
 
 -------------------------------------
 
-(ERROR
-  (full_table_name
-    (id_))
-  (table_source
-    (table_source_item
-      (full_table_name
-        (id_)))))
+(tsql_file
+  (ERROR
+    (full_table_name
+      (id_))
+    (id_)))
 
 =====================================
 ERROR MERGE ON no condition
