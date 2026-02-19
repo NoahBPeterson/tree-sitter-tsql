@@ -15,7 +15,7 @@
 - [x] `function_call` (Parser L3904, grammar.js L349-L371)
 - [x] `full_column_name` — single identifier only (Parser L3909, grammar.js L336-L338)
 - [x] `full_column_name` — multi-part: `table.column`, `schema.table.column` (Parser L5155-L5160)
-- [ ] `full_column_name` — `DELETED.column`, `INSERTED.column` (Parser L5156)
+- [x] `full_column_name` — `DELETED.column`, `INSERTED.column` (Parser L5156)
 - [x] `bracket_expression` — `(expression)` (Parser L3945)
 - [x] `bracket_expression` — `(subquery)` (Parser L3946)
 - [x] `unary_operator_expression` — `~expr`, `-expr`, `+expr` (Parser L3940)
@@ -24,14 +24,14 @@
 - [x] Bitwise operators — `expr & expr`, `expr ^ expr`, `expr | expr`, `expr || expr` (Parser L3913)
 - [x] `case_expression` — simple CASE: `CASE expr WHEN val THEN result END` (Parser L3935)
 - [x] `case_expression` — searched CASE: `CASE WHEN condition THEN result END` (Parser L3936)
-- [ ] `COLLATE` on expression — `expression COLLATE collation_name` (Parser L3907)
-- [ ] `AT TIME ZONE` — `expression AT TIME ZONE 'zone'` (Parser L3914)
+- [x] `COLLATE` on expression — `expression COLLATE collation_name` (Parser L3907)
+- [x] `AT TIME ZONE` — `expression AT TIME ZONE 'zone'` (Parser L3914)
 - [ ] XML `.value()` method (Parser L3905)
 - [ ] XML `.query()` method (Parser L3905)
 - [ ] XML `.exist()` method (Parser L3905)
 - [ ] XML `.modify()` method (Parser L3905)
 - [ ] `expression.hierarchyid_call` (Parser L3906)
-- [ ] `DOLLAR_ACTION` — `$action` for MERGE (Parser L3916)
+- [x] `DOLLAR_ACTION` — `$action` for MERGE (Parser L3916)
 - [ ] `over_clause` as standalone expression (Parser L3915)
 
 ### 1.2 Search Condition / Predicates (Parser L3977-L3993)
@@ -45,9 +45,9 @@
 - [x] `LIKE` predicate — `expr [NOT] LIKE pattern [ESCAPE char]` (Parser L3991)
 - [x] `IS NULL` predicate — `expr IS [NOT] NULL` (Parser L3992)
 - [x] `EXISTS` predicate — `EXISTS (subquery)` (Parser L3984)
-- [ ] `ALL`/`SOME`/`ANY` predicate — `expr op ALL|SOME|ANY (subquery)` (Parser L3988)
-- [ ] `freetext_predicate` — `CONTAINS(col, 'text')` (Parser L3985)
-- [ ] `freetext_predicate` — `FREETEXT(col, 'text')` (Parser L3985)
+- [x] `ALL`/`SOME`/`ANY` predicate — `expr op ALL|SOME|ANY (subquery)` (Parser L3988)
+- [x] `freetext_predicate` — `CONTAINS(col, 'text')` (Parser L3985)
+- [x] `freetext_predicate` — `FREETEXT(col, 'text')` (Parser L3985)
 
 ### 1.3 WHERE and HAVING Clauses
 
@@ -65,7 +65,7 @@
 - [x] `SQUARE_BRACKET_ID` — `[delimited]` identifiers (grammar.js L23)
 - [x] `LOCAL_ID` — `@variable` (grammar.js L24)
 - [x] `DOUBLE_QUOTE_ID` — `"delimited"` identifiers (Lexer L1218)
-- [ ] `TEMP_ID` — `#temp` / `##global_temp` (Lexer L1223)
+- [x] `TEMP_ID` — `#temp` / `##global_temp` (Lexer L1223)
 - [x] Fix `ID` regex to allow single-char identifiers (`+` should be `*`) (Lexer L1225)
 
 ---
@@ -220,7 +220,7 @@
 - [x] `merge_not_matched` (Parser L2143)
 - [x] MERGE with `OUTPUT` clause (Parser L2131)
 - [x] MERGE with `WITH` (CTE) (Parser L2127)
-- [ ] `$action` in MERGE OUTPUT (Parser L3916)
+- [x] `$action` in MERGE OUTPUT (Parser L3916)
 
 ### 3.5 OUTPUT Clause (shared across DML)
 
@@ -273,10 +273,10 @@
 - [x] `throw_statement` — `THROW [number, message, state]` (Parser L259)
 - [x] `print_statement` — `PRINT expression` (Parser L256)
 - [x] `raiseerror_statement` — `RAISERROR(msg, severity, state [, args])` (Parser L257)
-- [ ] `goto_statement` — `GOTO label` (Parser L254)
+- [x] `goto_statement` — `GOTO label` (Parser L254)
 - [ ] `label_statement` — `label_name:` (Parser L264)
-- [ ] `waitfor_statement` — `WAITFOR DELAY 'time'` (Parser L261)
-- [ ] `waitfor_statement` — `WAITFOR TIME 'time'` (Parser L261)
+- [x] `waitfor_statement` — `WAITFOR DELAY 'time'` (Parser L261)
+- [x] `waitfor_statement` — `WAITFOR TIME 'time'` (Parser L261)
 
 ### 4.4 Transaction Statements (Parser L3409-L3430)
 
@@ -541,7 +541,7 @@
 - [x] Table-level `CHECK (expression)` (Parser L1545)
 - [ ] `ON filegroup` (Parser L1560)
 - [ ] `TEXTIMAGE_ON filegroup` (Parser L1565)
-- [ ] Column computed definitions — `col AS expression [PERSISTED]` (Parser L1491)
+- [x] Column computed definitions — `col AS expression [PERSISTED]` (Parser L1491)
 - [ ] Temporal table — `WITH (SYSTEM_VERSIONING = ON)` (Parser L1570)
 
 ### 6.2 ALTER TABLE (Parser L573-L650)
@@ -618,8 +618,8 @@
 - [x] `INSTEAD OF INSERT|UPDATE|DELETE` (Parser L2411)
 - [x] `FOR INSERT|UPDATE|DELETE` (Parser L2412)
 - [x] Trigger body — `AS sql_clauses` (Parser L2415)
-- [ ] DDL trigger — `ON DATABASE|ALL SERVER` (Parser L2422)
-- [ ] DDL trigger event types (Parser L2425)
+- [x] DDL trigger — `ON DATABASE|ALL SERVER` (Parser L2422)
+- [x] DDL trigger event types (Parser L2425)
 
 ### 6.9 Other DDL
 
@@ -740,7 +740,7 @@
 
 - [x] String literals, binary, decimal, float, real, money, parameter
 - [ ] Negative constant prefix — `constant` allows `-` (Parser L5273)
-- [ ] `$action` token (Parser L3916)
+- [x] `$action` token (Parser L3916)
 
 ### 7.10 Comments (Lexer L1214-L1215)
 
