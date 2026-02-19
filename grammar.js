@@ -1456,17 +1456,94 @@ module.exports = grammar({
 
     table_source_item: $ => seq(
       choice(
-        $.table_valued_function  // must be before full_table_name (both start with id_)
+        $.open_json             // OPENJSON (handles own alias)
+        ,$.open_xml             // OPENXML (handles own alias)
+        ,$.rowset_function      // OPENROWSET
+        ,$.openquery            // OPENQUERY
+        ,$.opendatasource       // OPENDATASOURCE
+        ,$.change_table         // CHANGETABLE
+        ,$.table_valued_function  // must be before full_table_name (both start with id_)
         ,$.full_table_name
         ,seq(token('('), $.select_statement, token(')'))  // derived table
         ,$.local_id_
-        //TODO OPENROWSET, OPENQUERY, OPENDATASOURCE
       )
       ,choice(
         $.pivot_clause          // PIVOT path (includes its own alias)
         ,$.unpivot_clause       // UNPIVOT path (includes its own alias)
-        ,seq(optional($.as_table_alias), optional($.with_table_hints))  // normal path
+        ,seq(optional($.as_table_alias), optional($.tablesample), optional($.with_table_hints))  // normal path
       )
+    ),
+
+    // OPENJSON — https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L4190
+    open_json: $ => prec.right(seq(
+      token(/OPENJSON/i), token('('),
+      $.expression, optional(seq(token(','), $.expression)),
+      token(')'),
+      optional(seq(token(/WITH/i), token('('), $.json_declaration, token(')'))),
+      optional($.as_table_alias)
+    )),
+
+    json_declaration: $ => seq(
+      $.json_column_declaration, repeat(seq(token(','), $.json_column_declaration))
+    ),
+
+    json_column_declaration: $ => seq(
+      $.column_declaration, optional(seq(token(/AS/i), token(/JSON/i)))
+    ),
+
+    column_declaration: $ => seq($.id_, $.data_type, optional($.string_lit)),
+
+    // OPENXML — https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L4186
+    open_xml: $ => prec.right(seq(
+      token(/OPENXML/i), token('('),
+      $.expression, token(','), $.expression, optional(seq(token(','), $.expression)),
+      token(')'),
+      optional(seq(token(/WITH/i), token('('), $.schema_declaration, token(')'))),
+      optional($.as_table_alias)
+    )),
+
+    schema_declaration: $ => seq(
+      $.column_declaration, repeat(seq(token(','), $.column_declaration))
+    ),
+
+    // OPENROWSET — https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L4268
+    rowset_function: $ => choice(
+      seq(token(/OPENROWSET/i), token('('),
+        $.expression, token(','), $.expression, token(','), $.expression,
+        token(')'))
+      ,seq(token(/OPENROWSET/i), token('('), token(/BULK/i), $.expression, token(','),
+        choice(
+          seq($.bulk_option, repeat(seq(token(','), $.bulk_option))),
+          $.id_
+        ),
+        token(')'))
+    ),
+
+    bulk_option: $ => seq($.id_, token('='), $.expression),
+
+    // OPENQUERY — https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L2967
+    openquery: $ => seq(token(/OPENQUERY/i), token('('), $.id_, token(','), $.expression, token(')')),
+
+    // OPENDATASOURCE — https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L2972
+    opendatasource: $ => seq(
+      token(/OPENDATASOURCE/i), token('('), $.expression, token(','), $.expression, token(')'),
+      DOT, optional($.id_), DOT, optional($.id_), DOT, $.id_
+    ),
+
+    // CHANGETABLE — https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L4210
+    change_table: $ => choice(
+      seq(token(/CHANGETABLE/i), token('('), token(/CHANGES/i), $.table_name, token(','), $.expression, token(')'))
+      ,seq(token(/CHANGETABLE/i), token('('), token(/VERSION/i), $.table_name, token(','),
+        token('('), $.full_column_name, repeat(seq(token(','), $.full_column_name)), token(')'), token(','),
+        token('('), $.expression_list_, token(')'),
+        token(')'))
+    ),
+
+    // TABLESAMPLE — https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L4186
+    tablesample: $ => seq(
+      token(/TABLESAMPLE/i), optional(token(/SYSTEM/i)),
+      token('('), $.expression, choice(token(/PERCENT/i), token(/ROWS/i)), token(')'),
+      optional(seq(token(/REPEATABLE/i), token('('), $.expression, token(')')))
     ),
 
     //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L4175
