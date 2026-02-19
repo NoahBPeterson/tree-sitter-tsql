@@ -1,0 +1,1340 @@
+=================================================
+$action in SELECT
+=================================================
+
+SELECT $action FROM t
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (primitive_expression
+                          (dollar_action_))))))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_)))))))))))))
+
+=================================================
+$action in MERGE INSERT
+=================================================
+
+MERGE INTO target AS t
+USING source AS s ON t.id = s.id
+WHEN NOT MATCHED THEN INSERT (id, action) VALUES (s.id, $action)
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (merge_statement
+          (full_table_name
+            (id_))
+          (as_table_alias
+            (id_))
+          (table_source
+            (table_source_item
+              (full_table_name
+                (id_))
+              (as_table_alias
+                (id_))))
+          (search_condition
+            (predicate
+              (expression
+                (full_column_name
+                  (id_)
+                  (id_)))
+              (comparison_operator)
+              (expression
+                (full_column_name
+                  (id_)
+                  (id_)))))
+          (when_matches
+            (merge_not_matched
+              (column_name_list
+                (id_)
+                (id_))
+              (expression_list_
+                (expression
+                  (full_column_name
+                    (id_)
+                    (id_)))
+                (expression
+                  (primitive_expression
+                    (dollar_action_)))))))))))
+
+=================================================
+ALL subquery predicate
+=================================================
+
+SELECT * FROM t WHERE price > ALL (SELECT price FROM t2)
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_)))))
+                (search_condition
+                  (predicate
+                    (expression
+                      (full_column_name
+                        (id_)))
+                    (comparison_operator)
+                    (subquery
+                      (select_statement
+                        (query_expression
+                          (query_specification
+                            (select)
+                            (select_list
+                              (select_list_elem
+                                (expression_elem
+                                  (expression
+                                    (full_column_name
+                                      (id_))))))
+                            (table_sources
+                              (table_source
+                                (table_source_item
+                                  (full_table_name
+                                    (id_)))))))))))))))))))
+
+=================================================
+SOME subquery predicate
+=================================================
+
+SELECT * FROM t WHERE qty < SOME (SELECT qty FROM t2)
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_)))))
+                (search_condition
+                  (predicate
+                    (expression
+                      (full_column_name
+                        (id_)))
+                    (comparison_operator)
+                    (subquery
+                      (select_statement
+                        (query_expression
+                          (query_specification
+                            (select)
+                            (select_list
+                              (select_list_elem
+                                (expression_elem
+                                  (expression
+                                    (full_column_name
+                                      (id_))))))
+                            (table_sources
+                              (table_source
+                                (table_source_item
+                                  (full_table_name
+                                    (id_)))))))))))))))))))
+
+=================================================
+ANY subquery predicate
+=================================================
+
+SELECT * FROM t WHERE id = ANY (SELECT id FROM t2)
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_)))))
+                (search_condition
+                  (predicate
+                    (expression
+                      (full_column_name
+                        (id_)))
+                    (comparison_operator)
+                    (subquery
+                      (select_statement
+                        (query_expression
+                          (query_specification
+                            (select)
+                            (select_list
+                              (select_list_elem
+                                (expression_elem
+                                  (expression
+                                    (full_column_name
+                                      (id_))))))
+                            (table_sources
+                              (table_source
+                                (table_source_item
+                                  (full_table_name
+                                    (id_)))))))))))))))))))
+
+=================================================
+COLLATE in SELECT list
+=================================================
+
+SELECT name COLLATE Latin1_General_CI_AS FROM t
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (expression
+                          (full_column_name
+                            (id_)))
+                        (collation_
+                          (id_))))))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_)))))))))))))
+
+=================================================
+COLLATE in WHERE clause
+=================================================
+
+SELECT * FROM t WHERE name COLLATE SQL_Latin1_General_CP1_CI_AS = 'test'
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_)))))
+                (search_condition
+                  (predicate
+                    (expression
+                      (expression
+                        (full_column_name
+                          (id_)))
+                      (collation_
+                        (id_)))
+                    (comparison_operator)
+                    (expression
+                      (primitive_expression
+                        (primitive_constant
+                          (string_lit))))))))))))))
+
+=================================================
+COLLATE with concatenation
+=================================================
+
+SELECT a + b COLLATE Latin1_General_CI_AS AS result FROM t
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (expression
+                          (full_column_name
+                            (id_)))
+                        (PLUS)
+                        (expression
+                          (expression
+                            (full_column_name
+                              (id_)))
+                          (collation_
+                            (id_))))
+                      (as_column_alias
+                        (as)
+                        (column_alias
+                          (id_))))))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_)))))))))))))
+
+=================================================
+AT TIME ZONE with function
+=================================================
+
+SELECT GETDATE() AT TIME ZONE 'Eastern Standard Time'
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (expression
+                          (function_call
+                            (datetime_functions)))
+                        (AT_KEYWORD)
+                        (expression
+                          (primitive_expression
+                            (primitive_constant
+                              (string_lit))))))))))))))))
+
+=================================================
+AT TIME ZONE chained
+=================================================
+
+SELECT col AT TIME ZONE 'UTC' AT TIME ZONE 'Pacific Standard Time'
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (expression
+                          (expression
+                            (full_column_name
+                              (id_)))
+                          (AT_KEYWORD)
+                          (expression
+                            (primitive_expression
+                              (primitive_constant
+                                (string_lit)))))
+                        (AT_KEYWORD)
+                        (expression
+                          (primitive_expression
+                            (primitive_constant
+                              (string_lit))))))))))))))))
+
+=================================================
+AT TIME ZONE with alias
+=================================================
+
+SELECT col AT TIME ZONE 'UTC' AS utc_col FROM t
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (expression
+                          (full_column_name
+                            (id_)))
+                        (AT_KEYWORD)
+                        (expression
+                          (primitive_expression
+                            (primitive_constant
+                              (string_lit)))))
+                      (as_column_alias
+                        (as)
+                        (column_alias
+                          (id_))))))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_)))))))))))))
+
+=================================================
+GOTO basic
+=================================================
+
+GOTO label1
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (cfl_statement
+        (goto_statement
+          (id_))))))
+
+=================================================
+GOTO in IF statement
+=================================================
+
+IF @x = 1 GOTO retry_label
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (cfl_statement
+        (if_statement
+          (search_condition
+            (predicate
+              (expression
+                (primitive_expression
+                  (LOCAL_ID_)))
+              (comparison_operator)
+              (expression
+                (primitive_expression
+                  (primitive_constant
+                    (decimal_))))))
+          (sql_clauses
+            (cfl_statement
+              (goto_statement
+                (id_)))))))))
+
+=================================================
+WAITFOR DELAY
+=================================================
+
+WAITFOR DELAY '00:00:05'
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (cfl_statement
+        (waitfor_statement
+          (expression
+            (primitive_expression
+              (primitive_constant
+                (string_lit)))))))))
+
+=================================================
+WAITFOR TIME
+=================================================
+
+WAITFOR TIME '23:00:00'
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (cfl_statement
+        (waitfor_statement
+          (expression
+            (primitive_expression
+              (primitive_constant
+                (string_lit)))))))))
+
+=================================================
+Computed column basic
+=================================================
+
+CREATE TABLE t1 (a INT, b INT, c AS a + b)
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_table
+          (full_table_name
+            (id_))
+          (table_element
+            (column_definition
+              (id_)
+              (data_type
+                (int_))))
+          (table_element
+            (column_definition
+              (id_)
+              (data_type
+                (int_))))
+          (table_element
+            (column_definition
+              (id_)
+              (expression
+                (expression
+                  (full_column_name
+                    (id_)))
+                (PLUS)
+                (expression
+                  (full_column_name
+                    (id_)))))))))))
+
+=================================================
+Computed column PERSISTED
+=================================================
+
+CREATE TABLE t1 (a INT, b INT, c AS a + b PERSISTED)
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_table
+          (full_table_name
+            (id_))
+          (table_element
+            (column_definition
+              (id_)
+              (data_type
+                (int_))))
+          (table_element
+            (column_definition
+              (id_)
+              (data_type
+                (int_))))
+          (table_element
+            (column_definition
+              (id_)
+              (expression
+                (expression
+                  (full_column_name
+                    (id_)))
+                (PLUS)
+                (expression
+                  (full_column_name
+                    (id_)))))))))))
+
+=================================================
+Computed column with string concat
+=================================================
+
+CREATE TABLE t1 (id INT, first_name VARCHAR(50), last_name VARCHAR(50), full_name AS first_name + ' ' + last_name)
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_table
+          (full_table_name
+            (id_))
+          (table_element
+            (column_definition
+              (id_)
+              (data_type
+                (int_))))
+          (table_element
+            (column_definition
+              (id_)
+              (data_type
+                (varchar_)
+                (decimal_))))
+          (table_element
+            (column_definition
+              (id_)
+              (data_type
+                (varchar_)
+                (decimal_))))
+          (table_element
+            (column_definition
+              (id_)
+              (expression
+                (expression
+                  (expression
+                    (full_column_name
+                      (id_)))
+                  (PLUS)
+                  (expression
+                    (primitive_expression
+                      (primitive_constant
+                        (string_lit)))))
+                (PLUS)
+                (expression
+                  (full_column_name
+                    (id_)))))))))))
+
+=================================================
+Computed column with function PERSISTED
+=================================================
+
+CREATE TABLE t1 (price DECIMAL(10,2), tax DECIMAL(10,2), total AS price * (1 + tax) PERSISTED)
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_table
+          (full_table_name
+            (id_))
+          (table_element
+            (column_definition
+              (id_)
+              (data_type
+                (decimalty_)
+                (decimal_)
+                (decimal_))))
+          (table_element
+            (column_definition
+              (id_)
+              (data_type
+                (decimalty_)
+                (decimal_)
+                (decimal_))))
+          (table_element
+            (column_definition
+              (id_)
+              (expression
+                (expression
+                  (full_column_name
+                    (id_)))
+                (asterisk)
+                (expression
+                  (bracket_expression
+                    (expression
+                      (expression
+                        (primitive_expression
+                          (primitive_constant
+                            (decimal_))))
+                      (PLUS)
+                      (expression
+                        (full_column_name
+                          (id_))))))))))))))
+
+=================================================
+Computed column mixed with regular columns
+=================================================
+
+CREATE TABLE t1 (id INT PRIMARY KEY, a INT NOT NULL, b INT NOT NULL, c AS a + b, d VARCHAR(10) DEFAULT 'x')
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_table
+          (full_table_name
+            (id_))
+          (table_element
+            (column_definition
+              (id_)
+              (data_type
+                (int_))
+              (column_constraint)))
+          (table_element
+            (column_definition
+              (id_)
+              (data_type
+                (int_))
+              (null_notnull
+                (null_))))
+          (table_element
+            (column_definition
+              (id_)
+              (data_type
+                (int_))
+              (null_notnull
+                (null_))))
+          (table_element
+            (column_definition
+              (id_)
+              (expression
+                (expression
+                  (full_column_name
+                    (id_)))
+                (PLUS)
+                (expression
+                  (full_column_name
+                    (id_))))))
+          (table_element
+            (column_definition
+              (id_)
+              (data_type
+                (varchar_)
+                (decimal_))
+              (column_constraint
+                (default)
+                (expression
+                  (primitive_expression
+                    (primitive_constant
+                      (string_lit))))))))))))
+
+=================================================
+DDL trigger ON DATABASE
+=================================================
+
+CREATE TRIGGER trg1 ON DATABASE FOR CREATE_TABLE AS SELECT 1
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_or_alter_trigger
+          (create_or_alter)
+          (full_table_name
+            (id_))
+          (id_)
+          (sql_clauses
+            (dml_clause
+              (select_statement_standalone
+                (select_statement
+                  (query_expression
+                    (query_specification
+                      (select)
+                      (select_list
+                        (select_list_elem
+                          (expression_elem
+                            (expression
+                              (primitive_expression
+                                (primitive_constant
+                                  (decimal_))))))))))))))))))
+
+=================================================
+DDL trigger ON ALL SERVER
+=================================================
+
+CREATE TRIGGER trg1 ON ALL SERVER FOR CREATE_TABLE, ALTER_TABLE AS SELECT 1
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_or_alter_trigger
+          (create_or_alter)
+          (full_table_name
+            (id_))
+          (id_)
+          (id_)
+          (sql_clauses
+            (dml_clause
+              (select_statement_standalone
+                (select_statement
+                  (query_expression
+                    (query_specification
+                      (select)
+                      (select_list
+                        (select_list_elem
+                          (expression_elem
+                            (expression
+                              (primitive_expression
+                                (primitive_constant
+                                  (decimal_))))))))))))))))))
+
+=================================================
+DDL trigger CREATE OR ALTER
+=================================================
+
+CREATE OR ALTER TRIGGER trg1 ON DATABASE FOR DDL_TABLE_EVENTS AS SELECT 1
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_or_alter_trigger
+          (create_or_alter)
+          (full_table_name
+            (id_))
+          (id_)
+          (sql_clauses
+            (dml_clause
+              (select_statement_standalone
+                (select_statement
+                  (query_expression
+                    (query_specification
+                      (select)
+                      (select_list
+                        (select_list_elem
+                          (expression_elem
+                            (expression
+                              (primitive_expression
+                                (primitive_constant
+                                  (decimal_))))))))))))))))))
+
+=================================================
+DDL trigger ALTER with multiple events
+=================================================
+
+ALTER TRIGGER trg1 ON ALL SERVER FOR CREATE_LOGIN, DROP_LOGIN, ALTER_LOGIN AS PRINT 'Security event'
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_or_alter_trigger
+          (create_or_alter)
+          (full_table_name
+            (id_))
+          (id_)
+          (id_)
+          (id_)
+          (sql_clauses
+            (cfl_statement
+              (print_statement
+                (expression
+                  (primitive_expression
+                    (primitive_constant
+                      (string_lit))))))))))))
+
+=================================================
+DELETED.column in SELECT
+=================================================
+
+SELECT DELETED.name FROM t
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (full_column_name
+                          (id_))))))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_)))))))))))))
+
+=================================================
+INSERTED.column in SELECT
+=================================================
+
+SELECT INSERTED.status FROM t
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (full_column_name
+                          (id_))))))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_)))))))))))))
+
+=================================================
+DELETED and INSERTED in same SELECT
+=================================================
+
+SELECT DELETED.old_val, INSERTED.new_val FROM t
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (full_column_name
+                          (id_)))))
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (full_column_name
+                          (id_))))))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_)))))))))))))
+
+=================================================
+INSERTED.column in UPDATE with JOIN
+=================================================
+
+UPDATE t SET col = INSERTED.col FROM t JOIN INSERTED ON t.id = INSERTED.id
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (update_statement
+          (update_target
+            (full_table_name
+              (id_)))
+          (update_elem
+            (full_column_name
+              (id_))
+            (expression
+              (full_column_name
+                (id_))))
+          (table_sources
+            (table_source
+              (table_source_item
+                (full_table_name
+                  (id_)))
+              (join_part
+                (table_source_item
+                  (full_table_name
+                    (id_)))
+                (search_condition
+                  (predicate
+                    (expression
+                      (full_column_name
+                        (id_)
+                        (id_)))
+                    (comparison_operator)
+                    (expression
+                      (full_column_name
+                        (id_)))))))))))))
+
+=================================================
+DELETED.column in WHERE clause
+=================================================
+
+SELECT * FROM t WHERE DELETED.amount > 100
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_)))))
+                (search_condition
+                  (predicate
+                    (expression
+                      (full_column_name
+                        (id_)))
+                    (comparison_operator)
+                    (expression
+                      (primitive_expression
+                        (primitive_constant
+                          (decimal_))))))))))))))
+
+=================================================
+CONTAINS basic
+=================================================
+
+SELECT * FROM docs WHERE CONTAINS(body, 'search term')
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_)))))
+                (search_condition
+                  (predicate
+                    (freetext_predicate
+                      (full_column_name
+                        (id_))
+                      (expression
+                        (primitive_expression
+                          (primitive_constant
+                            (string_lit)))))))))))))))
+
+=================================================
+CONTAINS with asterisk
+=================================================
+
+SELECT * FROM docs WHERE CONTAINS(*, 'database')
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_)))))
+                (search_condition
+                  (predicate
+                    (freetext_predicate
+                      (asterisk)
+                      (expression
+                        (primitive_expression
+                          (primitive_constant
+                            (string_lit)))))))))))))))
+
+=================================================
+CONTAINS with multiple columns
+=================================================
+
+SELECT * FROM docs WHERE CONTAINS((title, body), 'search')
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_)))))
+                (search_condition
+                  (predicate
+                    (freetext_predicate
+                      (full_column_name
+                        (id_))
+                      (full_column_name
+                        (id_))
+                      (expression
+                        (primitive_expression
+                          (primitive_constant
+                            (string_lit)))))))))))))))
+
+=================================================
+CONTAINS with LANGUAGE
+=================================================
+
+SELECT * FROM docs WHERE CONTAINS(body, 'recherche', LANGUAGE 1036)
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_)))))
+                (search_condition
+                  (predicate
+                    (freetext_predicate
+                      (full_column_name
+                        (id_))
+                      (expression
+                        (primitive_expression
+                          (primitive_constant
+                            (string_lit))))
+                      (expression
+                        (primitive_expression
+                          (primitive_constant
+                            (decimal_)))))))))))))))
+
+=================================================
+FREETEXT basic
+=================================================
+
+SELECT * FROM docs WHERE FREETEXT(description, 'natural language query')
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_)))))
+                (search_condition
+                  (predicate
+                    (freetext_predicate
+                      (full_column_name
+                        (id_))
+                      (expression
+                        (primitive_expression
+                          (primitive_constant
+                            (string_lit)))))))))))))))
+
+=================================================
+FREETEXT with asterisk
+=================================================
+
+SELECT * FROM docs WHERE FREETEXT(*, 'some text')
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_)))))
+                (search_condition
+                  (predicate
+                    (freetext_predicate
+                      (asterisk)
+                      (expression
+                        (primitive_expression
+                          (primitive_constant
+                            (string_lit)))))))))))))))
+
+=================================================
+SELECT FROM temp table
+=================================================
+
+SELECT * FROM #temp
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_
+                          (TEMP_ID_))))))))))))))
+
+=================================================
+SELECT FROM global temp table
+=================================================
+
+SELECT * FROM ##global_temp
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_
+                          (TEMP_ID_))))))))))))))
+
+=================================================
+CREATE TABLE temp table
+=================================================
+
+CREATE TABLE #staging (id INT, name VARCHAR(50))
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_table
+          (full_table_name
+            (id_
+              (TEMP_ID_)))
+          (table_element
+            (column_definition
+              (id_)
+              (data_type
+                (int_))))
+          (table_element
+            (column_definition
+              (id_)
+              (data_type
+                (varchar_)
+                (decimal_)))))))))

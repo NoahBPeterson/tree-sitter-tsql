@@ -186,7 +186,8 @@ DROP TABLE #TempTable
       (ddl_clause
         (drop_table
           (full_table_name
-            (id_)))))))
+            (id_
+              (TEMP_ID_))))))))
 
 =====================================
 DROP TABLE global temp table
@@ -202,7 +203,8 @@ DROP TABLE ##GlobalTemp
       (ddl_clause
         (drop_table
           (full_table_name
-            (id_)))))))
+            (id_
+              (TEMP_ID_))))))))
 
 =====================================
 DROP VIEW basic

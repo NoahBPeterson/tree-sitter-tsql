@@ -932,6 +932,10 @@
           "named": true
         },
         {
+          "type": "goto_statement",
+          "named": true
+        },
+        {
           "type": "if_statement",
           "named": true
         },
@@ -953,6 +957,10 @@
         },
         {
           "type": "try_catch_statement",
+          "named": true
+        },
+        {
+          "type": "waitfor_statement",
           "named": true
         },
         {
@@ -1136,6 +1144,10 @@
         },
         {
           "type": "data_type",
+          "named": true
+        },
+        {
+          "type": "expression",
           "named": true
         },
         {
@@ -1431,6 +1443,10 @@
         },
         {
           "type": "full_table_name",
+          "named": true
+        },
+        {
+          "type": "id_",
           "named": true
         },
         {
@@ -2809,6 +2825,34 @@
       "required": true,
       "types": [
         {
+          "type": "AT_KEYWORD",
+          "named": true
+        },
+        {
+          "type": "PLUS",
+          "named": true
+        },
+        {
+          "type": "asterisk",
+          "named": true
+        },
+        {
+          "type": "bracket_expression",
+          "named": true
+        },
+        {
+          "type": "case_expression",
+          "named": true
+        },
+        {
+          "type": "collation_",
+          "named": true
+        },
+        {
+          "type": "expression",
+          "named": true
+        },
+        {
           "type": "full_column_name",
           "named": true
         },
@@ -2918,6 +2962,29 @@
         },
         {
           "type": "xml_common_directives",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "freetext_predicate",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "asterisk",
+          "named": true
+        },
+        {
+          "type": "expression",
+          "named": true
+        },
+        {
+          "type": "full_column_name",
           "named": true
         }
       ]
@@ -3306,6 +3373,21 @@
     }
   },
   {
+    "type": "goto_statement",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "id_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "grant_statement",
     "named": true,
     "fields": {},
@@ -3499,6 +3581,10 @@
       "multiple": false,
       "required": false,
       "types": [
+        {
+          "type": "TEMP_ID_",
+          "named": true
+        },
         {
           "type": "keyword",
           "named": true
@@ -4393,6 +4479,10 @@
           "named": true
         },
         {
+          "type": "freetext_predicate",
+          "named": true
+        },
+        {
           "type": "null_",
           "named": true
         },
@@ -4456,6 +4546,10 @@
         },
         {
           "type": "default",
+          "named": true
+        },
+        {
+          "type": "dollar_action_",
           "named": true
         },
         {
@@ -5448,6 +5542,11 @@
     }
   },
   {
+    "type": "time_",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "top_clause",
     "named": true,
     "fields": {},
@@ -5749,6 +5848,21 @@
     "fields": {}
   },
   {
+    "type": "waitfor_statement",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "expression",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "week_",
     "named": true,
     "fields": {}
@@ -6014,6 +6128,10 @@
     "named": true
   },
   {
+    "type": "TEMP_ID_",
+    "named": true
+  },
+  {
     "type": "UNDEFINED",
     "named": true
   },
@@ -6207,6 +6325,10 @@
   },
   {
     "type": "dense_rank_",
+    "named": true
+  },
+  {
+    "type": "dollar_action_",
     "named": true
   },
   {
@@ -6515,10 +6637,6 @@
   },
   {
     "type": "text_",
-    "named": true
-  },
-  {
-    "type": "time_",
     "named": true
   },
   {

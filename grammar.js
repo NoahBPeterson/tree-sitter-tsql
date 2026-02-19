@@ -58,7 +58,7 @@ module.exports = grammar({
     [$.batch]
     ,[$.table_source_item]
     ,[$.table_source]
-    ,[$.output_dml_list_elem]
+    ,[$.output_dml_list_elem, $.full_column_name]
     ,[$.top_clause, $.bracket_expression]
   ],
 
@@ -457,14 +457,25 @@ module.exports = grammar({
       token(/TRIGGER/i),
       $.full_table_name,
       token(/ON/i),
-      $.full_table_name,
       choice(
-        token(/AFTER/i),
-        seq(token(/INSTEAD/i), token(/OF/i)),
-        token(/FOR/i),
+        // DML trigger: ON table_name AFTER|INSTEAD OF|FOR INSERT,UPDATE,DELETE
+        seq(
+          $.full_table_name,
+          choice(
+            token(/AFTER/i),
+            seq(token(/INSTEAD/i), token(/OF/i)),
+            token(/FOR/i),
+          ),
+          $.dml_trigger_operation, repeat(seq(',', $.dml_trigger_operation)),
+          optional(seq(token(/NOT/i), token(/FOR/i), token(/REPLICATION/i))),
+        ),
+        // DDL trigger: ON DATABASE|ALL SERVER FOR event_type,...
+        seq(
+          choice(token(/DATABASE/i), seq(token(/ALL/i), token(/SERVER/i))),
+          token(/FOR/i),
+          $.id_, repeat(seq(',', $.id_)),
+        ),
       ),
-      $.dml_trigger_operation, repeat(seq(',', $.dml_trigger_operation)),
-      optional(seq(token(/NOT/i), token(/FOR/i), token(/REPLICATION/i))),
       token(/AS/i),
       repeat1($.sql_clauses),
     )),
@@ -628,12 +639,14 @@ module.exports = grammar({
     //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L1485
     column_definition: $ => seq(
       field('name', $.id_),
-      $.data_type,
-      repeat(choice(
-        $.null_notnull,
-        $.identity_column,
-        $.column_constraint,
-      )),
+      choice(
+        seq($.data_type, repeat(choice(
+          $.null_notnull,
+          $.identity_column,
+          $.column_constraint,
+        ))),
+        seq(token(/AS/i), $.expression, optional(token(/PERSISTED/i))),
+      ),
     ),
 
     null_notnull: $ => choice(
@@ -688,7 +701,9 @@ module.exports = grammar({
       ,$.throw_statement
       ,$.print_statement
       ,$.raiseerror_statement
-      //TODO goto_statement, label_statement, waitfor_statement
+      ,$.goto_statement
+      ,$.waitfor_statement
+      //TODO label_statement
     ),
 
     //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L251
@@ -744,6 +759,18 @@ module.exports = grammar({
 
     raiserror_option: $ => choice(
       token(/LOG/i), token(/NOWAIT/i), token(/SETERROR/i)
+    ),
+
+    //https://learn.microsoft.com/en-us/sql/t-sql/language-elements/goto-transact-sql
+    goto_statement: $ => seq(token(/GOTO/i), $.id_),
+
+    //https://learn.microsoft.com/en-us/sql/t-sql/language-elements/waitfor-transact-sql
+    waitfor_statement: $ => seq(
+      token(/WAITFOR/i),
+      choice(
+        seq(token(/DELAY/i), $.expression),
+        seq(token(/TIME/i), $.expression),
+      ),
     ),
 
     another_statement: $ => choice(
@@ -1184,14 +1211,14 @@ module.exports = grammar({
       ,optional(seq(token(/INTO/i), $.full_table_name, optional(seq(token('('), $.column_name_list, token(')')))))
     ),
 
-    output_dml_list_elem: $ => seq(
+    output_dml_list_elem: $ => prec.right(seq(
       choice(
         seq(token(/INSERTED/i), DOT, choice($.id_, $.asterisk))
         ,seq(token(/DELETED/i), DOT, choice($.id_, $.asterisk))
         ,$.expression
       )
       ,optional($.as_column_alias)
-    ),
+    )),
 
     select_statement_standalone: $ => seq(
       optional($.with_expression),
@@ -1537,6 +1564,8 @@ module.exports = grammar({
         seq(field('server', $.id_), DOT, field('schema', $.id_), DOT, field('table', $.id_), DOT)
         ,seq(field('schema', $.id_), DOT, field('table', $.id_), DOT)
         ,seq(field('table', $.id_), DOT)
+        ,seq(token(/DELETED/i), DOT)
+        ,seq(token(/INSERTED/i), DOT)
       ))
       ,field('column', $.id_)
     )),
@@ -1546,7 +1575,95 @@ module.exports = grammar({
       $.primitive_expression
       ,$.full_column_name
       ,$.function_call
-      //TODO https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L3900-L3917
+      ,$.bracket_expression
+      ,$.case_expression
+      ,$.unary_operator_expression
+      // Multiplicative: * / %
+      ,prec.left(5, seq($.expression, $.asterisk, $.expression))
+      ,prec.left(5, seq($.expression, token('/'), $.expression))
+      ,prec.left(5, seq($.expression, token('%'), $.expression))
+      // Additive: + -
+      ,prec.left(4, seq($.expression, $.PLUS, $.expression))
+      ,prec.left(4, seq($.expression, token('-'), $.expression))
+      // Bitwise: & ^ | ||
+      ,prec.left(3, seq($.expression, token('&'), $.expression))
+      ,prec.left(3, seq($.expression, token('^'), $.expression))
+      ,prec.left(3, seq($.expression, token('|'), $.expression))
+      ,prec.left(3, seq($.expression, token('||'), $.expression))
+      // COLLATE
+      ,prec.left(7, seq($.expression, $.collation_))
+      // AT TIME ZONE
+      ,prec.left(7, seq($.expression, $.AT_KEYWORD, token(/TIME/i), token(/ZONE/i), $.expression))
+    ),
+
+    //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L3945
+    bracket_expression: $ => choice(
+      seq(token('('), $.expression, token(')'))
+      ,seq(token('('), $.subquery, token(')'))
+    ),
+
+    subquery: $ => $.select_statement,
+
+    //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L3940
+    unary_operator_expression: $ => prec(6, seq(
+      choice(token('~'), token('+'), token('-'))
+      ,$.expression
+    )),
+
+    //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L3935
+    case_expression: $ => choice(
+      seq(token(/CASE/i), $.expression, repeat1($.switch_section), optional(seq(token(/ELSE/i), $.expression)), token(/END/i))
+      ,seq(token(/CASE/i), repeat1($.switch_search_condition_section), optional(seq(token(/ELSE/i), $.expression)), token(/END/i))
+    ),
+
+    switch_section: $ => seq(token(/WHEN/i), $.expression, token(/THEN/i), $.expression),
+    switch_search_condition_section: $ => seq(token(/WHEN/i), $.search_condition, token(/THEN/i), $.expression),
+
+    //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L3977
+    search_condition: $ => choice(
+      $.predicate
+      ,prec(3, seq(token(/NOT/i), $.search_condition))
+      ,prec.left(2, seq($.search_condition, token(/AND/i), $.search_condition))
+      ,prec.left(1, seq($.search_condition, token(/OR/i), $.search_condition))
+    ),
+
+    //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L3983
+    predicate: $ => choice(
+      seq(token(/EXISTS/i), token('('), $.subquery, token(')'))
+      ,$.freetext_predicate
+      ,prec(1, seq($.expression, $.comparison_operator, $.expression))
+      ,seq($.expression, optional(token(/NOT/i)), token(/BETWEEN/i), $.expression, token(/AND/i), $.expression)
+      ,seq($.expression, optional(token(/NOT/i)), token(/IN/i), token('('), choice($.subquery, $.expression_list_), token(')'))
+      ,seq($.expression, optional(token(/NOT/i)), token(/LIKE/i), $.expression, optional(seq(token(/ESCAPE/i), $.expression)))
+      ,seq($.expression, token(/IS/i), optional(token(/NOT/i)), $.null_)
+      ,seq($.expression, $.comparison_operator, choice(token(/ALL/i), token(/SOME/i), token(/ANY/i)), '(', $.subquery, ')')
+    ),
+
+    //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L4011-L4024
+    freetext_predicate: $ => choice(
+      seq(token(/CONTAINS/i), '(',
+        choice($.full_column_name, seq('(', $.full_column_name, repeat(seq(',', $.full_column_name)), ')'), $.asterisk),
+        ',', $.expression,
+        optional(seq(',', token(/LANGUAGE/i), $.expression)),
+        ')')
+      ,seq(token(/FREETEXT/i), '(',
+        choice($.full_column_name, seq('(', $.full_column_name, repeat(seq(',', $.full_column_name)), ')'), $.asterisk),
+        ',', $.expression,
+        optional(seq(',', token(/LANGUAGE/i), $.expression)),
+        ')')
+    ),
+
+    //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L3970
+    comparison_operator: $ => choice(
+      token('=')
+      ,token('<>')
+      ,token('!=')
+      ,token('<')
+      ,token('>')
+      ,token('<=')
+      ,token('>=')
+      ,token('!<')
+      ,token('!>')
     ),
 
     //TODO CORPUS
@@ -1768,7 +1885,10 @@ module.exports = grammar({
       ,$.null_
       ,$.LOCAL_ID_
       ,$.primitive_constant
+      ,$.dollar_action_
     ),
+
+    dollar_action_: $ => token(/\$action/i),
 
     //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L5278
     primitive_constant: $ => choice(
@@ -1809,8 +1929,11 @@ module.exports = grammar({
     _word: $ => /[A-Za-z_#][A-Za-z_#$@0-9]*/,
 
     //https://msdn.microsoft.com/en-us/library/ms175874.aspx
+    TEMP_ID_: $ => token(prec(1, /##?[A-Za-z_][A-Za-z_$@0-9]*/)),
+
     id_: $ => choice(
       $._word
+      ,$.TEMP_ID_
       ,SQUARE_BRACKET_ID
       ,$.keyword
       //TODO https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L6261
