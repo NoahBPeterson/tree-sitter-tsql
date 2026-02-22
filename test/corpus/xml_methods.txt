@@ -1,0 +1,213 @@
+=============================================
+XML .value() on variable
+=============================================
+SELECT @xml.value('/root/name[1]', 'VARCHAR(100)')
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (expression
+                          (primitive_expression
+                            (LOCAL_ID_)))
+                        (value_call
+                          (value_)
+                          (string_lit)
+                          (string_lit))))))))))))))
+
+=============================================
+XML .query() on variable
+=============================================
+SELECT @xml.query('/root/items')
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (expression
+                          (primitive_expression
+                            (LOCAL_ID_)))
+                        (query_call
+                          (query_)
+                          (string_lit))))))))))))))
+
+=============================================
+XML .exist() on variable
+=============================================
+SELECT @xml.exist('/root/name')
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (expression
+                          (primitive_expression
+                            (LOCAL_ID_)))
+                        (exist_call
+                          (exist_)
+                          (string_lit))))))))))))))
+
+=============================================
+XML method chaining .query().value()
+=============================================
+SELECT @xml.query('/a').value('/b[1]', 'INT')
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (expression
+                          (expression
+                            (primitive_expression
+                              (LOCAL_ID_)))
+                          (query_call
+                            (query_)
+                            (string_lit)))
+                        (value_call
+                          (value_)
+                          (string_lit)
+                          (string_lit))))))))))))))
+
+=============================================
+XML .nodes() with column alias list
+=============================================
+SELECT T.c.value('.', 'INT') FROM @xml.nodes('/root/item') AS T(c)
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (function_call
+                          (scalar_function_name
+                            (func_proc_name_database_schema
+                              (id_)
+                              (id_)
+                              (id_)))
+                          (expression_list_
+                            (expression
+                              (primitive_expression
+                                (primitive_constant
+                                  (string_lit))))
+                            (expression
+                              (primitive_expression
+                                (primitive_constant
+                                  (string_lit))))))))))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (nodes_method
+                        (local_id_)
+                        (nodes_)
+                        (string_lit))
+                      (as_table_alias
+                        (id_)
+                        (column_name_list
+                          (id_))))))))))))))
+
+=============================================
+XML .nodes() with CROSS APPLY
+=============================================
+SELECT T.c.value('.', 'INT') FROM dbo.t CROSS APPLY col.nodes('/items/item') AS T(c)
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (function_call
+                          (scalar_function_name
+                            (func_proc_name_database_schema
+                              (id_)
+                              (id_)
+                              (id_)))
+                          (expression_list_
+                            (expression
+                              (primitive_expression
+                                (primitive_constant
+                                  (string_lit))))
+                            (expression
+                              (primitive_expression
+                                (primitive_constant
+                                  (string_lit))))))))))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_)
+                        (id_)))
+                    (join_part
+                      (table_source_item
+                        (table_valued_function
+                          (func_proc_name_database_schema
+                            (func_proc_name_schema
+                              (id_)
+                              (id_)))
+                          (expression_list_
+                            (expression
+                              (primitive_expression
+                                (primitive_constant
+                                  (string_lit))))))
+                        (as_table_alias
+                          (id_)
+                          (column_name_list
+                            (id_)))))))))))))))
+

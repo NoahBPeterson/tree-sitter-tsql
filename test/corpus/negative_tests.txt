@@ -1103,8 +1103,9 @@ SELECT * FROM t1 LEFT
                   (table_source
                     (table_source_item
                       (full_table_name
-                        (id_))))))))))))
-  (ERROR))
+                        (id_))
+                      (as_table_alias
+                        (id_)))))))))))))
 
 =====================================
 ERROR INNER without JOIN
@@ -1443,11 +1444,13 @@ MERGE INTO t USING s
 
 -------------------------------------
 
-(tsql_file
-  (ERROR
-    (full_table_name
-      (id_))
-    (id_)))
+(ERROR
+  (full_table_name
+    (id_))
+  (table_source
+    (table_source_item
+      (full_table_name
+        (id_)))))
 
 =====================================
 ERROR MERGE ON no condition
@@ -1775,8 +1778,7 @@ CREATE TABLE t (a INT b INT)
               (id_)
               (data_type
                 (int_))))
-          (ERROR
-            (int_)))))))
+          (ERROR))))))
 
 =====================================
 ERROR CREATE TABLE PRIMARY KEY no cols
@@ -2770,10 +2772,28 @@ SELECT CAST( AS INT)
 -------------------------------------
 
 (tsql_file
-  (ERROR
-    (select)
-    (cast_)
-    (id_)))
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (function_call
+                          (conversion_functions
+                            (cast_)
+                            (expression
+                              (full_column_name
+                                (id_)))
+                            (as
+                              (MISSING "create_or_alter_procedure_token1"))
+                            (data_type
+                              (int_))))))))))))))))
 
 =====================================
 ERROR RANK no OVER
@@ -3765,8 +3785,10 @@ CREATE FUNCTION RETURNS INT AS BEGIN RETURN 1 END
 (tsql_file
   (ERROR
     (create_or_alter)
-    (id_)
-    (int_))
+    (func_proc_name_server_database_schema
+      (func_proc_name_database_schema
+        (func_proc_name_schema
+          (id_)))))
   (batch
     (sql_clauses
       (cfl_statement
@@ -3790,7 +3812,8 @@ CREATE VIEW AS SELECT 1
 (tsql_file
   (ERROR
     (create_or_alter)
-    (id_))
+    (full_table_name
+      (id_)))
   (batch
     (sql_clauses
       (dml_clause
@@ -3859,8 +3882,7 @@ CREATE TYPE FROM INT
 
 (tsql_file
   (ERROR
-    (id_)
-    (int_)))
+    (id_)))
 
 =====================================
 ERROR CREATE SYNONYM no target

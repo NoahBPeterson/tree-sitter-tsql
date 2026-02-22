@@ -32,8 +32,8 @@ module.exports = {
       ,seq($._builtin_4arg, parensComma($.expression, $.expression, $.expression, $.expression))
 
       // NEXT VALUE FOR — multi-token keyword + OVER clause, keep individual
-      ,seq($.next_value_for_, field('sequence_name', $.table_name)
-          ,optional(seq($.over_, parens($.order_by_clause))))
+      ,prec.right(seq($.next_value_for_, field('sequence_name', $.table_name)
+          ,optional(seq($.over_, parens($.order_by_clause)))))
     ),
 
     _builtin_0arg: $ => token(choice(

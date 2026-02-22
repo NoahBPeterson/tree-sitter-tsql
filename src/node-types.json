@@ -5,12 +5,27 @@
     "fields": {}
   },
   {
+    "type": "LOGIN",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "NONE",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "RECOMPILE",
     "named": true,
     "fields": {}
   },
   {
     "type": "RESULT_SETS",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "UNDEFINED",
     "named": true,
     "fields": {}
   },
@@ -677,9 +692,13 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": true,
       "types": [
+        {
+          "type": "column_name_list",
+          "named": true
+        },
         {
           "type": "id_",
           "named": true
@@ -694,6 +713,11 @@
   },
   {
     "type": "assignment_operator",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "avg_",
     "named": true,
     "fields": {}
   },
@@ -784,6 +808,21 @@
         }
       ]
     }
+  },
+  {
+    "type": "bigint_",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "binary_",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "bit_",
+    "named": true,
+    "fields": {}
   },
   {
     "type": "bit_manipulation_functions",
@@ -931,6 +970,11 @@
     }
   },
   {
+    "type": "cast_",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "cfl_statement",
     "named": true,
     "fields": {},
@@ -1017,6 +1061,11 @@
     }
   },
   {
+    "type": "char_",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "checkpoint_statement",
     "named": true,
     "fields": {},
@@ -1030,6 +1079,11 @@
         }
       ]
     }
+  },
+  {
+    "type": "coalesce_",
+    "named": true,
+    "fields": {}
   },
   {
     "type": "coalesce_function",
@@ -1356,6 +1410,16 @@
         }
       ]
     }
+  },
+  {
+    "type": "convert_",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "count_",
+    "named": true,
+    "fields": {}
   },
   {
     "type": "create_index",
@@ -1972,7 +2036,22 @@
     }
   },
   {
+    "type": "date_",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "datepart",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "datetime2_",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "datetime_",
     "named": true,
     "fields": {}
   },
@@ -2018,6 +2097,11 @@
         }
       ]
     }
+  },
+  {
+    "type": "datetimeoffset_",
+    "named": true,
+    "fields": {}
   },
   {
     "type": "dbcc_statement",
@@ -2203,6 +2287,11 @@
   },
   {
     "type": "decimal_",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "decimalty_",
     "named": true,
     "fields": {}
   },
@@ -2886,6 +2975,30 @@
     }
   },
   {
+    "type": "exist_",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "exist_call",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "exist_",
+          "named": true
+        },
+        {
+          "type": "string_lit",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "expression",
     "named": true,
     "fields": {},
@@ -2918,6 +3031,10 @@
           "named": true
         },
         {
+          "type": "exist_call",
+          "named": true
+        },
+        {
           "type": "expression",
           "named": true
         },
@@ -2930,7 +3047,23 @@
           "named": true
         },
         {
+          "type": "modify_call",
+          "named": true
+        },
+        {
           "type": "primitive_expression",
+          "named": true
+        },
+        {
+          "type": "query_call",
+          "named": true
+        },
+        {
+          "type": "unary_operator_expression",
+          "named": true
+        },
+        {
+          "type": "value_call",
           "named": true
         }
       ]
@@ -3018,6 +3151,11 @@
     "fields": {}
   },
   {
+    "type": "floatty_",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "for_clause",
     "named": true,
     "fields": {},
@@ -3035,6 +3173,11 @@
         }
       ]
     }
+  },
+  {
+    "type": "format_",
+    "named": true,
+    "fields": {}
   },
   {
     "type": "freetext_predicate",
@@ -3572,6 +3715,11 @@
     }
   },
   {
+    "type": "hierachyid_",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "hierarchyid_static_method",
     "named": true,
     "fields": {
@@ -3653,10 +3801,6 @@
         {
           "type": "TEMP_ID_",
           "named": true
-        },
-        {
-          "type": "keyword",
-          "named": true
         }
       ]
     }
@@ -3724,6 +3868,11 @@
     }
   },
   {
+    "type": "image_",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "insert_statement",
     "named": true,
     "fields": {},
@@ -3782,7 +3931,17 @@
     }
   },
   {
+    "type": "int_",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "integer",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "isnull_",
     "named": true,
     "fields": {}
   },
@@ -3937,11 +4096,6 @@
     }
   },
   {
-    "type": "keyword",
-    "named": true,
-    "fields": {}
-  },
-  {
     "type": "kill_statement",
     "named": true,
     "fields": {},
@@ -4073,6 +4227,11 @@
     }
   },
   {
+    "type": "max_",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "merge_matched",
     "named": true,
     "fields": {},
@@ -4146,9 +4305,38 @@
     }
   },
   {
+    "type": "min_",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "minute_",
     "named": true,
     "fields": {}
+  },
+  {
+    "type": "modify_",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "modify_call",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "modify_",
+          "named": true
+        },
+        {
+          "type": "string_lit",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "money_",
@@ -4181,7 +4369,59 @@
     }
   },
   {
+    "type": "moneyty_",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "nchar_",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "next_value_for_",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "nodes_",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "nodes_method",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "full_table_name",
+          "named": true
+        },
+        {
+          "type": "local_id_",
+          "named": true
+        },
+        {
+          "type": "nodes_",
+          "named": true
+        },
+        {
+          "type": "string_lit",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ntext_",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "null_",
     "named": true,
     "fields": {}
   },
@@ -4201,6 +4441,11 @@
     }
   },
   {
+    "type": "nullif_",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "nullif_function",
     "named": true,
     "fields": {},
@@ -4218,6 +4463,16 @@
         }
       ]
     }
+  },
+  {
+    "type": "numeric_",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "nvarchar_",
+    "named": true,
+    "fields": {}
   },
   {
     "type": "odbc_scalar_functions",
@@ -4799,6 +5054,30 @@
     "fields": {}
   },
   {
+    "type": "query_",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "query_call",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "query_",
+          "named": true
+        },
+        {
+          "type": "string_lit",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "query_expression",
     "named": true,
     "fields": {},
@@ -4900,6 +5179,11 @@
     "fields": {}
   },
   {
+    "type": "rank_",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "ranking_windowed_function",
     "named": true,
     "fields": {},
@@ -4936,6 +5220,11 @@
   },
   {
     "type": "real_",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "realty_",
     "named": true,
     "fields": {}
   },
@@ -5368,6 +5657,21 @@
     }
   },
   {
+    "type": "smalldatetime_",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "smallint_",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "smallmoney_",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "sql_clauses",
     "named": true,
     "fields": {},
@@ -5478,6 +5782,11 @@
         }
       ]
     }
+  },
+  {
+    "type": "sum_",
+    "named": true,
+    "fields": {}
   },
   {
     "type": "switch_search_condition_section",
@@ -5690,6 +5999,10 @@
           "named": true
         },
         {
+          "type": "nodes_method",
+          "named": true
+        },
+        {
           "type": "open_json",
           "named": true
         },
@@ -5791,6 +6104,11 @@
     }
   },
   {
+    "type": "text_",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "throw_statement",
     "named": true,
     "fields": {},
@@ -5807,6 +6125,11 @@
   },
   {
     "type": "time_",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "tinyint_",
     "named": true,
     "fields": {}
   },
@@ -6092,6 +6415,30 @@
     }
   },
   {
+    "type": "value_",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "value_call",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "string_lit",
+          "named": true
+        },
+        {
+          "type": "value_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "value_list",
     "named": true,
     "fields": {},
@@ -6105,6 +6452,16 @@
         }
       ]
     }
+  },
+  {
+    "type": "varbinary_",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "varchar_",
+    "named": true,
+    "fields": {}
   },
   {
     "type": "view_attribute",
@@ -6376,14 +6733,6 @@
     "named": true
   },
   {
-    "type": "LOGIN",
-    "named": true
-  },
-  {
-    "type": "NONE",
-    "named": true
-  },
-  {
     "type": "OUTPUT",
     "named": true
   },
@@ -6393,10 +6742,6 @@
   },
   {
     "type": "TEMP_ID_",
-    "named": true
-  },
-  {
-    "type": "UNDEFINED",
     "named": true
   },
   {
@@ -6424,27 +6769,11 @@
     "named": true
   },
   {
-    "type": "avg_",
-    "named": true
-  },
-  {
-    "type": "bigint_",
-    "named": true
-  },
-  {
     "type": "binary",
     "named": true
   },
   {
-    "type": "binary_",
-    "named": true
-  },
-  {
     "type": "binary_checksum_",
-    "named": true
-  },
-  {
-    "type": "bit_",
     "named": true
   },
   {
@@ -6460,14 +6789,6 @@
     "named": true
   },
   {
-    "type": "cast_",
-    "named": true
-  },
-  {
-    "type": "char_",
-    "named": true
-  },
-  {
     "type": "charindex_",
     "named": true
   },
@@ -6477,10 +6798,6 @@
   },
   {
     "type": "checksum_agg_",
-    "named": true
-  },
-  {
-    "type": "coalesce_",
     "named": true
   },
   {
@@ -6497,14 +6814,6 @@
   },
   {
     "type": "continue_statement",
-    "named": true
-  },
-  {
-    "type": "convert_",
-    "named": true
-  },
-  {
-    "type": "count_",
     "named": true
   },
   {
@@ -6540,15 +6849,7 @@
     "named": true
   },
   {
-    "type": "date_",
-    "named": true
-  },
-  {
     "type": "datefromparts_",
-    "named": true
-  },
-  {
-    "type": "datetime2_",
     "named": true
   },
   {
@@ -6556,15 +6857,7 @@
     "named": true
   },
   {
-    "type": "datetime_",
-    "named": true
-  },
-  {
     "type": "datetimefromparts_",
-    "named": true
-  },
-  {
-    "type": "datetimeoffset_",
     "named": true
   },
   {
@@ -6581,10 +6874,6 @@
   },
   {
     "type": "dayofweek_",
-    "named": true
-  },
-  {
-    "type": "decimalty_",
     "named": true
   },
   {
@@ -6613,14 +6902,6 @@
   },
   {
     "type": "first_value_",
-    "named": true
-  },
-  {
-    "type": "floatty_",
-    "named": true
-  },
-  {
-    "type": "format_",
     "named": true
   },
   {
@@ -6664,19 +6945,7 @@
     "named": true
   },
   {
-    "type": "hierachyid_",
-    "named": true
-  },
-  {
     "type": "iif_",
-    "named": true
-  },
-  {
-    "type": "image_",
-    "named": true
-  },
-  {
-    "type": "int_",
     "named": true
   },
   {
@@ -6685,10 +6954,6 @@
   },
   {
     "type": "isjson_",
-    "named": true
-  },
-  {
-    "type": "isnull_",
     "named": true
   },
   {
@@ -6732,47 +6997,11 @@
     "named": true
   },
   {
-    "type": "max_",
-    "named": true
-  },
-  {
-    "type": "min_",
-    "named": true
-  },
-  {
-    "type": "moneyty_",
-    "named": true
-  },
-  {
     "type": "monthname_",
     "named": true
   },
   {
-    "type": "nchar_",
-    "named": true
-  },
-  {
-    "type": "ntext_",
-    "named": true
-  },
-  {
     "type": "ntile_",
-    "named": true
-  },
-  {
-    "type": "null_",
-    "named": true
-  },
-  {
-    "type": "nullif_",
-    "named": true
-  },
-  {
-    "type": "numeric_",
-    "named": true
-  },
-  {
-    "type": "nvarchar_",
     "named": true
   },
   {
@@ -6824,14 +7053,6 @@
     "named": true
   },
   {
-    "type": "rank_",
-    "named": true
-  },
-  {
-    "type": "realty_",
-    "named": true
-  },
-  {
     "type": "right_shift_operator_",
     "named": true
   },
@@ -6849,18 +7070,6 @@
   },
   {
     "type": "set_bit_",
-    "named": true
-  },
-  {
-    "type": "smalldatetime_",
-    "named": true
-  },
-  {
-    "type": "smallint_",
-    "named": true
-  },
-  {
-    "type": "smallmoney_",
     "named": true
   },
   {
@@ -6892,19 +7101,7 @@
     "named": true
   },
   {
-    "type": "sum_",
-    "named": true
-  },
-  {
     "type": "tertiary_weights_",
-    "named": true
-  },
-  {
-    "type": "text_",
-    "named": true
-  },
-  {
-    "type": "tinyint_",
     "named": true
   },
   {
@@ -6925,14 +7122,6 @@
   },
   {
     "type": "var_",
-    "named": true
-  },
-  {
-    "type": "varbinary_",
-    "named": true
-  },
-  {
-    "type": "varchar_",
     "named": true
   },
   {

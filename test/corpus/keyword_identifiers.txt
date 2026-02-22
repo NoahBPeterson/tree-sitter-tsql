@@ -1,0 +1,121 @@
+=============================================
+Keyword VALUE as column name
+=============================================
+SELECT value FROM t
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (full_column_name
+                          (id_))))))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_)))))))))))))
+
+=============================================
+Multiple keywords as column names
+=============================================
+SELECT type, level, key FROM config
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (full_column_name
+                          (id_)))))
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (full_column_name
+                          (id_)))))
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (full_column_name
+                          (id_))))))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_)))))))))))))
+
+=============================================
+Keyword as qualified column name
+=============================================
+SELECT t.name FROM t
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (full_column_name
+                          (id_)
+                          (id_))))))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_)))))))))))))
+
+=============================================
+Data type keywords as column names
+=============================================
+CREATE TABLE [status] (id INT, name VARCHAR(50), type INT)
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_table
+          (full_table_name
+            (id_))
+          (table_element
+            (column_definition
+              (id_)
+              (data_type
+                (int_))))
+          (table_element
+            (column_definition
+              (id_)
+              (data_type
+                (varchar_)
+                (decimal_))))
+          (table_element
+            (column_definition
+              (id_)
+              (data_type
+                (int_)))))))))

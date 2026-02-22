@@ -26,10 +26,10 @@
 - [x] `case_expression` — searched CASE: `CASE WHEN condition THEN result END` (Parser L3936)
 - [x] `COLLATE` on expression — `expression COLLATE collation_name` (Parser L3907)
 - [x] `AT TIME ZONE` — `expression AT TIME ZONE 'zone'` (Parser L3914)
-- [ ] XML `.value()` method (Parser L3905)
-- [ ] XML `.query()` method (Parser L3905)
-- [ ] XML `.exist()` method (Parser L3905)
-- [ ] XML `.modify()` method (Parser L3905)
+- [x] XML `.value()` method (Parser L3905)
+- [x] XML `.query()` method (Parser L3905)
+- [x] XML `.exist()` method (Parser L3905)
+- [x] XML `.modify()` method (Parser L3905)
 - [ ] `expression.hierarchyid_call` (Parser L3906)
 - [x] `DOLLAR_ACTION` — `$action` for MERGE (Parser L3916)
 - [ ] `over_clause` as standalone expression (Parser L3915)
@@ -56,8 +56,8 @@
 
 ### 1.4 Keyword-as-Identifier Expansion (Parser L5287-L6258)
 
-- [~] `keyword` rule — currently only `GO` (grammar.js L578-L580)
-- [ ] Expand `keyword` to include all ~600+ T-SQL keywords that can be used as identifiers
+- [x] `keyword` rule — expanded to ~130 curated keywords (grammar.js)
+- [~] Expand `keyword` to include all ~600+ T-SQL keywords that can be used as identifiers (~130 done, remaining statement-starting keywords excluded to avoid state explosion)
 
 ### 1.5 Identifier Fixes (Lexer L1218-L1225)
 
@@ -131,7 +131,7 @@
 - [x] `rowset_function` — `OPENDATASOURCE(...)` (Parser L4167)
 - [x] `change_table` — `CHANGETABLE(CHANGES ...)` (Parser L4177)
 - [x] `change_table` — `CHANGETABLE(VERSION ...)` (Parser L4177)
-- [ ] `nodes_method` — XML `.nodes()` in FROM (Parser L4180)
+- [x] `nodes_method` — XML `.nodes()` in FROM (Parser L4180)
 - [x] `open_xml` (Parser L4182)
 - [x] `open_json` (Parser L4183)
 - [x] `TABLESAMPLE (n PERCENT|ROWS)` (Parser L4186)
@@ -700,11 +700,11 @@
 
 ### 7.5 XML Methods (Parser L3905)
 
-- [ ] `.value(xpath, data_type)` — extract scalar (Parser L3905)
-- [ ] `.query(xpath)` — return XML fragment (Parser L3905)
-- [ ] `.exist(xpath)` — check existence (Parser L3905)
-- [ ] `.modify(xml_dml)` — modify in place (Parser L3905)
-- [ ] `.nodes(xpath)` — shred to rows (Parser L4180)
+- [x] `.value(xpath, data_type)` — extract scalar (Parser L3905)
+- [x] `.query(xpath)` — return XML fragment (Parser L3905)
+- [x] `.exist(xpath)` — check existence (Parser L3905)
+- [x] `.modify(xml_dml)` — modify in place (Parser L3905)
+- [x] `.nodes(xpath)` — shred to rows (Parser L4180)
 
 ### 7.6 ODBC Scalar Functions — remaining
 

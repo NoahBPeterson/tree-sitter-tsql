@@ -4,7 +4,7 @@ module.exports = {
   // https://msdn.microsoft.com/en-us/library/ms173454.aspx
   // https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L5010
 
-  aggregate_functions: $ => choice(
+  aggregate_functions: $ => prec.right(choice(
     seq(field('agg_func', choice(
         $.avg_
         ,$.max_
@@ -33,7 +33,7 @@ module.exports = {
       choice($.approx_percentile_cont_
             ,$.approx_percentile_disc_
       ),parens($.expression),$.within_group_,parens($.order_by_, $.order_by_expression))
-  ),
+  )),
 
   grouping_: $ => token(/GROUPING/i),
   grouping_id_: $ => token(/GROUPING_ID/i),

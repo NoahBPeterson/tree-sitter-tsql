@@ -91,10 +91,11 @@ FROM foo.baz.bar;
                               (order_by_clause
                                 (order_by_expression
                                   (expression
-                                    (full_column_name
-                                      (id_)))
-                                  (collation_
-                                    (id_)))))))))))
+                                    (expression
+                                      (full_column_name
+                                        (id_)))
+                                    (collation_
+                                      (id_))))))))))))
                 (table_sources
                   (table_source
                     (table_source_item

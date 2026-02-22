@@ -60,6 +60,7 @@ module.exports = grammar({
     ,[$.table_source]
     ,[$.output_dml_list_elem, $.full_column_name]
     ,[$.top_clause, $.bracket_expression]
+    ,[$.table_source_item, $.nodes_method]
   ],
 
   extras: $ => [
@@ -132,7 +133,7 @@ module.exports = grammar({
     //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L3171
     execute_parameter: $ => choice(
       $.constant
-      ,seq($.LOCAL_ID_, optional($.OUTPUT))
+      ,prec.right(seq($.LOCAL_ID_, optional($.OUTPUT)))
       ,$.id_
       ,$.default
       ,$.null_
@@ -214,11 +215,11 @@ module.exports = grammar({
       )
     ),
 
-    alter_database_add_file: $ => seq(
+    alter_database_add_file: $ => prec.right(seq(
       token(/ADD/i), optional(token(/LOG/i)), token(/FILE/i),
       $.database_filespec, repeat(seq(token(','), $.database_filespec)),
       optional(seq(token(/TO/i), token(/FILEGROUP/i), $.id_))
-    ),
+    )),
 
     database_filespec: $ => seq(
       token('('),
@@ -234,10 +235,10 @@ module.exports = grammar({
       seq(token(/FILEGROWTH/i), token('='), $.file_size),
     ),
 
-    file_size: $ => seq(
+    file_size: $ => prec.right(seq(
       $.decimal_,
       optional(choice(token(/KB/i), token(/MB/i), token(/GB/i), token(/TB/i), token('%')))
-    ),
+    )),
 
     // =====================
     // ALTER TABLE
@@ -264,11 +265,11 @@ module.exports = grammar({
       $.table_element, repeat(seq(',', $.table_element))
     ),
 
-    alter_table_alter_column: $ => seq(
+    alter_table_alter_column: $ => prec.right(seq(
       token(/ALTER/i), token(/COLUMN/i),
       $.id_, $.data_type,
       optional($.null_notnull),
-    ),
+    )),
 
     alter_table_drop: $ => choice(
       seq(token(/DROP/i), token(/COLUMN/i), optional($._if_exists),
@@ -289,12 +290,12 @@ module.exports = grammar({
       choice(token(/ALL/i), seq($.id_, repeat(seq(',', $.id_)))),
     ),
 
-    alter_table_switch: $ => seq(
+    alter_table_switch: $ => prec.right(seq(
       token(/SWITCH/i),
       optional(seq(token(/PARTITION/i), $.expression)),
       token(/TO/i), $.full_table_name,
       optional(seq(token(/PARTITION/i), $.expression)),
-    ),
+    )),
 
     alter_table_rebuild: $ => prec.right(seq(
       token(/REBUILD/i),
@@ -362,10 +363,10 @@ module.exports = grammar({
       optional(seq(token(/ON/i), $.id_)),
     )),
 
-    column_name_list_ordered: $ => seq(
+    column_name_list_ordered: $ => prec.right(seq(
       $.id_, optional(choice(token(/ASC/i), token(/DESC/i))),
       repeat(seq(',', $.id_, optional(choice(token(/ASC/i), token(/DESC/i))))),
-    ),
+    )),
 
     // =====================
     // CREATE/ALTER PROCEDURE
@@ -381,13 +382,13 @@ module.exports = grammar({
       repeat1($.sql_clauses),
     )),
 
-    procedure_param: $ => seq(
+    procedure_param: $ => prec.right(seq(
       $.LOCAL_ID_,
       $.data_type,
       optional(token(/VARYING/i)),
       optional(seq('=', $.expression)),
       optional(choice($.OUTPUT, token(/READONLY/i))),
-    ),
+    )),
 
     proc_option: $ => choice(
       token(/ENCRYPTION/i),
@@ -490,20 +491,20 @@ module.exports = grammar({
     // Other DDL (Schema, Type, Sequence, Synonym, Truncate)
     // =====================
 
-    create_schema: $ => seq(
+    create_schema: $ => prec.right(seq(
       token(/CREATE/i), token(/SCHEMA/i),
       $.id_,
       optional(seq(token(/AUTHORIZATION/i), $.id_)),
-    ),
+    )),
 
-    create_type: $ => seq(
+    create_type: $ => prec.right(seq(
       token(/CREATE/i), token(/TYPE/i),
       $.full_table_name,
       choice(
         seq(token(/FROM/i), $.data_type, optional($.null_notnull)),
         seq(token(/AS/i), token(/TABLE/i), '(', $.table_element, repeat(seq(',', $.table_element)), ')'),
       ),
-    ),
+    )),
 
     create_sequence: $ => prec.right(seq(
       token(/CREATE/i), token(/SEQUENCE/i),
@@ -637,7 +638,7 @@ module.exports = grammar({
     ),
 
     //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L1485
-    column_definition: $ => seq(
+    column_definition: $ => prec.right(seq(
       field('name', $.id_),
       choice(
         seq($.data_type, repeat(choice(
@@ -647,7 +648,7 @@ module.exports = grammar({
         ))),
         seq(token(/AS/i), $.expression, optional(token(/PERSISTED/i))),
       ),
-    ),
+    )),
 
     null_notnull: $ => choice(
       seq(token(/NOT/i), $.null_),
@@ -878,14 +879,14 @@ module.exports = grammar({
         ,token(/FOR/i), $.select_statement
       )
       ,seq(token(/OPEN/i), $.id_)
-      ,seq(token(/FETCH/i)
+      ,prec.right(seq(token(/FETCH/i)
         ,optional(choice(token(/NEXT/i), token(/PRIOR/i), token(/FIRST/i), token(/LAST/i)
           ,seq(token(/ABSOLUTE/i), $.expression)
           ,seq(token(/RELATIVE/i), $.expression)
         ))
         ,token(/FROM/i), $.id_
         ,optional(seq(token(/INTO/i), $.LOCAL_ID_, repeat(seq(token(','), $.LOCAL_ID_))))
-      )
+      ))
       ,seq(token(/CLOSE/i), $.id_)
       ,seq(token(/DEALLOCATE/i), $.id_)
     ),
@@ -1123,7 +1124,7 @@ module.exports = grammar({
     value_list: $ => seq(token('('), $.expression_list_, token(')')),
 
     //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L2195
-    update_statement: $ => seq(
+    update_statement: $ => prec.right(seq(
       optional($.with_expression)
       ,token(/UPDATE/i)
       ,optional($.top_clause)
@@ -1133,7 +1134,7 @@ module.exports = grammar({
       ,optional($.output_clause)
       ,optional(seq(token(/FROM/i), $.table_sources))
       ,optional(seq(token(/WHERE/i), $.search_condition))
-    ),
+    )),
 
     update_target: $ => choice(
       $.full_table_name
@@ -1148,7 +1149,7 @@ module.exports = grammar({
     ),
 
     //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L2148
-    delete_statement: $ => seq(
+    delete_statement: $ => prec.right(seq(
       optional($.with_expression)
       ,token(/DELETE/i)
       ,optional($.top_clause)
@@ -1157,7 +1158,7 @@ module.exports = grammar({
       ,optional($.output_clause)
       ,optional(seq(token(/FROM/i), $.table_sources))
       ,optional(seq(token(/WHERE/i), $.search_condition))
-    ),
+    )),
 
     delete_target: $ => choice(
       $.full_table_name
@@ -1165,7 +1166,7 @@ module.exports = grammar({
     ),
 
     //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L2127
-    merge_statement: $ => seq(
+    merge_statement: $ => prec.right(seq(
       optional($.with_expression)
       ,token(/MERGE/i)
       ,optional(token(/INTO/i))
@@ -1177,7 +1178,7 @@ module.exports = grammar({
       ,$.search_condition
       ,repeat1($.when_matches)
       ,optional($.output_clause)
-    ),
+    )),
 
     //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L2132
     when_matches: $ => choice(
@@ -1205,11 +1206,11 @@ module.exports = grammar({
     ),
 
     //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L2228
-    output_clause: $ => seq(
+    output_clause: $ => prec.right(seq(
       token(/OUTPUT/i)
       ,$.output_dml_list_elem, repeat(seq(token(','), $.output_dml_list_elem))
       ,optional(seq(token(/INTO/i), $.full_table_name, optional(seq(token('('), $.column_name_list, token(')')))))
-    ),
+    )),
 
     output_dml_list_elem: $ => prec.right(seq(
       choice(
@@ -1269,15 +1270,14 @@ module.exports = grammar({
       ,seq(token(/PATH/i), optional(seq(token('('), $.string_lit, token(')'))), repeat(seq(token(','), $.xml_option)))
     ),
 
-    xml_option: $ => choice(
-      token(/ELEMENTS/i)
-      ,seq(token(/ELEMENTS/i), choice(token(/XSINIL/i), token(/ABSENT/i)))
+    xml_option: $ => prec.right(choice(
+      seq(token(/ELEMENTS/i), optional(choice(token(/XSINIL/i), token(/ABSENT/i))))
       ,token(/TYPE/i)
       ,seq(token(/ROOT/i), optional(seq(token('('), $.string_lit, token(')'))))
       ,token(/BINARY_BASE64/i)
       ,seq(token(/XMLSCHEMA/i), optional(seq(token('('), $.string_lit, token(')'))))
       ,seq(token(/XMLDATA/i))
-    ),
+    )),
 
     //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L4067-L4068
     json_common_directives: $ => seq(
@@ -1317,10 +1317,10 @@ module.exports = grammar({
       $.LOCAL_ID_, choice(token(/UNKNOWN/i), seq(token('='), $.constant))
     ),
 
-    query_expression: $ => seq(
+    query_expression: $ => prec.left(seq(
       $.query_specification, repeat($.sql_union)
       //TODO parenthesized query_expression https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L3999
-    ),
+    )),
 
     sql_union: $ => seq(
       choice(
@@ -1331,7 +1331,7 @@ module.exports = grammar({
       ,choice($.query_specification, seq(token('('), $.query_expression, token(')')))
     ),
 
-    query_specification: $ => seq(
+    query_specification: $ => prec.right(seq(
       $.select
       ,optional(choice(token(/ALL/i), token(/DISTINCT/i)))
       ,optional($.top_clause)
@@ -1340,9 +1340,9 @@ module.exports = grammar({
       ,optional(seq(token(/FROM/i), $.table_sources))
       ,optional($.groupby)
       //TODO https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L4010-L4023
-    ),
+    )),
 
-    top_clause: $ => seq(
+    top_clause: $ => prec.right(seq(
       token(/TOP/i)
       ,choice(
         seq(token('('), $.expression, token(')'))
@@ -1350,7 +1350,7 @@ module.exports = grammar({
       )
       ,optional(token(/PERCENT/i))
       ,optional(seq(token(/WITH/i), token(/TIES/i)))
-    ),
+    )),
 
     select_order_by_clause: $ => prec.right(seq(
       token(/ORDER/i), token(/BY/i)
@@ -1460,6 +1460,7 @@ module.exports = grammar({
         ,$.openquery            // OPENQUERY
         ,$.opendatasource       // OPENDATASOURCE
         ,$.change_table         // CHANGETABLE
+        ,$.nodes_method         // XML .nodes() method
         ,$.table_valued_function  // must be before full_table_name (both start with id_)
         ,$.full_table_name
         ,seq(token('('), $.select_statement, token(')'))  // derived table
@@ -1485,9 +1486,9 @@ module.exports = grammar({
       $.json_column_declaration, repeat(seq(token(','), $.json_column_declaration))
     ),
 
-    json_column_declaration: $ => seq(
+    json_column_declaration: $ => prec.right(seq(
       $.column_declaration, optional(seq(token(/AS/i), token(/JSON/i)))
-    ),
+    )),
 
     column_declaration: $ => seq($.id_, $.data_type, optional($.string_lit)),
 
@@ -1538,11 +1539,11 @@ module.exports = grammar({
     ),
 
     // TABLESAMPLE — https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L4186
-    tablesample: $ => seq(
+    tablesample: $ => prec.right(seq(
       token(/TABLESAMPLE/i), optional(token(/SYSTEM/i)),
       token('('), $.expression, choice(token(/PERCENT/i), token(/ROWS/i)), token(')'),
       optional(seq(token(/REPEATABLE/i), token('('), $.expression, token(')')))
-    ),
+    )),
 
     //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L4175
     table_valued_function: $ => seq(
@@ -1550,7 +1551,7 @@ module.exports = grammar({
       ,token('('), optional($.expression_list_), token(')')
     ),
 
-    as_table_alias: $ => seq(optional(token(/AS/i)), $.id_),
+    as_table_alias: $ => prec.right(seq(optional(token(/AS/i)), $.id_, optional(seq('(', $.column_name_list, ')')))),
 
     //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L4173
     with_table_hints: $ => seq(
@@ -1671,6 +1672,8 @@ module.exports = grammar({
       ,prec.left(7, seq($.expression, $.collation_))
       // AT TIME ZONE
       ,prec.left(7, seq($.expression, $.AT_KEYWORD, token(/TIME/i), token(/ZONE/i), $.expression))
+      // XML methods: .value() .query() .exist() .modify()
+      ,prec.left(8, seq($.expression, DOT, choice($.value_call, $.query_call, $.exist_call, $.modify_call)))
     ),
 
     //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L3945
@@ -1711,7 +1714,7 @@ module.exports = grammar({
       ,prec(1, seq($.expression, $.comparison_operator, $.expression))
       ,seq($.expression, optional(token(/NOT/i)), token(/BETWEEN/i), $.expression, token(/AND/i), $.expression)
       ,seq($.expression, optional(token(/NOT/i)), token(/IN/i), token('('), choice($.subquery, $.expression_list_), token(')'))
-      ,seq($.expression, optional(token(/NOT/i)), token(/LIKE/i), $.expression, optional(seq(token(/ESCAPE/i), $.expression)))
+      ,prec.right(seq($.expression, optional(token(/NOT/i)), token(/LIKE/i), $.expression, optional(seq(token(/ESCAPE/i), $.expression))))
       ,seq($.expression, token(/IS/i), optional(token(/NOT/i)), $.null_)
       ,seq($.expression, $.comparison_operator, choice(token(/ALL/i), token(/SOME/i), token(/ANY/i)), '(', $.subquery, ')')
     ),
@@ -1850,6 +1853,25 @@ module.exports = grammar({
 
     parse_: $ => token(/PARSE/i),
 
+    // XML method calls — https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L4857-L4883
+    value_call: $ => seq($.value_, '(', $.string_lit, ',', $.string_lit, ')'),
+    query_call: $ => seq($.query_, '(', $.string_lit, ')'),
+    exist_call: $ => seq($.exist_, '(', $.string_lit, ')'),
+    modify_call: $ => seq($.modify_, '(', $.string_lit, ')'),
+
+    value_: $ => token(/VALUE/i),
+    query_: $ => token(/QUERY/i),
+    exist_: $ => token(/EXIST/i),
+    modify_: $ => token(/MODIFY/i),
+    nodes_: $ => token(/NODES/i),
+
+    // XML .nodes() method — FROM clause table source
+    // https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L4898
+    nodes_method: $ => seq(
+      choice($.local_id_, $.full_table_name),
+      DOT, $.nodes_, '(', $.string_lit, ')'
+    ),
+
     // https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L4298-L4300
     partition_function: $ => seq(
       optional(seq(field('database', $.id_), DOT)), $.dollar_partition_, DOT, field('func_name', $.id_), parens($.expression)
@@ -1910,14 +1932,14 @@ module.exports = grammar({
     ),
 
     //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L4071
-    order_by_expression: $ => seq(
+    order_by_expression: $ => prec.right(seq(
       field('order_by', $.expression)
       ,optional($.collation_)
       ,optional(choice(
         field('ascending', $.asc_)
         ,field('descending', $.desc_)
       )),
-    ),
+    )),
 
     collation_: $ => seq(
       token(/COLLATE/i)
@@ -2012,14 +2034,160 @@ module.exports = grammar({
       $._word
       ,$.TEMP_ID_
       ,SQUARE_BRACKET_ID
-      ,$.keyword
+      ,DOUBLE_QUOTE_ID
+      ,$._keyword
       //TODO https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L6261
     ),
 
-    //TODO https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L5287
-    keyword: $ => choice(
-      token(/GO/i)
-    ),
+    //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L5287
+    // Keywords that can be used as identifiers (column names, table names, aliases)
+    // Excludes statement/clause-starting keywords (SELECT, FROM, WHERE, etc.) to avoid state explosion
+    _keyword: $ => prec(-1, choice(
+      // XML method tokens
+      token(/VALUE/i)
+      ,token(/QUERY/i)
+      ,token(/EXIST/i)
+      ,token(/MODIFY/i)
+      ,token(/NODES/i)
+      // Data types (commonly used as column/table names)
+      ,token(/INT/i)
+      ,token(/BIGINT/i)
+      ,token(/SMALLINT/i)
+      ,token(/TINYINT/i)
+      ,token(/BIT/i)
+      ,token(/DECIMAL/i)
+      ,token(/NUMERIC/i)
+      ,token(/FLOAT/i)
+      ,token(/REAL/i)
+      ,token(/MONEY/i)
+      ,token(/SMALLMONEY/i)
+      ,token(/CHAR/i)
+      ,token(/VARCHAR/i)
+      ,token(/NCHAR/i)
+      ,token(/NVARCHAR/i)
+      ,token(/TEXT/i)
+      ,token(/NTEXT/i)
+      ,token(/BINARY/i)
+      ,token(/VARBINARY/i)
+      ,token(/IMAGE/i)
+      ,token(/DATE/i)
+      ,token(/TIME/i)
+      ,token(/DATETIME/i)
+      ,token(/DATETIME2/i)
+      ,token(/DATETIMEOFFSET/i)
+      ,token(/SMALLDATETIME/i)
+      ,token(/TIMESTAMP/i)
+      ,token(/ROWVERSION/i)
+      ,token(/UNIQUEIDENTIFIER/i)
+      ,token(/SYSNAME/i)
+      ,token(/XML/i)
+      ,token(/GEOGRAPHY/i)
+      ,token(/GEOMETRY/i)
+      ,token(/HIERARCHYID/i)
+      ,token(/CURSOR/i)
+      // Common identifier keywords (DDL/schema objects)
+      ,token(/NAME/i)
+      ,token(/TYPE/i)
+      ,token(/KEY/i)
+      ,token(/LEVEL/i)
+      ,token(/INDEX/i)
+      ,token(/VIEW/i)
+      ,token(/SCHEMA/i)
+      ,token(/TABLE/i)
+      ,token(/DATABASE/i)
+      ,token(/FUNCTION/i)
+      ,token(/PROCEDURE/i)
+      ,token(/PROC/i)
+      ,token(/TRIGGER/i)
+      ,token(/SEQUENCE/i)
+      ,token(/SYNONYM/i)
+      ,token(/ROLE/i)
+      ,token(/USER/i)
+      ,token(/LOGIN/i)
+      ,token(/SERVER/i)
+      ,token(/FILE/i)
+      ,token(/FILEGROUP/i)
+      ,token(/DEFAULT/i)
+      ,token(/NULL/i)
+      ,token(/IDENTITY/i)
+      ,token(/CONSTRAINT/i)
+      ,token(/PRIMARY/i)
+      ,token(/FOREIGN/i)
+      ,token(/REFERENCES/i)
+      ,token(/UNIQUE/i)
+      ,token(/CHECK/i)
+      ,token(/CLUSTERED/i)
+      ,token(/NONCLUSTERED/i)
+      ,token(/PERSISTED/i)
+      // Common identifier keywords (options/modifiers)
+      ,token(/OWNER/i)
+      ,token(/SOURCE/i)
+      ,token(/TARGET/i)
+      ,token(/VERSION/i)
+      ,token(/PATH/i)
+      ,token(/SIZE/i)
+      ,token(/RESULT/i)
+      ,token(/FORMAT/i)
+      ,token(/LANGUAGE/i)
+      ,token(/MEMBER/i)
+      ,token(/SYSTEM/i)
+      ,token(/SERVICE/i)
+      ,token(/CERTIFICATE/i)
+      ,token(/AUTHORIZATION/i)
+      ,token(/ENCRYPTION/i)
+      ,token(/PARTITION/i)
+      ,token(/ISOLATION/i)
+      ,token(/REPLICATION/i)
+      ,token(/SPACE/i)
+      ,token(/GO/i)
+      // Date parts
+      ,token(/YEAR/i)
+      ,token(/MONTH/i)
+      ,token(/DAY/i)
+      ,token(/HOUR/i)
+      ,token(/MINUTE/i)
+      ,token(/SECOND/i)
+      ,token(/WEEK/i)
+      ,token(/WEEKDAY/i)
+      ,token(/QUARTER/i)
+      ,token(/MILLISECOND/i)
+      ,token(/MICROSECOND/i)
+      ,token(/NANOSECOND/i)
+      // Aggregates / window functions
+      ,token(/COUNT/i)
+      ,token(/SUM/i)
+      ,token(/AVG/i)
+      ,token(/MIN/i)
+      ,token(/MAX/i)
+      ,token(/RANK/i)
+      ,token(/ROW/i)
+      ,token(/LEFT/i)
+      ,token(/RIGHT/i)
+      ,token(/FIRST/i)
+      ,token(/LAST/i)
+      ,token(/NEXT/i)
+      ,token(/PRIOR/i)
+      // Sort / filter
+      ,token(/ASC/i)
+      ,token(/DESC/i)
+      ,token(/OVER/i)
+      ,token(/OFFSET/i)
+      // Misc commonly-used-as-identifiers
+      ,token(/REPLACE/i)
+      ,token(/CONVERT/i)
+      ,token(/CAST/i)
+      ,token(/COALESCE/i)
+      ,token(/ISNULL/i)
+      ,token(/NULLIF/i)
+      ,token(/NONE/i)
+      ,token(/UNDEFINED/i)
+      ,token(/JSON/i)
+      ,token(/AUTO/i)
+      ,token(/RAW/i)
+      ,token(/EXPLICIT/i)
+      ,token(/ELEMENTS/i)
+      ,token(/ROOT/i)
+    )),
 
     integer: $ => INT,
 
