@@ -1103,9 +1103,8 @@ SELECT * FROM t1 LEFT
                   (table_source
                     (table_source_item
                       (full_table_name
-                        (id_))
-                      (as_table_alias
-                        (id_)))))))))))))
+                        (id_))))))))))))
+  (ERROR))
 
 =====================================
 ERROR INNER without JOIN
@@ -1444,13 +1443,11 @@ MERGE INTO t USING s
 
 -------------------------------------
 
-(ERROR
-  (full_table_name
-    (id_))
-  (table_source
-    (table_source_item
-      (full_table_name
-        (id_)))))
+(tsql_file
+  (ERROR
+    (full_table_name
+      (id_))
+    (id_)))
 
 =====================================
 ERROR MERGE ON no condition
@@ -2772,28 +2769,10 @@ SELECT CAST( AS INT)
 -------------------------------------
 
 (tsql_file
-  (batch
-    (sql_clauses
-      (dml_clause
-        (select_statement_standalone
-          (select_statement
-            (query_expression
-              (query_specification
-                (select)
-                (select_list
-                  (select_list_elem
-                    (expression_elem
-                      (expression
-                        (function_call
-                          (conversion_functions
-                            (cast_)
-                            (expression
-                              (full_column_name
-                                (id_)))
-                            (as
-                              (MISSING "create_or_alter_procedure_token1"))
-                            (data_type
-                              (int_))))))))))))))))
+  (ERROR
+    (select)
+    (cast_)
+    (id_)))
 
 =====================================
 ERROR RANK no OVER
@@ -3138,17 +3117,16 @@ SELECT * FROM (SELECT * FROM t
   (select_list
     (select_list_elem
       (asterisk)))
-  (query_expression
-    (query_specification
-      (select)
-      (select_list
-        (select_list_elem
-          (asterisk)))
-      (table_sources
-        (table_source
-          (table_source_item
-            (full_table_name
-              (id_))))))))
+  (query_specification
+    (select)
+    (select_list
+      (select_list_elem
+        (asterisk)))
+    (table_sources
+      (table_source
+        (table_source_item
+          (full_table_name
+            (id_)))))))
 
 =====================================
 ERROR PIVOT no parens
@@ -3308,33 +3286,39 @@ SELECT * FROM t PIVOT (SUM(a) FOR b IN ())
 -------------------------------------
 
 (tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk))))))))))
   (ERROR
-    (query_specification
-      (select)
-      (select_list
-        (select_list_elem
-          (asterisk)))
-      (table_sources
-        (table_source
-          (table_source_item
-            (full_table_name
+    (table_sources
+      (table_source
+        (table_source_item
+          (full_table_name
+            (id_))
+          (pivot_clause
+            (aggregate_functions
+              (sum_)
+              (all_distinct_expression
+                (expression
+                  (full_column_name
+                    (id_)))))
+            (full_column_name
               (id_))
-            (pivot_clause
-              (aggregate_functions
-                (sum_)
-                (all_distinct_expression
-                  (expression
-                    (full_column_name
-                      (id_)))))
-              (full_column_name
-                (id_))
-              (column_alias_list
-                (column_alias
-                  (id_
-                    (MISSING _word))))
-              (as_table_alias
+            (column_alias_list
+              (column_alias
                 (id_
-                  (MISSING _word))))))))))
+                  (MISSING _word))))
+            (as_table_alias
+              (id_
+                (MISSING _word)))))))))
 
 =====================================
 ERROR UNPIVOT empty body
@@ -3757,7 +3741,10 @@ CREATE PROCEDURE AS SELECT 1
 (tsql_file
   (ERROR
     (create_or_alter)
-    (id_))
+    (func_proc_name_server_database_schema
+      (func_proc_name_database_schema
+        (func_proc_name_schema
+          (id_)))))
   (batch
     (sql_clauses
       (dml_clause
@@ -3812,8 +3799,7 @@ CREATE VIEW AS SELECT 1
 (tsql_file
   (ERROR
     (create_or_alter)
-    (full_table_name
-      (id_)))
+    (id_))
   (batch
     (sql_clauses
       (dml_clause

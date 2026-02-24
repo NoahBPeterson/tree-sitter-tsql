@@ -4150,32 +4150,45 @@
             "type": "CHOICE",
             "members": [
               {
-                "type": "SEQ",
-                "members": [
-                  {
-                    "type": "TOKEN",
-                    "content": {
-                      "type": "PATTERN",
-                      "value": "START",
-                      "flags": "i"
-                    }
-                  },
-                  {
-                    "type": "TOKEN",
-                    "content": {
-                      "type": "PATTERN",
-                      "value": "WITH",
-                      "flags": "i"
-                    }
-                  },
-                  {
-                    "type": "SYMBOL",
-                    "name": "decimal_"
-                  }
-                ]
+                "type": "SYMBOL",
+                "name": "_sequence_options"
               },
               {
                 "type": "BLANK"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "_sequence_options": {
+      "type": "PREC_RIGHT",
+      "value": 0,
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "TOKEN",
+                "content": {
+                  "type": "PATTERN",
+                  "value": "START",
+                  "flags": "i"
+                }
+              },
+              {
+                "type": "TOKEN",
+                "content": {
+                  "type": "PATTERN",
+                  "value": "WITH",
+                  "flags": "i"
+                }
+              },
+              {
+                "type": "SYMBOL",
+                "name": "decimal_"
               }
             ]
           },
@@ -12361,26 +12374,34 @@
             "type": "CHOICE",
             "members": [
               {
-                "type": "SEQ",
-                "members": [
-                  {
-                    "type": "TOKEN",
-                    "content": {
-                      "type": "PATTERN",
-                      "value": "FROM",
-                      "flags": "i"
-                    }
-                  },
-                  {
-                    "type": "SYMBOL",
-                    "name": "table_sources"
-                  }
-                ]
+                "type": "SYMBOL",
+                "name": "_query_from_clause"
               },
               {
                 "type": "BLANK"
               }
             ]
+          }
+        ]
+      }
+    },
+    "_query_from_clause": {
+      "type": "PREC_RIGHT",
+      "value": 0,
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "TOKEN",
+            "content": {
+              "type": "PATTERN",
+              "value": "FROM",
+              "flags": "i"
+            }
+          },
+          {
+            "type": "SYMBOL",
+            "name": "table_sources"
           },
           {
             "type": "CHOICE",
@@ -26466,7 +26487,7 @@
             "type": "TOKEN",
             "content": {
               "type": "PATTERN",
-              "value": "BIGINT",
+              "value": "DATE",
               "flags": "i"
             }
           },
@@ -26474,7 +26495,7 @@
             "type": "TOKEN",
             "content": {
               "type": "PATTERN",
-              "value": "SMALLINT",
+              "value": "TIME",
               "flags": "i"
             }
           },
@@ -26482,7 +26503,15 @@
             "type": "TOKEN",
             "content": {
               "type": "PATTERN",
-              "value": "TINYINT",
+              "value": "TEXT",
+              "flags": "i"
+            }
+          },
+          {
+            "type": "TOKEN",
+            "content": {
+              "type": "PATTERN",
+              "value": "XML",
               "flags": "i"
             }
           },
@@ -26491,22 +26520,6 @@
             "content": {
               "type": "PATTERN",
               "value": "BIT",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "DECIMAL",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "NUMERIC",
               "flags": "i"
             }
           },
@@ -26530,22 +26543,6 @@
             "type": "TOKEN",
             "content": {
               "type": "PATTERN",
-              "value": "MONEY",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "SMALLMONEY",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
               "value": "CHAR",
               "flags": "i"
             }
@@ -26554,183 +26551,7 @@
             "type": "TOKEN",
             "content": {
               "type": "PATTERN",
-              "value": "VARCHAR",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "NCHAR",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "NVARCHAR",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "TEXT",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "NTEXT",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "BINARY",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "VARBINARY",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
               "value": "IMAGE",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "DATE",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "TIME",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "DATETIME",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "DATETIME2",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "DATETIMEOFFSET",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "SMALLDATETIME",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "TIMESTAMP",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "ROWVERSION",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "UNIQUEIDENTIFIER",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "SYSNAME",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "XML",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "GEOGRAPHY",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "GEOMETRY",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "HIERARCHYID",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "CURSOR",
               "flags": "i"
             }
           },
@@ -26778,6 +26599,14 @@
             "type": "TOKEN",
             "content": {
               "type": "PATTERN",
+              "value": "TABLE",
+              "flags": "i"
+            }
+          },
+          {
+            "type": "TOKEN",
+            "content": {
+              "type": "PATTERN",
               "value": "VIEW",
               "flags": "i"
             }
@@ -26787,70 +26616,6 @@
             "content": {
               "type": "PATTERN",
               "value": "SCHEMA",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "TABLE",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "DATABASE",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "FUNCTION",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "PROCEDURE",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "PROC",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "TRIGGER",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "SEQUENCE",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "SYNONYM",
               "flags": "i"
             }
           },
@@ -26874,22 +26639,6 @@
             "type": "TOKEN",
             "content": {
               "type": "PATTERN",
-              "value": "LOGIN",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "SERVER",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
               "value": "FILE",
               "flags": "i"
             }
@@ -26898,7 +26647,7 @@
             "type": "TOKEN",
             "content": {
               "type": "PATTERN",
-              "value": "FILEGROUP",
+              "value": "PATH",
               "flags": "i"
             }
           },
@@ -26915,94 +26664,6 @@
             "content": {
               "type": "PATTERN",
               "value": "NULL",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "IDENTITY",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "CONSTRAINT",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "PRIMARY",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "FOREIGN",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "REFERENCES",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "UNIQUE",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "CHECK",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "CLUSTERED",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "NONCLUSTERED",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "PERSISTED",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "OWNER",
               "flags": "i"
             }
           },
@@ -27034,423 +26695,7 @@
             "type": "TOKEN",
             "content": {
               "type": "PATTERN",
-              "value": "PATH",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "SIZE",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "RESULT",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "FORMAT",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "LANGUAGE",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "MEMBER",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "SYSTEM",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "SERVICE",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "CERTIFICATE",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "AUTHORIZATION",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "ENCRYPTION",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "PARTITION",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "ISOLATION",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "REPLICATION",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "SPACE",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "GO",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "YEAR",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "MONTH",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "DAY",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "HOUR",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "MINUTE",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "SECOND",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "WEEK",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "WEEKDAY",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "QUARTER",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "MILLISECOND",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "MICROSECOND",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "NANOSECOND",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "COUNT",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "SUM",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "AVG",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "MIN",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "MAX",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "RANK",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "ROW",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "LEFT",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "RIGHT",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "FIRST",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "LAST",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "NEXT",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "PRIOR",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "ASC",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "DESC",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "OVER",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "OFFSET",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "REPLACE",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "CONVERT",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "CAST",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "COALESCE",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "ISNULL",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "NULLIF",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "NONE",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "UNDEFINED",
+              "value": "OWNER",
               "flags": "i"
             }
           },
@@ -27466,39 +26711,7 @@
             "type": "TOKEN",
             "content": {
               "type": "PATTERN",
-              "value": "AUTO",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "RAW",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "EXPLICIT",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "ELEMENTS",
-              "flags": "i"
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "ROOT",
+              "value": "GO",
               "flags": "i"
             }
           }

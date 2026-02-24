@@ -472,7 +472,7 @@ FROM [StackOverflowTiny].[dbo].[LinkTypes]
 agg APPROX_PERCENTILE_CONT
 =====================================
 SELECT
-APPROX_PERCENTILE_CONT(0.10) WITHIN GROUP(ORDER BY Salary),
+APPROX_PERCENTILE_CONT(0.10) WITHIN GROUP(ORDER BY Salary)
 FROM tblEmployee
 GROUP BY DeptId;
 ---
@@ -502,15 +502,12 @@ GROUP BY DeptId;
                             (order_by_expression
                               (expression
                                 (full_column_name
-                                  (id_)))))))))
-                  (select_list_elem
-                    (expression_elem
-                      (expression
-                        (full_column_name
-                          (id_)))
-                      (as_column_alias
-                        (column_alias
-                          (id_))))))
+                                  (id_))))))))))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_)))))
                 (groupby
                   (groupby_)
                   (group_by_item
@@ -522,7 +519,7 @@ GROUP BY DeptId;
 agg APPROX_PERCENTILE_DISC
 =====================================
 SELECT
-APPROX_PERCENTILE_DISC  (0.10) WITHIN GROUP(ORDER BY Salary),
+APPROX_PERCENTILE_DISC  (0.10) WITHIN GROUP(ORDER BY Salary)
 FROM tblEmployee
 GROUP BY DeptId;
 ---
@@ -552,15 +549,12 @@ GROUP BY DeptId;
                             (order_by_expression
                               (expression
                                 (full_column_name
-                                  (id_)))))))))
-                  (select_list_elem
-                    (expression_elem
-                      (expression
-                        (full_column_name
-                          (id_)))
-                      (as_column_alias
-                        (column_alias
-                          (id_))))))
+                                  (id_))))))))))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_)))))
                 (groupby
                   (groupby_)
                   (group_by_item
