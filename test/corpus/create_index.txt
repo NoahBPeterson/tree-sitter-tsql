@@ -159,8 +159,7 @@ With options
 CREATE UNIQUE NONCLUSTERED INDEX IX_Full ON dbo.Products (ProductName)
   INCLUDE (Price)
   WHERE IsActive = 1
-  WITH (PAD_INDEX = ON, FILLFACTOR = 80)
-  ON PRIMARY;
+  WITH (PAD_INDEX = ON, FILLFACTOR = 80);
 
 -------------------------------------
 
@@ -191,5 +190,4 @@ CREATE UNIQUE NONCLUSTERED INDEX IX_Full ON dbo.Products (ProductName)
             (id_))
           (alter_table_option
             (id_)
-            (decimal_))
-          (id_))))))
+            (decimal_)))))))

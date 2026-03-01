@@ -1,7 +1,7 @@
 =====================================
 window_frame_following unbounded NEED AGGREGATEWINDOW
 =====================================
-Select SUM(id) OVER (ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING)
+Select SUM(id) OVER (ORDER BY id ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING)
 FROM [StackOverflowTiny].[dbo].[PostTypes]
 ---
 
@@ -26,6 +26,11 @@ FROM [StackOverflowTiny].[dbo].[PostTypes]
                                 (full_column_name
                                   (id_))))
                             (over_clause
+                              (order_by_clause
+                                (order_by_expression
+                                  (expression
+                                    (full_column_name
+                                      (id_)))))
                               (row_or_range_clause
                                 (window_frame_extent
                                   (window_frame_bound
@@ -43,7 +48,7 @@ FROM [StackOverflowTiny].[dbo].[PostTypes]
 =====================================
 window_frame_following decimal NEED AGGREGATEWINDOW
 =====================================
-Select SUM(id) OVER (ROWS BETWEEN CURRENT ROW AND 10 FOLLOWING)
+Select SUM(id) OVER (ORDER BY id ROWS BETWEEN CURRENT ROW AND 10 FOLLOWING)
 FROM [StackOverflowTiny].[dbo].[PostTypes]
 ---
 
@@ -68,6 +73,11 @@ FROM [StackOverflowTiny].[dbo].[PostTypes]
                                 (full_column_name
                                   (id_))))
                             (over_clause
+                              (order_by_clause
+                                (order_by_expression
+                                  (expression
+                                    (full_column_name
+                                      (id_)))))
                               (row_or_range_clause
                                 (window_frame_extent
                                   (window_frame_bound

@@ -33,7 +33,7 @@ $action in MERGE INSERT
 
 MERGE INTO target AS t
 USING source AS s ON t.id = s.id
-WHEN NOT MATCHED THEN INSERT (id, action) VALUES (s.id, $action)
+WHEN NOT MATCHED THEN INSERT (id, action) VALUES (s.id, $action);
 
 ---
 

@@ -1,0 +1,30 @@
+{
+  "_comment": "Known mismatches between tree-sitter-tsql and the SqlScriptDOM oracle. These are intentional divergences where our parser is stricter than the oracle for good reason. Each entry maps a test name to a reason.",
+  "ignored": {
+    "ERROR CREATE TABLE PRIMARY KEY no cols": {
+      "direction": "oracle_accepts",
+      "sql": "CREATE TABLE t (PRIMARY KEY)",
+      "reason": "PK constraint with no column list is semantically meaningless — fails at runtime. Parser catches this early."
+    },
+    "ERROR CREATE TABLE named PK no cols": {
+      "direction": "oracle_accepts",
+      "sql": "CREATE TABLE t (CONSTRAINT pk PRIMARY KEY)",
+      "reason": "Named PK constraint with no column list is semantically meaningless — fails at runtime. Parser catches this early."
+    },
+    "ERROR ALTER DATABASE NAME no value": {
+      "direction": "oracle_accepts",
+      "sql": "ALTER DATABASE db ADD FILE (NAME)",
+      "reason": "Filespec NAME without = 'value' is incomplete. Oracle may parse NAME as an expression but it's not valid filespec syntax."
+    },
+    "ERROR CAST no AS": {
+      "direction": "oracle_accepts",
+      "sql": "SELECT CAST(1)",
+      "reason": "CAST without AS is broken syntax — CAST(expr AS type) is the defined form. No one writes CAST(1) intentionally."
+    },
+    "ERROR - $action bare dollar sign": {
+      "direction": "oracle_accepts",
+      "sql": "SELECT $",
+      "reason": "Bare $ is almost certainly a typo for $action or $PARTITION. Oracle treats it as $0.00 money literal."
+    }
+  }
+}

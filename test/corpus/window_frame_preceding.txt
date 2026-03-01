@@ -1,7 +1,7 @@
 =====================================
 Window Frame Preceding Unbounded
 =====================================
-SELECT RANK() OVER (ROWS UNBOUNDED PRECEDING)
+SELECT RANK() OVER (ORDER BY col ROWS UNBOUNDED PRECEDING)
 ---
 (tsql_file
   (batch
@@ -20,6 +20,11 @@ SELECT RANK() OVER (ROWS UNBOUNDED PRECEDING)
                           (ranking_windowed_function
                             (rank_)
                             (over_clause
+                              (order_by_clause
+                                (order_by_expression
+                                  (expression
+                                    (full_column_name
+                                      (id_)))))
                               (row_or_range_clause
                                 (window_frame_extent
                                   (window_frame_preceding))))))))))))))))))
@@ -27,7 +32,7 @@ SELECT RANK() OVER (ROWS UNBOUNDED PRECEDING)
 =====================================
 Window Frame Preceding Decimal
 =====================================
-SELECT RANK() OVER (ROWS 10 PRECEDING)
+SELECT RANK() OVER (ORDER BY col ROWS 10 PRECEDING)
 ---
 (tsql_file
   (batch
@@ -46,6 +51,11 @@ SELECT RANK() OVER (ROWS 10 PRECEDING)
                           (ranking_windowed_function
                             (rank_)
                             (over_clause
+                              (order_by_clause
+                                (order_by_expression
+                                  (expression
+                                    (full_column_name
+                                      (id_)))))
                               (row_or_range_clause
                                 (window_frame_extent
                                   (window_frame_preceding))))))))))))))))))
@@ -53,7 +63,7 @@ SELECT RANK() OVER (ROWS 10 PRECEDING)
 =====================================
 Window Frame Preceding CURRENT
 =====================================
-SELECT RANK() OVER (ROWS CURRENT ROW)
+SELECT RANK() OVER (ORDER BY col ROWS CURRENT ROW)
 ---
 (tsql_file
   (batch
@@ -72,6 +82,11 @@ SELECT RANK() OVER (ROWS CURRENT ROW)
                           (ranking_windowed_function
                             (rank_)
                             (over_clause
+                              (order_by_clause
+                                (order_by_expression
+                                  (expression
+                                    (full_column_name
+                                      (id_)))))
                               (row_or_range_clause
                                 (window_frame_extent
                                   (window_frame_preceding))))))))))))))))))

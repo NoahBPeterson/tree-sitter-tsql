@@ -15,24 +15,6 @@ EXECUTE @sql
               (LOCAL_ID_))))))))
 
 =====================================
-execute_var_string string_lit left
-=====================================
-EXECUTE 'SELECT ' + @sql
----
-
-(tsql_file
-  (batch
-    (sql_clauses
-      (another_statement
-        (execute_statement
-          (execute)
-          (execute_body
-            (execute_var_string
-              (string_lit)
-              (PLUS)
-              (LOCAL_ID_))))))))
-
-=====================================
 execute_var_string OUTPUT
 =====================================
 EXECUTE sp_executesql @BAR, N'@XOUT INT OUTPUT', @XOUT OUTPUT;

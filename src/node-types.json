@@ -515,10 +515,6 @@
           "named": true
         },
         {
-          "type": "ignore_nulls_",
-          "named": true
-        },
-        {
           "type": "lag_",
           "named": true
         },
@@ -560,10 +556,6 @@
         },
         {
           "type": "percentile_disc_",
-          "named": true
-        },
-        {
-          "type": "respect_nulls_",
           "named": true
         },
         {
@@ -2896,10 +2888,6 @@
         {
           "type": "execute_var_string",
           "named": true
-        },
-        {
-          "type": "string_lit",
-          "named": true
         }
       ]
     }
@@ -3496,18 +3484,7 @@
   {
     "type": "go_statement",
     "named": true,
-    "fields": {
-      "count": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "integer",
-            "named": true
-          }
-        ]
-      }
-    }
+    "fields": {}
   },
   {
     "type": "goto_statement",
@@ -3760,11 +3737,6 @@
     }
   },
   {
-    "type": "ignore_nulls_",
-    "named": true,
-    "fields": {}
-  },
-  {
     "type": "iif_function",
     "named": true,
     "fields": {},
@@ -3852,11 +3824,6 @@
   },
   {
     "type": "int_",
-    "named": true,
-    "fields": {}
-  },
-  {
-    "type": "integer",
     "named": true,
     "fields": {}
   },
@@ -4831,10 +4798,6 @@
           "named": true
         },
         {
-          "type": "parameter_",
-          "named": true
-        },
-        {
           "type": "real_",
           "named": true
         },
@@ -4855,10 +4818,6 @@
       "types": [
         {
           "type": "LOCAL_ID_",
-          "named": true
-        },
-        {
-          "type": "default",
           "named": true
         },
         {
@@ -5112,11 +5071,6 @@
         }
       ]
     }
-  },
-  {
-    "type": "respect_nulls_",
-    "named": true,
-    "fields": {}
   },
   {
     "type": "restore_statement",
@@ -6117,6 +6071,10 @@
         {
           "type": "execute_var_string",
           "named": true
+        },
+        {
+          "type": "string_lit",
+          "named": true
         }
       ]
     }
@@ -6949,10 +6907,6 @@
   },
   {
     "type": "original_login_",
-    "named": true
-  },
-  {
-    "type": "parameter_",
     "named": true
   },
   {

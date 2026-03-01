@@ -8,7 +8,6 @@ module.exports = {
 
     ,seq(choice($.lag_, $.lead_)
       ,$.lag_lead_args
-      ,optional(choice($.ignore_nulls_, $.respect_nulls_))
       ,$.over_clause)
 
     ,seq(choice($.cume_dist_, $.percent_rank_)
@@ -37,8 +36,6 @@ module.exports = {
         optional(seq(token(','), field('default', $.expression))))))
   ),
 
-  ignore_nulls_: $ => seq(token(/IGNORE/i), token(/NULLS/i)),
-  respect_nulls_: $ => seq(token(/RESPECT/i), token(/NULLS/i)),
   lag_: $ => token(/LAG/i),
   lead_: $ => token(/LEAD/i),
 

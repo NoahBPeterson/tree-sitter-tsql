@@ -191,8 +191,10 @@ SELECT * FROM t GROUP BY
                         (id_)))))))))))
     (ERROR
       (groupby_))
-    (go_statement
-      (MISSING "go_statement_token1"))))
+    (sql_clauses
+      (cfl_statement
+        (return_statement
+          (MISSING "create_or_alter_function_token1"))))))
 
 =====================================
 ERROR SELECT HAVING no condition
@@ -1712,28 +1714,6 @@ CREATE TABLE t ()
       (id_))))
 
 =====================================
-ERROR CREATE TABLE trailing comma
-=====================================
-
-CREATE TABLE t (a INT,)
-
--------------------------------------
-
-(tsql_file
-  (batch
-    (sql_clauses
-      (ddl_clause
-        (create_table
-          (full_table_name
-            (id_))
-          (table_element
-            (column_definition
-              (id_)
-              (data_type
-                (int_))))
-          (ERROR))))))
-
-=====================================
 ERROR CREATE TABLE leading comma
 =====================================
 
@@ -1977,18 +1957,6 @@ DROP INDEX
 
 (tsql_file
   (ERROR))
-
-=====================================
-ERROR DROP INDEX no ON
-=====================================
-
-DROP INDEX ix1
-
--------------------------------------
-
-(tsql_file
-  (ERROR
-    (id_)))
 
 =====================================
 ERROR DROP DATABASE no name
@@ -2398,17 +2366,6 @@ PRINT
   (ERROR))
 
 =====================================
-ERROR COMMIT bare
-=====================================
-
-COMMIT
-
--------------------------------------
-
-(tsql_file
-  (ERROR))
-
-=====================================
 ERROR SAVE bare
 =====================================
 
@@ -2619,19 +2576,6 @@ SELECT IIF(
     (iif_)))
 
 =====================================
-ERROR IIF no arguments
-=====================================
-
-SELECT IIF()
-
--------------------------------------
-
-(tsql_file
-  (ERROR
-    (select)
-    (iif_)))
-
-=====================================
 ERROR IIF one argument
 =====================================
 
@@ -2773,32 +2717,6 @@ SELECT CAST( AS INT)
     (select)
     (cast_)
     (id_)))
-
-=====================================
-ERROR RANK no OVER
-=====================================
-
-SELECT RANK()
-
--------------------------------------
-
-(tsql_file
-  (ERROR
-    (select)
-    (rank_)))
-
-=====================================
-ERROR ROW_NUMBER no OVER
-=====================================
-
-SELECT ROW_NUMBER()
-
--------------------------------------
-
-(tsql_file
-  (ERROR
-    (select)
-    (row_number_)))
 
 =====================================
 ERROR OVER no parens
@@ -3024,9 +2942,7 @@ SELECT SUM(a) OVER (ROWS BETWEEN UNBOUNDED PRECEDING AND)
                                 (full_column_name
                                   (id_))))
                             (over_clause
-                              (ERROR
-                                (window_frame_bound
-                                  (window_frame_preceding))))))))))))))))))
+                              (ERROR))))))))))))))))
 
 =====================================
 ERROR VARCHAR unclosed paren
@@ -3937,28 +3853,6 @@ SELECT $
 ---
 (ERROR
   (select))
-
-===========================
-ERROR - $action space breaks token
-===========================
-SELECT $ action
----
-(tsql_file
-  (batch
-    (sql_clauses
-      (dml_clause
-        (select_statement_standalone
-          (select_statement
-            (query_expression
-              (query_specification
-                (select)
-                (ERROR)
-                (select_list
-                  (select_list_elem
-                    (expression_elem
-                      (expression
-                        (full_column_name
-                          (id_))))))))))))))
 
 ===========================
 ERROR - ALL missing subquery

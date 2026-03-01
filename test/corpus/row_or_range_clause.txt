@@ -1,7 +1,7 @@
 =================================================
 Row or Range Clause ROWS
 =================================================
-SELECT RANK() OVER (ROWS UNBOUNDED PRECEDING)
+SELECT RANK() OVER (ORDER BY col ROWS UNBOUNDED PRECEDING)
 ---
 
 (tsql_file
@@ -21,6 +21,11 @@ SELECT RANK() OVER (ROWS UNBOUNDED PRECEDING)
                           (ranking_windowed_function
                             (rank_)
                             (over_clause
+                              (order_by_clause
+                                (order_by_expression
+                                  (expression
+                                    (full_column_name
+                                      (id_)))))
                               (row_or_range_clause
                                 (window_frame_extent
                                   (window_frame_preceding))))))))))))))))))
@@ -28,7 +33,7 @@ SELECT RANK() OVER (ROWS UNBOUNDED PRECEDING)
 =================================================
 Row or Range Clause RANGE
 =================================================
-SELECT RANK() OVER (RANGE UNBOUNDED PRECEDING)
+SELECT RANK() OVER (ORDER BY col RANGE UNBOUNDED PRECEDING)
 ---
 
 (tsql_file
@@ -48,6 +53,11 @@ SELECT RANK() OVER (RANGE UNBOUNDED PRECEDING)
                           (ranking_windowed_function
                             (rank_)
                             (over_clause
+                              (order_by_clause
+                                (order_by_expression
+                                  (expression
+                                    (full_column_name
+                                      (id_)))))
                               (row_or_range_clause
                                 (window_frame_extent
                                   (window_frame_preceding))))))))))))))))))

@@ -2,13 +2,13 @@
 Go Batch Repeated
 =====================================
 Go
-GO 5
+GO
 go
 ---
 
 (tsql_file
   (batch (go_statement))
-  (batch (go_statement (integer)))
+  (batch (go_statement))
   (batch (go_statement)))
 
 =====================================
@@ -17,8 +17,8 @@ Simple Select Batch No Execute Body Batch clause
 GO
 SELECT id,type FROM [PostTypes]
 SELECT id FROM [PostTypes]
-GO 1
-GO 2
+GO
+GO
 ----
 (tsql_file
   (batch
@@ -65,10 +65,8 @@ GO 2
                     (table_source_item
                       (full_table_name
                         (id_)))))))))))
-    (go_statement
-      (integer))
-    (go_statement
-      (integer))))
+    (go_statement)
+    (go_statement)))
 
 =====================================
 execute_body_batch named params

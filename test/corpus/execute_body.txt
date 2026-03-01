@@ -44,7 +44,6 @@ EXEC ('sp_help') at AdventureWorks
         (execute_statement
           (execute)
           (execute_body
-            (execute_var_string
-              (string_lit))
+            (string_lit)
             (AT_KEYWORD)
             (id_)))))))

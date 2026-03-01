@@ -56,8 +56,8 @@
 
 ### 1.4 Keyword-as-Identifier Expansion (Parser L5287-L6258)
 
-- [x] `keyword` rule — expanded to ~130 curated keywords (grammar.js)
-- [~] Expand `keyword` to include all ~600+ T-SQL keywords that can be used as identifiers (~130 done, remaining statement-starting keywords excluded to avoid state explosion)
+- [x] `keyword` rule — 35 curated keywords (trimmed from 130 for parser size optimization)
+- [~] Expand `keyword` to include more T-SQL keywords (~35 done, remaining can be bracket-quoted; statement-starting keywords excluded to avoid state explosion; LARGE_STATE_COUNT scales linearly with keyword count)
 
 ### 1.5 Identifier Fixes (Lexer L1218-L1225)
 
@@ -259,6 +259,8 @@
 - [x] `set_special` — `SET TRANSACTION ISOLATION LEVEL ...` (Parser L3404)
 - [x] `set_special` — `SET IDENTITY_INSERT table ON|OFF` (Parser L3405)
 - [x] `set_special` — `SET ROWCOUNT expression` (Parser L3406)
+- [ ] `set_special` — `SET STATISTICS IO|TIME|XML|PROFILE ON|OFF` (Parser L3847)
+- [ ] `set_special` — `SET TEXTSIZE n` (Parser L3847)
 - [ ] `set_special` — other SET options (Parser L3402-L3408)
 
 ### 4.3 Control Flow — cfl_statement (Parser L250-L264)
@@ -274,7 +276,7 @@
 - [x] `print_statement` — `PRINT expression` (Parser L256)
 - [x] `raiseerror_statement` — `RAISERROR(msg, severity, state [, args])` (Parser L257)
 - [x] `goto_statement` — `GOTO label` (Parser L254)
-- [ ] `label_statement` — `label_name:` (Parser L264)
+- [ ] `label_statement` — `label_name:` — GOTO target label definition (Parser L283)
 - [x] `waitfor_statement` — `WAITFOR DELAY 'time'` (Parser L261)
 - [x] `waitfor_statement` — `WAITFOR TIME 'time'` (Parser L261)
 
@@ -460,6 +462,7 @@
 
 ### 5.8 Logical Functions (Parser ~L4724-L4727)
 
+- [ ] `CHOOSE(index, val1, val2, ...)` (LSP sql.tmLanguage.json:286)
 - [x] `GREATEST(expression, expression, ...)` (~L4725)
 - [x] `LEAST(expression, expression, ...)` (~L4727)
 
@@ -505,17 +508,81 @@
 - [ ] `IDENTITY(data_type [, seed, increment])` (~L4579)
 - [x] `SQL_VARIANT_PROPERTY(expression, property)` (~L4580)
 
-### 5.12 Cryptographic Functions (Parser ~L4567)
+### 5.12 Cryptographic Functions (Parser ~L4567, LSP sql.tmLanguage.json:230)
 
 - [ ] `CERT_ID(cert_name)` (~L4567)
+- [ ] `HASHBYTES(algorithm, input)` (LSP:230)
+- [ ] `CRYPT_GEN_RANDOM(length [, seed])` (LSP:230)
+- [ ] `ENCRYPTBYKEY(key_guid, plaintext)` (LSP:230)
+- [ ] `DECRYPTBYKEY(ciphertext)` (LSP:230)
+- [ ] `ENCRYPTBYCERT(cert_id, plaintext)` (LSP:230)
+- [ ] `DECRYPTBYCERT(cert_id, ciphertext)` (LSP:230)
+- [ ] `ENCRYPTBYASYMKEY(key_id, plaintext)` (LSP:230)
+- [ ] `DECRYPTBYASYMKEY(key_id, ciphertext)` (LSP:230)
+- [ ] `ENCRYPTBYPASSPHRASE(passphrase, plaintext)` (LSP:230)
+- [ ] `DECRYPTBYPASSPHRASE(passphrase, ciphertext)` (LSP:230)
+- [ ] `SIGNBYASYMKEY(key_id, plaintext)` (LSP:230)
+- [ ] `SIGNBYCERT(cert_id, plaintext)` (LSP:230)
+- [ ] `VERIFYSIGNEDBYCERT(cert_id, signed_data, signature)` (LSP:230)
+- [ ] `VERIFYSIGNEDBYASYMKEY(key_id, signed_data, signature)` (LSP:230)
+- [ ] `KEY_ID(key_name)` (LSP:230)
+- [ ] `KEY_GUID(key_name)` (LSP:230)
+- [ ] `KEY_NAME(key_guid)` (LSP:230)
+- [ ] `ASYMKEY_ID(key_name)` (LSP:230)
+- [ ] `ASYMKEYPROPERTY(key_id, property)` (LSP:230)
+- [ ] `CERTPROPERTY(cert_id, property)` (LSP:230)
+- [ ] `SYMKEYPROPERTY(key_id, property)` (LSP:230)
+- [ ] `IS_OBJECTSIGNED(object_name, ...)` (LSP:230)
+- [ ] `DECRYPTBYKEYAUTOASYMKEY(...)` (LSP:230)
+- [ ] `DECRYPTBYKEYAUTOCERT(...)` (LSP:230)
 
-### 5.13 Freetext Functions (Parser L4302-L4320)
+### 5.13 Freetext Table Functions (Parser L4302-L4320)
 
 - [ ] `CONTAINSTABLE(table, column, search_condition)` (Parser L4303)
 - [ ] `FREETEXTTABLE(table, column, freetext_string)` (Parser L4308)
 - [ ] `SEMANTICSIMILARITYTABLE(table, column, expression)` (Parser L4310)
 - [ ] `SEMANTICKEYPHRASETABLE(table, column, expression)` (Parser L4312)
 - [ ] `SEMANTICSIMILARITYDETAILSTABLE(table, col1, expression, col2, expression)` (Parser L4314)
+
+### 5.14 @@Global Variables — remaining (LSP sql.tmLanguage.json:270)
+
+- [ ] `@@ERROR` — last error number (LSP:270)
+- [ ] `@@ROWCOUNT` — rows affected by last statement (LSP:270)
+- [ ] `@@TRANCOUNT` — open transaction count (LSP:270)
+- [ ] `@@IDENTITY` — last inserted identity value (LSP:270)
+- [ ] `@@CONNECTIONS` — total login attempts (LSP:270)
+- [ ] `@@CPU_BUSY` — CPU active time (LSP:270)
+- [ ] `@@IDLE` — idle time (LSP:270)
+- [ ] `@@IO_BUSY` — I/O time (LSP:270)
+- [ ] `@@PROCID` — current stored procedure ID (LSP:270)
+- [ ] `@@PACKET_ERRORS` — network packet errors (LSP:270)
+- [ ] `@@PACK_RECEIVED` — network packets received (LSP:270)
+- [ ] `@@PACK_SENT` — network packets sent (LSP:270)
+- [ ] `@@TIMETICKS` — microseconds per tick (LSP:270)
+- [ ] `@@TOTAL_ERRORS` — total disk read/write errors (LSP:270)
+- [ ] `@@TOTAL_READ` — total disk reads (LSP:270)
+- [ ] `@@TOTAL_WRITE` — total disk writes (LSP:270)
+
+### 5.15 Rowset / Table-Valued Functions — remaining (LSP sql.tmLanguage.json:318)
+
+- [ ] `STRING_SPLIT(string, separator [, enable_ordinal])` (LSP:318,334)
+- [ ] `GENERATE_SERIES(start, stop [, step])` (LSP:318)
+- [ ] `PREDICT(MODEL = @model, DATA = ...)` (LSP:318 — ML Services)
+
+### 5.16 Vector Functions (LSP sql.tmLanguage.json:358 — SQL Server 2025)
+
+- [ ] `VECTOR_DISTANCE(metric, vector1, vector2)` (LSP:358)
+- [ ] `VECTOR_NORM(vector)` (LSP:358)
+- [ ] `VECTOR_NORMALIZE(vector)` (LSP:358)
+
+### 5.17 Text/Image Functions — legacy (LSP sql.tmLanguage.json:350)
+
+- [ ] `TEXTPTR(column)` (LSP:350)
+- [ ] `TEXTVALID('table.column', text_pointer)` (LSP:350)
+
+### 5.18 System Functions — remaining (LSP sql.tmLanguage.json:342)
+
+- [ ] `SESSION_ID()` (LSP:342)
 
 ---
 
@@ -633,6 +700,8 @@
 - [ ] `DISABLE TRIGGER name ON table` (Parser L229)
 - [ ] `ALTER DATABASE name SET options` (Parser L700)
 - [ ] `ALTER INDEX name ON table REBUILD|REORGANIZE|DISABLE` (Parser L800)
+- [ ] `CREATE DATABASE name [ON PRIMARY filespec] [LOG ON filespec] [COLLATE] [WITH options]` (Parser L2218)
+- [ ] `LOCK TABLE table IN SHARE|EXCLUSIVE MODE [WAIT n|NOWAIT]` (Parser L1135)
 
 ---
 
@@ -697,6 +766,11 @@
 - [x] `CREATE SERVER ROLE name [AUTHORIZATION owner]`
 - [x] `ALTER SERVER ROLE name ADD|DROP MEMBER`
 - [x] `DROP SERVER ROLE name`
+- [ ] `EXECUTE AS CALLER|SELF|OWNER|'user_name'` — impersonation statement (Parser L3655)
+- [ ] `REVERT [WITH COOKIE = @var]` — revert impersonation (Parser L3191)
+- [ ] `OPEN SYMMETRIC KEY name DECRYPTION BY ...` — open key for use (Parser L3231)
+- [ ] `CLOSE SYMMETRIC KEY name` / `CLOSE ALL SYMMETRIC KEYS` / `CLOSE MASTER KEY` (Parser L3236)
+- [ ] `OPEN MASTER KEY DECRYPTION BY PASSWORD = 'pwd'` (Parser L3231)
 
 ### 7.5 XML Methods (Parser L3905)
 
@@ -717,6 +791,8 @@
 
 - [x] `execute_statement` (grammar.js L135)
 - [x] `kill_statement` — `KILL session_id` (Parser L359)
+- [ ] `kill_statement` — `KILL QUERY NOTIFICATION SUBSCRIPTION ALL|id` (Parser L3131)
+- [ ] `kill_statement` — `KILL STATS JOB job_id` (Parser L3136)
 - [x] `reconfigure_statement` — `RECONFIGURE [WITH OVERRIDE]` (Parser L361)
 - [x] `shutdown_statement` — `SHUTDOWN [WITH NOWAIT]` (Parser L365)
 - [x] `checkpoint_statement` — `CHECKPOINT [duration]` (Parser L352)
@@ -746,6 +822,344 @@
 
 - [x] Block comments `/* ... */` (nestable) (Lexer L1214)
 - [x] Single-line comments `-- ...` (Lexer L1215)
+
+### 7.11 BULK INSERT (SqlScriptDOM `BulkInsertStatement.cs`)
+
+> Very common for ETL/data loading. Reference: `ScriptGenerator/SqlScriptGeneratorVisitor.BulkInsertStatement.cs`
+
+- [ ] `BULK INSERT table FROM 'file'` — basic bulk insert
+- [ ] `BULK INSERT ... WITH (FIELDTERMINATOR, ROWTERMINATOR, ...)` — with options
+- [ ] `INSERT ... SELECT * FROM OPENROWSET(BULK ...)` — OPENROWSET BULK variant (ANTLR4 L4272)
+
+### 7.12 Specialized Index Types (SqlScriptDOM)
+
+> Reference: `ScriptGenerator/SqlScriptGeneratorVisitor.Create*IndexStatement.cs`
+
+- [ ] `CREATE COLUMNSTORE INDEX` (`CreateColumnStoreIndexStatement.cs`, also in 6.4)
+- [ ] `CREATE NONCLUSTERED COLUMNSTORE INDEX` (`CreateColumnStoreIndexStatement.cs`)
+- [ ] `CREATE XML INDEX name ON table(xml_col)` (`CreateXmlIndexStatement.cs`)
+- [ ] `CREATE SELECTIVE XML INDEX` (`CreateSelectiveXmlIndexStatement.cs`)
+- [ ] `CREATE SPATIAL INDEX name ON table(geo_col)` (`CreateSpatialIndexStatement.cs`)
+- [ ] `CREATE VECTOR INDEX` (`CreateVectorIndexStatement.cs` — SQL Server 2025)
+- [ ] `CREATE JSON INDEX` (`CreateJsonIndexStatement.cs` — SQL Server 2025)
+
+### 7.13 Partitioning (SqlScriptDOM)
+
+> Reference: `ScriptGenerator/SqlScriptGeneratorVisitor.CreatePartition*.cs`
+
+- [ ] `CREATE PARTITION FUNCTION name(type) AS RANGE [LEFT|RIGHT] FOR VALUES (...)` (`CreatePartitionFunctionStatement.cs`)
+- [ ] `CREATE PARTITION SCHEME name AS PARTITION func [ALL] TO (filegroups)` (`CreatePartitionSchemeStatement.cs`)
+- [ ] `ALTER PARTITION FUNCTION name() SPLIT|MERGE RANGE (value)` (`AlterPartitionFunctionStatement.cs`)
+- [ ] `ALTER PARTITION SCHEME name NEXT USED [filegroup]` (`AlterPartitionSchemeStatement.cs`)
+- [ ] `DROP PARTITION FUNCTION name` (`DropPartitionFunctionStatement.cs`)
+- [ ] `DROP PARTITION SCHEME name` (`DropPartitionSchemeStatement.cs`)
+
+### 7.14 Full-Text Search DDL (SqlScriptDOM)
+
+> Reference: `ScriptGenerator/SqlScriptGeneratorVisitor.CreateFulltext*.cs`
+
+- [ ] `CREATE FULLTEXT CATALOG name` (`CreateFulltextCatalogStatement.cs`)
+- [ ] `CREATE FULLTEXT INDEX ON table(cols) KEY INDEX idx` (`CreateFulltextIndexStatement.cs`)
+- [ ] `ALTER FULLTEXT INDEX ON table ADD|DROP (col)` (`AlterFulltextIndexStatement.cs`)
+- [ ] `CREATE FULLTEXT STOPLIST name` (`CreateFulltextStoplistStatement.cs`)
+- [ ] `DROP FULLTEXT INDEX ON table` (`DropFulltextIndexStatement.cs`)
+- [ ] `DROP FULLTEXT CATALOG name` (`DropFulltextCatalogStatement.cs`)
+
+### 7.15 Temporal Tables (SqlScriptDOM `TemporalClause.cs`)
+
+> Reference: `ScriptGenerator/SqlScriptGeneratorVisitor.TemporalClause.cs`, `SystemTimePeriodDefinition.cs`, `SystemVersioningTableOption.cs`
+
+- [ ] `PERIOD FOR SYSTEM_TIME (start_col, end_col)` — period definition
+- [ ] `WITH (SYSTEM_VERSIONING = ON (...))` — enable temporal on CREATE TABLE
+- [ ] `FOR SYSTEM_TIME AS OF datetime` — point-in-time query
+- [ ] `FOR SYSTEM_TIME FROM ... TO ...` — range query
+- [ ] `FOR SYSTEM_TIME BETWEEN ... AND ...` — between query
+- [ ] `FOR SYSTEM_TIME CONTAINED IN (start, end)` — contained query
+- [ ] `FOR SYSTEM_TIME ALL` — all rows including history
+
+### 7.16 Statistics (SqlScriptDOM)
+
+> Reference: `ScriptGenerator/SqlScriptGeneratorVisitor.CreateStatisticsStatement.cs`, `UpdateStatisticsStatement.cs`
+
+- [ ] `CREATE STATISTICS name ON table (col, ...)` (`CreateStatisticsStatement.cs`)
+- [ ] `CREATE STATISTICS ... WITH FULLSCAN|SAMPLE n PERCENT` — with options
+- [ ] `UPDATE STATISTICS table [index] [WITH options]` (`UpdateStatisticsStatement.cs`)
+- [ ] `DROP STATISTICS table.name` (`DropStatisticsStatement.cs`)
+
+### 7.17 Certificate & Cryptography DDL (SqlScriptDOM)
+
+> Reference: `ScriptGenerator/SqlScriptGeneratorVisitor.Create*Statement.cs` — 20+ files
+
+- [ ] `CREATE MASTER KEY ENCRYPTION BY PASSWORD = 'pwd'` (`CreateMasterKeyStatement.cs`)
+- [ ] `CREATE CERTIFICATE name WITH SUBJECT = 'subject'` (`CreateCertificateStatement.cs`)
+- [ ] `CREATE SYMMETRIC KEY name WITH ALGORITHM = AES_256 ENCRYPTION BY CERTIFICATE cert` (`CreateSymmetricKeyStatement.cs`)
+- [ ] `CREATE ASYMMETRIC KEY name FROM FILE = 'path'` (`CreateAsymmetricKeyStatement.cs`)
+- [ ] `ALTER MASTER KEY ...` (`AlterMasterKeyStatement.cs`)
+- [ ] `ALTER CERTIFICATE ...` (`AlterCertificateStatement.cs`)
+- [ ] `ADD SIGNATURE TO object BY CERTIFICATE cert` (`AddSignatureStatement.cs`)
+- [ ] `DROP CERTIFICATE name` (`DropCertificateStatement.cs`)
+- [ ] `DROP SYMMETRIC KEY name` (`DropSymmetricKeyStatement.cs`)
+- [ ] `DROP ASYMMETRIC KEY name` (`DropAsymmetricKeyStatement.cs`)
+- [ ] `DROP MASTER KEY` (`DropMasterKeyStatement.cs`)
+
+### 7.18 Column Encryption / Always Encrypted (SqlScriptDOM)
+
+> Reference: `ScriptGenerator/SqlScriptGeneratorVisitor.CreateColumnEncryptionKeyStatement.cs`
+
+- [ ] `CREATE COLUMN ENCRYPTION KEY name WITH VALUES (...)` (`CreateColumnEncryptionKeyStatement.cs`)
+- [ ] `CREATE COLUMN MASTER KEY name WITH (...)` (`CreateColumnMasterKeyStatement.cs`)
+- [ ] `ENCRYPTED WITH (COLUMN_ENCRYPTION_KEY = ..., ENCRYPTION_TYPE = ...)` column option (`ColumnEncryptionDefinition.cs`)
+
+### 7.19 Availability Groups / Always On HA (SqlScriptDOM)
+
+> Reference: `ScriptGenerator/SqlScriptGeneratorVisitor.CreateAvailabilityGroupStatement.cs`
+
+- [ ] `CREATE AVAILABILITY GROUP name WITH (...) FOR DATABASE db REPLICA ON ...` (`CreateAvailabilityGroupStatement.cs`)
+- [ ] `ALTER AVAILABILITY GROUP name ADD|REMOVE DATABASE|REPLICA` (`AlterAvailabilityGroupStatement.cs`)
+- [ ] `ALTER DATABASE db SET HADR AVAILABILITY GROUP = ag` (`HadrDatabaseOption.cs`)
+
+### 7.20 External Tables / PolyBase (SqlScriptDOM)
+
+> Reference: `ScriptGenerator/SqlScriptGeneratorVisitor.CreateExternalTableStatement.cs` — 16+ files
+
+- [ ] `CREATE EXTERNAL DATA SOURCE name WITH (TYPE = ..., LOCATION = ...)` (`CreateExternalDataSourceStatement.cs`)
+- [ ] `CREATE EXTERNAL FILE FORMAT name WITH (FORMAT_TYPE = ...)` (`CreateExternalFileFormatStatement.cs`)
+- [ ] `CREATE EXTERNAL TABLE name (...) WITH (LOCATION = ..., DATA_SOURCE = ...)` (`CreateExternalTableStatement.cs`)
+- [ ] `DROP EXTERNAL DATA SOURCE name` (`DropExternalDataSourceStatement.cs`)
+- [ ] `DROP EXTERNAL FILE FORMAT name` (`DropExternalFileFormatStatement.cs`)
+- [ ] `DROP EXTERNAL TABLE name` (`DropExternalTableStatement.cs`)
+
+### 7.21 Service Broker (SqlScriptDOM — 30+ files)
+
+> Reference: `ScriptGenerator/SqlScriptGeneratorVisitor.Create*Statement.cs` (Service, Queue, Contract, Route, etc.)
+
+- [ ] `CREATE MESSAGE TYPE name VALIDATION = ...` (`CreateMessageTypeStatement.cs`)
+- [ ] `CREATE CONTRACT name (msg_type SENT BY ...)` (`CreateContractStatement.cs`)
+- [ ] `CREATE QUEUE name [WITH STATUS = ON|OFF]` (`CreateQueueStatement.cs`)
+- [ ] `CREATE SERVICE name ON QUEUE queue (contract)` (`CreateServiceStatement.cs`)
+- [ ] `CREATE ROUTE name WITH SERVICE_NAME = ..., ADDRESS = ...` (`CreateRouteStatement.cs`)
+- [ ] `BEGIN DIALOG @handle FROM SERVICE ... TO SERVICE ...` (`BeginDialogStatement.cs`)
+- [ ] `SEND ON CONVERSATION @handle MESSAGE TYPE ... (@body)` (`SendStatement.cs`)
+- [ ] `RECEIVE ... FROM queue` (`ReceiveStatement.cs`)
+- [ ] `END CONVERSATION @handle` (`EndConversationStatement.cs`)
+- [ ] `GET CONVERSATION GROUP @id FROM queue` (`GetConversationGroupStatement.cs`)
+- [ ] `ALTER QUEUE name ...` (`AlterQueueStatement.cs`)
+
+### 7.22 Graph Database (SqlScriptDOM)
+
+> Reference: `ScriptGenerator/SqlScriptGeneratorVisitor.GraphMatch*.cs`
+
+- [ ] `CREATE TABLE name (...) AS NODE` — graph node table
+- [ ] `CREATE TABLE name (...) AS EDGE` — graph edge table
+- [ ] `MATCH (node1-(edge)->node2)` expression (`GraphMatchExpression.cs`)
+- [ ] `SHORTEST_PATH(...)` in MATCH (`GraphMatchShortestPathExpression.cs`)
+
+### 7.23 Resource Governor (SqlScriptDOM)
+
+> Reference: `ScriptGenerator/SqlScriptGeneratorVisitor.CreateResourcePoolStatement.cs` — 10+ files
+
+- [ ] `CREATE RESOURCE POOL name WITH (MAX_CPU_PERCENT = n, ...)` (`CreateResourcePoolStatement.cs`)
+- [ ] `CREATE WORKLOAD GROUP name WITH (...) USING pool` (`CreateWorkloadGroupStatement.cs`)
+- [ ] `ALTER RESOURCE GOVERNOR RECONFIGURE|DISABLE` (`AlterResourceGovernorStatement.cs`)
+
+### 7.24 Azure AI Functions (SqlScriptDOM — SQL Server 2025)
+
+> Reference: `ScriptGenerator/SqlScriptGeneratorVisitor.Ai*.cs` — 10 files
+
+- [ ] `AI_GENERATE_EMBEDDINGS(model, text)` (`AiGenerateEmbeddingsFunction.cs`)
+- [ ] `AI_GENERATE_RESPONSE(model, prompt)` (`AiGenerateResponseFunction.cs`)
+- [ ] `AI_CLASSIFY(model, text, labels)` (`AiClassifyFunction.cs`)
+- [ ] `AI_EXTRACT(model, text, fields)` (`AiExtractFunction.cs`)
+- [ ] `AI_SUMMARIZE(model, text)` (`AiSummarizeFunction.cs`)
+- [ ] `AI_TRANSLATE(model, text, target_lang)` (`AiTranslateFunction.cs`)
+- [ ] `AI_FIX_GRAMMAR(model, text)` (`AiFixGrammarFunction.cs`)
+- [ ] `AI_ANALYZE_SENTIMENT(model, text)` (`AiAnalyzeSentimentFunction.cs`)
+
+### 7.25 Assembly & CLR (SqlScriptDOM)
+
+> Reference: `ScriptGenerator/SqlScriptGeneratorVisitor.CreateAssemblyStatement.cs`
+
+- [ ] `CREATE ASSEMBLY name FROM 'path' WITH PERMISSION_SET = SAFE|EXTERNAL_ACCESS|UNSAFE` (`CreateAssemblyStatement.cs`)
+- [ ] `CREATE AGGREGATE name (@param type) RETURNS type EXTERNAL NAME assembly.class` (`CreateAggregateStatement.cs`)
+- [ ] `ALTER ASSEMBLY name ...` (`AlterAssemblyStatement.cs`)
+- [ ] `DROP ASSEMBLY name` (`DropAssemblyStatement.cs`)
+
+### 7.26 COPY Statement — Azure Synapse (SqlScriptDOM)
+
+> Reference: `ScriptGenerator/SqlScriptGeneratorVisitor.CopyStatement.cs`
+
+- [ ] `COPY INTO table FROM 'url' WITH (FILE_FORMAT = ..., ...)` (`CopyStatement.cs`)
+
+### 7.27 External Languages & Libraries (SqlScriptDOM)
+
+> Reference: `ScriptGenerator/SqlScriptGeneratorVisitor.CreateExternal*.cs`
+
+- [ ] `CREATE EXTERNAL LANGUAGE name FROM (path) WITH (...)` (`CreateExternalLanguageStatement.cs`)
+- [ ] `CREATE EXTERNAL LIBRARY name FROM (path) WITH (LANGUAGE = ...)` (`CreateExternalLibraryStatement.cs`)
+
+### 7.28 XML Schema Collections (SqlScriptDOM)
+
+> Reference: `ScriptGenerator/SqlScriptGeneratorVisitor.CreateXmlSchemaCollectionStatement.cs`
+
+- [ ] `CREATE XML SCHEMA COLLECTION name AS 'xsd'` (`CreateXmlSchemaCollectionStatement.cs`)
+- [ ] `DROP XML SCHEMA COLLECTION name` (`DropXmlSchemaCollectionStatement.cs`)
+
+### 7.29 Endpoints & Database Mirroring (SqlScriptDOM)
+
+> Reference: `ScriptGenerator/SqlScriptGeneratorVisitor.CreateEndpointStatement.cs`
+
+- [ ] `CREATE ENDPOINT name STATE = STARTED AS TCP (...) FOR TSQL|DATA_MIRRORING|SERVICE_BROKER (...)` (`CreateEndpointStatement.cs`)
+- [ ] `ALTER ENDPOINT name ...` (`AlterEndpointStatement.cs`)
+- [ ] `DROP ENDPOINT name` (`DropEndpointStatement.cs`)
+
+### 7.30 Security — Row-Level Security, Audit & Data Masking (SqlScriptDOM)
+
+> Reference: `ScriptGenerator/SqlScriptGeneratorVisitor.CreateSecurityPolicyStatement.cs`, `AddSensitivityClassification.cs`
+> Data Masking: `Parser/TSql/TSql170.g:30028` (`maskedClause` rule)
+
+- [ ] `CREATE SECURITY POLICY name ADD FILTER PREDICATE fn(col) ON table` (`CreateSecurityPolicyStatement.cs`)
+- [ ] `ALTER SECURITY POLICY name ...` (`AlterSecurityPolicyStatement.cs`)
+- [ ] `CREATE SERVER AUDIT name TO FILE (...)` (`CreateServerAuditStatement.cs`)
+- [ ] `CREATE SERVER AUDIT SPECIFICATION name FOR SERVER AUDIT audit ADD (action)` (`CreateServerAuditSpecificationStatement.cs`)
+- [ ] `CREATE DATABASE AUDIT SPECIFICATION name FOR SERVER AUDIT audit ADD (action)` (`CreateDatabaseAuditSpecificationStatement.cs`)
+- [ ] `ADD SENSITIVITY CLASSIFICATION TO table.column WITH (...)` (`AddSensitivityClassification.cs`)
+- [ ] Dynamic Data Masking — `col_name type MASKED WITH (FUNCTION = '...')` in CREATE TABLE (`TSql170.g:30028 maskedClause`)
+- [ ] Dynamic Data Masking — `ALTER TABLE t ALTER COLUMN col ADD MASKED WITH (FUNCTION = '...')` (`AlterTableAlterColumnOption.AddMaskingFunction`)
+- [ ] Dynamic Data Masking — `ALTER TABLE t ALTER COLUMN col DROP MASKED` (`AlterTableAlterColumnOption.DropMaskingFunction`)
+
+### 7.31 Credentials (SqlScriptDOM)
+
+> Reference: `ScriptGenerator/SqlScriptGeneratorVisitor.CreateCredentialStatement.cs`
+
+- [ ] `CREATE CREDENTIAL name WITH IDENTITY = '...', SECRET = '...'` (`CreateCredentialStatement.cs`)
+- [ ] `CREATE DATABASE SCOPED CREDENTIAL name WITH IDENTITY = '...'` (`CreateDatabaseScopedCredentialStatement.cs`)
+- [ ] `ALTER CREDENTIAL name ...` (`AlterCredentialStatement.cs`)
+
+### 7.32 Event Notifications & Extended Events (SqlScriptDOM)
+
+> Reference: `ScriptGenerator/SqlScriptGeneratorVisitor.CreateEventNotificationStatement.cs`
+
+- [ ] `CREATE EVENT NOTIFICATION name ON queue FOR event_type TO SERVICE '...'` (`CreateEventNotificationStatement.cs`)
+- [ ] `CREATE EVENT SESSION name ON SERVER ADD EVENT ... ADD TARGET ...` (`CreateEventSessionStatement.cs`)
+- [ ] `ALTER EVENT SESSION name ON SERVER ...` (`AlterEventSessionStatement.cs`)
+
+### 7.33 Legacy Statements (SqlScriptDOM)
+
+> Deprecated features still in the official parser.
+
+- [ ] `CREATE RULE name AS condition` — legacy (`CreateRuleStatement.cs`)
+- [ ] `CREATE DEFAULT name AS expression` — legacy (`CreateDefaultStatement.cs`)
+- [ ] `READTEXT table.column text_pointer offset size` — deprecated (`ReadTextStatement.cs`)
+- [ ] `WRITETEXT table.column text_pointer data` — deprecated (`WriteTextStatement.cs`)
+- [ ] `UPDATETEXT table.column text_pointer offset length data` — deprecated (`UpdateTextStatement.cs`)
+- [ ] `LINENO n` — set line number for error messages
+
+### 7.34 Spatial Methods — GEOGRAPHY/GEOMETRY (SqlScriptDOM)
+
+> Reference: CLR method call visitors in ScriptGenerator. 30+ methods on GEOGRAPHY/GEOMETRY types.
+
+- [ ] `.STArea()` — area of spatial object
+- [ ] `.STDistance(other)` — distance between objects
+- [ ] `.STIntersects(other)` — intersection test
+- [ ] `.STContains(other)` — containment test
+- [ ] `.STBuffer(distance)` — buffer geometry
+- [ ] `.STLength()` — length of linestring
+- [ ] `.STAsText()` — WKT representation
+- [ ] `.STGeomFromText(wkt, srid)` — static constructor
+- [ ] Other spatial methods (30+ total)
+
+### 7.35 ALTER AUTHORIZATION (Parser L582)
+
+> Reference: ANTLR4 `alter_authorization` and variants
+
+- [ ] `ALTER AUTHORIZATION ON [class_type::]entity TO principal` — change owner of securable
+- [ ] Class types: OBJECT, ASSEMBLY, ASYMMETRIC KEY, AVAILABILITY GROUP, CERTIFICATE, CONTRACT, TYPE, DATABASE, ENDPOINT, FULLTEXT CATALOG/STOPLIST, MESSAGE TYPE, REMOTE SERVICE BINDING, ROLE, ROUTE, SCHEMA, SEARCH PROPERTY LIST, SERVER ROLE, SERVICE, SYMMETRIC KEY, XML SCHEMA COLLECTION
+- [ ] Azure SQL variants (`alter_authorization_for_sql_database`, `alter_authorization_for_azure_dw`, `alter_authorization_for_parallel_dw`)
+
+### 7.36 ALTER SERVER CONFIGURATION (Parser L1835)
+
+> Reference: ANTLR4 `alter_server_configuration`
+
+- [ ] `ALTER SERVER CONFIGURATION SET PROCESS AFFINITY ...`
+- [ ] `ALTER SERVER CONFIGURATION SET DIAGNOSTICS LOG ...`
+- [ ] `ALTER SERVER CONFIGURATION SET FAILOVER CLUSTER PROPERTY ...`
+- [ ] `ALTER SERVER CONFIGURATION SET HADR CLUSTER CONTEXT ...`
+- [ ] `ALTER SERVER CONFIGURATION SET BUFFER POOL EXTENSION ...`
+
+### 7.37 ALTER SERVICE MASTER KEY (Parser L1904)
+
+> Reference: ANTLR4 `alter_service_master_key`
+
+- [ ] `ALTER SERVICE MASTER KEY [FORCE] REGENERATE`
+- [ ] `ALTER SERVICE MASTER KEY WITH OLD_ACCOUNT|NEW_ACCOUNT = ...`
+
+### 7.38 Application Roles (Parser L371, L384)
+
+> Reference: ANTLR4 `alter_application_role`, `create_application_role`, `drop_application_role`
+
+- [ ] `CREATE APPLICATION ROLE name WITH PASSWORD = 'pwd' [, DEFAULT_SCHEMA = schema]`
+- [ ] `ALTER APPLICATION ROLE name WITH NAME|PASSWORD|DEFAULT_SCHEMA = ...`
+- [ ] `DROP APPLICATION ROLE name`
+
+### 7.39 Search Property Lists (Parser L1673)
+
+> Reference: ANTLR4 `create_search_property_list`, `drop_search_property_list`
+
+- [ ] `CREATE SEARCH PROPERTY LIST name [FROM [db.]source_list] [AUTHORIZATION owner]`
+- [ ] `DROP SEARCH PROPERTY LIST name`
+
+### 7.40 Remote Service Binding (Parser L1532)
+
+> Reference: ANTLR4 `create_remote_service_binding`, `alter_remote_service_binding`, `drop_remote_service_binding`
+
+- [ ] `CREATE REMOTE SERVICE BINDING name [AUTHORIZATION owner] TO SERVICE 'svc' WITH USER = user [, ANONYMOUS = ON|OFF]`
+- [ ] `ALTER REMOTE SERVICE BINDING name ...`
+- [ ] `DROP REMOTE SERVICE BINDING name`
+
+### 7.41 External Resource Pool (Parser L1342, L1352)
+
+> Reference: ANTLR4 `alter_external_resource_pool`, `create_external_resource_pool`, `drop_external_resource_pool`
+
+- [ ] `CREATE EXTERNAL RESOURCE POOL name WITH (MAX_CPU_PERCENT = n, ...)`
+- [ ] `ALTER EXTERNAL RESOURCE POOL name|DEFAULT WITH (...)`
+- [ ] `DROP EXTERNAL RESOURCE POOL name`
+
+### 7.42 Cryptographic Providers (Parser L1174)
+
+> Reference: ANTLR4 `create_cryptographic_provider`, `alter_cryptographic_provider`, `drop_cryptograhic_provider`
+
+- [ ] `CREATE CRYPTOGRAPHIC PROVIDER name FROM FILE = 'path'`
+- [ ] `ALTER CRYPTOGRAPHIC PROVIDER name ...`
+- [ ] `DROP CRYPTOGRAPHIC PROVIDER name`
+
+### 7.43 Database Encryption Key (Parser L910)
+
+> Reference: ANTLR4 `drop_database_encryption_key`
+
+- [ ] `DROP DATABASE ENCRYPTION KEY`
+- [ ] `CREATE DATABASE ENCRYPTION KEY WITH ALGORITHM = ...` (implicit from SqlScriptDOM)
+
+### 7.44 Database Scoped Credentials (Parser L915)
+
+> Reference: ANTLR4 `drop_database_scoped_credential`, `CreateDatabaseScopedCredentialStatement.cs`
+
+- [ ] `CREATE DATABASE SCOPED CREDENTIAL name WITH IDENTITY = '...'`
+- [ ] `DROP DATABASE SCOPED CREDENTIAL name`
+
+### 7.45 Broker Priority (Parser L828)
+
+> Reference: ANTLR4 `create_or_alter_broker_priority`, `drop_broker_priority`
+
+- [ ] `CREATE BROKER PRIORITY name FOR CONVERSATION SET (CONTRACT_NAME, LOCAL_SERVICE_NAME, REMOTE_SERVICE_NAME, PRIORITY_LEVEL)`
+- [ ] `ALTER BROKER PRIORITY name ...`
+- [ ] `DROP BROKER PRIORITY name`
+
+### 7.46 BULK INSERT (Parser — community grammar L2252)
+
+> Very common for ETL/data loading. Already listed in 7.11 but repeated here for ANTLR cross-reference.
+
+- [ ] `BULK INSERT table FROM 'file' [WITH (options)]`
+- [ ] `INSERT ... SELECT * FROM OPENROWSET(BULK ...)`
 
 ---
 
@@ -1106,3 +1520,172 @@ These sections are fully implemented with test corpus coverage:
 
 - [x] `SELECT [unclosed` — unclosed bracket identifier
 - [x] `SELECT "unclosed` — unclosed quoted identifier
+
+---
+
+## Verification Tools & Reference Sources
+
+> Added 2026-03-01. These tools and references support black-box verification
+> of tree-sitter-tsql against Microsoft's official T-SQL parser.
+
+### V.1 SQL Parser Oracle Tool
+
+A .NET console app that uses `Microsoft.SqlServer.Management.SqlParser` (NuGet 173.8.0)
+as a black-box oracle for validating T-SQL parse results.
+
+**Location:** `tools/sql-parser-oracle/`
+
+**Usage:**
+```bash
+cd tools/sql-parser-oracle
+echo "SELECT * FROM Users WHERE Id = 1" | dotnet run
+echo "SELECT FROM" | dotnet run -- --quiet   # exit code 1 on failure
+dotnet run --sql "CREATE TABLE T1 (Id INT)"
+dotnet run --json < myquery.sql               # machine-readable JSON tree
+dotnet run --xml --sql "SELECT 1"             # XML AST output
+```
+
+**Output modes:** `--tree` (default), `--xml`, `--json`, `--quiet`
+**Exit codes:** 0 = parse success, 1 = parse failure
+
+**AST node types emitted** (partial list from testing):
+- `SqlScript` > `SqlBatch` > `SqlSelectStatement` > `SqlSelectSpecification` > `SqlQuerySpecification`
+- `SqlSelectClause`, `SqlFromClause`, `SqlWhereClause`
+- `SqlSelectStarExpression`, `SqlColumnRefExpression`, `SqlTableRefExpression`
+- `SqlComparisonBooleanExpression`, `IntegerLiteralExpression`
+- `OnePartObjectIdentifier`, `SqlIdentifier`
+
+**License note:** The NuGet package `Microsoft.SqlServer.Management.SqlParser` has a
+restrictive license (no reverse engineering/decompilation). We use it strictly as a
+black-box oracle — feeding SQL input and observing parse success/failure and AST output.
+We do NOT look at its decompiled source.
+
+### V.2 SqlScriptDOM — Open-Source Official Microsoft T-SQL Parser
+
+**Repository:** https://github.com/microsoft/SqlScriptDom
+**License:** MIT (fully open source)
+**Cloned to:** `tools/SqlScriptDom/`
+
+This is Microsoft's official open-source T-SQL parser library, built on ANTLR.
+Unlike the NuGet SqlParser package, we CAN freely read the grammar and source code.
+
+**Key resources:**
+
+| Resource | Path | Description |
+|----------|------|-------------|
+| Latest grammar | `tools/SqlScriptDom/SqlScriptDom/Parser/TSql/TSql170.g` | 35,375-line ANTLR grammar for SQL Server 2022 (compat level 170) |
+| All grammar versions | `tools/SqlScriptDom/SqlScriptDom/Parser/TSql/TSql{80..170}.g` | Grammars for SQL 2000 through 2022 |
+| Fabric DW grammar | `tools/SqlScriptDom/SqlScriptDom/Parser/TSql/TSqlFabricDW.g` | Azure Fabric Data Warehouse dialect |
+| Token definitions | `tools/SqlScriptDom/SqlScriptDom/Parser/TSql/TSqlTokenTypes.g` | Lexer token types |
+| Test scripts | `tools/SqlScriptDom/Test/SqlDom/TestScripts/` | 470 SQL test scripts from Microsoft |
+| AST node classes | `tools/SqlScriptDom/SqlScriptDom/ScriptDom/` | C# AST node definitions |
+| Script generator | `tools/SqlScriptDom/SqlScriptDom/ScriptDom/SqlScriptGeneratorVisitor*.cs` | SQL pretty-printer visitors |
+
+**Grammar file versions available:**
+- `TSql80.g` — SQL Server 2000
+- `TSql90.g` — SQL Server 2005
+- `TSql100.g` — SQL Server 2008
+- `TSql110.g` — SQL Server 2012
+- `TSql120.g` — SQL Server 2014
+- `TSql130.g` — SQL Server 2016
+- `TSql140.g` — SQL Server 2017
+- `TSql150.g` — SQL Server 2019
+- `TSql160.g` — SQL Server 2022
+- `TSql170.g` — SQL Server 2022 (latest compat level)
+- `TSqlFabricDW.g` — Azure Fabric Data Warehouse
+
+**How to use for verification:**
+1. **Grammar reference:** Read `TSql170.g` directly to understand official rule structure,
+   operator precedence, keyword classification, and production alternatives. This replaces
+   the ANTLR4 line references used throughout this Progress.md (those were from an older
+   community grammar; SqlScriptDOM is the authoritative Microsoft source).
+2. **Test corpus mining:** The 470 test scripts in `Test/SqlDom/TestScripts/` provide real-world
+   SQL examples that our tree-sitter parser should handle. These can be fed through both
+   our parser and the oracle tool to find discrepancies.
+3. **AST comparison:** The `ScriptDom` node classes define the canonical AST structure that
+   Microsoft uses — useful for validating that our tree-sitter node names and hierarchy
+   are reasonable.
+
+### V.3 ILSpy (compiled, not needed for SqlScriptDOM work)
+
+ILSpy was compiled from source at `/Users/noahpeterson/Downloads/ILSpy/` for .NET 10.
+It was originally used to decompile the SqlParser NuGet package, but we deleted that
+output to comply with the NuGet license. With SqlScriptDOM now available under MIT,
+ILSpy is no longer needed for this project but remains available for other use.
+
+**Binary:** `/Users/noahpeterson/Downloads/ILSpy/ICSharpCode.ILSpyCmd/bin/Release/net10.0/ilspycmd.dll`
+**Usage:** `dotnet <path>/ilspycmd.dll <assembly.dll>`
+
+### V.4 Ghidra / GhydraMCP (not suitable for .NET analysis)
+
+Ghidra with GhydraMCP was set up and connected (port 8192) but is not suitable for
+analyzing .NET/CLR assemblies — it sees IL bytecode rather than meaningful decompiled
+code. The SqlParser DLL was loaded but produced 18,747 "functions" that are really
+CLR method stubs. **Use ILSpy or dotnet tools instead for .NET analysis.**
+
+### V.5 Batch Verification Script
+
+**Location:** `tools/verify-tests.sh`
+
+Extracts SQL from all test corpus files and validates each against the oracle.
+Positive tests should pass on both parsers; negative tests should fail on both.
+
+**Usage:**
+```bash
+./tools/verify-tests.sh                           # all test files
+./tools/verify-tests.sh test/corpus/select.txt     # specific file
+```
+
+**Requirements:** Build oracle first: `cd tools/sql-parser-oracle && dotnet build -c Release`
+
+### V.6 Verification Results (2026-03-01)
+
+**492 tests verified: 471 pass (95.7%), 21 mismatches**
+
+| Category | Count | Files | Issue |
+|----------|-------|-------|-------|
+| ROWS/RANGE without ORDER BY | 8 | over_clause, row_or_range, window_frame_* | Oracle requires ORDER BY before ROWS/RANGE frame; tree-sitter is more permissive (syntactically valid) |
+| GO batch features | 3 | batch, go | `GO 5` repeat count is SSMS/sqlcmd feature, not T-SQL language; multi-line batch format |
+| IGNORE/RESPECT NULLS | 2 | analytic_windowed_function | ANSI SQL standard, NOT supported in SQL Server |
+| MERGE needs semicolon | 2 | merge, phase1_gaps | SQL Server requires MERGE to end with `;` |
+| `?` parameter marker | 2 | parameter, primitive_constant | ODBC/JDBC placeholder, not native T-SQL |
+| SELECT DEFAULT | 1 | primitive_expression | DEFAULT not valid as standalone SELECT expression |
+| EXEC string concat | 1 | execute_var_string | `EXECUTE 'str' + @var` form rejected by oracle |
+| KEY as identifier | 1 | keyword_identifiers | KEY is reserved in SQL Server |
+| `$ action` accepted | 1 | negative_tests (reversed!) | Our negative test says invalid but oracle accepts `$ action` with space |
+
+**Assessment:** Most mismatches are intentional permissiveness (e.g., ROWS/RANGE without ORDER BY
+is syntactically valid per SQL standard) or client tool features (GO count, ? params). Only 2-3
+are genuine issues worth fixing (MERGE semicolon, KEY reserved word, $ action behavior).
+
+### V.7 Verification Strategy Going Forward
+
+1. **Gold standard:** Use SqlScriptDOM's `TSql170.g` as the authoritative grammar reference
+   (MIT licensed, we can read every rule).
+2. **Black-box oracle:** Use `tools/sql-parser-oracle/` to validate individual SQL statements
+   against Microsoft's parser (pass/fail + AST node types).
+3. **Batch verification:** Run `tools/verify-tests.sh` after grammar changes to catch regressions.
+4. **Test corpus:** Mine the 470 test scripts from `tools/SqlScriptDom/Test/SqlDom/TestScripts/`
+   for comprehensive test cases. Feed each through `tree-sitter parse` and the oracle
+   to compare results.
+5. **Regression testing:** For each new grammar rule added to tree-sitter-tsql, create
+   corresponding test cases verified against the oracle.
+6. **Version metadata:** `version-rules.json` maps features to minimum SQL Server versions
+   for editor/linter integration.
+
+### V.8 Version Metadata (`version-rules.json`)
+
+Maps tree-sitter node types and features to minimum SQL Server compatibility levels.
+Editors and linters can use this for version-aware diagnostics (e.g., "DROP IF EXISTS
+requires SQL Server 2016+ (compat level 130)").
+
+**Location:** `version-rules.json` (project root)
+**Format:**
+```json
+{
+  "features": {
+    "drop_if_exists": { "min_version": "130", "sql_server": "2016", "description": "DROP ... IF EXISTS" },
+    "json_functions": { "min_version": "130", "sql_server": "2016", "description": "JSON_VALUE, JSON_QUERY, etc." }
+  }
+}
+```

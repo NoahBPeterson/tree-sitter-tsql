@@ -94,7 +94,7 @@ module.exports = grammar({
     )),
 
     //https://learn.microsoft.com/en-us/sql/t-sql/language-elements/sql-server-utilities-statements-go?view=sql-server-ver16
-    go_statement: $ => seq(token(/GO/i), optional(field("count", $.integer))),
+    go_statement: $ => token(/GO/i),
 
     //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L3145
     execute_body_batch: $ => prec.left(seq(
@@ -1051,7 +1051,7 @@ module.exports = grammar({
         , optional(seq($.WITH, $.execute_option, repeat(seq(token(','), $.execute_option)))))
       //TODO execute_option https://learn.microsoft.com/en-us/sql/t-sql/language-elements/execute-transact-sql?view=sql-server-ver15
 
-      ,seq(parens(seq($.execute_var_string, repeat(seq(token(','), $.execute_var_string))))
+      ,seq(parens(seq(choice($.execute_var_string, $.string_lit), repeat(seq(token(','), choice($.execute_var_string, $.string_lit)))))
         ,optional(seq($.as, choice($.LOGIN,$.USER), token('='), $.string_lit))
         ,optional(seq($.AT_KEYWORD, field('linkedServer', $.id_))))
       //TODO AT_DATA_SOURCE https://learn.microsoft.com/en-us/sql/t-sql/language-elements/execute-transact-sql?view=sql-server-ver16&redirectedfrom=MSDN#:~:text=AT%20DATA_SOURCE%20data_source_name%20Applies%20to%3A%20SQL%20Server%202019%20(15.x)%20and%20later
@@ -1078,10 +1078,7 @@ module.exports = grammar({
 
     // https://learn.microsoft.com/en-us/sql/t-sql/language-elements/execute-transact-sql?view=sql-server-ver15
     // https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L3175-L3178
-    execute_var_string: $ => choice(
-      seq($.LOCAL_ID_, optional(seq($.PLUS, $.LOCAL_ID_, optional(seq($.PLUS, $.execute_var_string)))))
-      ,seq($.string_lit, optional(seq($.PLUS, $.LOCAL_ID_, optional(seq($.PLUS, $.execute_var_string)))))
-    ),
+    execute_var_string: $ => seq($.LOCAL_ID_, optional(seq($.PLUS, $.LOCAL_ID_, optional(seq($.PLUS, $.execute_var_string))))),
 
     string_lit: $ => token(seq(
       optional('N')
@@ -1437,7 +1434,7 @@ module.exports = grammar({
 
     //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L4123
     udt_method_arguments: $ => seq(
-      parens($.execute_var_string, repeat(seq(token(','), $.execute_var_string)))
+      parens(choice($.execute_var_string, $.string_lit), repeat(seq(token(','), choice($.execute_var_string, $.string_lit))))
     ),
 
     //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L4138
@@ -1923,12 +1920,12 @@ module.exports = grammar({
 
     //https://msdn.microsoft.com/en-us/library/ms189461.aspx
     //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L5033
+    // SQL Server requires ORDER BY before ROWS/RANGE frame clause
     over_clause: $ => seq(
       token(/OVER/i)
       ,token('(')
         ,optional($.partition_by_clause)
-        ,optional($.order_by_clause)
-        ,optional($.row_or_range_clause)
+        ,optional(seq($.order_by_clause, optional($.row_or_range_clause)))
       ,token(')')
     ),
 
@@ -1992,8 +1989,7 @@ module.exports = grammar({
 
     //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L3927
     primitive_expression: $ => choice(
-      $.default
-      ,$.null_
+      $.null_
       ,$.LOCAL_ID_
       ,$.primitive_constant
       ,$.dollar_action_
@@ -2009,16 +2005,12 @@ module.exports = grammar({
       ,$.decimal_
       ,$.float_
       ,$.money_
-      ,$.parameter_
     ),
 
     binary: $ => token(/0x[0-9A-F]*/),
 
     //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L5283
     money_: $ => seq(field('dollar', token('$')), optional(choice(token('-'),token('+'))), choice($.real_, $.float_)),
-
-    //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L3919-L3921
-    parameter_: $ => token('?'),
 
 
     //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlLexer.g4#L1231
@@ -2058,7 +2050,7 @@ module.exports = grammar({
       token(/VALUE/i), token(/QUERY/i), token(/EXIST/i), token(/MODIFY/i), token(/NODES/i)
       ,token(/INT/i), token(/DATE/i), token(/TIME/i), token(/TEXT/i), token(/XML/i)
       ,token(/BIT/i), token(/FLOAT/i), token(/REAL/i), token(/CHAR/i), token(/IMAGE/i)
-      ,token(/NAME/i), token(/TYPE/i), token(/KEY/i), token(/LEVEL/i)
+      ,token(/NAME/i), token(/TYPE/i), token(/LEVEL/i)
       ,token(/INDEX/i), token(/TABLE/i), token(/VIEW/i), token(/SCHEMA/i)
       ,token(/ROLE/i), token(/USER/i), token(/FILE/i), token(/PATH/i)
       ,token(/DEFAULT/i), token(/NULL/i), token(/SOURCE/i), token(/TARGET/i)

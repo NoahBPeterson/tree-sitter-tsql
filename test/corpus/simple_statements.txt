@@ -17,10 +17,10 @@ KILL 55
                 (decimal_)))))))))
 
 =====================================
-KILL with variable
+KILL with integer literal
 =====================================
 
-KILL @spid
+KILL 55
 
 -------------------------------------
 
@@ -31,7 +31,8 @@ KILL @spid
         (kill_statement
           (expression
             (primitive_expression
-              (LOCAL_ID_))))))))
+              (primitive_constant
+                (decimal_)))))))))
 
 =====================================
 RECONFIGURE basic

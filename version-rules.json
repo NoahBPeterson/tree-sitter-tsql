@@ -1,0 +1,798 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$comment": "Maps T-SQL features to their minimum SQL Server version and compatibility level. Sources: Microsoft Learn docs, community blogs, and official release notes.",
+  "metadata": {
+    "versions": {
+      "SQL Server 2000": { "compatLevel": 80,  "majorVersion": "8.0",  "releaseYear": 2000 },
+      "SQL Server 2005": { "compatLevel": 90,  "majorVersion": "9.0",  "releaseYear": 2005 },
+      "SQL Server 2008": { "compatLevel": 100, "majorVersion": "10.0", "releaseYear": 2008 },
+      "SQL Server 2008 R2": { "compatLevel": 100, "majorVersion": "10.50", "releaseYear": 2010 },
+      "SQL Server 2012": { "compatLevel": 110, "majorVersion": "11.0", "releaseYear": 2012 },
+      "SQL Server 2014": { "compatLevel": 120, "majorVersion": "12.0", "releaseYear": 2014 },
+      "SQL Server 2016": { "compatLevel": 130, "majorVersion": "13.0", "releaseYear": 2016 },
+      "SQL Server 2016 SP1": { "compatLevel": 130, "majorVersion": "13.0", "releaseYear": 2016, "servicePackNote": "SP1 added features like CREATE OR ALTER" },
+      "SQL Server 2017": { "compatLevel": 140, "majorVersion": "14.0", "releaseYear": 2017 },
+      "SQL Server 2019": { "compatLevel": 150, "majorVersion": "15.0", "releaseYear": 2019 },
+      "SQL Server 2022": { "compatLevel": 160, "majorVersion": "16.0", "releaseYear": 2022 },
+      "SQL Server 2025": { "compatLevel": 170, "majorVersion": "17.0", "releaseYear": 2025 }
+    }
+  },
+  "features": [
+    {
+      "id": "drop_if_exists",
+      "name": "DROP IF EXISTS",
+      "description": "DROP <object_type> IF EXISTS syntax for DDL statements (TABLE, VIEW, PROCEDURE, FUNCTION, INDEX, TRIGGER, etc.)",
+      "syntax": "DROP TABLE IF EXISTS dbo.MyTable",
+      "minVersion": "SQL Server 2016",
+      "minCompatLevel": 130,
+      "category": "DDL",
+      "objects": ["DATABASE", "TABLE", "VIEW", "PROCEDURE", "FUNCTION", "INDEX", "TRIGGER", "DEFAULT", "RULE", "SCHEMA", "AGGREGATE", "ASSEMBLY", "ROLE", "TYPE", "USER", "SECURITY_POLICY", "SEQUENCE", "SYNONYM"]
+    },
+    {
+      "id": "json_value",
+      "name": "JSON_VALUE",
+      "description": "Extracts a scalar value from a JSON string",
+      "syntax": "SELECT JSON_VALUE(@json, '$.name')",
+      "minVersion": "SQL Server 2016",
+      "minCompatLevel": 130,
+      "category": "JSON"
+    },
+    {
+      "id": "json_query",
+      "name": "JSON_QUERY",
+      "description": "Extracts an object or array from a JSON string",
+      "syntax": "SELECT JSON_QUERY(@json, '$.address')",
+      "minVersion": "SQL Server 2016",
+      "minCompatLevel": 130,
+      "category": "JSON"
+    },
+    {
+      "id": "json_modify",
+      "name": "JSON_MODIFY",
+      "description": "Updates the value of a property in a JSON string and returns the updated JSON string",
+      "syntax": "SELECT JSON_MODIFY(@json, '$.name', 'NewName')",
+      "minVersion": "SQL Server 2016",
+      "minCompatLevel": 130,
+      "category": "JSON"
+    },
+    {
+      "id": "isjson",
+      "name": "ISJSON",
+      "description": "Tests whether a string contains valid JSON",
+      "syntax": "SELECT ISJSON(@json)",
+      "minVersion": "SQL Server 2016",
+      "minCompatLevel": 130,
+      "category": "JSON"
+    },
+    {
+      "id": "openjson",
+      "name": "OPENJSON",
+      "description": "Table-valued function that parses JSON text and returns objects and properties as rows and columns",
+      "syntax": "SELECT * FROM OPENJSON(@json)",
+      "minVersion": "SQL Server 2016",
+      "minCompatLevel": 130,
+      "category": "JSON"
+    },
+    {
+      "id": "for_json",
+      "name": "FOR JSON",
+      "description": "Exports query results as JSON (FOR JSON AUTO, FOR JSON PATH)",
+      "syntax": "SELECT * FROM MyTable FOR JSON PATH",
+      "minVersion": "SQL Server 2016",
+      "minCompatLevel": 130,
+      "category": "JSON"
+    },
+    {
+      "id": "json_object",
+      "name": "JSON_OBJECT",
+      "description": "Constructs JSON object text from zero or more expressions",
+      "syntax": "SELECT JSON_OBJECT('name': @name, 'age': @age)",
+      "minVersion": "SQL Server 2022",
+      "minCompatLevel": 160,
+      "category": "JSON"
+    },
+    {
+      "id": "json_array",
+      "name": "JSON_ARRAY",
+      "description": "Constructs JSON array text from zero or more expressions",
+      "syntax": "SELECT JSON_ARRAY(1, 2, 3)",
+      "minVersion": "SQL Server 2022",
+      "minCompatLevel": 160,
+      "category": "JSON"
+    },
+    {
+      "id": "json_objectagg",
+      "name": "JSON_OBJECTAGG",
+      "description": "Constructs a JSON object from an aggregation of key-value pairs",
+      "syntax": "SELECT JSON_OBJECTAGG(key_col: value_col) FROM MyTable",
+      "minVersion": "SQL Server 2025",
+      "minCompatLevel": 170,
+      "category": "JSON"
+    },
+    {
+      "id": "json_arrayagg",
+      "name": "JSON_ARRAYAGG",
+      "description": "Constructs a JSON array from an aggregation of values",
+      "syntax": "SELECT JSON_ARRAYAGG(value_col) FROM MyTable",
+      "minVersion": "SQL Server 2025",
+      "minCompatLevel": 170,
+      "category": "JSON"
+    },
+    {
+      "id": "json_type",
+      "name": "JSON data type",
+      "description": "Native JSON data type (binary storage format)",
+      "syntax": "DECLARE @j JSON = '{\"key\": \"value\"}'",
+      "minVersion": "SQL Server 2025",
+      "minCompatLevel": 170,
+      "category": "JSON"
+    },
+    {
+      "id": "string_agg",
+      "name": "STRING_AGG",
+      "description": "Concatenates values of string expressions and places separator values between them",
+      "syntax": "SELECT STRING_AGG(Name, ', ') FROM MyTable",
+      "minVersion": "SQL Server 2017",
+      "minCompatLevel": 140,
+      "category": "String Functions"
+    },
+    {
+      "id": "string_split",
+      "name": "STRING_SPLIT",
+      "description": "Table-valued function that splits a string into rows of substrings based on a separator",
+      "syntax": "SELECT value FROM STRING_SPLIT('a,b,c', ',')",
+      "minVersion": "SQL Server 2016",
+      "minCompatLevel": 130,
+      "category": "String Functions"
+    },
+    {
+      "id": "string_escape",
+      "name": "STRING_ESCAPE",
+      "description": "Escapes special characters in a string and returns the escaped text",
+      "syntax": "SELECT STRING_ESCAPE(@text, 'json')",
+      "minVersion": "SQL Server 2016",
+      "minCompatLevel": 130,
+      "category": "String Functions"
+    },
+    {
+      "id": "translate",
+      "name": "TRANSLATE",
+      "description": "Returns the string with all occurrences of each character in the second argument replaced by the corresponding character in the third argument",
+      "syntax": "SELECT TRANSLATE('abc', 'abc', 'xyz')",
+      "minVersion": "SQL Server 2017",
+      "minCompatLevel": 140,
+      "category": "String Functions"
+    },
+    {
+      "id": "concat_ws",
+      "name": "CONCAT_WS",
+      "description": "Concatenates values with a separator (With Separator), skipping NULLs",
+      "syntax": "SELECT CONCAT_WS(', ', @first, @middle, @last)",
+      "minVersion": "SQL Server 2017",
+      "minCompatLevel": 140,
+      "category": "String Functions"
+    },
+    {
+      "id": "trim",
+      "name": "TRIM",
+      "description": "Removes the space character or other specified characters from the start and end of a string",
+      "syntax": "SELECT TRIM('  hello  ')",
+      "minVersion": "SQL Server 2017",
+      "minCompatLevel": 140,
+      "category": "String Functions"
+    },
+    {
+      "id": "at_time_zone",
+      "name": "AT TIME ZONE",
+      "description": "Converts a datetime value to a datetimeoffset in the specified time zone (daylight-saving aware)",
+      "syntax": "SELECT GETDATE() AT TIME ZONE 'Pacific Standard Time'",
+      "minVersion": "SQL Server 2016",
+      "minCompatLevel": 130,
+      "category": "Date/Time"
+    },
+    {
+      "id": "create_or_alter",
+      "name": "CREATE OR ALTER",
+      "description": "Creates or modifies a stored procedure, function, view, or trigger in a single statement",
+      "syntax": "CREATE OR ALTER PROCEDURE dbo.MyProc AS ...",
+      "minVersion": "SQL Server 2016 SP1",
+      "minCompatLevel": 130,
+      "category": "DDL",
+      "note": "Introduced in SQL Server 2016 SP1, not the initial 2016 RTM release",
+      "objects": ["PROCEDURE", "FUNCTION", "VIEW", "TRIGGER"]
+    },
+    {
+      "id": "approx_count_distinct",
+      "name": "APPROX_COUNT_DISTINCT",
+      "description": "Returns an approximate count of unique non-null values in a group (up to 2% error rate within 97% probability)",
+      "syntax": "SELECT APPROX_COUNT_DISTINCT(column1) FROM MyTable",
+      "minVersion": "SQL Server 2019",
+      "minCompatLevel": 150,
+      "category": "Aggregate Functions"
+    },
+    {
+      "id": "greatest",
+      "name": "GREATEST",
+      "description": "Returns the greatest value from a list of one or more expressions",
+      "syntax": "SELECT GREATEST(val1, val2, val3)",
+      "minVersion": "SQL Server 2022",
+      "minCompatLevel": 160,
+      "category": "Scalar Functions"
+    },
+    {
+      "id": "least",
+      "name": "LEAST",
+      "description": "Returns the least value from a list of one or more expressions",
+      "syntax": "SELECT LEAST(val1, val2, val3)",
+      "minVersion": "SQL Server 2022",
+      "minCompatLevel": 160,
+      "category": "Scalar Functions"
+    },
+    {
+      "id": "date_bucket",
+      "name": "DATE_BUCKET",
+      "description": "Returns the datetime value corresponding to the start of each date bucket from the given origin or default origin",
+      "syntax": "SELECT DATE_BUCKET(WEEK, 1, GETDATE())",
+      "minVersion": "SQL Server 2022",
+      "minCompatLevel": 160,
+      "category": "Date/Time"
+    },
+    {
+      "id": "datetrunc",
+      "name": "DATETRUNC",
+      "description": "Truncates a date/time value to a specified datepart",
+      "syntax": "SELECT DATETRUNC(MONTH, GETDATE())",
+      "minVersion": "SQL Server 2022",
+      "minCompatLevel": 160,
+      "category": "Date/Time"
+    },
+    {
+      "id": "generate_series",
+      "name": "GENERATE_SERIES",
+      "description": "Generates a series of numbers within a given interval",
+      "syntax": "SELECT value FROM GENERATE_SERIES(1, 100, 1)",
+      "minVersion": "SQL Server 2022",
+      "minCompatLevel": 160,
+      "category": "Table-Valued Functions"
+    },
+    {
+      "id": "window_clause",
+      "name": "WINDOW clause",
+      "description": "Named window definitions in the WINDOW clause, referenced by window functions in SELECT",
+      "syntax": "SELECT SUM(x) OVER w FROM t WINDOW w AS (PARTITION BY col ORDER BY col2)",
+      "minVersion": "SQL Server 2022",
+      "minCompatLevel": 160,
+      "category": "Query Syntax"
+    },
+    {
+      "id": "bit_count",
+      "name": "BIT_COUNT",
+      "description": "Returns the number of bits set to 1 in a numeric or binary expression",
+      "syntax": "SELECT BIT_COUNT(255)",
+      "minVersion": "SQL Server 2022",
+      "minCompatLevel": 160,
+      "category": "Bit Manipulation"
+    },
+    {
+      "id": "get_bit",
+      "name": "GET_BIT",
+      "description": "Returns the bit value at a specified position in an integer expression",
+      "syntax": "SELECT GET_BIT(255, 3)",
+      "minVersion": "SQL Server 2022",
+      "minCompatLevel": 160,
+      "category": "Bit Manipulation"
+    },
+    {
+      "id": "set_bit",
+      "name": "SET_BIT",
+      "description": "Sets the bit at a specified position in an integer expression",
+      "syntax": "SELECT SET_BIT(0, 3, 1)",
+      "minVersion": "SQL Server 2022",
+      "minCompatLevel": 160,
+      "category": "Bit Manipulation"
+    },
+    {
+      "id": "left_shift",
+      "name": "LEFT_SHIFT",
+      "description": "Shifts bits to the left (also available as << operator)",
+      "syntax": "SELECT LEFT_SHIFT(1, 3)",
+      "minVersion": "SQL Server 2022",
+      "minCompatLevel": 160,
+      "category": "Bit Manipulation"
+    },
+    {
+      "id": "right_shift",
+      "name": "RIGHT_SHIFT",
+      "description": "Shifts bits to the right (also available as >> operator)",
+      "syntax": "SELECT RIGHT_SHIFT(8, 2)",
+      "minVersion": "SQL Server 2022",
+      "minCompatLevel": 160,
+      "category": "Bit Manipulation"
+    },
+    {
+      "id": "compress",
+      "name": "COMPRESS",
+      "description": "Compresses input data using the GZIP algorithm",
+      "syntax": "SELECT COMPRESS('text to compress')",
+      "minVersion": "SQL Server 2016",
+      "minCompatLevel": 130,
+      "category": "Compression"
+    },
+    {
+      "id": "decompress",
+      "name": "DECOMPRESS",
+      "description": "Decompresses GZIP-compressed data",
+      "syntax": "SELECT CAST(DECOMPRESS(@compressed) AS NVARCHAR(MAX))",
+      "minVersion": "SQL Server 2016",
+      "minCompatLevel": 130,
+      "category": "Compression"
+    },
+    {
+      "id": "session_context",
+      "name": "SESSION_CONTEXT",
+      "description": "Returns the value of the specified key in the current session context (set via sp_set_session_context)",
+      "syntax": "SELECT SESSION_CONTEXT(N'user_id')",
+      "minVersion": "SQL Server 2016",
+      "minCompatLevel": 130,
+      "category": "Session/Context"
+    },
+    {
+      "id": "current_timezone",
+      "name": "CURRENT_TIMEZONE",
+      "description": "Returns the time zone name of the current server",
+      "syntax": "SELECT CURRENT_TIMEZONE()",
+      "minVersion": "SQL Server 2019",
+      "minCompatLevel": 150,
+      "category": "Date/Time"
+    },
+    {
+      "id": "current_timezone_id",
+      "name": "CURRENT_TIMEZONE_ID",
+      "description": "Returns the IANA time zone ID of the current server",
+      "syntax": "SELECT CURRENT_TIMEZONE_ID()",
+      "minVersion": "SQL Server 2022",
+      "minCompatLevel": 160,
+      "category": "Date/Time"
+    },
+    {
+      "id": "try_cast",
+      "name": "TRY_CAST",
+      "description": "Attempts a CAST operation and returns NULL if the conversion fails instead of raising an error",
+      "syntax": "SELECT TRY_CAST('abc' AS INT)",
+      "minVersion": "SQL Server 2012",
+      "minCompatLevel": 110,
+      "category": "Conversion"
+    },
+    {
+      "id": "try_convert",
+      "name": "TRY_CONVERT",
+      "description": "Attempts a CONVERT operation and returns NULL if the conversion fails instead of raising an error",
+      "syntax": "SELECT TRY_CONVERT(INT, 'abc')",
+      "minVersion": "SQL Server 2012",
+      "minCompatLevel": 110,
+      "category": "Conversion"
+    },
+    {
+      "id": "try_parse",
+      "name": "TRY_PARSE",
+      "description": "Attempts a PARSE operation and returns NULL if the parsing fails instead of raising an error",
+      "syntax": "SELECT TRY_PARSE('invalid' AS DATE USING 'en-US')",
+      "minVersion": "SQL Server 2012",
+      "minCompatLevel": 110,
+      "category": "Conversion"
+    },
+    {
+      "id": "parse",
+      "name": "PARSE",
+      "description": "Parses a string value to a specified data type using .NET culture-aware formatting",
+      "syntax": "SELECT PARSE('March 1, 2026' AS DATE USING 'en-US')",
+      "minVersion": "SQL Server 2012",
+      "minCompatLevel": 110,
+      "category": "Conversion"
+    },
+    {
+      "id": "offset_fetch",
+      "name": "OFFSET / FETCH NEXT",
+      "description": "Paging support in ORDER BY clause: skip rows and fetch a specified number of rows",
+      "syntax": "SELECT * FROM MyTable ORDER BY Id OFFSET 10 ROWS FETCH NEXT 10 ROWS ONLY",
+      "minVersion": "SQL Server 2012",
+      "minCompatLevel": 110,
+      "category": "Query Syntax"
+    },
+    {
+      "id": "create_sequence",
+      "name": "CREATE SEQUENCE",
+      "description": "Creates a user-defined schema-bound sequence object that generates a sequence of numeric values",
+      "syntax": "CREATE SEQUENCE dbo.MySeq AS INT START WITH 1 INCREMENT BY 1",
+      "minVersion": "SQL Server 2012",
+      "minCompatLevel": 110,
+      "category": "DDL"
+    },
+    {
+      "id": "iif",
+      "name": "IIF",
+      "description": "Returns one of two values depending on whether the Boolean expression evaluates to true or false",
+      "syntax": "SELECT IIF(1 > 0, 'Yes', 'No')",
+      "minVersion": "SQL Server 2012",
+      "minCompatLevel": 110,
+      "category": "Logical Functions"
+    },
+    {
+      "id": "choose",
+      "name": "CHOOSE",
+      "description": "Returns the item at the specified index from a list of values",
+      "syntax": "SELECT CHOOSE(2, 'Jan', 'Feb', 'Mar')",
+      "minVersion": "SQL Server 2012",
+      "minCompatLevel": 110,
+      "category": "Logical Functions"
+    },
+    {
+      "id": "format",
+      "name": "FORMAT",
+      "description": "Returns a value formatted with the specified format and optional culture (uses .NET formatting)",
+      "syntax": "SELECT FORMAT(GETDATE(), 'yyyy-MM-dd')",
+      "minVersion": "SQL Server 2012",
+      "minCompatLevel": 110,
+      "category": "String Functions"
+    },
+    {
+      "id": "throw",
+      "name": "THROW",
+      "description": "Raises an exception and transfers execution to a CATCH block (replacement for RAISERROR in new code)",
+      "syntax": "THROW 50001, 'Error message', 1",
+      "minVersion": "SQL Server 2012",
+      "minCompatLevel": 110,
+      "category": "Error Handling"
+    },
+    {
+      "id": "online_index_rebuild",
+      "name": "ALTER INDEX ... WITH (ONLINE = ON)",
+      "description": "Rebuilds or reorganizes indexes online without blocking concurrent queries (Enterprise Edition only prior to 2016 SP1)",
+      "syntax": "ALTER INDEX IX_Name ON dbo.MyTable REBUILD WITH (ONLINE = ON)",
+      "minVersion": "SQL Server 2005",
+      "minCompatLevel": 90,
+      "category": "DDL",
+      "note": "Available in Enterprise Edition only until SQL Server 2016 SP1 which made some online operations available in Standard Edition"
+    },
+    {
+      "id": "approx_percentile_cont",
+      "name": "APPROX_PERCENTILE_CONT",
+      "description": "Returns an approximate interpolated value at a given percentile from a set of values (continuous distribution)",
+      "syntax": "SELECT APPROX_PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY val) FROM MyTable",
+      "minVersion": "SQL Server 2022",
+      "minCompatLevel": 160,
+      "category": "Aggregate Functions"
+    },
+    {
+      "id": "approx_percentile_disc",
+      "name": "APPROX_PERCENTILE_DISC",
+      "description": "Returns an approximate value at a given percentile from a set of values (discrete distribution)",
+      "syntax": "SELECT APPROX_PERCENTILE_DISC(0.5) WITHIN GROUP (ORDER BY val) FROM MyTable",
+      "minVersion": "SQL Server 2022",
+      "minCompatLevel": 160,
+      "category": "Aggregate Functions"
+    },
+    {
+      "id": "is_distinct_from",
+      "name": "IS [NOT] DISTINCT FROM",
+      "description": "NULL-safe comparison operator that always returns TRUE or FALSE (never UNKNOWN), treating NULL values as known values for comparison",
+      "syntax": "SELECT * FROM t WHERE col IS DISTINCT FROM @val",
+      "minVersion": "SQL Server 2022",
+      "minCompatLevel": 160,
+      "category": "Comparison Operators"
+    },
+    {
+      "id": "vector_data_type",
+      "name": "VECTOR data type",
+      "description": "Native vector data type for storing high-dimensional embeddings",
+      "syntax": "CREATE TABLE embeddings (id INT, embedding VECTOR(1536))",
+      "minVersion": "SQL Server 2025",
+      "minCompatLevel": 170,
+      "category": "Vector/AI"
+    },
+    {
+      "id": "vector_distance",
+      "name": "VECTOR_DISTANCE",
+      "description": "Calculates the distance between two vectors using cosine, Euclidean, or dot-product metrics",
+      "syntax": "SELECT VECTOR_DISTANCE('cosine', @vec1, @vec2)",
+      "minVersion": "SQL Server 2025",
+      "minCompatLevel": 170,
+      "category": "Vector/AI"
+    },
+    {
+      "id": "vector_search",
+      "name": "VECTOR_SEARCH",
+      "description": "Approximate nearest neighbor search using DiskANN-based vector indexes",
+      "syntax": "SELECT * FROM VECTOR_SEARCH(MyTable, 'embedding', @query_vector, 'cosine', 10)",
+      "minVersion": "SQL Server 2025",
+      "minCompatLevel": 170,
+      "category": "Vector/AI"
+    },
+    {
+      "id": "ai_generate_embeddings",
+      "name": "AI_GENERATE_EMBEDDINGS",
+      "description": "Generates vector embeddings from within the database using configured AI model endpoints",
+      "syntax": "SELECT AI_GENERATE_EMBEDDINGS(description) FROM Products",
+      "minVersion": "SQL Server 2025",
+      "minCompatLevel": 170,
+      "category": "Vector/AI"
+    },
+    {
+      "id": "create_external_model",
+      "name": "CREATE EXTERNAL MODEL",
+      "description": "Defines and invokes external AI model endpoints (Azure AI, OpenAI, Ollama, etc.)",
+      "syntax": "CREATE EXTERNAL MODEL my_model ...",
+      "minVersion": "SQL Server 2025",
+      "minCompatLevel": 170,
+      "category": "Vector/AI"
+    },
+    {
+      "id": "copy_into",
+      "name": "COPY INTO",
+      "description": "High-throughput data ingestion from external storage (Azure Blob / ADLS Gen2)",
+      "syntax": "COPY INTO dbo.MyTable FROM 'https://account.blob.core.windows.net/container/file.csv'",
+      "minVersion": "Azure Synapse Analytics",
+      "minCompatLevel": null,
+      "category": "Data Loading",
+      "note": "Azure Synapse Analytics and Microsoft Fabric only. Not available in SQL Server on-premises."
+    },
+    {
+      "id": "temporal_tables",
+      "name": "Temporal Tables (FOR SYSTEM_TIME)",
+      "description": "System-versioned temporal tables that automatically track the full history of data changes",
+      "syntax": "SELECT * FROM MyTable FOR SYSTEM_TIME AS OF '2025-01-01'",
+      "minVersion": "SQL Server 2016",
+      "minCompatLevel": 130,
+      "category": "Temporal",
+      "subclauses": ["AS OF", "FROM...TO", "BETWEEN...AND", "CONTAINED IN"]
+    },
+    {
+      "id": "graph_node",
+      "name": "Graph Tables (AS NODE)",
+      "description": "Create graph node tables for graph database scenarios",
+      "syntax": "CREATE TABLE Person (Name VARCHAR(100)) AS NODE",
+      "minVersion": "SQL Server 2017",
+      "minCompatLevel": 140,
+      "category": "Graph"
+    },
+    {
+      "id": "graph_edge",
+      "name": "Graph Tables (AS EDGE)",
+      "description": "Create graph edge tables representing relationships between nodes",
+      "syntax": "CREATE TABLE Follows (StartDate DATE) AS EDGE",
+      "minVersion": "SQL Server 2017",
+      "minCompatLevel": 140,
+      "category": "Graph"
+    },
+    {
+      "id": "graph_match",
+      "name": "MATCH (Graph)",
+      "description": "Pattern matching for graph queries using ASCII-art style syntax",
+      "syntax": "SELECT * FROM Person p1, Follows f, Person p2 WHERE MATCH(p1-(f)->p2)",
+      "minVersion": "SQL Server 2017",
+      "minCompatLevel": 140,
+      "category": "Graph"
+    },
+    {
+      "id": "regexp_like",
+      "name": "REGEXP_LIKE",
+      "description": "Returns TRUE if a string matches a regular expression pattern",
+      "syntax": "SELECT * FROM t WHERE REGEXP_LIKE(col, '^[A-Z]+')",
+      "minVersion": "SQL Server 2025",
+      "minCompatLevel": 170,
+      "category": "Regular Expressions",
+      "note": "Requires compatibility level 170 for REGEXP_LIKE specifically"
+    },
+    {
+      "id": "regexp_replace",
+      "name": "REGEXP_REPLACE",
+      "description": "Replaces occurrences of a regular expression pattern in a string",
+      "syntax": "SELECT REGEXP_REPLACE('abc123', '[0-9]', '#')",
+      "minVersion": "SQL Server 2025",
+      "minCompatLevel": 170,
+      "category": "Regular Expressions"
+    },
+    {
+      "id": "regexp_substr",
+      "name": "REGEXP_SUBSTR",
+      "description": "Returns a substring that matches a regular expression pattern",
+      "syntax": "SELECT REGEXP_SUBSTR('abc123', '[0-9]+')",
+      "minVersion": "SQL Server 2025",
+      "minCompatLevel": 170,
+      "category": "Regular Expressions"
+    },
+    {
+      "id": "regexp_instr",
+      "name": "REGEXP_INSTR",
+      "description": "Returns the starting or ending position of a regex pattern match in a string",
+      "syntax": "SELECT REGEXP_INSTR('abc123', '[0-9]+')",
+      "minVersion": "SQL Server 2025",
+      "minCompatLevel": 170,
+      "category": "Regular Expressions"
+    },
+    {
+      "id": "regexp_count",
+      "name": "REGEXP_COUNT",
+      "description": "Returns the number of times a regex pattern matches in a string",
+      "syntax": "SELECT REGEXP_COUNT('abc123def456', '[0-9]+')",
+      "minVersion": "SQL Server 2025",
+      "minCompatLevel": 170,
+      "category": "Regular Expressions"
+    },
+    {
+      "id": "edit_distance",
+      "name": "EDIT_DISTANCE / EDIT_DISTANCE_SIMILARITY",
+      "description": "Calculates the Damerau-Levenshtein edit distance between two strings",
+      "syntax": "SELECT EDIT_DISTANCE('kitten', 'sitting')",
+      "minVersion": "SQL Server 2025",
+      "minCompatLevel": 170,
+      "category": "Fuzzy String Matching"
+    },
+    {
+      "id": "jaro_winkler",
+      "name": "JARO_WINKLER_DISTANCE / JARO_WINKLER_SIMILARITY",
+      "description": "Calculates similarity between two strings using the Jaro-Winkler algorithm",
+      "syntax": "SELECT JARO_WINKLER_SIMILARITY('MARTHA', 'MARHTA')",
+      "minVersion": "SQL Server 2025",
+      "minCompatLevel": 170,
+      "category": "Fuzzy String Matching"
+    },
+    {
+      "id": "base64_encode",
+      "name": "BASE64_ENCODE / BASE64_DECODE",
+      "description": "Base-64 encoding and decoding functions",
+      "syntax": "SELECT BASE64_ENCODE(CAST('hello' AS VARBINARY(MAX)))",
+      "minVersion": "SQL Server 2025",
+      "minCompatLevel": 170,
+      "category": "String Functions"
+    },
+    {
+      "id": "product_aggregate",
+      "name": "PRODUCT",
+      "description": "Aggregate function that returns the product of all values in an expression",
+      "syntax": "SELECT PRODUCT(quantity) FROM OrderItems",
+      "minVersion": "SQL Server 2025",
+      "minCompatLevel": 170,
+      "category": "Aggregate Functions"
+    },
+    {
+      "id": "concat_operator",
+      "name": "|| (String concatenation operator)",
+      "description": "ANSI SQL standard string concatenation operator as alternative to +",
+      "syntax": "SELECT 'Hello' || ' ' || 'World'",
+      "minVersion": "SQL Server 2025",
+      "minCompatLevel": 170,
+      "category": "Operators"
+    },
+    {
+      "id": "unistr",
+      "name": "UNISTR",
+      "description": "Unicode string encoding function",
+      "syntax": "SELECT UNISTR('Hello \\0041')",
+      "minVersion": "SQL Server 2025",
+      "minCompatLevel": 170,
+      "category": "String Functions"
+    },
+    {
+      "id": "datediff_big",
+      "name": "DATEDIFF_BIG",
+      "description": "Returns the count of datepart boundaries crossed between two dates as a BIGINT",
+      "syntax": "SELECT DATEDIFF_BIG(MILLISECOND, '2000-01-01', GETDATE())",
+      "minVersion": "SQL Server 2016",
+      "minCompatLevel": 130,
+      "category": "Date/Time"
+    },
+    {
+      "id": "concat",
+      "name": "CONCAT",
+      "description": "Concatenates two or more strings, treating NULL as empty string",
+      "syntax": "SELECT CONCAT('Hello', ' ', 'World')",
+      "minVersion": "SQL Server 2012",
+      "minCompatLevel": 110,
+      "category": "String Functions"
+    },
+    {
+      "id": "eomonth",
+      "name": "EOMONTH",
+      "description": "Returns the last day of the month for the specified date",
+      "syntax": "SELECT EOMONTH(GETDATE())",
+      "minVersion": "SQL Server 2012",
+      "minCompatLevel": 110,
+      "category": "Date/Time"
+    },
+    {
+      "id": "datefromparts",
+      "name": "DATEFROMPARTS / TIMEFROMPARTS / DATETIMEFROMPARTS / etc.",
+      "description": "Constructs date/time values from individual parts (year, month, day, etc.)",
+      "syntax": "SELECT DATEFROMPARTS(2026, 3, 1)",
+      "minVersion": "SQL Server 2012",
+      "minCompatLevel": 110,
+      "category": "Date/Time"
+    },
+    {
+      "id": "with_result_sets",
+      "name": "EXECUTE ... WITH RESULT SETS",
+      "description": "Redefine the result set metadata of a stored procedure execution",
+      "syntax": "EXEC dbo.MyProc WITH RESULT SETS ((col1 INT, col2 VARCHAR(50)))",
+      "minVersion": "SQL Server 2012",
+      "minCompatLevel": 110,
+      "category": "Execution"
+    }
+  ],
+  "versionSummary": {
+    "SQL Server 2005 (compat 90)": [
+      "ALTER INDEX ... WITH (ONLINE = ON) [Enterprise only]"
+    ],
+    "SQL Server 2012 (compat 110)": [
+      "OFFSET / FETCH NEXT",
+      "CREATE SEQUENCE",
+      "TRY_CAST / TRY_CONVERT / TRY_PARSE",
+      "PARSE",
+      "IIF",
+      "CHOOSE",
+      "FORMAT",
+      "THROW",
+      "CONCAT",
+      "EOMONTH",
+      "DATEFROMPARTS / TIMEFROMPARTS / etc.",
+      "EXECUTE ... WITH RESULT SETS"
+    ],
+    "SQL Server 2016 (compat 130)": [
+      "DROP IF EXISTS",
+      "JSON_VALUE / JSON_QUERY / JSON_MODIFY / ISJSON",
+      "OPENJSON",
+      "FOR JSON (AUTO/PATH)",
+      "STRING_SPLIT",
+      "STRING_ESCAPE",
+      "AT TIME ZONE",
+      "COMPRESS / DECOMPRESS",
+      "SESSION_CONTEXT",
+      "DATEDIFF_BIG",
+      "Temporal tables (FOR SYSTEM_TIME)"
+    ],
+    "SQL Server 2016 SP1 (compat 130)": [
+      "CREATE OR ALTER (PROCEDURE/FUNCTION/VIEW/TRIGGER)"
+    ],
+    "SQL Server 2017 (compat 140)": [
+      "STRING_AGG",
+      "TRANSLATE",
+      "CONCAT_WS",
+      "TRIM",
+      "Graph tables (AS NODE / AS EDGE / MATCH)"
+    ],
+    "SQL Server 2019 (compat 150)": [
+      "APPROX_COUNT_DISTINCT",
+      "CURRENT_TIMEZONE"
+    ],
+    "SQL Server 2022 (compat 160)": [
+      "GREATEST / LEAST",
+      "DATE_BUCKET",
+      "DATETRUNC",
+      "GENERATE_SERIES",
+      "JSON_OBJECT / JSON_ARRAY",
+      "WINDOW clause",
+      "BIT_COUNT / GET_BIT / SET_BIT",
+      "LEFT_SHIFT / RIGHT_SHIFT",
+      "APPROX_PERCENTILE_CONT / APPROX_PERCENTILE_DISC",
+      "IS [NOT] DISTINCT FROM",
+      "CURRENT_TIMEZONE_ID"
+    ],
+    "SQL Server 2025 (compat 170)": [
+      "VECTOR data type",
+      "VECTOR_DISTANCE / VECTOR_SEARCH",
+      "AI_GENERATE_EMBEDDINGS / CREATE EXTERNAL MODEL",
+      "JSON_OBJECTAGG / JSON_ARRAYAGG",
+      "JSON data type (native binary)",
+      "REGEXP_LIKE / REGEXP_REPLACE / REGEXP_SUBSTR / REGEXP_INSTR / REGEXP_COUNT",
+      "EDIT_DISTANCE / EDIT_DISTANCE_SIMILARITY",
+      "JARO_WINKLER_DISTANCE / JARO_WINKLER_SIMILARITY",
+      "BASE64_ENCODE / BASE64_DECODE",
+      "PRODUCT aggregate",
+      "|| (string concat operator)",
+      "UNISTR"
+    ],
+    "Azure Synapse Analytics only": [
+      "COPY INTO"
+    ]
+  }
+}

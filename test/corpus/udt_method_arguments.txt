@@ -20,5 +20,4 @@ Select PointColumn.GetDistance(@refPoint, N'baz')
                       (udt_method_arguments
                         (execute_var_string
                           (LOCAL_ID_))
-                        (execute_var_string
-                          (string_lit))))))))))))))
+                        (string_lit)))))))))))))

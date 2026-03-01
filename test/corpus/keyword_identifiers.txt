@@ -28,7 +28,7 @@ SELECT value FROM t
 =============================================
 Multiple keywords as column names
 =============================================
-SELECT type, level, key FROM config
+SELECT type, level FROM config
 ---
 
 (tsql_file
@@ -41,11 +41,6 @@ SELECT type, level, key FROM config
               (query_specification
                 (select)
                 (select_list
-                  (select_list_elem
-                    (expression_elem
-                      (expression
-                        (full_column_name
-                          (id_)))))
                   (select_list_elem
                     (expression_elem
                       (expression
