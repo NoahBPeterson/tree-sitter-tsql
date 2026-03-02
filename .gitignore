@@ -43,3 +43,6 @@ dist/
 # Oracle tool build artifacts
 tools/sql-parser-oracle/bin/
 tools/sql-parser-oracle/obj/
+
+# offical-lsp
+official-lsp/
