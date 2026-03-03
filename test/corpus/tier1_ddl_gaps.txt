@@ -1,0 +1,659 @@
+=====================================
+REVERT basic
+=====================================
+
+REVERT
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (revert_statement)))))
+
+=====================================
+REVERT WITH COOKIE
+=====================================
+
+REVERT WITH COOKIE = @cookie
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (revert_statement
+          (WITH)
+          (LOCAL_ID_))))))
+
+=====================================
+ALTER INDEX REBUILD
+=====================================
+
+ALTER INDEX ix ON t REBUILD
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_index
+          (id_)
+          (full_table_name
+            (id_)))))))
+
+=====================================
+ALTER INDEX ALL REORGANIZE
+=====================================
+
+ALTER INDEX ALL ON dbo.t REORGANIZE
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_index
+          (full_table_name
+            (id_)
+            (id_)))))))
+
+=====================================
+ALTER INDEX DISABLE
+=====================================
+
+ALTER INDEX ix ON t DISABLE
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_index
+          (id_)
+          (full_table_name
+            (id_)))))))
+
+=====================================
+ALTER INDEX REBUILD WITH options
+=====================================
+
+ALTER INDEX ix ON t REBUILD WITH (ONLINE = ON, FILLFACTOR = 80)
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_index
+          (id_)
+          (full_table_name
+            (id_))
+          (alter_table_option
+            (id_))
+          (alter_table_option
+            (id_)
+            (decimal_)))))))
+
+=====================================
+ALTER INDEX SET options
+=====================================
+
+ALTER INDEX ix ON t SET (ALLOW_ROW_LOCKS = ON)
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_index
+          (id_)
+          (full_table_name
+            (id_))
+          (alter_table_option
+            (id_)))))))
+
+=====================================
+CREATE STATISTICS basic
+=====================================
+
+CREATE STATISTICS st ON dbo.t(col)
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_statistics
+          (id_)
+          (full_table_name
+            (id_)
+            (id_))
+          (column_name_list
+            (id_)))))))
+
+=====================================
+CREATE STATISTICS WITH FULLSCAN
+=====================================
+
+CREATE STATISTICS st ON t(a, b) WITH FULLSCAN
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_statistics
+          (id_)
+          (full_table_name
+            (id_))
+          (column_name_list
+            (id_)
+            (id_))
+          (statistics_option))))))
+
+=====================================
+CREATE STATISTICS with WHERE filter
+=====================================
+
+CREATE STATISTICS st ON t(col) WHERE col > 0
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_statistics
+          (id_)
+          (full_table_name
+            (id_))
+          (column_name_list
+            (id_))
+          (search_condition
+            (predicate
+              (expression
+                (full_column_name
+                  (id_)))
+              (comparison_operator)
+              (expression
+                (primitive_expression
+                  (primitive_constant
+                    (decimal_)))))))))))
+
+=====================================
+UPDATE STATISTICS basic
+=====================================
+
+UPDATE STATISTICS dbo.t
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (update_statistics
+          (full_table_name
+            (id_)
+            (id_)))))))
+
+=====================================
+UPDATE STATISTICS with SAMPLE
+=====================================
+
+UPDATE STATISTICS t WITH SAMPLE 50 PERCENT
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (update_statistics
+          (full_table_name
+            (id_))
+          (statistics_option
+            (decimal_)))))))
+
+=====================================
+UPDATE STATISTICS with index name
+=====================================
+
+UPDATE STATISTICS t ix WITH FULLSCAN, NORECOMPUTE
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (update_statistics
+          (full_table_name
+            (id_))
+          (id_)
+          (statistics_option)
+          (statistics_option))))))
+
+=====================================
+ALTER DATABASE SET RECOVERY FULL
+=====================================
+
+ALTER DATABASE mydb SET RECOVERY FULL
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_database
+          (id_)
+          (alter_database_set
+            (database_option)))))))
+
+=====================================
+ALTER DATABASE SET READ_COMMITTED_SNAPSHOT ON
+=====================================
+
+ALTER DATABASE mydb SET READ_COMMITTED_SNAPSHOT ON
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_database
+          (id_)
+          (alter_database_set
+            (database_option)))))))
+
+=====================================
+ALTER DATABASE SET SINGLE_USER
+=====================================
+
+ALTER DATABASE mydb SET SINGLE_USER
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_database
+          (id_)
+          (alter_database_set
+            (database_option)))))))
+
+=====================================
+ALTER DATABASE SET COMPATIBILITY_LEVEL
+=====================================
+
+ALTER DATABASE mydb SET COMPATIBILITY_LEVEL = 150
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_database
+          (id_)
+          (alter_database_set
+            (database_option
+              (decimal_))))))))
+
+=====================================
+ALTER DATABASE SET with ROLLBACK IMMEDIATE
+=====================================
+
+ALTER DATABASE mydb SET SINGLE_USER WITH ROLLBACK IMMEDIATE
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_database
+          (id_)
+          (alter_database_set
+            (database_option)
+            (alter_database_termination)))))))
+
+=====================================
+ALTER DATABASE SET with ROLLBACK AFTER
+=====================================
+
+ALTER DATABASE mydb SET SINGLE_USER WITH ROLLBACK AFTER 5
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_database
+          (id_)
+          (alter_database_set
+            (database_option)
+            (alter_database_termination
+              (decimal_))))))))
+
+=====================================
+ALTER DATABASE MODIFY NAME
+=====================================
+
+ALTER DATABASE mydb MODIFY NAME = newdb
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_database
+          (id_)
+          (alter_database_modify
+            (id_)))))))
+
+=====================================
+CREATE PARTITION FUNCTION
+=====================================
+
+CREATE PARTITION FUNCTION pf(INT) AS RANGE LEFT FOR VALUES (1, 100, 1000)
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_partition_function
+          (id_)
+          (data_type
+            (int_))
+          (as)
+          (expression
+            (primitive_expression
+              (primitive_constant
+                (decimal_))))
+          (expression
+            (primitive_expression
+              (primitive_constant
+                (decimal_))))
+          (expression
+            (primitive_expression
+              (primitive_constant
+                (decimal_)))))))))
+
+=====================================
+CREATE PARTITION SCHEME
+=====================================
+
+CREATE PARTITION SCHEME ps AS PARTITION pf TO (fg1, fg2, fg3, fg4)
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_partition_scheme
+          (id_)
+          (as)
+          (id_)
+          (id_)
+          (id_)
+          (id_)
+          (id_))))))
+
+=====================================
+DROP PARTITION FUNCTION
+=====================================
+
+DROP PARTITION FUNCTION pf
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_partition_function
+          (id_))))))
+
+=====================================
+DROP PARTITION SCHEME
+=====================================
+
+DROP PARTITION SCHEME ps
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_partition_scheme
+          (id_))))))
+
+=====================================
+CREATE TABLE temporal with SYSTEM_VERSIONING
+=====================================
+
+CREATE TABLE t(id INT, ValidFrom DATETIME2 GENERATED ALWAYS AS ROW START, ValidTo DATETIME2 GENERATED ALWAYS AS ROW END, PERIOD FOR SYSTEM_TIME(ValidFrom, ValidTo)) WITH (SYSTEM_VERSIONING = ON)
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_table
+          (full_table_name
+            (id_))
+          (table_element
+            (column_definition
+              (id_)
+              (data_type
+                (int_))))
+          (table_element
+            (column_definition
+              (id_)
+              (data_type
+                (datetime2_))
+              (generated_always)))
+          (table_element
+            (column_definition
+              (id_)
+              (data_type
+                (datetime2_))
+              (generated_always)))
+          (table_element
+            (period_for_system_time
+              (id_)
+              (id_)))
+          (WITH)
+          (create_table_option))))))
+
+=====================================
+CREATE TABLE temporal with HISTORY_TABLE
+=====================================
+
+CREATE TABLE t(id INT, ValidFrom DATETIME2 GENERATED ALWAYS AS ROW START, ValidTo DATETIME2 GENERATED ALWAYS AS ROW END, PERIOD FOR SYSTEM_TIME(ValidFrom, ValidTo)) WITH (SYSTEM_VERSIONING = ON (HISTORY_TABLE = dbo.tHistory))
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_table
+          (full_table_name
+            (id_))
+          (table_element
+            (column_definition
+              (id_)
+              (data_type
+                (int_))))
+          (table_element
+            (column_definition
+              (id_)
+              (data_type
+                (datetime2_))
+              (generated_always)))
+          (table_element
+            (column_definition
+              (id_)
+              (data_type
+                (datetime2_))
+              (generated_always)))
+          (table_element
+            (period_for_system_time
+              (id_)
+              (id_)))
+          (WITH)
+          (create_table_option
+            (full_table_name
+              (id_)
+              (id_))))))))
+
+=====================================
+SELECT FOR SYSTEM_TIME AS OF
+=====================================
+
+SELECT * FROM t FOR SYSTEM_TIME AS OF '2024-01-01'
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_))
+                      (for_system_time
+                        (as)
+                        (expression
+                          (primitive_expression
+                            (primitive_constant
+                              (string_lit))))))))))))))))
+
+=====================================
+SELECT FOR SYSTEM_TIME BETWEEN
+=====================================
+
+SELECT * FROM t FOR SYSTEM_TIME BETWEEN '2024-01-01' AND '2024-12-31'
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_))
+                      (for_system_time
+                        (expression
+                          (primitive_expression
+                            (primitive_constant
+                              (string_lit))))
+                        (expression
+                          (primitive_expression
+                            (primitive_constant
+                              (string_lit))))))))))))))))
+
+=====================================
+SELECT FOR SYSTEM_TIME CONTAINED IN
+=====================================
+
+SELECT * FROM t FOR SYSTEM_TIME CONTAINED IN ('2024-01-01', '2024-12-31')
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_))
+                      (for_system_time
+                        (expression
+                          (primitive_expression
+                            (primitive_constant
+                              (string_lit))))
+                        (expression
+                          (primitive_expression
+                            (primitive_constant
+                              (string_lit))))))))))))))))
+
+=====================================
+SELECT FOR SYSTEM_TIME ALL
+=====================================
+
+SELECT * FROM t FOR SYSTEM_TIME ALL
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_))
+                      (for_system_time))))))))))))

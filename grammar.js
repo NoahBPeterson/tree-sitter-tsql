@@ -203,6 +203,12 @@ module.exports = grammar({
       ,$.create_server_role
       ,$.alter_server_role
       ,$.drop_server_role
+      ,$.alter_index
+      ,$.create_statistics
+      ,$.create_partition_function
+      ,$.create_partition_scheme
+      ,$.drop_partition_function
+      ,$.drop_partition_scheme
     ),
 
     //https://learn.microsoft.com/en-us/sql/t-sql/statements/alter-database-transact-sql-file-and-filegroup-options
@@ -211,7 +217,8 @@ module.exports = grammar({
       $.id_,
       choice(
         $.alter_database_add_file,
-        //TODO: SET, MODIFY NAME, MODIFY FILE, ADD/REMOVE FILEGROUP, COLLATE, etc.
+        $.alter_database_set,
+        $.alter_database_modify,
       )
     ),
 
@@ -220,6 +227,48 @@ module.exports = grammar({
       $.database_filespec, repeat(seq(token(','), $.database_filespec)),
       optional(seq(token(/TO/i), token(/FILEGROUP/i), $.id_))
     )),
+
+    alter_database_set: $ => prec.right(seq(
+      token(/SET/i),
+      $.database_option, repeat(seq(token(','), $.database_option)),
+      optional(seq(token(/WITH/i), $.alter_database_termination)),
+    )),
+
+    alter_database_termination: $ => choice(
+      seq(token(/ROLLBACK/i), token(/IMMEDIATE/i)),
+      seq(token(/ROLLBACK/i), token(/AFTER/i), $.decimal_),
+      token(/NO_WAIT/i),
+    ),
+
+    alter_database_modify: $ => choice(
+      seq(token(/MODIFY/i), token(/NAME/i), token('='), $.id_),
+      seq(token(/MODIFY/i), token(/FILE/i), $.database_filespec),
+    ),
+
+    database_option: $ => choice(
+      seq(token(/RECOVERY/i), choice(token(/FULL/i), token(/BULK_LOGGED/i), token(/SIMPLE/i))),
+      seq(token(/READ_COMMITTED_SNAPSHOT/i), choice(token(/ON/i), token(/OFF/i))),
+      seq(token(/ALLOW_SNAPSHOT_ISOLATION/i), choice(token(/ON/i), token(/OFF/i))),
+      token(/SINGLE_USER/i),
+      token(/MULTI_USER/i),
+      token(/RESTRICTED_USER/i),
+      token(/READ_ONLY/i),
+      token(/READ_WRITE/i),
+      seq(token(/COMPATIBILITY_LEVEL/i), token('='), $.decimal_),
+      seq(token(/ANSI_NULL_DEFAULT/i), choice(token(/ON/i), token(/OFF/i))),
+      seq(token(/ANSI_NULLS/i), choice(token(/ON/i), token(/OFF/i))),
+      seq(token(/ANSI_PADDING/i), choice(token(/ON/i), token(/OFF/i))),
+      seq(token(/ANSI_WARNINGS/i), choice(token(/ON/i), token(/OFF/i))),
+      seq(token(/QUOTED_IDENTIFIER/i), choice(token(/ON/i), token(/OFF/i))),
+      seq(token(/AUTO_CLOSE/i), choice(token(/ON/i), token(/OFF/i))),
+      seq(token(/AUTO_SHRINK/i), choice(token(/ON/i), token(/OFF/i))),
+      seq(token(/AUTO_CREATE_STATISTICS/i), choice(token(/ON/i), token(/OFF/i))),
+      seq(token(/AUTO_UPDATE_STATISTICS/i), choice(token(/ON/i), token(/OFF/i))),
+      seq(token(/AUTO_UPDATE_STATISTICS_ASYNC/i), choice(token(/ON/i), token(/OFF/i))),
+      seq(token(/PAGE_VERIFY/i), choice(token(/CHECKSUM/i), token(/TORN_PAGE_DETECTION/i), token(/NONE/i))),
+      // Catch-all for other options: OPTION = ON|OFF|value
+      seq($.id_, token('='), choice($.id_, $.decimal_, token(/ON/i), token(/OFF/i))),
+    ),
 
     database_filespec: $ => seq(
       token('('),
@@ -311,6 +360,74 @@ module.exports = grammar({
     alter_table_option: $ => seq(
       $.id_, '=', choice($.id_, $.decimal_, token(/ON/i), token(/OFF/i)),
     ),
+
+    // =====================
+    // ALTER INDEX
+    // =====================
+
+    alter_index: $ => prec.right(seq(
+      token(/ALTER/i), token(/INDEX/i),
+      choice($.id_, token(/ALL/i)),
+      token(/ON/i), $.full_table_name,
+      choice(
+        seq(token(/REBUILD/i), optional(seq(token(/WITH/i), '(', $.alter_table_option, repeat(seq(',', $.alter_table_option)), ')'))),
+        seq(token(/REORGANIZE/i), optional(seq(token(/WITH/i), '(', $.alter_table_option, repeat(seq(',', $.alter_table_option)), ')'))),
+        token(/DISABLE/i),
+        seq(token(/SET/i), '(', $.alter_table_option, repeat(seq(',', $.alter_table_option)), ')'),
+      )
+    )),
+
+    // =====================
+    // CREATE/UPDATE STATISTICS
+    // =====================
+
+    create_statistics: $ => prec.right(seq(
+      token(/CREATE/i), token(/STATISTICS/i),
+      $.id_,
+      token(/ON/i), $.full_table_name,
+      token('('), $.column_name_list, token(')'),
+      optional(seq(token(/WHERE/i), $.search_condition)),
+      optional(seq(token(/WITH/i), $.statistics_option, repeat(seq(token(','), $.statistics_option)))),
+    )),
+
+    update_statistics: $ => prec.right(seq(
+      token(/UPDATE/i), token(/STATISTICS/i),
+      $.full_table_name,
+      optional(choice($.id_, seq(token('('), $.column_name_list, token(')')))),
+      optional(seq(token(/WITH/i), $.statistics_option, repeat(seq(token(','), $.statistics_option)))),
+    )),
+
+    statistics_option: $ => choice(
+      token(/FULLSCAN/i),
+      seq(token(/SAMPLE/i), $.decimal_, choice(token(/PERCENT/i), token(/ROWS/i))),
+      token(/NORECOMPUTE/i),
+      seq(token(/INCREMENTAL/i), token('='), choice(token(/ON/i), token(/OFF/i))),
+      seq(token(/PERSIST_SAMPLE_PERCENT/i), token('='), choice(token(/ON/i), token(/OFF/i))),
+      seq(token(/MAXDOP/i), token('='), $.decimal_),
+    ),
+
+    // =====================
+    // PARTITION FUNCTION/SCHEME
+    // =====================
+
+    create_partition_function: $ => seq(
+      token(/CREATE/i), token(/PARTITION/i), token(/FUNCTION/i),
+      $.id_, token('('), $.data_type, token(')'),
+      $.as, token(/RANGE/i), optional(choice(token(/LEFT/i), token(/RIGHT/i))),
+      token(/FOR/i), token(/VALUES/i),
+      token('('), optional(seq($.expression, repeat(seq(token(','), $.expression)))), token(')'),
+    ),
+
+    create_partition_scheme: $ => seq(
+      token(/CREATE/i), token(/PARTITION/i), token(/SCHEME/i),
+      $.id_,
+      $.as, token(/PARTITION/i), $.id_,
+      optional(token(/ALL/i)), token(/TO/i),
+      token('('), $.id_, repeat(seq(token(','), $.id_)), token(')'),
+    ),
+
+    drop_partition_function: $ => seq(token(/DROP/i), token(/PARTITION/i), token(/FUNCTION/i), $.id_),
+    drop_partition_scheme: $ => seq(token(/DROP/i), token(/PARTITION/i), token(/SCHEME/i), $.id_),
 
     // =====================
     // DROP statements
@@ -629,17 +746,33 @@ module.exports = grammar({
     ),
 
     //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L1479
-    create_table: $ => seq(
+    create_table: $ => prec.right(seq(
       token(/CREATE/i), token(/TABLE/i),
       $.full_table_name,
       token('('),
       $.table_element, repeat(seq(token(','), $.table_element)),
-      token(')')
+      token(')'),
+      optional(seq($.WITH, token('('), $.create_table_option, repeat(seq(token(','), $.create_table_option)), token(')'))),
+    )),
+
+    create_table_option: $ => choice(
+      seq(token(/SYSTEM_VERSIONING/i), token('='), choice(
+        seq(token(/ON/i), token('('), token(/HISTORY_TABLE/i), token('='), $.full_table_name, token(')')),
+        token(/ON/i),
+        token(/OFF/i),
+      )),
+      seq($.id_, token('='), choice($.id_, $.decimal_, token(/ON/i), token(/OFF/i))),
     ),
 
     table_element: $ => choice(
       $.column_definition,
       $.table_constraint,
+      $.period_for_system_time,
+    ),
+
+    period_for_system_time: $ => seq(
+      token(/PERIOD/i), token(/FOR/i), token(/SYSTEM_TIME/i),
+      token('('), $.id_, token(','), $.id_, token(')'),
     ),
 
     //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L1485
@@ -650,10 +783,17 @@ module.exports = grammar({
           $.null_notnull,
           $.identity_column,
           $.column_constraint,
+          $.generated_always,
         ))),
         seq(token(/AS/i), $.expression, optional(token(/PERSISTED/i))),
       ),
     )),
+
+    generated_always: $ => seq(
+      token(/GENERATED/i), token(/ALWAYS/i), token(/AS/i), token(/ROW/i),
+      choice(token(/START/i), token(/END/i)),
+      optional(token(/HIDDEN_/i)),
+    ),
 
     null_notnull: $ => choice(
       seq(token(/NOT/i), $.null_),
@@ -798,8 +938,15 @@ module.exports = grammar({
       ,$.grant_statement
       ,$.deny_statement
       ,$.revoke_statement
+      ,$.revert_statement
+      ,$.update_statistics
       //TODO https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L350
     ),
+
+    revert_statement: $ => prec.right(seq(
+      token(/REVERT/i),
+      optional(seq($.WITH, token(/COOKIE/i), token('='), $.LOCAL_ID_))
+    )),
 
     //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L2981
     declare_statement: $ => choice(
@@ -1499,7 +1646,7 @@ module.exports = grammar({
       ,choice(
         $.pivot_clause          // PIVOT path (includes its own alias)
         ,$.unpivot_clause       // UNPIVOT path (includes its own alias)
-        ,seq(optional($.as_table_alias), optional($.tablesample), optional($.with_table_hints))  // normal path
+        ,seq(optional($.for_system_time), optional($.as_table_alias), optional($.tablesample), optional($.with_table_hints))  // normal path
       )
     ),
 
@@ -1574,6 +1721,17 @@ module.exports = grammar({
       token('('), $.expression, choice(token(/PERCENT/i), token(/ROWS/i)), token(')'),
       optional(seq(token(/REPEATABLE/i), token('('), $.expression, token(')')))
     )),
+
+    for_system_time: $ => seq(
+      token(/FOR/i), token(/SYSTEM_TIME/i),
+      choice(
+        seq($.as, token(/OF/i), $.expression),
+        seq(token(/FROM/i), $.expression, token(/TO/i), $.expression),
+        seq(token(/BETWEEN/i), $.expression, token(/AND/i), $.expression),
+        seq(token(/CONTAINED/i), token(/IN/i), token('('), $.expression, token(','), $.expression, token(')')),
+        token(/ALL/i),
+      ),
+    ),
 
     //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L4175
     table_valued_function: $ => seq(

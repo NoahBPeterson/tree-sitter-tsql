@@ -5,6 +5,11 @@
     "fields": {}
   },
   {
+    "type": "NONE",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "RECOMPILE",
     "named": true,
     "fields": {}
@@ -193,6 +198,14 @@
           "named": true
         },
         {
+          "type": "alter_database_modify",
+          "named": true
+        },
+        {
+          "type": "alter_database_set",
+          "named": true
+        },
+        {
           "type": "id_",
           "named": true
         }
@@ -209,6 +222,82 @@
       "types": [
         {
           "type": "database_filespec",
+          "named": true
+        },
+        {
+          "type": "id_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "alter_database_modify",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "database_filespec",
+          "named": true
+        },
+        {
+          "type": "id_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "alter_database_set",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "alter_database_termination",
+          "named": true
+        },
+        {
+          "type": "database_option",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "alter_database_termination",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "decimal_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "alter_index",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "alter_table_option",
+          "named": true
+        },
+        {
+          "type": "full_table_name",
           "named": true
         },
         {
@@ -618,6 +707,10 @@
           "named": true
         },
         {
+          "type": "revert_statement",
+          "named": true
+        },
+        {
           "type": "revoke_statement",
           "named": true
         },
@@ -631,6 +724,10 @@
         },
         {
           "type": "transaction_statement",
+          "named": true
+        },
+        {
+          "type": "update_statistics",
           "named": true
         },
         {
@@ -1069,6 +1166,11 @@
     }
   },
   {
+    "type": "checksum_",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "coalesce_function",
     "named": true,
     "fields": {},
@@ -1254,6 +1356,10 @@
         },
         {
           "type": "expression",
+          "named": true
+        },
+        {
+          "type": "generated_always",
           "named": true
         },
         {
@@ -1594,6 +1700,52 @@
     }
   },
   {
+    "type": "create_partition_function",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "as",
+          "named": true
+        },
+        {
+          "type": "data_type",
+          "named": true
+        },
+        {
+          "type": "expression",
+          "named": true
+        },
+        {
+          "type": "id_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "create_partition_scheme",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "as",
+          "named": true
+        },
+        {
+          "type": "id_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "create_role",
     "named": true,
     "fields": {},
@@ -1662,6 +1814,37 @@
     }
   },
   {
+    "type": "create_statistics",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "column_name_list",
+          "named": true
+        },
+        {
+          "type": "full_table_name",
+          "named": true
+        },
+        {
+          "type": "id_",
+          "named": true
+        },
+        {
+          "type": "search_condition",
+          "named": true
+        },
+        {
+          "type": "statistics_option",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "create_synonym",
     "named": true,
     "fields": {},
@@ -1685,11 +1868,42 @@
       "required": true,
       "types": [
         {
+          "type": "WITH",
+          "named": true
+        },
+        {
+          "type": "create_table_option",
+          "named": true
+        },
+        {
           "type": "full_table_name",
           "named": true
         },
         {
           "type": "table_element",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "create_table_option",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "decimal_",
+          "named": true
+        },
+        {
+          "type": "full_table_name",
+          "named": true
+        },
+        {
+          "type": "id_",
           "named": true
         }
       ]
@@ -1990,6 +2204,25 @@
     }
   },
   {
+    "type": "database_option",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "decimal_",
+          "named": true
+        },
+        {
+          "type": "id_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "datatype_functions",
     "named": true,
     "fields": {},
@@ -2097,6 +2330,10 @@
           "named": true
         },
         {
+          "type": "alter_index",
+          "named": true
+        },
+        {
           "type": "alter_login",
           "named": true
         },
@@ -2141,6 +2378,14 @@
           "named": true
         },
         {
+          "type": "create_partition_function",
+          "named": true
+        },
+        {
+          "type": "create_partition_scheme",
+          "named": true
+        },
+        {
           "type": "create_role",
           "named": true
         },
@@ -2154,6 +2399,10 @@
         },
         {
           "type": "create_server_role",
+          "named": true
+        },
+        {
+          "type": "create_statistics",
           "named": true
         },
         {
@@ -2186,6 +2435,14 @@
         },
         {
           "type": "drop_login",
+          "named": true
+        },
+        {
+          "type": "drop_partition_function",
+          "named": true
+        },
+        {
+          "type": "drop_partition_scheme",
           "named": true
         },
         {
@@ -2506,6 +2763,36 @@
           "type": "LOGIN",
           "named": true
         },
+        {
+          "type": "id_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "drop_partition_function",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "id_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "drop_partition_scheme",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
         {
           "type": "id_",
           "named": true
@@ -3144,6 +3431,25 @@
     }
   },
   {
+    "type": "for_system_time",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "as",
+          "named": true
+        },
+        {
+          "type": "expression",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "freetext_predicate",
     "named": true,
     "fields": {},
@@ -3531,6 +3837,11 @@
         }
       ]
     }
+  },
+  {
+    "type": "generated_always",
+    "named": true,
+    "fields": {}
   },
   {
     "type": "go_statement",
@@ -4778,6 +5089,21 @@
     }
   },
   {
+    "type": "period_for_system_time",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "id_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "pivot_clause",
     "named": true,
     "fields": {},
@@ -5175,6 +5501,25 @@
       "types": [
         {
           "type": "expression",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "revert_statement",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "LOCAL_ID_",
+          "named": true
+        },
+        {
+          "type": "WITH",
           "named": true
         }
       ]
@@ -5605,6 +5950,21 @@
     }
   },
   {
+    "type": "statistics_option",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "decimal_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "string_functions",
     "named": true,
     "fields": {},
@@ -5790,6 +6150,10 @@
           "named": true
         },
         {
+          "type": "period_for_system_time",
+          "named": true
+        },
+        {
           "type": "table_constraint",
           "named": true
         }
@@ -5870,6 +6234,10 @@
         },
         {
           "type": "change_table",
+          "named": true
+        },
+        {
+          "type": "for_system_time",
           "named": true
         },
         {
@@ -6262,6 +6630,33 @@
     }
   },
   {
+    "type": "update_statistics",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "column_name_list",
+          "named": true
+        },
+        {
+          "type": "full_table_name",
+          "named": true
+        },
+        {
+          "type": "id_",
+          "named": true
+        },
+        {
+          "type": "statistics_option",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "update_target",
     "named": true,
     "fields": {},
@@ -6608,10 +7003,6 @@
     "named": true
   },
   {
-    "type": "NONE",
-    "named": true
-  },
-  {
     "type": "OUTPUT",
     "named": true
   },
@@ -6689,10 +7080,6 @@
   },
   {
     "type": "charindex_",
-    "named": true
-  },
-  {
-    "type": "checksum_",
     "named": true
   },
   {
