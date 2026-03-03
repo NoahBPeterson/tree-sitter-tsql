@@ -159,7 +159,8 @@ CREATE STATISTICS st ON t(a, b) WITH FULLSCAN
           (column_name_list
             (id_)
             (id_))
-          (statistics_option))))))
+          (statistics_option
+            (id_)))))))
 
 =====================================
 CREATE STATISTICS with WHERE filter
@@ -223,6 +224,7 @@ UPDATE STATISTICS t WITH SAMPLE 50 PERCENT
           (full_table_name
             (id_))
           (statistics_option
+            (id_)
             (decimal_)))))))
 
 =====================================
@@ -241,8 +243,10 @@ UPDATE STATISTICS t ix WITH FULLSCAN, NORECOMPUTE
           (full_table_name
             (id_))
           (id_)
-          (statistics_option)
-          (statistics_option))))))
+          (statistics_option
+            (id_))
+          (statistics_option
+            (id_)))))))
 
 =====================================
 ALTER DATABASE SET RECOVERY FULL
@@ -276,7 +280,8 @@ ALTER DATABASE mydb SET READ_COMMITTED_SNAPSHOT ON
         (alter_database
           (id_)
           (alter_database_set
-            (database_option)))))))
+            (database_option
+              (id_))))))))
 
 =====================================
 ALTER DATABASE SET SINGLE_USER
@@ -293,7 +298,8 @@ ALTER DATABASE mydb SET SINGLE_USER
         (alter_database
           (id_)
           (alter_database_set
-            (database_option)))))))
+            (database_option
+              (id_))))))))
 
 =====================================
 ALTER DATABASE SET COMPATIBILITY_LEVEL
@@ -311,6 +317,7 @@ ALTER DATABASE mydb SET COMPATIBILITY_LEVEL = 150
           (id_)
           (alter_database_set
             (database_option
+              (id_)
               (decimal_))))))))
 
 =====================================
@@ -328,7 +335,8 @@ ALTER DATABASE mydb SET SINGLE_USER WITH ROLLBACK IMMEDIATE
         (alter_database
           (id_)
           (alter_database_set
-            (database_option)
+            (database_option
+              (id_))
             (alter_database_termination)))))))
 
 =====================================
@@ -346,7 +354,8 @@ ALTER DATABASE mydb SET SINGLE_USER WITH ROLLBACK AFTER 5
         (alter_database
           (id_)
           (alter_database_set
-            (database_option)
+            (database_option
+              (id_))
             (alter_database_termination
               (decimal_))))))))
 
@@ -473,13 +482,18 @@ CREATE TABLE t(id INT, ValidFrom DATETIME2 GENERATED ALWAYS AS ROW START, ValidT
               (id_)
               (data_type
                 (datetime2_))
-              (generated_always)))
+              (generated_always
+                (id_)
+                (id_)
+                (id_))))
           (table_element
             (column_definition
               (id_)
               (data_type
                 (datetime2_))
-              (generated_always)))
+              (generated_always
+                (id_)
+                (id_))))
           (table_element
             (period_for_system_time
               (id_)
@@ -512,13 +526,18 @@ CREATE TABLE t(id INT, ValidFrom DATETIME2 GENERATED ALWAYS AS ROW START, ValidT
               (id_)
               (data_type
                 (datetime2_))
-              (generated_always)))
+              (generated_always
+                (id_)
+                (id_)
+                (id_))))
           (table_element
             (column_definition
               (id_)
               (data_type
                 (datetime2_))
-              (generated_always)))
+              (generated_always
+                (id_)
+                (id_))))
           (table_element
             (period_for_system_time
               (id_)

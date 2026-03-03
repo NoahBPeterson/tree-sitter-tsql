@@ -245,29 +245,14 @@ module.exports = grammar({
       seq(token(/MODIFY/i), token(/FILE/i), $.database_filespec),
     ),
 
+    // Generic database option patterns — uses id_ to minimize symbol count.
+    // RECOVERY/PAGE_VERIFY kept explicit because their values are pre-existing keyword tokens.
     database_option: $ => choice(
-      seq(token(/RECOVERY/i), choice(token(/FULL/i), token(/BULK_LOGGED/i), token(/SIMPLE/i))),
-      seq(token(/READ_COMMITTED_SNAPSHOT/i), choice(token(/ON/i), token(/OFF/i))),
-      seq(token(/ALLOW_SNAPSHOT_ISOLATION/i), choice(token(/ON/i), token(/OFF/i))),
-      token(/SINGLE_USER/i),
-      token(/MULTI_USER/i),
-      token(/RESTRICTED_USER/i),
-      token(/READ_ONLY/i),
-      token(/READ_WRITE/i),
-      seq(token(/COMPATIBILITY_LEVEL/i), token('='), $.decimal_),
-      seq(token(/ANSI_NULL_DEFAULT/i), choice(token(/ON/i), token(/OFF/i))),
-      seq(token(/ANSI_NULLS/i), choice(token(/ON/i), token(/OFF/i))),
-      seq(token(/ANSI_PADDING/i), choice(token(/ON/i), token(/OFF/i))),
-      seq(token(/ANSI_WARNINGS/i), choice(token(/ON/i), token(/OFF/i))),
-      seq(token(/QUOTED_IDENTIFIER/i), choice(token(/ON/i), token(/OFF/i))),
-      seq(token(/AUTO_CLOSE/i), choice(token(/ON/i), token(/OFF/i))),
-      seq(token(/AUTO_SHRINK/i), choice(token(/ON/i), token(/OFF/i))),
-      seq(token(/AUTO_CREATE_STATISTICS/i), choice(token(/ON/i), token(/OFF/i))),
-      seq(token(/AUTO_UPDATE_STATISTICS/i), choice(token(/ON/i), token(/OFF/i))),
-      seq(token(/AUTO_UPDATE_STATISTICS_ASYNC/i), choice(token(/ON/i), token(/OFF/i))),
-      seq(token(/PAGE_VERIFY/i), choice(token(/CHECKSUM/i), token(/TORN_PAGE_DETECTION/i), token(/NONE/i))),
-      // Catch-all for other options: OPTION = ON|OFF|value
       seq($.id_, token('='), choice($.id_, $.decimal_, token(/ON/i), token(/OFF/i))),
+      seq($.id_, choice(token(/ON/i), token(/OFF/i))),
+      seq(token(/RECOVERY/i), choice(token(/FULL/i), $.id_)),
+      seq(token(/PAGE_VERIFY/i), choice($.checksum_, $.NONE, $.id_)),
+      $.id_,
     ),
 
     database_filespec: $ => seq(
@@ -398,12 +383,9 @@ module.exports = grammar({
     )),
 
     statistics_option: $ => choice(
-      token(/FULLSCAN/i),
-      seq(token(/SAMPLE/i), $.decimal_, choice(token(/PERCENT/i), token(/ROWS/i))),
-      token(/NORECOMPUTE/i),
-      seq(token(/INCREMENTAL/i), token('='), choice(token(/ON/i), token(/OFF/i))),
-      seq(token(/PERSIST_SAMPLE_PERCENT/i), token('='), choice(token(/ON/i), token(/OFF/i))),
-      seq(token(/MAXDOP/i), token('='), $.decimal_),
+      seq($.id_, $.decimal_, choice(token(/PERCENT/i), token(/ROWS/i))),
+      seq($.id_, token('='), choice(token(/ON/i), token(/OFF/i), $.decimal_)),
+      $.id_,
     ),
 
     // =====================
@@ -790,8 +772,8 @@ module.exports = grammar({
     )),
 
     generated_always: $ => seq(
-      token(/GENERATED/i), token(/ALWAYS/i), token(/AS/i), token(/ROW/i),
-      choice(token(/START/i), token(/END/i)),
+      $.id_, $.id_, token(/AS/i), token(/ROW/i),
+      choice($.id_, token(/END/i)),
       optional(token(/HIDDEN_/i)),
     ),
 

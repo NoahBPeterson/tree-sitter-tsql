@@ -1757,7 +1757,9 @@ CREATE TABLE t (a INT b INT)
               (id_)
               (data_type
                 (int_))))
-          (ERROR))))))
+          (ERROR
+            (id_)
+            (id_)))))))
 
 =====================================
 ERROR CREATE TABLE PRIMARY KEY no cols

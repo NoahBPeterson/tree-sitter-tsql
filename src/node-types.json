@@ -5,11 +5,6 @@
     "fields": {}
   },
   {
-    "type": "NONE",
-    "named": true,
-    "fields": {}
-  },
-  {
     "type": "RECOMPILE",
     "named": true,
     "fields": {}
@@ -1166,11 +1161,6 @@
     }
   },
   {
-    "type": "checksum_",
-    "named": true,
-    "fields": {}
-  },
-  {
     "type": "coalesce_function",
     "named": true,
     "fields": {},
@@ -2211,6 +2201,14 @@
       "multiple": true,
       "required": false,
       "types": [
+        {
+          "type": "NONE",
+          "named": true
+        },
+        {
+          "type": "checksum_",
+          "named": true
+        },
         {
           "type": "decimal_",
           "named": true
@@ -3841,7 +3839,17 @@
   {
     "type": "generated_always",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "id_",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "go_statement",
@@ -5954,11 +5962,15 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
-      "required": false,
+      "multiple": true,
+      "required": true,
       "types": [
         {
           "type": "decimal_",
+          "named": true
+        },
+        {
+          "type": "id_",
           "named": true
         }
       ]
@@ -7003,6 +7015,10 @@
     "named": true
   },
   {
+    "type": "NONE",
+    "named": true
+  },
+  {
     "type": "OUTPUT",
     "named": true
   },
@@ -7080,6 +7096,10 @@
   },
   {
     "type": "charindex_",
+    "named": true
+  },
+  {
+    "type": "checksum_",
     "named": true
   },
   {
