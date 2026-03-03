@@ -709,7 +709,7 @@ module.exports = grammar({
       ,$.raiseerror_statement
       ,$.goto_statement
       ,$.waitfor_statement
-      //TODO label_statement
+      ,$.label_statement
     ),
 
     //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L251
@@ -779,6 +779,8 @@ module.exports = grammar({
       ),
     ),
 
+    label_statement: $ => seq(alias($._word, $.id_), token(':')),
+
     another_statement: $ => choice(
       $.execute_statement
       ,$.declare_statement
@@ -800,18 +802,29 @@ module.exports = grammar({
     ),
 
     //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L2981
-    declare_statement: $ => seq(
-      token(/DECLARE/i)
-      ,$.declare_local, repeat(seq(token(','), $.declare_local))
+    declare_statement: $ => choice(
+      seq(token(/DECLARE/i), $.declare_local, repeat(seq(token(','), $.declare_local))),
+      seq(token(/DECLARE/i), $.LOCAL_ID_, $.as, $.full_table_name),
     ),
 
     declare_local: $ => seq(
-      $.LOCAL_ID_, $.data_type, optional(seq(token('='), $.expression))
+      $.LOCAL_ID_, optional($.as), $.data_type, optional(seq(token('='), $.expression))
     ),
 
     //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L3398
     set_statement: $ => choice(
-      seq(token(/SET/i), $.LOCAL_ID_, choice(token('='), $.assignment_operator), $.expression)
+      seq(token(/SET/i), $.LOCAL_ID_, optional(seq(DOT, $.id_)), choice(token('='), $.assignment_operator), $.expression)
+      ,prec.right(seq(token(/SET/i), $.LOCAL_ID_, token('='), token(/CURSOR/i),
+        optional(choice(token(/LOCAL/i), token(/GLOBAL/i))),
+        optional(choice(token(/FORWARD_ONLY/i), token(/SCROLL/i))),
+        optional(choice(token(/STATIC/i), token(/KEYSET/i), token(/DYNAMIC/i), token(/FAST_FORWARD/i))),
+        optional(choice(token(/READ_ONLY/i), token(/SCROLL_LOCKS/i), token(/OPTIMISTIC/i))),
+        token(/FOR/i), $.select_statement,
+        optional(seq(token(/FOR/i), choice(
+          seq(token(/READ/i), token(/ONLY/i)),
+          seq(token(/UPDATE/i), optional(seq(token(/OF/i), $.column_name_list)))
+        )))
+      ))
       ,$.set_special
     ),
 
@@ -830,6 +843,7 @@ module.exports = grammar({
           ))
         ,seq(token(/IDENTITY_INSERT/i), $.full_table_name, choice(token(/ON/i), token(/OFF/i)))
         ,seq(token(/ROWCOUNT/i), $.expression)
+        ,seq(token(/TEXTSIZE/i), $.expression)
       )
     ),
 
@@ -1100,7 +1114,7 @@ module.exports = grammar({
       ,$.update_statement
       ,$.delete_statement
       ,$.merge_statement
-      //TODO https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L63-L70
+      ,$.bulk_insert_statement
     ),
 
     //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L2161
@@ -1114,6 +1128,13 @@ module.exports = grammar({
       ,optional($.output_clause)
       ,$.insert_statement_value
     ),
+
+    bulk_insert_statement: $ => prec.right(seq(
+      token(/BULK/i), token(/INSERT/i),
+      $.full_table_name,
+      token(/FROM/i), $.expression,
+      optional(seq($.WITH, token('('), $.bulk_option, repeat(seq(token(','), $.bulk_option)), token(')')))
+    )),
 
     //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L2168
     insert_statement_value: $ => choice(

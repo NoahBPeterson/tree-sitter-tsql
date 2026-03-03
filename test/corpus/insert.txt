@@ -118,3 +118,51 @@ INSERT INTO users DEFAULT VALUES
           (full_table_name
             (id_))
           (insert_statement_value))))))
+
+=====================================
+BULK INSERT basic
+=====================================
+
+BULK INSERT dbo.t FROM 'file.csv'
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (bulk_insert_statement
+          (full_table_name
+            (id_)
+            (id_))
+          (expression
+            (primitive_expression
+              (primitive_constant
+                (string_lit)))))))))
+
+=====================================
+BULK INSERT with options
+=====================================
+
+BULK INSERT t FROM 'f.csv' WITH (FIELDTERMINATOR = ',')
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (bulk_insert_statement
+          (full_table_name
+            (id_))
+          (expression
+            (primitive_expression
+              (primitive_constant
+                (string_lit))))
+          (WITH)
+          (bulk_option
+            (id_)
+            (expression
+              (primitive_expression
+                (primitive_constant
+                  (string_lit))))))))))

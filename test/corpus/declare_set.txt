@@ -73,3 +73,199 @@ SET NOCOUNT ON
         (set_statement
           (set_special
             (set_on_off_option)))))))
+
+=====================================
+DECLARE with AS keyword
+=====================================
+
+DECLARE @v AS INT
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (declare_statement
+          (declare_local
+            (LOCAL_ID_)
+            (as)
+            (data_type
+              (int_))))))))
+
+=====================================
+DECLARE AS TABLE type
+=====================================
+
+DECLARE @t AS TABLE(id INT)
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (declare_statement
+          (declare_local
+            (LOCAL_ID_)
+            (as)
+            (data_type
+              (table_type_dt_)
+              (table_element
+                (column_definition
+                  (id_)
+                  (data_type
+                    (int_)))))))))))
+
+=====================================
+DECLARE AS user-defined table type
+=====================================
+
+DECLARE @v AS dbo.MyTableType
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (declare_statement
+          (LOCAL_ID_)
+          (as)
+          (full_table_name
+            (id_)
+            (id_)))))))
+
+=====================================
+SET TEXTSIZE
+=====================================
+
+SET TEXTSIZE 2048
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (set_statement
+          (set_special
+            (expression
+              (primitive_expression
+                (primitive_constant
+                  (decimal_))))))))))
+
+=====================================
+SET TEXTSIZE zero
+=====================================
+
+SET TEXTSIZE 0
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (set_statement
+          (set_special
+            (expression
+              (primitive_expression
+                (primitive_constant
+                  (decimal_))))))))))
+
+=====================================
+SET dot property
+=====================================
+
+SET @point.X = 1.5
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (set_statement
+          (LOCAL_ID_)
+          (id_)
+          (expression
+            (primitive_expression
+              (primitive_constant
+                (float_)))))))))
+
+=====================================
+SET dot property string
+=====================================
+
+SET @obj.Name = 'test'
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (set_statement
+          (LOCAL_ID_)
+          (id_)
+          (expression
+            (primitive_expression
+              (primitive_constant
+                (string_lit)))))))))
+
+=====================================
+SET cursor basic
+=====================================
+
+SET @cur = CURSOR FOR SELECT 1
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (set_statement
+          (LOCAL_ID_)
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (primitive_expression
+                          (primitive_constant
+                            (decimal_)))))))))))))))
+
+=====================================
+SET cursor with options
+=====================================
+
+SET @cur = CURSOR LOCAL FAST_FORWARD FOR SELECT id FROM t
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (set_statement
+          (LOCAL_ID_)
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (full_column_name
+                          (id_))))))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_)))))))))))))
