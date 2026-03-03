@@ -1,0 +1,549 @@
+=====================================
+SETUSER - bare
+=====================================
+
+SETUSER
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (setuser_statement)))))
+
+=====================================
+SETUSER - with username
+=====================================
+
+SETUSER 'guest'
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (setuser_statement
+          (string_lit))))))
+
+=====================================
+SETUSER - with username and NORESET
+=====================================
+
+SETUSER 'guest' WITH NORESET
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (setuser_statement
+          (string_lit)
+          (WITH)
+          (id_))))))
+
+=====================================
+EXECUTE AS USER
+=====================================
+
+EXECUTE AS USER = 'guest'
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (execute_as_statement
+          (execute)
+          (as)
+          (USER)
+          (expression
+            (primitive_expression
+              (primitive_constant
+                (string_lit)))))))))
+
+=====================================
+EXEC AS LOGIN
+=====================================
+
+EXEC AS LOGIN = 'sa'
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (execute_as_statement
+          (execute)
+          (as)
+          (LOGIN)
+          (expression
+            (primitive_expression
+              (primitive_constant
+                (string_lit)))))))))
+
+=====================================
+EXECUTE AS CALLER
+=====================================
+
+EXECUTE AS CALLER
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (execute_as_statement
+          (execute)
+          (as)
+          (id_))))))
+
+=====================================
+EXECUTE AS USER WITH NO REVERT
+=====================================
+
+EXECUTE AS USER = 'dbo' WITH NO REVERT
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (execute_as_statement
+          (execute)
+          (as)
+          (USER)
+          (expression
+            (primitive_expression
+              (primitive_constant
+                (string_lit))))
+          (WITH)
+          (id_))))))
+
+=====================================
+DISABLE TRIGGER on table
+=====================================
+
+DISABLE TRIGGER tr ON t
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (enable_disable_trigger
+          (full_table_name
+            (id_))
+          (full_table_name
+            (id_)))))))
+
+=====================================
+ENABLE TRIGGER multiple on schema.table
+=====================================
+
+ENABLE TRIGGER tr1, tr2 ON dbo.t
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (enable_disable_trigger
+          (full_table_name
+            (id_))
+          (full_table_name
+            (id_))
+          (full_table_name
+            (id_)
+            (id_)))))))
+
+=====================================
+DISABLE TRIGGER ALL ON DATABASE
+=====================================
+
+DISABLE TRIGGER ALL ON DATABASE
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (enable_disable_trigger)))))
+
+=====================================
+ENABLE TRIGGER ALL ON ALL SERVER
+=====================================
+
+ENABLE TRIGGER ALL ON ALL SERVER
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (enable_disable_trigger)))))
+
+=====================================
+END CONVERSATION basic
+=====================================
+
+END CONVERSATION @handle
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (end_conversation_statement
+          (id_)
+          (expression
+            (primitive_expression
+              (LOCAL_ID_))))))))
+
+=====================================
+END CONVERSATION WITH CLEANUP
+=====================================
+
+END CONVERSATION @handle WITH CLEANUP
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (end_conversation_statement
+          (id_)
+          (expression
+            (primitive_expression
+              (LOCAL_ID_)))
+          (WITH)
+          (id_))))))
+
+=====================================
+END CONVERSATION WITH ERROR
+=====================================
+
+END CONVERSATION @handle WITH ERROR = 1 DESCRIPTION = 'err'
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (end_conversation_statement
+          (id_)
+          (expression
+            (primitive_expression
+              (LOCAL_ID_)))
+          (WITH)
+          (id_)
+          (decimal_)
+          (id_)
+          (string_lit))))))
+
+=====================================
+SEND ON CONVERSATION basic
+=====================================
+
+SEND ON CONVERSATION @handle
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (send_statement
+          (id_)
+          (LOCAL_ID_))))))
+
+=====================================
+SEND ON CONVERSATION with MESSAGE TYPE and body
+=====================================
+
+SEND ON CONVERSATION @handle MESSAGE TYPE mytype (@body)
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (send_statement
+          (id_)
+          (LOCAL_ID_)
+          (id_)
+          (id_)
+          (id_)
+          (expression
+            (primitive_expression
+              (LOCAL_ID_))))))))
+
+=====================================
+RECEIVE star from queue
+=====================================
+
+RECEIVE * FROM dbo.myqueue
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (receive_statement
+          (select_list
+            (select_list_elem
+              (asterisk)))
+          (full_table_name
+            (id_)
+            (id_)))))))
+
+=====================================
+RECEIVE TOP with column list
+=====================================
+
+RECEIVE TOP(1) conversation_handle, message_body FROM dbo.myqueue
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (receive_statement
+          (expression
+            (primitive_expression
+              (primitive_constant
+                (decimal_))))
+          (select_list
+            (select_list_elem
+              (expression_elem
+                (expression
+                  (full_column_name
+                    (id_)))))
+            (select_list_elem
+              (expression_elem
+                (expression
+                  (full_column_name
+                    (id_))))))
+          (full_table_name
+            (id_)
+            (id_)))))))
+
+=====================================
+RECEIVE with INTO and WHERE
+=====================================
+
+RECEIVE message_body FROM dbo.myqueue INTO @msgs WHERE conversation_group_id = @grp
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (receive_statement
+          (select_list
+            (select_list_elem
+              (expression_elem
+                (expression
+                  (full_column_name
+                    (id_))))))
+          (full_table_name
+            (id_)
+            (id_))
+          (LOCAL_ID_)
+          (id_)
+          (LOCAL_ID_))))))
+
+=====================================
+GET CONVERSATION GROUP
+=====================================
+
+GET CONVERSATION GROUP @grp FROM dbo.myqueue
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (get_conversation_group_statement
+          (id_)
+          (id_)
+          (LOCAL_ID_)
+          (full_table_name
+            (id_)
+            (id_)))))))
+
+=====================================
+MOVE CONVERSATION
+=====================================
+
+MOVE CONVERSATION @handle TO @group
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (move_conversation_statement
+          (id_)
+          (expression
+            (primitive_expression
+              (LOCAL_ID_)))
+          (expression
+            (primitive_expression
+              (LOCAL_ID_))))))))
+
+=====================================
+BEGIN DIALOG basic
+=====================================
+
+BEGIN DIALOG @handle FROM SERVICE mysvc TO SERVICE 'targetsvc'
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (cfl_statement
+        (begin_dialog_statement
+          (id_)
+          (LOCAL_ID_)
+          (id_)
+          (id_)
+          (id_)
+          (string_lit))))))
+
+=====================================
+BEGIN DIALOG CONVERSATION with instance
+=====================================
+
+BEGIN DIALOG CONVERSATION @handle FROM SERVICE mysvc TO SERVICE 'targetsvc', 'instance'
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (cfl_statement
+        (begin_dialog_statement
+          (id_)
+          (id_)
+          (LOCAL_ID_)
+          (id_)
+          (id_)
+          (id_)
+          (string_lit)
+          (string_lit))))))
+
+=====================================
+BEGIN DIALOG with CONTRACT and WITH options
+=====================================
+
+BEGIN DIALOG @handle FROM SERVICE mysvc TO SERVICE 'targetsvc' ON CONTRACT mycontract WITH ENCRYPTION = OFF
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (cfl_statement
+        (begin_dialog_statement
+          (id_)
+          (LOCAL_ID_)
+          (id_)
+          (id_)
+          (id_)
+          (string_lit)
+          (id_)
+          (id_)
+          (WITH)
+          (id_))))))
+
+=====================================
+BEGIN CONVERSATION TIMER
+=====================================
+
+BEGIN CONVERSATION TIMER (@handle) TIMEOUT = 60
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (cfl_statement
+        (begin_conversation_timer_statement
+          (id_)
+          (id_)
+          (expression
+            (primitive_expression
+              (LOCAL_ID_)))
+          (id_)
+          (expression
+            (primitive_expression
+              (primitive_constant
+                (decimal_)))))))))
+
+=====================================
+WAITFOR RECEIVE
+=====================================
+
+WAITFOR (RECEIVE * FROM dbo.myqueue)
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (cfl_statement
+        (waitfor_statement
+          (receive_statement
+            (select_list
+              (select_list_elem
+                (asterisk)))
+            (full_table_name
+              (id_)
+              (id_))))))))
+
+=====================================
+WAITFOR RECEIVE with TIMEOUT
+=====================================
+
+WAITFOR (RECEIVE * FROM dbo.myqueue), TIMEOUT 5000
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (cfl_statement
+        (waitfor_statement
+          (receive_statement
+            (select_list
+              (select_list_elem
+                (asterisk)))
+            (full_table_name
+              (id_)
+              (id_)))
+          (id_)
+          (expression
+            (primitive_expression
+              (primitive_constant
+                (decimal_)))))))))

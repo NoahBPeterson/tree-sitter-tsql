@@ -61,6 +61,7 @@ module.exports = grammar({
     ,[$.output_dml_list_elem, $.full_column_name]
     ,[$.top_clause, $.bracket_expression]
     ,[$.table_source_item, $.nodes_method]
+    ,[$.block_statement, $.end_conversation_statement]
   ],
 
   extras: $ => [
@@ -832,6 +833,8 @@ module.exports = grammar({
       ,$.goto_statement
       ,$.waitfor_statement
       ,$.label_statement
+      ,$.begin_dialog_statement
+      ,$.begin_conversation_timer_statement
     ),
 
     //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L251
@@ -893,13 +896,15 @@ module.exports = grammar({
     goto_statement: $ => seq(token(/GOTO/i), $.id_),
 
     //https://learn.microsoft.com/en-us/sql/t-sql/language-elements/waitfor-transact-sql
-    waitfor_statement: $ => seq(
+    waitfor_statement: $ => prec.right(seq(
       token(/WAITFOR/i),
       choice(
         seq(token(/DELAY/i), $.expression),
         seq(token(/TIME/i), $.expression),
+        seq(token('('), choice($.receive_statement, $.get_conversation_group_statement), token(')'),
+            optional(seq(token(','), $.id_, $.expression))),  // TIMEOUT expr
       ),
-    ),
+    )),
 
     label_statement: $ => seq(alias($._word, $.id_), token(':')),
 
@@ -922,13 +927,131 @@ module.exports = grammar({
       ,$.revoke_statement
       ,$.revert_statement
       ,$.update_statistics
-      //TODO https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L350
+      ,$.setuser_statement
+      ,$.execute_as_statement
+      ,$.enable_disable_trigger
+      ,$.end_conversation_statement
+      ,$.send_statement
+      ,$.receive_statement
+      ,$.get_conversation_group_statement
+      ,$.move_conversation_statement
     ),
 
     revert_statement: $ => prec.right(seq(
       token(/REVERT/i),
       optional(seq($.WITH, token(/COOKIE/i), token('='), $.LOCAL_ID_))
     )),
+
+    // SETUSER — legacy impersonation
+    // https://learn.microsoft.com/en-us/sql/t-sql/statements/setuser-transact-sql
+    setuser_statement: $ => prec.right(seq(
+      token(/SETUSER/i),
+      optional(seq(
+        choice($.string_lit, $.LOCAL_ID_),
+        optional(seq($.WITH, $.id_))  // NORESET as id_
+      ))
+    )),
+
+    // EXECUTE AS — standalone impersonation (not proc_option)
+    // https://learn.microsoft.com/en-us/sql/t-sql/statements/execute-as-transact-sql
+    execute_as_statement: $ => prec.right(seq(
+      $.execute, $.as,
+      choice(
+        seq($.USER, token('='), $.expression),
+        seq($.LOGIN, token('='), $.expression),
+        $.id_,  // CALLER
+      ),
+      optional(seq($.WITH,
+        choice(
+          seq($.id_, token(/REVERT/i)),   // NO REVERT
+          seq(token(/COOKIE/i), token(/INTO/i), $.LOCAL_ID_),
+        )
+      ))
+    )),
+
+    // ENABLE/DISABLE TRIGGER
+    // https://learn.microsoft.com/en-us/sql/t-sql/statements/enable-trigger-transact-sql
+    enable_disable_trigger: $ => seq(
+      choice(token(/ENABLE/i), token(/DISABLE/i)),
+      token(/TRIGGER/i),
+      choice(
+        seq($.full_table_name, repeat(seq(token(','), $.full_table_name))),
+        token(/ALL/i),
+      ),
+      token(/ON/i),
+      choice($.full_table_name, token(/DATABASE/i), seq(token(/ALL/i), token(/SERVER/i))),
+    ),
+
+    // Service Broker: END CONVERSATION
+    // https://learn.microsoft.com/en-us/sql/t-sql/statements/end-conversation-transact-sql
+    end_conversation_statement: $ => prec.right(seq(
+      token(/END/i), $.id_, $.expression,  // CONVERSATION as id_
+      optional(seq($.WITH,
+        choice(
+          $.id_,  // CLEANUP as id_
+          seq($.id_, token('='), choice($.decimal_, $.LOCAL_ID_),  // ERROR = code
+              $.id_, token('='), choice($.string_lit, $.LOCAL_ID_)), // DESCRIPTION = 'desc'
+        )
+      ))
+    )),
+
+    // Service Broker: SEND ON CONVERSATION
+    // https://learn.microsoft.com/en-us/sql/t-sql/statements/send-transact-sql
+    send_statement: $ => prec.right(seq(
+      token(/SEND/i), token(/ON/i), $.id_,  // CONVERSATION as id_
+      $.LOCAL_ID_,                            // conversation handle (always a variable)
+      optional(seq($.id_, $.id_, choice($.id_, $.LOCAL_ID_))),  // MESSAGE TYPE name
+      optional(seq(token('('), $.expression, token(')'))),       // (body)
+    )),
+
+    // Service Broker: RECEIVE
+    // https://learn.microsoft.com/en-us/sql/t-sql/statements/receive-transact-sql
+    receive_statement: $ => prec.right(seq(
+      token(/RECEIVE/i),
+      optional(seq(token(/TOP/i), token('('), $.expression, token(')'))),
+      $.select_list,
+      token(/FROM/i), $.full_table_name,
+      optional(seq(token(/INTO/i), $.LOCAL_ID_)),
+      optional(seq(token(/WHERE/i), $.id_, token('='), choice($.string_lit, $.LOCAL_ID_))),
+    )),
+
+    // Service Broker: GET CONVERSATION GROUP
+    // https://learn.microsoft.com/en-us/sql/t-sql/statements/get-conversation-group-transact-sql
+    get_conversation_group_statement: $ => seq(
+      token(/GET/i), $.id_, $.id_,  // CONVERSATION GROUP as id_ id_
+      $.LOCAL_ID_,
+      token(/FROM/i), $.full_table_name,
+    ),
+
+    // Service Broker: MOVE CONVERSATION
+    // https://learn.microsoft.com/en-us/sql/t-sql/statements/move-conversation-transact-sql
+    move_conversation_statement: $ => seq(
+      token(/MOVE/i), $.id_,  // CONVERSATION as id_
+      $.expression,
+      token(/TO/i), $.expression,
+    ),
+
+    // Service Broker: BEGIN DIALOG
+    // https://learn.microsoft.com/en-us/sql/t-sql/statements/begin-dialog-conversation-transact-sql
+    begin_dialog_statement: $ => prec.right(seq(
+      token(/BEGIN/i), $.id_,  // DIALOG as id_
+      optional($.id_),          // optional CONVERSATION
+      $.LOCAL_ID_,
+      token(/FROM/i), $.id_, choice($.id_, $.LOCAL_ID_),  // SERVICE name
+      token(/TO/i), $.id_, choice($.string_lit, $.LOCAL_ID_),  // SERVICE 'target'
+      optional(seq(token(','), choice($.string_lit, $.LOCAL_ID_))),  // instance_spec
+      optional(seq(token(/ON/i), $.id_, choice($.id_, $.LOCAL_ID_))),  // CONTRACT name
+      optional(seq($.WITH, $._dialog_option, repeat(seq(token(','), $._dialog_option)))),
+    )),
+    _dialog_option: $ => seq($.id_, token('='), choice($.expression, token(/ON/i), token(/OFF/i))),
+
+    // Service Broker: BEGIN CONVERSATION TIMER
+    // https://learn.microsoft.com/en-us/sql/t-sql/statements/begin-conversation-timer-transact-sql
+    begin_conversation_timer_statement: $ => seq(
+      token(/BEGIN/i), $.id_, $.id_,  // CONVERSATION TIMER as id_ id_
+      token('('), $.expression, token(')'),
+      $.id_, token('='), $.expression,  // TIMEOUT = expr
+    ),
 
     //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L2981
     declare_statement: $ => choice(

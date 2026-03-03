@@ -2251,16 +2251,9 @@ BEGIN CATCH END CATCH
 -------------------------------------
 
 (tsql_file
-  (batch
-    (sql_clauses
-      (cfl_statement
-        (block_statement
-          (ERROR))))
-    (sql_clauses
-      (cfl_statement
-        (label_statement
-          (id_)
-          (MISSING ":"))))))
+  (ERROR
+    (id_)
+    (id_)))
 
 =====================================
 ERROR THROW incomplete two args
@@ -4126,7 +4119,7 @@ SELECT AT TIME ZONE 'UTC'
                       (as_column_alias
                         (column_alias
                           (id_)))))))))))))
-  (ERROR
+  (batch
     (execute_body_batch
       (func_proc_name_server_database_schema
         (func_proc_name_database_schema
@@ -4135,7 +4128,9 @@ SELECT AT TIME ZONE 'UTC'
       (execute_statement_arg
         (execute_statement_arg_unnamed
           (execute_parameter
-            (constant)))))))
+            (constant)))))
+    (go_statement
+      (MISSING "go_statement_token1"))))
 
 ===========================
 ERROR - GOTO missing label

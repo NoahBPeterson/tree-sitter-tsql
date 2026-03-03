@@ -682,7 +682,23 @@
           "named": true
         },
         {
+          "type": "enable_disable_trigger",
+          "named": true
+        },
+        {
+          "type": "end_conversation_statement",
+          "named": true
+        },
+        {
+          "type": "execute_as_statement",
+          "named": true
+        },
+        {
           "type": "execute_statement",
+          "named": true
+        },
+        {
+          "type": "get_conversation_group_statement",
           "named": true
         },
         {
@@ -691,6 +707,14 @@
         },
         {
           "type": "kill_statement",
+          "named": true
+        },
+        {
+          "type": "move_conversation_statement",
+          "named": true
+        },
+        {
+          "type": "receive_statement",
           "named": true
         },
         {
@@ -710,7 +734,15 @@
           "named": true
         },
         {
+          "type": "send_statement",
+          "named": true
+        },
+        {
           "type": "set_statement",
+          "named": true
+        },
+        {
+          "type": "setuser_statement",
           "named": true
         },
         {
@@ -868,6 +900,56 @@
         },
         {
           "type": "sql_clauses",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "begin_conversation_timer_statement",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "expression",
+          "named": true
+        },
+        {
+          "type": "id_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "begin_dialog_statement",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "LOCAL_ID_",
+          "named": true
+        },
+        {
+          "type": "WITH",
+          "named": true
+        },
+        {
+          "type": "expression",
+          "named": true
+        },
+        {
+          "type": "id_",
+          "named": true
+        },
+        {
+          "type": "string_lit",
           "named": true
         }
       ]
@@ -1058,6 +1140,14 @@
       "multiple": false,
       "required": true,
       "types": [
+        {
+          "type": "begin_conversation_timer_statement",
+          "named": true
+        },
+        {
+          "type": "begin_dialog_statement",
+          "named": true
+        },
         {
           "type": "block_statement",
           "named": true
@@ -2979,6 +3069,99 @@
     }
   },
   {
+    "type": "enable_disable_trigger",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "full_table_name",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "end_conversation_statement",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "LOCAL_ID_",
+          "named": true
+        },
+        {
+          "type": "WITH",
+          "named": true
+        },
+        {
+          "type": "decimal_",
+          "named": true
+        },
+        {
+          "type": "expression",
+          "named": true
+        },
+        {
+          "type": "id_",
+          "named": true
+        },
+        {
+          "type": "string_lit",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "execute_as_statement",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "LOCAL_ID_",
+          "named": true
+        },
+        {
+          "type": "LOGIN",
+          "named": true
+        },
+        {
+          "type": "USER",
+          "named": true
+        },
+        {
+          "type": "WITH",
+          "named": true
+        },
+        {
+          "type": "as",
+          "named": true
+        },
+        {
+          "type": "execute",
+          "named": true
+        },
+        {
+          "type": "expression",
+          "named": true
+        },
+        {
+          "type": "id_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "execute_body",
     "named": true,
     "fields": {
@@ -3852,6 +4035,29 @@
     }
   },
   {
+    "type": "get_conversation_group_statement",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "LOCAL_ID_",
+          "named": true
+        },
+        {
+          "type": "full_table_name",
+          "named": true
+        },
+        {
+          "type": "id_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "go_statement",
     "named": true,
     "fields": {}
@@ -4620,6 +4826,25 @@
         },
         {
           "type": "real_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "move_conversation_statement",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "expression",
+          "named": true
+        },
+        {
+          "type": "id_",
           "named": true
         }
       ]
@@ -5458,6 +5683,41 @@
     "fields": {}
   },
   {
+    "type": "receive_statement",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "LOCAL_ID_",
+          "named": true
+        },
+        {
+          "type": "expression",
+          "named": true
+        },
+        {
+          "type": "full_table_name",
+          "named": true
+        },
+        {
+          "type": "id_",
+          "named": true
+        },
+        {
+          "type": "select_list",
+          "named": true
+        },
+        {
+          "type": "string_lit",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "reconfigure_statement",
     "named": true,
     "fields": {},
@@ -5811,6 +6071,29 @@
     }
   },
   {
+    "type": "send_statement",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "LOCAL_ID_",
+          "named": true
+        },
+        {
+          "type": "expression",
+          "named": true
+        },
+        {
+          "type": "id_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "seperator",
     "named": true,
     "fields": {},
@@ -5891,6 +6174,33 @@
         },
         {
           "type": "set_special",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "setuser_statement",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "LOCAL_ID_",
+          "named": true
+        },
+        {
+          "type": "WITH",
+          "named": true
+        },
+        {
+          "type": "id_",
+          "named": true
+        },
+        {
+          "type": "string_lit",
           "named": true
         }
       ]
@@ -6751,11 +7061,23 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": true,
       "types": [
         {
           "type": "expression",
+          "named": true
+        },
+        {
+          "type": "get_conversation_group_statement",
+          "named": true
+        },
+        {
+          "type": "id_",
+          "named": true
+        },
+        {
+          "type": "receive_statement",
           "named": true
         }
       ]
