@@ -25,8 +25,9 @@ INSERT INTO AuditLog (Action) VALUES ('INSERT');
           (sql_clauses
             (dml_clause
               (insert_statement
-                (full_table_name
-                  (id_))
+                (insert_target
+                  (full_table_name
+                    (id_)))
                 (column_name_list
                   (id_))
                 (insert_statement_value
@@ -105,8 +106,9 @@ INSERT INTO Orders SELECT * FROM inserted;
           (sql_clauses
             (dml_clause
               (insert_statement
-                (full_table_name
-                  (id_))
+                (insert_target
+                  (full_table_name
+                    (id_)))
                 (insert_statement_value
                   (select_statement
                     (query_expression
@@ -189,8 +191,9 @@ INSERT INTO AuditLog (Action) VALUES ('MODIFIED');
           (sql_clauses
             (dml_clause
               (insert_statement
-                (full_table_name
-                  (id_))
+                (insert_target
+                  (full_table_name
+                    (id_)))
                 (column_name_list
                   (id_))
                 (insert_statement_value

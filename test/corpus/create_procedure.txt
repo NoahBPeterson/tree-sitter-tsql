@@ -249,8 +249,9 @@ END;
                       (sql_clauses
                         (dml_clause
                           (insert_statement
-                            (full_table_name
-                              (id_))
+                            (insert_target
+                              (full_table_name
+                                (id_)))
                             (column_name_list
                               (id_)
                               (id_))

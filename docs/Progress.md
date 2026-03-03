@@ -181,6 +181,7 @@
 - [x] INSERT with `TOP` (Parser L2163)
 - [x] INSERT with `OUTPUT` clause (Parser L2165)
 - [x] INSERT with `WITH` (CTE) (Parser L2161)
+- [x] `insert_target` — `INSERT INTO @variable` for table variables
 
 ### 3.2 UPDATE Statement (Parser L2195-L2220)
 

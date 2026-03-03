@@ -1375,10 +1375,15 @@ module.exports = grammar({
       ,token(/INSERT/i)
       ,optional($.top_clause)
       ,optional(token(/INTO/i))
-      ,$.full_table_name
+      ,$.insert_target
       ,optional(seq(token('('), $.column_name_list, token(')')))
       ,optional($.output_clause)
       ,$.insert_statement_value
+    ),
+
+    insert_target: $ => choice(
+      $.full_table_name
+      ,$.local_id_
     ),
 
     bulk_insert_statement: $ => prec.right(seq(

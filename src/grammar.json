@@ -12952,7 +12952,7 @@
         },
         {
           "type": "SYMBOL",
-          "name": "full_table_name"
+          "name": "insert_target"
         },
         {
           "type": "CHOICE",
@@ -13000,6 +13000,19 @@
         {
           "type": "SYMBOL",
           "name": "insert_statement_value"
+        }
+      ]
+    },
+    "insert_target": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "full_table_name"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "local_id_"
         }
       ]
     },

@@ -4353,11 +4353,11 @@
           "named": true
         },
         {
-          "type": "full_table_name",
+          "type": "insert_statement_value",
           "named": true
         },
         {
-          "type": "insert_statement_value",
+          "type": "insert_target",
           "named": true
         },
         {
@@ -4393,6 +4393,25 @@
         },
         {
           "type": "value_list",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "insert_target",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "full_table_name",
+          "named": true
+        },
+        {
+          "type": "local_id_",
           "named": true
         }
       ]

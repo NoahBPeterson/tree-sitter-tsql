@@ -1223,8 +1223,9 @@ INSERT INTO t VALUES
 
 (tsql_file
   (ERROR
-    (full_table_name
-      (id_))))
+    (insert_target
+      (full_table_name
+        (id_)))))
 
 =====================================
 ERROR INSERT VALUES unclosed paren
@@ -1236,8 +1237,9 @@ INSERT INTO t VALUES (
 
 (tsql_file
   (ERROR
-    (full_table_name
-      (id_))))
+    (insert_target
+      (full_table_name
+        (id_)))))
 
 =====================================
 ERROR INSERT VALUES trailing comma
@@ -1252,8 +1254,9 @@ INSERT INTO t VALUES (1,)
     (sql_clauses
       (dml_clause
         (insert_statement
-          (full_table_name
-            (id_))
+          (insert_target
+            (full_table_name
+              (id_)))
           (insert_statement_value
             (value_list
               (expression_list_
@@ -1276,8 +1279,9 @@ INSERT INTO t (,a) VALUES (1)
     (sql_clauses
       (dml_clause
         (insert_statement
-          (full_table_name
-            (id_))
+          (insert_target
+            (full_table_name
+              (id_)))
           (ERROR)
           (column_name_list
             (id_))
@@ -3452,8 +3456,9 @@ INSERT INTO t OUTPUT VALUES (1)
 
 (tsql_file
   (ERROR
-    (full_table_name
-      (id_))
+    (insert_target
+      (full_table_name
+        (id_)))
     (output_clause
       (output_dml_list_elem
         (expression
@@ -3478,8 +3483,9 @@ INSERT INTO t OUTPUT INSERTED. VALUES (1)
 
 (tsql_file
   (ERROR
-    (full_table_name
-      (id_))
+    (insert_target
+      (full_table_name
+        (id_)))
     (output_clause
       (ERROR
         (output_dml_list_elem
@@ -3765,8 +3771,9 @@ CREATE TRIGGER ON t AFTER INSERT AS SELECT 1
     (sql_clauses
       (dml_clause
         (insert_statement
-          (full_table_name
-            (id_))
+          (insert_target
+            (full_table_name
+              (id_)))
           (insert_statement_value
             (select_statement
               (query_expression
