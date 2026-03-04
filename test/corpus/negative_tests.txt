@@ -192,9 +192,9 @@ SELECT * FROM t GROUP BY
     (ERROR
       (groupby_))
     (sql_clauses
-      (cfl_statement
-        (return_statement
-          (MISSING "create_or_alter_function_token1"))))))
+      (another_statement
+        (transaction_statement
+          (MISSING "alter_database_termination_token1"))))))
 
 =====================================
 ERROR SELECT HAVING no condition
@@ -454,7 +454,7 @@ SELECT 1 + + +
                                 (expression
                                   (full_column_name
                                     (id_
-                                      (MISSING _word))))))))))))))))))))
+                                      (MISSING "go_statement_token1"))))))))))))))))))))
 
 =====================================
 ERROR unclosed parenthesis
@@ -553,8 +553,7 @@ SELECT CASE END
 
 (tsql_file
   (ERROR
-    (select)
-    (id_)))
+    (select)))
 
 =====================================
 ERROR CASE WHEN no condition
@@ -567,7 +566,11 @@ SELECT CASE WHEN THEN 1 END
 (tsql_file
   (ERROR
     (select)
-    (id_)))
+    (ERROR)
+    (expression
+      (primitive_expression
+        (primitive_constant
+          (decimal_))))))
 
 =====================================
 ERROR CASE WHEN no THEN
@@ -607,7 +610,11 @@ SELECT CASE 1 WHEN THEN 2 END
       (primitive_expression
         (primitive_constant
           (decimal_))))
-    (id_)))
+    (ERROR)
+    (expression
+      (primitive_expression
+        (primitive_constant
+          (decimal_))))))
 
 =====================================
 ERROR CASE no END
@@ -646,8 +653,7 @@ SELECT * FROM t WHERE AND
                     (table_source_item
                       (full_table_name
                         (id_))))))))))))
-  (ERROR
-    (id_)))
+  (ERROR))
 
 =====================================
 ERROR AND no right operand
@@ -712,12 +718,13 @@ SELECT * FROM t WHERE OR 1=1
                     (table_source_item
                       (full_table_name
                         (id_)))))
+                (ERROR)
                 (search_condition
                   (predicate
                     (expression
-                      (full_column_name
-                        (id_)))
-                    (ERROR)
+                      (primitive_expression
+                        (primitive_constant
+                          (decimal_))))
                     (comparison_operator)
                     (expression
                       (primitive_expression
@@ -1187,8 +1194,7 @@ SELECT * FROM t1 JOIN ON 1=1
                     (table_source_item
                       (full_table_name
                         (id_))))))))))))
-  (ERROR
-    (id_)))
+  (ERROR))
 
 =====================================
 ERROR INSERT INTO no table
@@ -1365,6 +1371,7 @@ UPDATE SET a = 1
 
 (tsql_file
   (ERROR
+    (ERROR)
     (id_)))
 
 =====================================
@@ -1421,12 +1428,7 @@ DELETE t FROM WHERE 1=1
         (delete_statement
           (delete_target
             (full_table_name
-              (id_)))
-          (table_sources
-            (table_source
-              (table_source_item
-                (full_table_name
-                  (id_)))))))))
+              (id_)))))))
   (ERROR))
 
 =====================================
@@ -1437,8 +1439,8 @@ MERGE INTO t
 
 -------------------------------------
 
-(ERROR
-  (full_table_name
+(tsql_file
+  (ERROR
     (id_)))
 
 =====================================
@@ -1449,13 +1451,11 @@ MERGE INTO t USING s
 
 -------------------------------------
 
-(ERROR
-  (full_table_name
-    (id_))
-  (table_source
-    (table_source_item
-      (full_table_name
-        (id_)))))
+(tsql_file
+  (ERROR
+    (full_table_name
+      (id_))
+    (id_)))
 
 =====================================
 ERROR MERGE ON no condition
@@ -1567,11 +1567,23 @@ WITH AS (SELECT 1)
 -------------------------------------
 
 (tsql_file
-  (ERROR
-    (id_)
-    (column_name_list
-      (id_))
-    (ERROR)))
+  (ERROR)
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (primitive_expression
+                          (primitive_constant
+                            (decimal_))))))))))))))
+  (ERROR))
 
 =====================================
 ERROR CTE no AS
@@ -2012,13 +2024,9 @@ DROP TABLE EXISTS t
     (sql_clauses
       (ddl_clause
         (drop_table
+          (ERROR)
           (full_table_name
-            (id_)))))
-    (sql_clauses
-      (cfl_statement
-        (label_statement
-          (id_)
-          (MISSING ":"))))))
+            (id_)))))))
 
 =====================================
 ERROR DROP TABLE trailing comma
@@ -2255,9 +2263,12 @@ BEGIN CATCH END CATCH
 -------------------------------------
 
 (tsql_file
-  (ERROR
-    (id_)
-    (id_)))
+  (batch
+    (sql_clauses
+      (cfl_statement
+        (block_statement
+          (ERROR)))))
+  (ERROR))
 
 =====================================
 ERROR THROW incomplete two args
@@ -2388,8 +2399,7 @@ DECLARE CURSOR
 -------------------------------------
 
 (tsql_file
-  (ERROR
-    (id_)))
+  (ERROR))
 
 =====================================
 ERROR DECLARE CURSOR no FOR
@@ -2515,8 +2525,8 @@ EXEC dbo.proc @a =
             (func_proc_name_server_database_schema
               (func_proc_name_database_schema
                 (func_proc_name_schema
-                  (id_)
                   (id_))))
+            (ERROR)
             (execute_statement_arg
               (execute_statement_arg_unnamed
                 (execute_parameter
@@ -2541,7 +2551,6 @@ EXEC dbo.proc ,
             (func_proc_name_server_database_schema
               (func_proc_name_database_schema
                 (func_proc_name_schema
-                  (id_)
                   (id_)))))))))
   (ERROR))
 
@@ -2716,28 +2725,13 @@ SELECT CAST( AS INT)
 -------------------------------------
 
 (tsql_file
-  (batch
-    (sql_clauses
-      (dml_clause
-        (select_statement_standalone
-          (select_statement
-            (query_expression
-              (query_specification
-                (select)
-                (select_list
-                  (select_list_elem
-                    (expression_elem
-                      (expression
-                        (function_call
-                          (conversion_functions
-                            (cast_)
-                            (expression
-                              (full_column_name
-                                (id_)))
-                            (as
-                              (MISSING "create_or_alter_procedure_token1"))
-                            (data_type
-                              (int_))))))))))))))))
+  (ERROR
+    (select)
+    (cast_)
+    (ERROR)
+    (expression
+      (full_column_name
+        (id_)))))
 
 =====================================
 ERROR OVER no parens
@@ -3049,21 +3043,34 @@ SELECT * FROM (SELECT * FROM t
 
 -------------------------------------
 
-(ERROR
-  (select)
-  (select_list
-    (select_list_elem
-      (asterisk)))
-  (query_specification
-    (select)
-    (select_list
-      (select_list_elem
-        (asterisk)))
-    (table_sources
-      (table_source
-        (table_source_item
-          (full_table_name
-            (id_)))))))
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (select_statement
+                        (query_expression
+                          (query_specification
+                            (select)
+                            (select_list
+                              (select_list_elem
+                                (asterisk)))
+                            (table_sources
+                              (table_source
+                                (table_source_item
+                                  (full_table_name
+                                    (id_))))))))
+                      (MISSING ")"))))))))))))
 
 =====================================
 ERROR PIVOT no parens
@@ -3252,10 +3259,10 @@ SELECT * FROM t PIVOT (SUM(a) FOR b IN ())
             (column_alias_list
               (column_alias
                 (id_
-                  (MISSING _word))))
+                  (MISSING "go_statement_token1"))))
             (as_table_alias
               (id_
-                (MISSING _word)))))))))
+                (MISSING "go_statement_token1")))))))))
 
 =====================================
 ERROR UNPIVOT empty body
@@ -3460,18 +3467,14 @@ INSERT INTO t OUTPUT VALUES (1)
       (full_table_name
         (id_)))
     (output_clause
+      (ERROR)
       (output_dml_list_elem
         (expression
-          (function_call
-            (scalar_function_name
-              (func_proc_name_database_schema
-                (func_proc_name_schema
-                  (id_))))
-            (expression_list_
-              (expression
-                (primitive_expression
-                  (primitive_constant
-                    (decimal_)))))))))))
+          (bracket_expression
+            (expression
+              (primitive_expression
+                (primitive_constant
+                  (decimal_))))))))))
 
 =====================================
 ERROR OUTPUT INSERTED dot no column
@@ -3487,16 +3490,19 @@ INSERT INTO t OUTPUT INSERTED. VALUES (1)
       (full_table_name
         (id_)))
     (output_clause
-      (ERROR
-        (output_dml_list_elem
-          (id_)))
       (output_dml_list_elem
         (expression
-          (bracket_expression
-            (expression
-              (primitive_expression
-                (primitive_constant
-                  (decimal_))))))))))
+          (function_call
+            (scalar_function_name
+              (func_proc_name_database_schema
+                (func_proc_name_schema
+                  (id_))))
+            (ERROR)
+            (expression_list_
+              (expression
+                (primitive_expression
+                  (primitive_constant
+                    (decimal_)))))))))))
 
 =====================================
 ERROR unterminated string literal
@@ -3520,21 +3526,8 @@ SELECT N'unterminated
 -------------------------------------
 
 (tsql_file
-  (batch
-    (sql_clauses
-      (dml_clause
-        (select_statement_standalone
-          (select_statement
-            (query_expression
-              (query_specification
-                (select)
-                (select_list
-                  (select_list_elem
-                    (expression_elem
-                      (expression
-                        (full_column_name
-                          (id_)))))))))))))
   (ERROR
+    (select)
     (UNEXPECTED '\0')))
 
 =====================================
@@ -3667,6 +3660,8 @@ CREATE INDEX ON t (a)
 
 (tsql_file
   (ERROR
+    (ERROR
+      (id_))
     (id_)))
 
 =====================================
@@ -3679,11 +3674,7 @@ CREATE PROCEDURE AS SELECT 1
 
 (tsql_file
   (ERROR
-    (create_or_alter)
-    (func_proc_name_server_database_schema
-      (func_proc_name_database_schema
-        (func_proc_name_schema
-          (id_)))))
+    (create_or_alter))
   (batch
     (sql_clauses
       (dml_clause
@@ -3711,6 +3702,7 @@ CREATE FUNCTION RETURNS INT AS BEGIN RETURN 1 END
 (tsql_file
   (ERROR
     (create_or_alter)
+    (ERROR)
     (func_proc_name_server_database_schema
       (func_proc_name_database_schema
         (func_proc_name_schema
@@ -3737,8 +3729,7 @@ CREATE VIEW AS SELECT 1
 
 (tsql_file
   (ERROR
-    (create_or_alter)
-    (id_))
+    (create_or_alter))
   (batch
     (sql_clauses
       (dml_clause
@@ -3766,26 +3757,24 @@ CREATE TRIGGER ON t AFTER INSERT AS SELECT 1
 (tsql_file
   (ERROR
     (create_or_alter)
-    (id_))
+    (ERROR)
+    (full_table_name
+      (id_)))
   (batch
     (sql_clauses
       (dml_clause
-        (insert_statement
-          (insert_target
-            (full_table_name
-              (id_)))
-          (insert_statement_value
-            (select_statement
-              (query_expression
-                (query_specification
-                  (select)
-                  (select_list
-                    (select_list_elem
-                      (expression_elem
-                        (expression
-                          (primitive_expression
-                            (primitive_constant
-                              (decimal_))))))))))))))))
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (primitive_expression
+                          (primitive_constant
+                            (decimal_)))))))))))))))
 
 =====================================
 ERROR CREATE SCHEMA no name
@@ -3808,6 +3797,7 @@ CREATE TYPE FROM INT
 
 (tsql_file
   (ERROR
+    (ERROR)
     (id_)))
 
 =====================================
@@ -3820,9 +3810,9 @@ CREATE SYNONYM FOR dbo.t
 
 (tsql_file
   (ERROR
+    (ERROR)
     (full_table_name
       (id_)
-      (ERROR)
       (id_))))
 
 =====================================
@@ -3839,7 +3829,6 @@ TRUNCATE dbo.t
     (func_proc_name_server_database_schema
       (func_proc_name_database_schema
         (func_proc_name_schema
-          (id_)
           (id_))))))
 
 =====================================
@@ -3967,6 +3956,7 @@ ERROR - SOME with expression list not subquery
 ===========================
 SELECT * FROM t WHERE x > SOME (1, 2, 3)
 ---
+
 (tsql_file
   (batch
     (sql_clauses
@@ -3983,12 +3973,38 @@ SELECT * FROM t WHERE x > SOME (1, 2, 3)
                   (table_source
                     (table_source_item
                       (full_table_name
-                        (id_))))))))))))
-  (ERROR
-    (expression
-      (full_column_name
-        (id_)))
-    (comparison_operator)))
+                        (id_)))))
+                (search_condition
+                  (predicate
+                    (expression
+                      (full_column_name
+                        (id_)))
+                    (comparison_operator)
+                    (subquery
+                      (select_statement
+                        (query_expression
+                          (query_specification
+                            (select
+                              (MISSING "_permission_token1"))
+                            (select_list
+                              (select_list_elem
+                                (expression_elem
+                                  (expression
+                                    (primitive_expression
+                                      (primitive_constant
+                                        (decimal_))))))
+                              (select_list_elem
+                                (expression_elem
+                                  (expression
+                                    (primitive_expression
+                                      (primitive_constant
+                                        (decimal_))))))
+                              (select_list_elem
+                                (expression_elem
+                                  (expression
+                                    (primitive_expression
+                                      (primitive_constant
+                                        (decimal_)))))))))))))))))))))
 
 ===========================
 ERROR - COLLATE without collation name
@@ -4108,6 +4124,7 @@ ERROR - AT TIME ZONE missing preceding expression
 ===========================
 SELECT AT TIME ZONE 'UTC'
 ---
+
 (tsql_file
   (batch
     (sql_clauses
@@ -4117,27 +4134,14 @@ SELECT AT TIME ZONE 'UTC'
             (query_expression
               (query_specification
                 (select)
+                (ERROR)
                 (select_list
                   (select_list_elem
                     (expression_elem
                       (expression
                         (full_column_name
-                          (id_)))
-                      (as_column_alias
-                        (column_alias
                           (id_)))))))))))))
-  (batch
-    (execute_body_batch
-      (func_proc_name_server_database_schema
-        (func_proc_name_database_schema
-          (func_proc_name_schema
-            (id_))))
-      (execute_statement_arg
-        (execute_statement_arg_unnamed
-          (execute_parameter
-            (constant)))))
-    (go_statement
-      (MISSING "go_statement_token1"))))
+  (ERROR))
 
 ===========================
 ERROR - GOTO missing label
@@ -4198,11 +4202,23 @@ ERROR - computed column AS without column name
 ===========================
 CREATE TABLE t (AS a + b)
 ---
+
 (tsql_file
-  (ERROR
-    (full_table_name
-      (id_))
-    (id_)))
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_table
+          (full_table_name
+            (id_))
+          (ERROR
+            (id_)
+            (PLUS))
+          (table_element
+            (column_definition
+              (id_)
+              (data_type
+                (time_
+                  (MISSING "waitfor_statement_token3"))))))))))
 
 ===========================
 ERROR - DDL trigger missing FOR clause
@@ -4254,12 +4270,12 @@ ERROR - DDL trigger missing event between FOR and AS
 ===========================
 CREATE TRIGGER t ON DATABASE FOR AS SELECT 1
 ---
+
 (tsql_file
   (ERROR
     (create_or_alter)
     (full_table_name
-      (id_))
-    (id_))
+      (id_)))
   (batch
     (sql_clauses
       (dml_clause
@@ -4281,10 +4297,13 @@ ERROR - DDL trigger missing name
 ===========================
 CREATE TRIGGER ON DATABASE FOR CREATE_TABLE AS SELECT 1
 ---
+
 (tsql_file
   (ERROR
     (create_or_alter)
-    (id_))
+    (ERROR)
+    (full_table_name
+      (id_)))
   (batch
     (sql_clauses
       (dml_clause
@@ -4348,6 +4367,7 @@ ERROR - COLLATE without preceding expression (gap: parses clean)
 ===========================
 SELECT COLLATE foo FROM t
 ---
+
 (tsql_file
   (batch
     (sql_clauses
@@ -4357,14 +4377,12 @@ SELECT COLLATE foo FROM t
             (query_expression
               (query_specification
                 (select)
+                (ERROR)
                 (select_list
                   (select_list_elem
                     (expression_elem
                       (expression
                         (full_column_name
-                          (id_)))
-                      (as_column_alias
-                        (column_alias
                           (id_))))))
                 (table_sources
                   (table_source
@@ -4377,6 +4395,7 @@ ERROR - computed column AS without expression
 ===========================
 CREATE TABLE t (c AS)
 ---
+
 (tsql_file
   (batch
     (sql_clauses
@@ -4390,13 +4409,14 @@ CREATE TABLE t (c AS)
               (expression
                 (full_column_name
                   (id_
-                    (MISSING _word)))))))))))
+                    (MISSING "go_statement_token1")))))))))))
 
 ===========================
 ERROR - computed column AS without expression mid-list
 ===========================
 CREATE TABLE t (a INT, c AS, b INT)
 ---
+
 (tsql_file
   (batch
     (sql_clauses
@@ -4415,7 +4435,7 @@ CREATE TABLE t (a INT, c AS, b INT)
               (expression
                 (full_column_name
                   (id_
-                    (MISSING _word))))))
+                    (MISSING "go_statement_token1"))))))
           (table_element
             (column_definition
               (id_)
@@ -4427,6 +4447,7 @@ ERROR - computed column AS with incomplete expression
 ===========================
 CREATE TABLE t (c AS +)
 ---
+
 (tsql_file
   (batch
     (sql_clauses
@@ -4442,4 +4463,738 @@ CREATE TABLE t (c AS +)
                   (expression
                     (full_column_name
                       (id_
-                        (MISSING _word)))))))))))))
+                        (MISSING "go_statement_token1")))))))))))))
+
+===========================
+ERROR SELECT FROM missing select list (gap: parses clean)
+===========================
+SELECT FROM t
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (ERROR)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (full_column_name
+                          (id_))))))))))))))
+
+===========================
+ERROR SELECT GROUP without BY (gap: parses clean)
+===========================
+SELECT * FROM t GROUP
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_))))))))))))
+  (ERROR))
+
+===========================
+ERROR SELECT OFFSET without ROWS (gap: parses clean)
+===========================
+SELECT * FROM t ORDER BY a OFFSET 5
+---
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_)))))))
+            (select_order_by_clause
+              (order_by_expression
+                (expression
+                  (full_column_name
+                    (id_))))
+              (expression
+                (primitive_expression
+                  (primitive_constant
+                    (decimal_))))
+              (MISSING "statistics_option_token2"))))))))
+
+===========================
+ERROR SELECT TOP missing expression (gap: parses clean)
+===========================
+SELECT TOP FROM t
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (top_clause
+                  (ERROR)
+                  (expression
+                    (full_column_name
+                      (id_))))
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (full_column_name
+                          (id_
+                            (MISSING "go_statement_token1")))))))))))))))
+
+===========================
+ERROR SELECT TOP unclosed paren
+===========================
+SELECT TOP ( FROM t
+---
+
+(tsql_file
+  (ERROR
+    (select)
+    (ERROR)
+    (id_)))
+
+===========================
+ERROR expression empty right side in parens (gap: parses clean)
+===========================
+SELECT 1 + (2 * )
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (expression
+                          (primitive_expression
+                            (primitive_constant
+                              (decimal_))))
+                        (PLUS)
+                        (expression
+                          (bracket_expression
+                            (expression
+                              (expression
+                                (primitive_expression
+                                  (primitive_constant
+                                    (decimal_))))
+                              (asterisk)
+                              (expression
+                                (full_column_name
+                                  (id_
+                                    (MISSING "go_statement_token1")))))))))))))))))))
+
+===========================
+ERROR unclosed parenthesized expression
+===========================
+SELECT (1+2
+---
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (bracket_expression
+                          (expression
+                            (expression
+                              (primitive_expression
+                                (primitive_constant
+                                  (decimal_))))
+                            (PLUS)
+                            (expression
+                              (primitive_expression
+                                (primitive_constant
+                                  (decimal_)))))
+                          (MISSING ")"))))))))))))))
+
+===========================
+ERROR CASE THEN missing result (gap: parses clean)
+===========================
+SELECT CASE WHEN 1=1 THEN END
+---
+
+(tsql_file
+  (ERROR
+    (select)
+    (search_condition
+      (predicate
+        (expression
+          (primitive_expression
+            (primitive_constant
+              (decimal_))))
+        (comparison_operator)
+        (expression
+          (primitive_expression
+            (primitive_constant
+              (decimal_))))))))
+
+===========================
+ERROR CASE ELSE missing expression (gap: parses clean)
+===========================
+SELECT CASE WHEN 1=1 THEN 1 ELSE END
+---
+
+(tsql_file
+  (ERROR
+    (select)
+    (switch_search_condition_section
+      (search_condition
+        (predicate
+          (expression
+            (primitive_expression
+              (primitive_constant
+                (decimal_))))
+          (comparison_operator)
+          (expression
+            (primitive_expression
+              (primitive_constant
+                (decimal_))))))
+      (expression
+        (primitive_expression
+          (primitive_constant
+            (decimal_)))))))
+
+===========================
+ERROR IN empty list (gap: parses clean)
+===========================
+SELECT * FROM t WHERE a IN ()
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_)))))
+                (search_condition
+                  (predicate
+                    (expression
+                      (full_column_name
+                        (id_)))
+                    (expression_list_
+                      (expression
+                        (full_column_name
+                          (id_
+                            (MISSING "go_statement_token1")))))))))))))))
+
+===========================
+ERROR IS without NULL (gap: parses clean)
+===========================
+SELECT * FROM t WHERE a IS
+---
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_)))))
+                (search_condition
+                  (predicate
+                    (expression
+                      (full_column_name
+                        (id_)))
+                    (null_
+                      (MISSING "null__token1"))))))))))))
+
+===========================
+ERROR comparison missing left side (gap: parses clean)
+===========================
+SELECT * FROM t WHERE > 1
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_)))))
+                (search_condition
+                  (predicate
+                    (expression
+                      (full_column_name
+                        (id_
+                          (MISSING "go_statement_token1"))))
+                    (comparison_operator)
+                    (expression
+                      (primitive_expression
+                        (primitive_constant
+                          (decimal_))))))))))))))
+
+===========================
+ERROR INSERT VALUES empty list (gap: parses clean)
+===========================
+INSERT INTO t VALUES ()
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (insert_statement
+          (insert_target
+            (full_table_name
+              (id_)))
+          (insert_statement_value
+            (value_list
+              (expression_list_
+                (expression
+                  (full_column_name
+                    (id_
+                      (MISSING "go_statement_token1"))))))))))))
+
+===========================
+ERROR UPDATE SET assignment missing value (gap: parses clean)
+===========================
+UPDATE t SET a =
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (update_statement
+          (update_target
+            (full_table_name
+              (id_)))
+          (update_elem
+            (full_column_name
+              (id_))
+            (expression
+              (full_column_name
+                (id_
+                  (MISSING "go_statement_token1"))))))))))
+
+===========================
+ERROR UPDATE SET missing column name (gap: parses clean)
+===========================
+UPDATE t SET = 1
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (update_statement
+          (update_target
+            (full_table_name
+              (id_)))
+          (update_elem
+            (full_column_name
+              (id_
+                (MISSING "go_statement_token1")))
+            (expression
+              (primitive_expression
+                (primitive_constant
+                  (decimal_))))))))))
+
+===========================
+ERROR MERGE WHEN MATCHED THEN missing action (gap: parses clean)
+===========================
+MERGE INTO t USING s ON 1=1 WHEN MATCHED THEN
+---
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (merge_statement
+          (full_table_name
+            (id_))
+          (table_source
+            (table_source_item
+              (full_table_name
+                (id_))))
+          (search_condition
+            (predicate
+              (expression
+                (primitive_expression
+                  (primitive_constant
+                    (decimal_))))
+              (comparison_operator)
+              (expression
+                (primitive_expression
+                  (primitive_constant
+                    (decimal_))))))
+          (when_matches
+            (merge_matched
+              (MISSING "dml_trigger_operation_token2"))))))))
+
+===========================
+ERROR DROP INDEX ON missing table (gap: parses clean)
+===========================
+DROP INDEX ix1 ON
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_index
+          (drop_index_item
+            (id_)
+            (full_table_name
+              (id_
+                (MISSING "go_statement_token1")))))))))
+
+===========================
+ERROR SET assignment missing value (gap: parses clean)
+===========================
+SET @v =
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (set_statement
+          (LOCAL_ID_)
+          (expression
+            (full_column_name
+              (id_
+                (MISSING "go_statement_token1")))))))))
+
+===========================
+ERROR SET NOCOUNT missing ON OFF (gap: parses clean)
+===========================
+SET NOCOUNT
+---
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (set_statement
+          (set_special
+            (set_on_off_option)
+            (MISSING "database_option_token1")))))))
+
+===========================
+ERROR IF missing body (gap: parses clean)
+===========================
+IF 1=1
+---
+(ERROR
+  (search_condition
+    (predicate
+      (expression
+        (primitive_expression
+          (primitive_constant
+            (decimal_))))
+      (comparison_operator)
+      (expression
+        (primitive_expression
+          (primitive_constant
+            (decimal_)))))))
+
+===========================
+ERROR WHILE missing body (gap: parses clean)
+===========================
+WHILE 1=1
+---
+(ERROR
+  (search_condition
+    (predicate
+      (expression
+        (primitive_expression
+          (primitive_constant
+            (decimal_))))
+      (comparison_operator)
+      (expression
+        (primitive_expression
+          (primitive_constant
+            (decimal_)))))))
+
+===========================
+ERROR BEGIN TRANSACTION DISTRIBUTED wrong order (gap: parses clean)
+===========================
+BEGIN TRANSACTION DISTRIBUTED
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (transaction_statement))))
+  (ERROR))
+
+===========================
+ERROR CONVERT missing expression (gap: parses clean)
+===========================
+SELECT CONVERT(INT,)
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (function_call
+                          (conversion_functions
+                            (convert_)
+                            (data_type
+                              (int_))
+                            (expression
+                              (full_column_name
+                                (id_
+                                  (MISSING "go_statement_token1"))))))))))))))))))
+
+===========================
+ERROR DATEADD missing datepart (gap: parses clean)
+===========================
+SELECT DATEADD(, 1, GETDATE())
+---
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (function_call
+                          (datetime_functions
+                            (datepart
+                              (MISSING "hour__token1"))
+                            (expression
+                              (primitive_expression
+                                (primitive_constant
+                                  (decimal_))))
+                            (expression
+                              (function_call
+                                (datetime_functions)))))))))))))))))
+
+===========================
+ERROR NUMERIC empty precision (gap: parses clean)
+===========================
+DECLARE @v NUMERIC()
+---
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (declare_statement
+          (declare_local
+            (LOCAL_ID_)
+            (data_type
+              (numeric_)
+              (decimal_
+                (MISSING "constant_token3")))))))))
+
+===========================
+ERROR VARCHAR empty length (gap: parses clean)
+===========================
+DECLARE @v VARCHAR()
+---
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (declare_statement
+          (declare_local
+            (LOCAL_ID_)
+            (data_type
+              (varchar_)
+              (decimal_
+                (MISSING "constant_token3")))))))))
+
+===========================
+ERROR subquery with no columns (gap: parses clean)
+===========================
+SELECT (SELECT)
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (bracket_expression
+                          (subquery
+                            (select_statement
+                              (query_expression
+                                (query_specification
+                                  (select)
+                                  (select_list
+                                    (select_list_elem
+                                      (expression_elem
+                                        (expression
+                                          (full_column_name
+                                            (id_
+                                              (MISSING "go_statement_token1"))))))))))))))))))))))))
+
+===========================
+ERROR END without BEGIN
+===========================
+END
+---
+(tsql_file
+  (ERROR))
+
+===========================
+ERROR bare SAVE without TRANSACTION
+===========================
+SAVE
+---
+(tsql_file
+  (ERROR))
+
+===========================
+ERROR WITH empty hints (gap: parses clean)
+===========================
+SELECT * FROM t WITH ()
+---
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_))
+                      (with_table_hints
+                        (table_hint
+                          (MISSING "raiserror_option_token1"))))))))))))))
+
+===========================
+ERROR IN subquery missing columns (gap: parses clean)
+===========================
+SELECT * WHERE a IN (SELECT)
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (search_condition
+                  (predicate
+                    (expression
+                      (full_column_name
+                        (id_)))
+                    (subquery
+                      (select_statement
+                        (query_expression
+                          (query_specification
+                            (select)
+                            (select_list
+                              (select_list_elem
+                                (expression_elem
+                                  (expression
+                                    (full_column_name
+                                      (id_
+                                        (MISSING "go_statement_token1")))))))))))))))))))))

@@ -3631,6 +3631,11 @@
     }
   },
   {
+    "type": "format_",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "freetext_predicate",
     "named": true,
     "fields": {},
@@ -4048,10 +4053,6 @@
         },
         {
           "type": "full_table_name",
-          "named": true
-        },
-        {
-          "type": "id_",
           "named": true
         }
       ]
@@ -5964,6 +5965,11 @@
     }
   },
   {
+    "type": "select",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "select_list",
     "named": true,
     "fields": {},
@@ -7580,10 +7586,6 @@
     "named": true
   },
   {
-    "type": "format_",
-    "named": true
-  },
-  {
     "type": "formatmessage_",
     "named": true
   },
@@ -7781,10 +7783,6 @@
   },
   {
     "type": "row_number_",
-    "named": true
-  },
-  {
-    "type": "select",
     "named": true
   },
   {

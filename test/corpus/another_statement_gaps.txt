@@ -123,8 +123,7 @@ EXECUTE AS USER = 'dbo' WITH NO REVERT
             (primitive_expression
               (primitive_constant
                 (string_lit))))
-          (WITH)
-          (id_))))))
+          (WITH))))))
 
 =====================================
 DISABLE TRIGGER on table
@@ -383,8 +382,6 @@ GET CONVERSATION GROUP @grp FROM dbo.myqueue
     (sql_clauses
       (another_statement
         (get_conversation_group_statement
-          (id_)
-          (id_)
           (LOCAL_ID_)
           (full_table_name
             (id_)
@@ -427,8 +424,6 @@ BEGIN DIALOG @handle FROM SERVICE mysvc TO SERVICE 'targetsvc'
           (id_)
           (LOCAL_ID_)
           (id_)
-          (id_)
-          (id_)
           (string_lit))))))
 
 =====================================
@@ -448,8 +443,6 @@ BEGIN DIALOG CONVERSATION @handle FROM SERVICE mysvc TO SERVICE 'targetsvc', 'in
           (id_)
           (LOCAL_ID_)
           (id_)
-          (id_)
-          (id_)
           (string_lit)
           (string_lit))))))
 
@@ -468,8 +461,6 @@ BEGIN DIALOG @handle FROM SERVICE mysvc TO SERVICE 'targetsvc' ON CONTRACT mycon
         (begin_dialog_statement
           (id_)
           (LOCAL_ID_)
-          (id_)
-          (id_)
           (id_)
           (string_lit)
           (id_)

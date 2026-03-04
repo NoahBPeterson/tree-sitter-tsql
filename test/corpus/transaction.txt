@@ -39,3 +39,45 @@ ROLLBACK TRANSACTION
     (sql_clauses
       (another_statement
         (transaction_statement)))))
+
+=====================================
+Bare COMMIT
+=====================================
+
+COMMIT
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (transaction_statement)))))
+
+=====================================
+Bare ROLLBACK
+=====================================
+
+ROLLBACK
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (transaction_statement)))))
+
+=====================================
+COMMIT WORK
+=====================================
+
+COMMIT WORK
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (transaction_statement)))))

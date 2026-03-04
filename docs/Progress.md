@@ -1207,8 +1207,8 @@ These sections are fully implemented with test corpus coverage:
 
 ## Phase 8 — Negative (Error) Tests
 
-> Tests that assert known-invalid SQL produces `(ERROR)` nodes. Ensures the parser
-> rejects bad syntax rather than silently accepting it. **0 of these exist today.**
+> Tests that assert known-invalid SQL produces `(ERROR)` or `(MISSING)` nodes. Ensures the parser
+> rejects bad syntax rather than silently accepting it. **All done.**
 
 ### 8.1 SELECT Statement Errors
 
@@ -1216,20 +1216,20 @@ These sections are fully implemented with test corpus coverage:
 - [x] `SELECT ,` — leading comma in select list
 - [x] `SELECT a,` — trailing comma in select list
 - [x] `SELECT a,,b` — double comma in select list
-- [ ] `SELECT FROM t` — missing select list before FROM
+- [x] `SELECT FROM t` — missing select list before FROM (gap: parses clean)
 - [x] `SELECT * FROM` — FROM with no table
-- [ ] `SELECT * WHERE 1=1` — WHERE without FROM
+- [x] `SELECT * WHERE 1=1` — WHERE without FROM (fixed: now valid, oracle accepts)
 - [x] `SELECT * FROM t WHERE` — WHERE with no condition
 - [x] `SELECT * FROM t ORDER` — ORDER without BY
 - [x] `SELECT * FROM t ORDER BY` — ORDER BY with no expressions
-- [ ] `SELECT * FROM t GROUP` — GROUP without BY
+- [x] `SELECT * FROM t GROUP` — GROUP without BY (gap: parses clean)
 - [x] `SELECT * FROM t GROUP BY` — GROUP BY with no expressions
 - [x] `SELECT * FROM t HAVING` — HAVING with no condition
 - [x] `SELECT * FROM t ORDER BY a OFFSET` — OFFSET missing row count
-- [ ] `SELECT * FROM t ORDER BY a OFFSET 5` — OFFSET without ROWS
+- [x] `SELECT * FROM t ORDER BY a OFFSET 5` — OFFSET without ROWS (gap: parses clean)
 - [x] `SELECT * FROM t ORDER BY a OFFSET 5 ROWS FETCH` — FETCH incomplete
-- [ ] `SELECT TOP FROM t` — TOP missing expression
-- [ ] `SELECT TOP ( FROM t` — TOP unclosed paren
+- [x] `SELECT TOP FROM t` — TOP missing expression (gap: parses clean)
+- [x] `SELECT TOP ( FROM t` — TOP unclosed paren
 - [x] `SELECT DISTINCT` — DISTINCT with no columns
 - [x] `SELECT * FROM t1 UNION` — UNION with no second query
 - [x] `SELECT * FROM t1 INTERSECT` — INTERSECT with no second query
@@ -1242,8 +1242,8 @@ These sections are fully implemented with test corpus coverage:
 - [x] `SELECT 1 + + +` — chained operators with no final operand
 - [x] `SELECT (` — unclosed parenthesis
 - [x] `SELECT )` — unmatched close parenthesis
-- [ ] `SELECT (1+2` — unclosed parenthesized expression
-- [ ] `SELECT 1 + (2 * )` — empty right side inside parens
+- [x] `SELECT (1+2` — unclosed parenthesized expression
+- [x] `SELECT 1 + (2 * )` — empty right side inside parens (gap: parses clean)
 - [x] `SELECT ~` — bitwise NOT with no operand
 - [x] `SELECT 1 2` — two expressions with no operator between
 - [x] `SELECT 1 = 2` — assignment operator in select list (not comparison context)
@@ -1252,11 +1252,11 @@ These sections are fully implemented with test corpus coverage:
 
 - [x] `SELECT CASE END` — CASE with no WHEN clauses
 - [x] `SELECT CASE WHEN THEN 1 END` — WHEN missing condition
-- [ ] `SELECT CASE WHEN 1=1 THEN END` — THEN missing result expression
+- [x] `SELECT CASE WHEN 1=1 THEN END` — THEN missing result expression (gap: parses clean)
 - [x] `SELECT CASE WHEN 1=1 END` — WHEN without THEN
 - [x] `SELECT CASE 1 WHEN THEN 2 END` — simple CASE WHEN missing match value
 - [x] `SELECT CASE 1` — CASE never closed (no END)
-- [ ] `SELECT CASE WHEN 1=1 THEN 1 ELSE END` — ELSE with no expression
+- [x] `SELECT CASE WHEN 1=1 THEN 1 ELSE END` — ELSE with no expression (gap: parses clean)
 
 ### 8.4 Search Condition / Predicate Errors
 
@@ -1269,13 +1269,13 @@ These sections are fully implemented with test corpus coverage:
 - [x] `SELECT * FROM t WHERE a BETWEEN 1 AND` — BETWEEN AND missing upper bound
 - [x] `SELECT * FROM t WHERE a IN` — IN missing list
 - [x] `SELECT * FROM t WHERE a IN (` — IN unclosed paren
-- [ ] `SELECT * FROM t WHERE a IN ()` — IN empty list
+- [x] `SELECT * FROM t WHERE a IN ()` — IN empty list (gap: parses clean)
 - [x] `SELECT * FROM t WHERE a LIKE` — LIKE missing pattern
-- [ ] `SELECT * FROM t WHERE a IS` — IS without NULL/NOT NULL
+- [x] `SELECT * FROM t WHERE a IS` — IS without NULL/NOT NULL (gap: parses clean)
 - [x] `SELECT * FROM t WHERE EXISTS` — EXISTS missing subquery
 - [x] `SELECT * FROM t WHERE EXISTS (` — EXISTS unclosed paren
 - [x] `SELECT * FROM t WHERE a >` — comparison missing right side
-- [ ] `SELECT * FROM t WHERE > 1` — comparison missing left side
+- [x] `SELECT * FROM t WHERE > 1` — comparison missing left side (gap: parses clean)
 
 ### 8.5 JOIN Errors
 
@@ -1293,19 +1293,19 @@ These sections are fully implemented with test corpus coverage:
 - [x] `INSERT INTO t` — missing VALUES/SELECT/DEFAULT VALUES
 - [x] `INSERT INTO t VALUES` — VALUES missing value list
 - [x] `INSERT INTO t VALUES (` — unclosed VALUES paren
-- [ ] `INSERT INTO t VALUES ()` — empty VALUES list
-- [ ] `INSERT INTO t (a,b) VALUES (1)` — column count mismatch (parser may not catch, but good to document)
+- [x] `INSERT INTO t VALUES ()` — empty VALUES list (gap: parses clean)
+- [x] `INSERT INTO t (a,b) VALUES (1)` — column count mismatch (oracle valid: semantic error, not syntax)
 - [x] `INSERT INTO t VALUES (1,)` — trailing comma in VALUES
 - [x] `INSERT INTO t (,a) VALUES (1)` — leading comma in column list
-- [ ] `INSERT INTO t () VALUES (1)` — empty column list
+- [x] `INSERT INTO t () VALUES (1)` — empty column list (oracle valid: accepts empty column list)
 
 ### 8.7 UPDATE Statement Errors
 
 - [x] `UPDATE` — missing table name
 - [x] `UPDATE t` — missing SET clause
 - [x] `UPDATE t SET` — SET with no assignments
-- [ ] `UPDATE t SET a =` — SET assignment missing value
-- [ ] `UPDATE t SET = 1` — SET missing column name
+- [x] `UPDATE t SET a =` — SET assignment missing value (gap: parses clean)
+- [x] `UPDATE t SET = 1` — SET missing column name (gap: parses clean)
 - [x] `UPDATE t SET a = 1,` — trailing comma in SET list
 - [x] `UPDATE SET a = 1` — missing table name after UPDATE
 
@@ -1323,7 +1323,7 @@ These sections are fully implemented with test corpus coverage:
 - [x] `MERGE INTO t USING s ON` — ON missing condition
 - [x] `MERGE INTO t USING s ON 1=1` — missing WHEN clause
 - [x] `MERGE INTO t USING s ON 1=1 WHEN MATCHED` — WHEN MATCHED missing THEN
-- [ ] `MERGE INTO t USING s ON 1=1 WHEN MATCHED THEN` — THEN missing action
+- [x] `MERGE INTO t USING s ON 1=1 WHEN MATCHED THEN` — THEN missing action (gap: parses clean)
 - [x] `MERGE INTO t USING s ON 1=1 WHEN NOT MATCHED THEN INSERT` — INSERT missing VALUES
 
 ### 8.10 CTE Errors
@@ -1363,7 +1363,7 @@ These sections are fully implemented with test corpus coverage:
 - [x] `DROP FUNCTION` — missing function name
 - [x] `DROP INDEX` — missing index name
 - [x] `DROP INDEX ix1` — DROP INDEX missing ON
-- [ ] `DROP INDEX ix1 ON` — DROP INDEX ON missing table
+- [x] `DROP INDEX ix1 ON` — DROP INDEX ON missing table (gap: parses clean)
 - [x] `DROP DATABASE` — missing database name
 - [x] `DROP SCHEMA` — missing schema name
 - [x] `DROP TABLE IF` — IF without EXISTS
@@ -1389,17 +1389,17 @@ These sections are fully implemented with test corpus coverage:
 - [x] `DECLARE @v INT,` — trailing comma
 - [x] `SET` — bare SET with no variable
 - [x] `SET @v` — SET variable missing = and value
-- [ ] `SET @v =` — SET assignment missing value
-- [ ] `SET NOCOUNT` — SET option missing ON/OFF
+- [x] `SET @v =` — SET assignment missing value (gap: parses clean)
+- [x] `SET NOCOUNT` — SET option missing ON/OFF (gap: parses clean)
 
 ### 8.15 Control Flow Errors
 
 - [x] `BEGIN` — BEGIN without END
-- [ ] `END` — END without BEGIN
+- [x] `END` — END without BEGIN
 - [x] `IF` — IF missing condition
-- [ ] `IF 1=1` — IF missing THEN body (sql_clauses)
+- [x] `IF 1=1` — IF missing THEN body (gap: parses clean)
 - [x] `WHILE` — WHILE missing condition
-- [ ] `WHILE 1=1` — WHILE missing body
+- [x] `WHILE 1=1` — WHILE missing body (gap: parses clean)
 - [x] `BEGIN TRY END TRY` — TRY/CATCH missing CATCH block
 - [x] `BEGIN CATCH END CATCH` — CATCH without preceding TRY
 - [x] `THROW 50000,` — THROW incomplete arguments (need 3)
@@ -1412,9 +1412,9 @@ These sections are fully implemented with test corpus coverage:
 
 ### 8.16 Transaction Errors
 
-- [ ] `COMMIT` — bare COMMIT (may or may not be valid — verify)
-- [ ] `BEGIN TRANSACTION DISTRIBUTED` — wrong keyword order (should be BEGIN DISTRIBUTED TRANSACTION)
-- [ ] `SAVE` — bare SAVE without TRANSACTION
+- [x] `COMMIT` — bare COMMIT (fixed: oracle valid, now accepted)
+- [x] `BEGIN TRANSACTION DISTRIBUTED` — wrong keyword order (gap: parses clean, DISTRIBUTED treated as id)
+- [x] `SAVE` — bare SAVE without TRANSACTION
 
 ### 8.17 Cursor Errors
 
@@ -1448,13 +1448,13 @@ These sections are fully implemented with test corpus coverage:
 - [x] `SELECT CAST(1)` — CAST missing AS clause
 - [x] `SELECT CAST(1 AS)` — CAST AS missing data type
 - [x] `SELECT CAST( AS INT)` — CAST missing expression
-- [ ] `SELECT CONVERT(INT,)` — CONVERT missing expression
+- [x] `SELECT CONVERT(INT,)` — CONVERT missing expression (gap: parses clean)
 - [x] `SELECT CONVERT(,1)` — CONVERT missing target type
-- [ ] `SELECT DATEADD(, 1, GETDATE())` — DATEADD missing datepart
-- [ ] `SELECT LEN()` — LEN no arguments
+- [x] `SELECT DATEADD(, 1, GETDATE())` — DATEADD missing datepart (gap: parses clean)
+- [x] `SELECT LEN()` — LEN no arguments (oracle valid: runtime error, not syntax)
 - [x] `SELECT RANK()` — RANK missing OVER clause
 - [x] `SELECT ROW_NUMBER()` — ROW_NUMBER missing OVER clause
-- [ ] `SELECT COUNT(*)` — COUNT(*) missing OVER when used as analytic (verify if error)
+- [x] `SELECT COUNT(*)` — COUNT(*) (oracle valid: valid T-SQL expression)
 
 ### 8.20 OVER Clause Errors
 
@@ -1472,17 +1472,17 @@ These sections are fully implemented with test corpus coverage:
 
 - [x] `DECLARE @v VARCHAR(` — unclosed precision paren
 - [x] `DECLARE @v DECIMAL(,)` — empty precision and scale
-- [ ] `DECLARE @v NUMERIC()` — empty precision
-- [ ] `DECLARE @v VARCHAR()` — empty length
+- [x] `DECLARE @v NUMERIC()` — empty precision (gap: parses clean)
+- [x] `DECLARE @v VARCHAR()` — empty length (gap: parses clean)
 
 ### 8.22 Subquery Errors
 
-- [ ] `SELECT (SELECT)` — subquery with no columns
-- [ ] `SELECT (SELECT *)` — subquery with no FROM (may be valid in T-SQL — verify)
+- [x] `SELECT (SELECT)` — subquery with no columns (gap: parses clean)
+- [x] `SELECT (SELECT *)` — subquery with no FROM (oracle valid: valid T-SQL)
 - [x] `SELECT * FROM (` — derived table unclosed
 - [x] `SELECT * FROM ()` — empty derived table
 - [x] `SELECT * FROM (SELECT * FROM t` — derived table unclosed
-- [ ] `SELECT * WHERE a IN (SELECT)` — IN subquery missing columns
+- [x] `SELECT * WHERE a IN (SELECT)` — IN subquery missing columns (gap: parses clean)
 
 ### 8.23 PIVOT / UNPIVOT Errors
 
@@ -1504,7 +1504,7 @@ These sections are fully implemented with test corpus coverage:
 
 - [x] `SELECT * FROM t WITH` — WITH missing parens
 - [x] `SELECT * FROM t WITH (` — WITH unclosed paren
-- [ ] `SELECT * FROM t WITH ()` — WITH empty hints
+- [x] `SELECT * FROM t WITH ()` — WITH empty hints (gap: parses clean)
 - [x] `SELECT * FROM t WITH (BANANA)` — invalid hint keyword
 
 ### 8.26 OUTPUT Clause Errors

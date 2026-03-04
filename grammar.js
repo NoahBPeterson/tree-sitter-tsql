@@ -54,6 +54,10 @@ module.exports = grammar({
 
   word: $ => $._word,
 
+  externals: $ => [
+    $._non_keyword_id,  // external scanner: matches identifiers, rejects reserved keywords
+  ],
+
   conflicts: $ => [
     [$.batch]
     ,[$.table_source_item]
@@ -774,7 +778,7 @@ module.exports = grammar({
 
     generated_always: $ => seq(
       $.id_, $.id_, token(/AS/i), token(/ROW/i),
-      choice($.id_, token(/END/i)),
+      choice(token(/START/i), token(/END/i)),
       optional(token(/HIDDEN_/i)),
     ),
 
@@ -906,7 +910,7 @@ module.exports = grammar({
       ),
     )),
 
-    label_statement: $ => seq(alias($._word, $.id_), token(':')),
+    label_statement: $ => seq(alias($._non_keyword_id, $.id_), token(':')),
 
     another_statement: $ => choice(
       $.execute_statement
@@ -963,7 +967,7 @@ module.exports = grammar({
       ),
       optional(seq($.WITH,
         choice(
-          seq($.id_, token(/REVERT/i)),   // NO REVERT
+          seq(token(/NO/i), token(/REVERT/i)),   // NO REVERT
           seq(token(/COOKIE/i), token(/INTO/i), $.LOCAL_ID_),
         )
       ))
@@ -1018,7 +1022,7 @@ module.exports = grammar({
     // Service Broker: GET CONVERSATION GROUP
     // https://learn.microsoft.com/en-us/sql/t-sql/statements/get-conversation-group-transact-sql
     get_conversation_group_statement: $ => seq(
-      token(/GET/i), $.id_, $.id_,  // CONVERSATION GROUP as id_ id_
+      token(/GET/i), token(/CONVERSATION/i), token(/GROUP/i),
       $.LOCAL_ID_,
       token(/FROM/i), $.full_table_name,
     ),
@@ -1037,13 +1041,13 @@ module.exports = grammar({
       token(/BEGIN/i), $.id_,  // DIALOG as id_
       optional($.id_),          // optional CONVERSATION
       $.LOCAL_ID_,
-      token(/FROM/i), $.id_, choice($.id_, $.LOCAL_ID_),  // SERVICE name
-      token(/TO/i), $.id_, choice($.string_lit, $.LOCAL_ID_),  // SERVICE 'target'
+      token(/FROM/i), token(/SERVICE/i), choice($.id_, $.LOCAL_ID_),  // SERVICE name
+      token(/TO/i), token(/SERVICE/i), choice($.string_lit, $.LOCAL_ID_),  // SERVICE 'target'
       optional(seq(token(','), choice($.string_lit, $.LOCAL_ID_))),  // instance_spec
       optional(seq(token(/ON/i), $.id_, choice($.id_, $.LOCAL_ID_))),  // CONTRACT name
       optional(seq($.WITH, $._dialog_option, repeat(seq(token(','), $._dialog_option)))),
     )),
-    _dialog_option: $ => seq($.id_, token('='), choice($.expression, token(/ON/i), token(/OFF/i))),
+    _dialog_option: $ => seq(choice($.id_, alias(token(/ENCRYPTION/i), $.id_)), token('='), choice($.expression, token(/ON/i), token(/OFF/i))),
 
     // Service Broker: BEGIN CONVERSATION TIMER
     // https://learn.microsoft.com/en-us/sql/t-sql/statements/begin-conversation-timer-transact-sql
@@ -1135,8 +1139,8 @@ module.exports = grammar({
     //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L3409
     transaction_statement: $ => prec.right(choice(
       seq(token(/BEGIN/i), optional(token(/DISTRIBUTED/i)), token(/TRAN(SACTION)?/i), optional($.id_))
-      ,seq(token(/COMMIT/i), choice(token(/TRAN(SACTION)?/i), token(/WORK/i)), optional($.id_))
-      ,seq(token(/ROLLBACK/i), choice(token(/TRAN(SACTION)?/i), token(/WORK/i)), optional($.id_))
+      ,seq(token(/COMMIT/i), optional(seq(choice(token(/TRAN(SACTION)?/i), token(/WORK/i)), optional($.id_))))
+      ,seq(token(/ROLLBACK/i), optional(seq(choice(token(/TRAN(SACTION)?/i), token(/WORK/i)), optional($.id_))))
       ,seq(token(/SAVE/i), token(/TRAN(SACTION)?/i), $.id_)
     )),
 
@@ -1259,16 +1263,32 @@ module.exports = grammar({
     ),
 
     backup_option: $ => seq(
-      $.id_, optional(seq('=', $.expression)),
+      choice($.id_, alias($._backup_option_keyword, $.id_)),
+      optional(seq('=', $.expression)),
+    ),
+
+    /* Backup/restore option names that are also grammar keywords */
+    _backup_option_keyword: $ => choice(
+      token(/FORMAT/i), token(/REPLACE/i), token(/RECOVERY/i),
     ),
 
     // =====================
     // GRANT / DENY / REVOKE
     // =====================
 
+    /* Permission keywords for GRANT/DENY/REVOKE — explicit tokens since
+       these are reserved keywords that can't go through id_ */
+    _permission: $ => choice(
+      token(/SELECT/i), token(/INSERT/i), token(/UPDATE/i), token(/DELETE/i),
+      token(/EXECUTE/i), token(/ALTER/i), token(/REFERENCES/i), token(/CONTROL/i),
+      token(/CONNECT/i), token(/CREATE/i), token(/DROP/i),
+      token(/BACKUP/i), token(/RESTORE/i), token(/CHECKPOINT/i),
+      token(/RECEIVE/i), token(/SEND/i),
+    ),
+
     grant_statement: $ => prec.right(seq(
       token(/GRANT/i),
-      $.id_, repeat(seq(',', $.id_)),
+      alias($._permission, $.id_), repeat(seq(',', alias($._permission, $.id_))),
       optional(seq(token(/ON/i),
         optional(seq($.id_, DOUBLE_COLON)),
         $.full_table_name)),
@@ -1280,7 +1300,7 @@ module.exports = grammar({
 
     deny_statement: $ => prec.right(seq(
       token(/DENY/i),
-      $.id_, repeat(seq(',', $.id_)),
+      alias($._permission, $.id_), repeat(seq(',', alias($._permission, $.id_))),
       optional(seq(token(/ON/i),
         optional(seq($.id_, DOUBLE_COLON)),
         $.full_table_name)),
@@ -1293,7 +1313,7 @@ module.exports = grammar({
     revoke_statement: $ => prec.right(seq(
       token(/REVOKE/i),
       optional(seq(token(/GRANT/i), token(/OPTION/i), token(/FOR/i))),
-      $.id_, repeat(seq(',', $.id_)),
+      alias($._permission, $.id_), repeat(seq(',', alias($._permission, $.id_))),
       optional(seq(token(/ON/i),
         optional(seq($.id_, DOUBLE_COLON)),
         $.full_table_name)),
@@ -1621,12 +1641,15 @@ module.exports = grammar({
       //TODO https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L4010-L4023
     )),
 
-    // Hidden sub-rule: breaks 7-optional cross-product into 4 × 3 (FROM is anchor)
-    _query_from_clause: $ => prec.right(seq(
-      token(/FROM/i), $.table_sources
-      ,optional(seq(token(/WHERE/i), $.search_condition))
-      ,optional($.groupby)
-      ,optional(seq(token(/HAVING/i), $.search_condition))
+    // Hidden sub-rule: breaks 7-optional cross-product into 4 × 3 (FROM or WHERE is anchor)
+    _query_from_clause: $ => prec.right(choice(
+      seq(
+        token(/FROM/i), $.table_sources
+        ,optional(seq(token(/WHERE/i), $.search_condition))
+        ,optional($.groupby)
+        ,optional(seq(token(/HAVING/i), $.search_condition))
+      ),
+      seq(token(/WHERE/i), $.search_condition)
     )),
 
     top_clause: $ => prec.right(seq(
@@ -2324,7 +2347,7 @@ module.exports = grammar({
     TEMP_ID_: $ => token(prec(1, /##?[A-Za-z_][A-Za-z_$@0-9]*/)),
 
     id_: $ => choice(
-      $._word
+      $._non_keyword_id
       ,$.TEMP_ID_
       ,SQUARE_BRACKET_ID
       ,DOUBLE_QUOTE_ID
@@ -2344,6 +2367,13 @@ module.exports = grammar({
       ,token(/ROLE/i), token(/USER/i), token(/FILE/i), token(/PATH/i)
       ,token(/DEFAULT/i), token(/NULL/i), token(/SOURCE/i), token(/TARGET/i)
       ,token(/VERSION/i), token(/OWNER/i), token(/JSON/i), token(/GO/i)
+      /* Datepart single-letter abbreviations (also common as aliases/column names) */
+      /* E and N excluded: E conflicts with real_ exponent, N conflicts with N-string prefix */
+      ,token(/D/i), token(/M/i), token(/Q/i), token(/S/i)
+      /* Context keywords commonly used as identifiers */
+      ,token(/CALLER/i), token(/SELF/i)
+      ,token(/INSERTED/i), token(/DELETED/i)
+      ,token(/RESULT/i)
     )),
 
     integer: $ => INT,

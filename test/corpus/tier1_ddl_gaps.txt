@@ -484,7 +484,6 @@ CREATE TABLE t(id INT, ValidFrom DATETIME2 GENERATED ALWAYS AS ROW START, ValidT
                 (datetime2_))
               (generated_always
                 (id_)
-                (id_)
                 (id_))))
           (table_element
             (column_definition
@@ -527,7 +526,6 @@ CREATE TABLE t(id INT, ValidFrom DATETIME2 GENERATED ALWAYS AS ROW START, ValidT
               (data_type
                 (datetime2_))
               (generated_always
-                (id_)
                 (id_)
                 (id_))))
           (table_element
