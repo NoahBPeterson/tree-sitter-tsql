@@ -37,6 +37,9 @@ dist/
 *.obj
 *.o
 
+# Generated parser (81MB+, regenerate with: tree-sitter generate --no-bindings)
+src/parser.c
+
 *.swp
 .DS_Store
 
