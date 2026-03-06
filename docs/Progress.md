@@ -701,7 +701,7 @@
 - [x] `DISABLE TRIGGER name ON table` (Parser L229)
 - [x] `ALTER DATABASE name SET options` (Parser L700)
 - [x] `ALTER INDEX name ON table REBUILD|REORGANIZE|DISABLE` (Parser L800)
-- [ ] `CREATE DATABASE name [ON PRIMARY filespec] [LOG ON filespec] [COLLATE] [WITH options]` (Parser L2218)
+- [x] `CREATE DATABASE name [ON PRIMARY filespec] [LOG ON filespec] [COLLATE] [WITH options]` (Parser L2218)
 - [ ] `LOCK TABLE table IN SHARE|EXCLUSIVE MODE [WAIT n|NOWAIT]` (Parser L1135)
 
 ---

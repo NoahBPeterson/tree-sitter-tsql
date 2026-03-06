@@ -4944,7 +4944,7 @@ SET NOCOUNT
         (set_statement
           (set_special
             (set_on_off_option)
-            (MISSING "database_option_token1")))))))
+            (MISSING "create_database_token6")))))))
 
 ===========================
 ERROR IF missing body (gap: parses clean)
@@ -5161,7 +5161,7 @@ SELECT * FROM t WITH ()
                         (id_))
                       (with_table_hints
                         (table_hint
-                          (MISSING "raiserror_option_token1"))))))))))))))
+                          (MISSING "create_database_token15"))))))))))))))
 
 ===========================
 ERROR IN subquery missing columns (gap: parses clean)

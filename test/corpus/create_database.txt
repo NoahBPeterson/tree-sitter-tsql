@@ -1,0 +1,447 @@
+================================================================================
+CREATE DATABASE minimal
+================================================================================
+CREATE DATABASE d1;
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_database
+          (id_))))))
+
+================================================================================
+CREATE DATABASE ON single filespec
+================================================================================
+CREATE DATABASE d2
+ON (NAME = d2_dat, FILENAME = 'c:\d2.mdf', SIZE = 10MB, MAXSIZE = 50MB, FILEGROWTH = 5MB);
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_database
+          (id_)
+          (database_filespec
+            (database_filespec_option
+              (id_))
+            (database_filespec_option
+              (string_lit))
+            (database_filespec_option
+              (file_size
+                (decimal_)))
+            (database_filespec_option
+              (file_size
+                (decimal_)))
+            (database_filespec_option
+              (file_size
+                (decimal_)))))))))
+
+================================================================================
+CREATE DATABASE ON and LOG ON
+================================================================================
+CREATE DATABASE d3
+ON (NAME = d3_dat, FILENAME = 'c:\d3.mdf', SIZE = 10MB)
+LOG ON (NAME = d3_log, FILENAME = 'c:\d3.ldf', SIZE = 5MB, MAXSIZE = 25MB, FILEGROWTH = 5MB);
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_database
+          (id_)
+          (database_filespec
+            (database_filespec_option
+              (id_))
+            (database_filespec_option
+              (string_lit))
+            (database_filespec_option
+              (file_size
+                (decimal_))))
+          (database_filespec
+            (database_filespec_option
+              (id_))
+            (database_filespec_option
+              (string_lit))
+            (database_filespec_option
+              (file_size
+                (decimal_)))
+            (database_filespec_option
+              (file_size
+                (decimal_)))
+            (database_filespec_option
+              (file_size
+                (decimal_)))))))))
+
+================================================================================
+CREATE DATABASE ON PRIMARY multiple files
+================================================================================
+CREATE DATABASE d4
+ON PRIMARY
+(NAME = d4_dat1, FILENAME = 'c:\d4a.mdf', SIZE = 10MB),
+(NAME = d4_dat2, FILENAME = 'c:\d4b.ndf', SIZE = 10MB);
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_database
+          (id_)
+          (database_filespec
+            (database_filespec_option
+              (id_))
+            (database_filespec_option
+              (string_lit))
+            (database_filespec_option
+              (file_size
+                (decimal_))))
+          (database_filespec
+            (database_filespec_option
+              (id_))
+            (database_filespec_option
+              (string_lit))
+            (database_filespec_option
+              (file_size
+                (decimal_)))))))))
+
+================================================================================
+CREATE DATABASE ON PRIMARY with FILEGROUP
+================================================================================
+CREATE DATABASE d5
+ON PRIMARY
+(NAME = d5_dat1, FILENAME = 'c:\d5.mdf', SIZE = 10MB)
+FILEGROUP fg1
+(NAME = d5_dat2, FILENAME = 'c:\d5_fg1.ndf', SIZE = 10MB);
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_database
+          (id_)
+          (database_filespec
+            (database_filespec_option
+              (id_))
+            (database_filespec_option
+              (string_lit))
+            (database_filespec_option
+              (file_size
+                (decimal_))))
+          (filegroup_spec
+            (id_)
+            (database_filespec
+              (database_filespec_option
+                (id_))
+              (database_filespec_option
+                (string_lit))
+              (database_filespec_option
+                (file_size
+                  (decimal_))))))))))
+
+================================================================================
+CREATE DATABASE COLLATE and FOR ATTACH
+================================================================================
+CREATE DATABASE d6 COLLATE Latin1_General_CI_AS FOR ATTACH;
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_database
+          (id_)
+          (id_))))))
+
+================================================================================
+CREATE DATABASE FOR ATTACH_REBUILD_LOG with option
+================================================================================
+CREATE DATABASE d7 FOR ATTACH_REBUILD_LOG WITH SERVICE_BROKER;
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_database
+          (id_)
+          (WITH)
+          (create_database_option
+            (id_)))))))
+
+================================================================================
+CREATE DATABASE FOR ATTACH_FORCE_REBUILD_LOG with options
+================================================================================
+CREATE DATABASE d8 FOR ATTACH_FORCE_REBUILD_LOG WITH ENABLE_BROKER, SERVICE_BROKER;
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_database
+          (id_)
+          (WITH)
+          (create_database_option
+            (id_))
+          (create_database_option
+            (id_)))))))
+
+================================================================================
+CREATE DATABASE AS SNAPSHOT OF
+================================================================================
+CREATE DATABASE snap1 AS SNAPSHOT OF d1;
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_database
+          (id_)
+          (id_))))))
+
+================================================================================
+CREATE DATABASE CONTAINMENT NONE
+================================================================================
+CREATE DATABASE d10 CONTAINMENT = NONE;
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_database
+          (id_))))))
+
+================================================================================
+CREATE DATABASE CONTAINMENT PARTIAL with options
+================================================================================
+CREATE DATABASE d11 CONTAINMENT = PARTIAL WITH DB_CHAINING ON, TRUSTWORTHY ON;
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_database
+          (id_)
+          (WITH)
+          (create_database_option
+            (id_))
+          (create_database_option
+            (id_)))))))
+
+================================================================================
+CREATE DATABASE WITH LEDGER
+================================================================================
+CREATE DATABASE d12 WITH LEDGER = ON;
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_database
+          (id_)
+          (WITH)
+          (create_database_option
+            (id_)))))))
+
+================================================================================
+CREATE DATABASE WITH multiple options
+================================================================================
+CREATE DATABASE d13 WITH CATALOG_COLLATION = DATABASE_DEFAULT, LEDGER = ON;
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_database
+          (id_)
+          (WITH)
+          (create_database_option
+            (id_)
+            (id_))
+          (create_database_option
+            (id_)))))))
+
+================================================================================
+CREATE DATABASE WITH FILESTREAM nested options
+================================================================================
+CREATE DATABASE d14 WITH FILESTREAM(NON_TRANSACTED_ACCESS = OFF, DIRECTORY_NAME = 'dir1');
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_database
+          (id_)
+          (WITH)
+          (create_database_option
+            (id_)
+            (create_database_option
+              (id_))
+            (create_database_option
+              (id_)
+              (string_lit))))))))
+
+================================================================================
+CREATE DATABASE COLLATE with WITH option
+================================================================================
+CREATE DATABASE d15 COLLATE SQL_Latin1_General_CP1_CI_AS WITH CATALOG_COLLATION = DATABASE_DEFAULT;
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_database
+          (id_)
+          (id_)
+          (WITH)
+          (create_database_option
+            (id_)
+            (id_)))))))
+
+================================================================================
+CREATE DATABASE AS COPY OF server.db
+================================================================================
+CREATE DATABASE d16 AS COPY OF server1.srcdb;
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_database
+          (id_)
+          (func_proc_name_schema
+            (id_)
+            (id_)))))))
+
+================================================================================
+CREATE DATABASE AS COPY OF db
+================================================================================
+CREATE DATABASE d17 AS COPY OF srcdb;
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_database
+          (id_)
+          (func_proc_name_schema
+            (id_)))))))
+
+================================================================================
+CREATE DATABASE ON LOG ON FOR ATTACH
+================================================================================
+CREATE DATABASE d18
+ON (NAME = d18_dat, FILENAME = 'c:\d18.mdf')
+LOG ON (NAME = d18_log, FILENAME = 'c:\d18.ldf')
+FOR ATTACH;
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_database
+          (id_)
+          (database_filespec
+            (database_filespec_option
+              (id_))
+            (database_filespec_option
+              (string_lit)))
+          (database_filespec
+            (database_filespec_option
+              (id_))
+            (database_filespec_option
+              (string_lit))))))))
+
+================================================================================
+CREATE DATABASE multiple filegroups
+================================================================================
+CREATE DATABASE d19
+ON PRIMARY
+(NAME = d19_dat, FILENAME = 'c:\d19.mdf', SIZE = 10MB)
+FILEGROUP fg1
+(NAME = d19_fg1, FILENAME = 'c:\d19_fg1.ndf', SIZE = 5MB)
+FILEGROUP fg2
+(NAME = d19_fg2, FILENAME = 'c:\d19_fg2.ndf', SIZE = 5MB);
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_database
+          (id_)
+          (database_filespec
+            (database_filespec_option
+              (id_))
+            (database_filespec_option
+              (string_lit))
+            (database_filespec_option
+              (file_size
+                (decimal_))))
+          (filegroup_spec
+            (id_)
+            (database_filespec
+              (database_filespec_option
+                (id_))
+              (database_filespec_option
+                (string_lit))
+              (database_filespec_option
+                (file_size
+                  (decimal_)))))
+          (filegroup_spec
+            (id_)
+            (database_filespec
+              (database_filespec_option
+                (id_))
+              (database_filespec_option
+                (string_lit))
+              (database_filespec_option
+                (file_size
+                  (decimal_))))))))))
+
+================================================================================
+CREATE DATABASE FILEGROUP CONTAINS MEMORY_OPTIMIZED_DATA
+================================================================================
+CREATE DATABASE d20
+ON PRIMARY
+(NAME = d20_dat, FILENAME = 'c:\d20.mdf', SIZE = 10MB)
+FILEGROUP fg_mem CONTAINS MEMORY_OPTIMIZED_DATA
+(NAME = d20_mod, FILENAME = 'c:\d20_mod');
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_database
+          (id_)
+          (database_filespec
+            (database_filespec_option
+              (id_))
+            (database_filespec_option
+              (string_lit))
+            (database_filespec_option
+              (file_size
+                (decimal_))))
+          (filegroup_spec
+            (id_)
+            (database_filespec
+              (database_filespec_option
+                (id_))
+              (database_filespec_option
+                (string_lit)))))))))

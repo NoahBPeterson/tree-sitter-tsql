@@ -191,6 +191,7 @@ module.exports = grammar({
       ,$.create_sequence
       ,$.create_synonym
       ,$.truncate_table
+      ,$.create_database
       ,$.alter_database
       ,$.alter_table
       ,$.drop_table
@@ -226,6 +227,47 @@ module.exports = grammar({
       ,$.create_rule_statement
       ,$.create_default_statement
     ),
+
+    //https://learn.microsoft.com/en-us/sql/t-sql/statements/create-database-transact-sql
+    create_database: $ => prec.right(seq(
+      token(/CREATE/i), token(/DATABASE/i), $.id_,
+      optional(seq(token(/CONTAINMENT/i), token('='), choice(token(/NONE/i), token(/PARTIAL/i)))),
+      optional(seq(
+        token(/ON/i), optional(token(/PRIMARY/i)),
+        $.database_filespec, repeat(seq(token(','), $.database_filespec)),
+        repeat($.filegroup_spec),
+      )),
+      optional(seq(token(/LOG/i), token(/ON/i),
+        $.database_filespec, repeat(seq(token(','), $.database_filespec)))),
+      optional(seq(token(/COLLATE/i), $.id_)),
+      optional(choice(
+        seq(token(/FOR/i), choice(
+          token(/ATTACH/i),
+          token(/ATTACH_REBUILD_LOG/i),
+          token(/ATTACH_FORCE_REBUILD_LOG/i),
+        )),
+        seq(token(/AS/i), token(/SNAPSHOT/i), token(/OF/i), $.id_),
+        seq(token(/AS/i), token(/COPY/i), token(/OF/i), $.func_proc_name_schema),
+      )),
+      optional(seq($.WITH, $.create_database_option,
+        repeat(seq(token(','), $.create_database_option)))),
+      optional(SEMI),
+    )),
+
+    filegroup_spec: $ => seq(
+      token(/FILEGROUP/i), $.id_,
+      optional(seq(token(/CONTAINS/i), token(/MEMORY_OPTIMIZED_DATA/i))),
+      $.database_filespec, repeat(seq(token(','), $.database_filespec)),
+    ),
+
+    create_database_option: $ => prec.right(choice(
+      seq($.id_, token('='), choice($.id_, $.decimal_, token(/ON/i), token(/OFF/i),
+        token(/NULL/i), $.string_lit)),
+      seq($.id_, choice(token(/ON/i), token(/OFF/i))),
+      seq($.id_, token('('), $.create_database_option,
+        repeat(seq(token(','), $.create_database_option)), token(')')),
+      $.id_,
+    )),
 
     //https://learn.microsoft.com/en-us/sql/t-sql/statements/alter-database-transact-sql-file-and-filegroup-options
     alter_database: $ => seq(

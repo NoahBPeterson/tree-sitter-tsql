@@ -5,6 +5,11 @@
     "fields": {}
   },
   {
+    "type": "NONE",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "RECOMPILE",
     "named": true,
     "fields": {}
@@ -1647,6 +1652,68 @@
     }
   },
   {
+    "type": "create_database",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "WITH",
+          "named": true
+        },
+        {
+          "type": "create_database_option",
+          "named": true
+        },
+        {
+          "type": "database_filespec",
+          "named": true
+        },
+        {
+          "type": "filegroup_spec",
+          "named": true
+        },
+        {
+          "type": "func_proc_name_schema",
+          "named": true
+        },
+        {
+          "type": "id_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "create_database_option",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "create_database_option",
+          "named": true
+        },
+        {
+          "type": "decimal_",
+          "named": true
+        },
+        {
+          "type": "id_",
+          "named": true
+        },
+        {
+          "type": "string_lit",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "create_default_statement",
     "named": true,
     "fields": {},
@@ -2578,6 +2645,10 @@
         },
         {
           "type": "alter_user",
+          "named": true
+        },
+        {
+          "type": "create_database",
           "named": true
         },
         {
@@ -3732,6 +3803,25 @@
       "types": [
         {
           "type": "decimal_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "filegroup_spec",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "database_filespec",
+          "named": true
+        },
+        {
+          "type": "id_",
           "named": true
         }
       ]
@@ -7794,10 +7884,6 @@
   },
   {
     "type": "LOGIN",
-    "named": true
-  },
-  {
-    "type": "NONE",
     "named": true
   },
   {
