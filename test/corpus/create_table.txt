@@ -376,3 +376,184 @@ CREATE TABLE t1 (name VARCHAR(50) UNIQUE NONCLUSTERED)
                 (varchar_)
                 (decimal_))
               (column_constraint))))))))
+
+=====================================
+CREATE TABLE AS FileTable minimal
+=====================================
+
+CREATE TABLE t AS FileTable
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_table
+          (full_table_name
+            (id_)))))))
+
+=====================================
+CREATE TABLE AS FileTable with option
+=====================================
+
+CREATE TABLE t AS FileTable WITH (FILETABLE_DIRECTORY='foo')
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_table
+          (full_table_name
+            (id_))
+          (WITH)
+          (create_table_option
+            (id_)
+            (string_lit)))))))
+
+=====================================
+CREATE TABLE AS FileTable full
+=====================================
+
+CREATE TABLE t AS FileTable ON fg1 TEXTIMAGE_ON "default" FILESTREAM_ON "default" WITH (FILETABLE_COLLATE_FILENAME=Latin1_General_bin)
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_table
+          (full_table_name
+            (id_))
+          (id_)
+          (id_)
+          (id_)
+          (WITH)
+          (create_table_option
+            (id_)
+            (id_)))))))
+
+=====================================
+CREATE TABLE with ON and TEXTIMAGE_ON string_lit
+=====================================
+
+CREATE TABLE t (c1 INT) ON 'default' TEXTIMAGE_ON 'default'
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_table
+          (full_table_name
+            (id_))
+          (table_element
+            (column_definition
+              (id_)
+              (data_type
+                (int_))))
+          (string_lit)
+          (string_lit))))))
+
+=====================================
+CREATE TABLE with TEXTIMAGE_ON and FILESTREAM_ON
+=====================================
+
+CREATE TABLE t (c1 INT) TEXTIMAGE_ON someGroup FILESTREAM_ON anotherGroup
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_table
+          (full_table_name
+            (id_))
+          (table_element
+            (column_definition
+              (id_)
+              (data_type
+                (int_))))
+          (id_)
+          (id_))))))
+
+=====================================
+CREATE TABLE with FILESTREAM_ON only
+=====================================
+
+CREATE TABLE t (c1 INT) FILESTREAM_ON anotherGroup
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_table
+          (full_table_name
+            (id_))
+          (table_element
+            (column_definition
+              (id_)
+              (data_type
+                (int_))))
+          (id_))))))
+
+=====================================
+CREATE TABLE with ON bracket id
+=====================================
+
+CREATE TABLE t (c1 INT) ON [fg]
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_table
+          (full_table_name
+            (id_))
+          (table_element
+            (column_definition
+              (id_)
+              (data_type
+                (int_))))
+          (id_))))))
+
+=====================================
+CREATE TABLE with ON TEXTIMAGE_ON and WITH
+=====================================
+
+CREATE TABLE t (c1 INT, c2 TEXT) ON [fg] TEXTIMAGE_ON [default] WITH (DATA_COMPRESSION = NONE)
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_table
+          (full_table_name
+            (id_))
+          (table_element
+            (column_definition
+              (id_)
+              (data_type
+                (int_))))
+          (table_element
+            (column_definition
+              (id_)
+              (data_type
+                (text_))))
+          (id_)
+          (id_)
+          (WITH)
+          (create_table_option
+            (id_)
+            (NONE)))))))

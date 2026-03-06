@@ -1690,8 +1690,7 @@ CREATE TABLE
 
 -------------------------------------
 
-(tsql_file
-  (ERROR))
+(ERROR)
 
 =====================================
 ERROR CREATE TABLE no columns
@@ -1702,8 +1701,12 @@ CREATE TABLE t
 -------------------------------------
 
 (tsql_file
-  (ERROR
-    (id_)))
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_table
+          (full_table_name
+            (id_)))))))
 
 =====================================
 ERROR CREATE TABLE unclosed paren
@@ -1714,9 +1717,13 @@ CREATE TABLE t (
 -------------------------------------
 
 (tsql_file
-  (ERROR
-    (full_table_name
-      (id_))))
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_table
+          (full_table_name
+            (id_))))))
+  (ERROR))
 
 =====================================
 ERROR CREATE TABLE empty columns
@@ -1727,9 +1734,13 @@ CREATE TABLE t ()
 -------------------------------------
 
 (tsql_file
-  (ERROR
-    (full_table_name
-      (id_))))
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_table
+          (full_table_name
+            (id_))))))
+  (ERROR))
 
 =====================================
 ERROR CREATE TABLE leading comma
@@ -1786,9 +1797,13 @@ CREATE TABLE t (PRIMARY KEY)
 -------------------------------------
 
 (tsql_file
-  (ERROR
-    (full_table_name
-      (id_))))
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_table
+          (full_table_name
+            (id_))))))
+  (ERROR))
 
 =====================================
 ERROR CREATE TABLE named PK no cols
@@ -1799,9 +1814,13 @@ CREATE TABLE t (CONSTRAINT pk PRIMARY KEY)
 -------------------------------------
 
 (tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_table
+          (full_table_name
+            (id_))))))
   (ERROR
-    (full_table_name
-      (id_))
     (id_)))
 
 =====================================

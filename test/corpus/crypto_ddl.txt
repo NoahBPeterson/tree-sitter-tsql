@@ -1,0 +1,864 @@
+=====================================
+CREATE MASTER KEY
+=====================================
+
+CREATE MASTER KEY ENCRYPTION BY PASSWORD = 'StrongP@ss1'
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_master_key
+          (string_lit))))))
+
+=====================================
+ALTER MASTER KEY - regenerate
+=====================================
+
+ALTER MASTER KEY REGENERATE WITH ENCRYPTION BY PASSWORD = 'NewP@ss1'
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_master_key
+          (WITH)
+          (string_lit))))))
+
+=====================================
+ALTER MASTER KEY - force regenerate
+=====================================
+
+ALTER MASTER KEY FORCE REGENERATE WITH ENCRYPTION BY PASSWORD = 'NewP@ss2'
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_master_key
+          (WITH)
+          (string_lit))))))
+
+=====================================
+ALTER MASTER KEY - add encryption by service master key
+=====================================
+
+ALTER MASTER KEY ADD ENCRYPTION BY SERVICE MASTER KEY
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_master_key)))))
+
+=====================================
+ALTER MASTER KEY - drop encryption by password
+=====================================
+
+ALTER MASTER KEY DROP ENCRYPTION BY PASSWORD = 'OldP@ss1'
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_master_key
+          (string_lit))))))
+
+=====================================
+DROP MASTER KEY
+=====================================
+
+DROP MASTER KEY
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_master_key)))))
+
+=====================================
+CREATE CERTIFICATE - with subject
+=====================================
+
+CREATE CERTIFICATE MyCert WITH SUBJECT = 'Test Certificate'
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_certificate
+          (id_)
+          (WITH)
+          (string_lit))))))
+
+=====================================
+CREATE CERTIFICATE - with dates
+=====================================
+
+CREATE CERTIFICATE MyCert WITH SUBJECT = 'Test', START_DATE = '2024-01-01', EXPIRY_DATE = '2025-12-31'
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_certificate
+          (id_)
+          (WITH)
+          (string_lit)
+          (string_lit)
+          (string_lit))))))
+
+=====================================
+CREATE CERTIFICATE - with authorization
+=====================================
+
+CREATE CERTIFICATE MyCert AUTHORIZATION dbo WITH SUBJECT = 'Test Certificate'
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_certificate
+          (id_)
+          (id_)
+          (WITH)
+          (string_lit))))))
+
+=====================================
+CREATE CERTIFICATE - from file
+=====================================
+
+CREATE CERTIFICATE MyCert FROM FILE = '/tmp/cert.cer'
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_certificate
+          (id_)
+          (string_lit))))))
+
+=====================================
+CREATE CERTIFICATE - from file with private key
+=====================================
+
+CREATE CERTIFICATE MyCert FROM FILE = '/tmp/cert.cer' WITH PRIVATE KEY (FILE = '/tmp/cert.pvk', DECRYPTION BY PASSWORD = 'OldP@ss', ENCRYPTION BY PASSWORD = 'NewP@ss')
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_certificate
+          (id_)
+          (string_lit)
+          (WITH)
+          (string_lit)
+          (string_lit)
+          (string_lit))))))
+
+=====================================
+ALTER CERTIFICATE - remove private key
+=====================================
+
+ALTER CERTIFICATE MyCert REMOVE PRIVATE KEY
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_certificate
+          (id_))))))
+
+=====================================
+ALTER CERTIFICATE - with private key
+=====================================
+
+ALTER CERTIFICATE MyCert WITH PRIVATE KEY (DECRYPTION BY PASSWORD = 'OldP@ss', ENCRYPTION BY PASSWORD = 'NewP@ss')
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_certificate
+          (id_)
+          (WITH)
+          (string_lit)
+          (string_lit))))))
+
+=====================================
+ALTER CERTIFICATE - active for begin dialog
+=====================================
+
+ALTER CERTIFICATE MyCert WITH ACTIVE FOR BEGIN_DIALOG = ON
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_certificate
+          (id_)
+          (WITH))))))
+
+=====================================
+DROP CERTIFICATE
+=====================================
+
+DROP CERTIFICATE MyCert
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_certificate
+          (id_))))))
+
+=====================================
+CREATE SYMMETRIC KEY - with certificate
+=====================================
+
+CREATE SYMMETRIC KEY MySymKey AUTHORIZATION dbo WITH ALGORITHM = AES_256, ENCRYPTION BY CERTIFICATE MyCert
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_symmetric_key
+          (id_)
+          (id_)
+          (WITH)
+          (id_)
+          (id_))))))
+
+=====================================
+CREATE SYMMETRIC KEY - with password
+=====================================
+
+CREATE SYMMETRIC KEY MySymKey WITH ALGORITHM = AES_128, ENCRYPTION BY PASSWORD = 'KeyP@ss1'
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_symmetric_key
+          (id_)
+          (WITH)
+          (id_)
+          (string_lit))))))
+
+=====================================
+DROP SYMMETRIC KEY
+=====================================
+
+DROP SYMMETRIC KEY MySymKey
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_symmetric_key
+          (id_))))))
+
+=====================================
+CREATE ASYMMETRIC KEY - from file
+=====================================
+
+CREATE ASYMMETRIC KEY MyAsymKey FROM FILE = '/tmp/key.snk'
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_asymmetric_key
+          (id_)
+          (string_lit))))))
+
+=====================================
+CREATE ASYMMETRIC KEY - from assembly
+=====================================
+
+CREATE ASYMMETRIC KEY MyAsymKey FROM ASSEMBLY MyAssembly
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_asymmetric_key
+          (id_)
+          (id_))))))
+
+=====================================
+CREATE ASYMMETRIC KEY - with algorithm
+=====================================
+
+CREATE ASYMMETRIC KEY MyAsymKey WITH ALGORITHM = RSA_2048
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_asymmetric_key
+          (id_)
+          (WITH)
+          (id_))))))
+
+=====================================
+CREATE ASYMMETRIC KEY - with authorization
+=====================================
+
+CREATE ASYMMETRIC KEY MyAsymKey AUTHORIZATION dbo WITH ALGORITHM = RSA_4096
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_asymmetric_key
+          (id_)
+          (id_)
+          (WITH)
+          (id_))))))
+
+=====================================
+DROP ASYMMETRIC KEY
+=====================================
+
+DROP ASYMMETRIC KEY MyAsymKey
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_asymmetric_key
+          (id_))))))
+
+=====================================
+ADD SIGNATURE - by certificate
+=====================================
+
+ADD SIGNATURE TO MyProc BY CERTIFICATE MyCert
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (add_signature_statement
+          (id_)
+          (id_))))))
+
+=====================================
+ADD SIGNATURE - schema qualified
+=====================================
+
+ADD SIGNATURE TO dbo::MyProc BY ASYMMETRIC KEY MyAsymKey
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (add_signature_statement
+          (id_)
+          (id_)
+          (id_))))))
+
+=====================================
+ADD COUNTER SIGNATURE
+=====================================
+
+ADD COUNTER SIGNATURE TO MyProc BY CERTIFICATE MyCert
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (add_signature_statement
+          (id_)
+          (id_))))))
+
+=====================================
+ADD SIGNATURE - with password
+=====================================
+
+ADD SIGNATURE TO MyProc BY CERTIFICATE MyCert WITH PASSWORD = 'CertP@ss'
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (add_signature_statement
+          (id_)
+          (id_)
+          (WITH)
+          (string_lit))))))
+
+=====================================
+CREATE XML SCHEMA COLLECTION
+=====================================
+
+CREATE XML SCHEMA COLLECTION MySchemaCol AS N'<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"></xs:schema>'
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_xml_schema_collection
+          (func_proc_name_schema
+            (id_))
+          (as)
+          (expression
+            (primitive_expression
+              (primitive_constant
+                (string_lit)))))))))
+
+=====================================
+CREATE XML SCHEMA COLLECTION - schema qualified
+=====================================
+
+CREATE XML SCHEMA COLLECTION dbo.MySchemaCol AS N'<xs:schema/>'
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_xml_schema_collection
+          (func_proc_name_schema
+            (id_)
+            (id_))
+          (as)
+          (expression
+            (primitive_expression
+              (primitive_constant
+                (string_lit)))))))))
+
+=====================================
+DROP XML SCHEMA COLLECTION
+=====================================
+
+DROP XML SCHEMA COLLECTION dbo.MySchemaCol
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_xml_schema_collection
+          (func_proc_name_schema
+            (id_)
+            (id_)))))))
+
+=====================================
+ALTER SERVICE MASTER KEY - regenerate
+=====================================
+
+ALTER SERVICE MASTER KEY REGENERATE
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_service_master_key)))))
+
+=====================================
+ALTER SERVICE MASTER KEY - force regenerate
+=====================================
+
+ALTER SERVICE MASTER KEY FORCE REGENERATE
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_service_master_key)))))
+
+=====================================
+ALTER SERVICE MASTER KEY - with accounts
+=====================================
+
+ALTER SERVICE MASTER KEY WITH OLD_ACCOUNT = 'OldAccount', OLD_PASSWORD = 'OldPwd', NEW_ACCOUNT = 'NewAccount', NEW_PASSWORD = 'NewPwd'
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_service_master_key
+          (WITH)
+          (id_)
+          (string_lit)
+          (id_)
+          (string_lit)
+          (id_)
+          (string_lit)
+          (id_)
+          (string_lit))))))
+
+=====================================
+CREATE APPLICATION ROLE
+=====================================
+
+CREATE APPLICATION ROLE MyAppRole WITH PASSWORD = 'AppP@ss1'
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_application_role
+          (id_)
+          (WITH)
+          (login_option
+            (id_)
+            (expression
+              (primitive_expression
+                (primitive_constant
+                  (string_lit))))))))))
+
+=====================================
+CREATE APPLICATION ROLE - with schema
+=====================================
+
+CREATE APPLICATION ROLE MyAppRole WITH PASSWORD = 'AppP@ss1', DEFAULT_SCHEMA = dbo
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_application_role
+          (id_)
+          (WITH)
+          (login_option
+            (id_)
+            (expression
+              (primitive_expression
+                (primitive_constant
+                  (string_lit)))))
+          (login_option
+            (id_)
+            (expression
+              (full_column_name
+                (id_)))))))))
+
+=====================================
+ALTER APPLICATION ROLE
+=====================================
+
+ALTER APPLICATION ROLE MyAppRole WITH NAME = NewAppRole
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_application_role
+          (id_)
+          (WITH)
+          (login_option
+            (id_)
+            (expression
+              (full_column_name
+                (id_)))))))))
+
+=====================================
+DROP APPLICATION ROLE
+=====================================
+
+DROP APPLICATION ROLE MyAppRole
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_application_role
+          (id_))))))
+
+=====================================
+CREATE SEARCH PROPERTY LIST
+=====================================
+
+CREATE SEARCH PROPERTY LIST MyPropList
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_search_property_list
+          (id_))))))
+
+=====================================
+CREATE SEARCH PROPERTY LIST - from source
+=====================================
+
+CREATE SEARCH PROPERTY LIST MyPropList FROM SourceDB.SourceList
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_search_property_list
+          (id_)
+          (id_)
+          (id_))))))
+
+=====================================
+CREATE SEARCH PROPERTY LIST - with authorization
+=====================================
+
+CREATE SEARCH PROPERTY LIST MyPropList FROM SourceList AUTHORIZATION dbo
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_search_property_list
+          (id_)
+          (id_)
+          (id_))))))
+
+=====================================
+DROP SEARCH PROPERTY LIST
+=====================================
+
+DROP SEARCH PROPERTY LIST MyPropList
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_search_property_list
+          (id_))))))
+
+=====================================
+CREATE CRYPTOGRAPHIC PROVIDER
+=====================================
+
+CREATE CRYPTOGRAPHIC PROVIDER MyProvider FROM FILE = 'C:\provider.dll'
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_cryptographic_provider
+          (id_)
+          (string_lit))))))
+
+=====================================
+ALTER CRYPTOGRAPHIC PROVIDER - from file
+=====================================
+
+ALTER CRYPTOGRAPHIC PROVIDER MyProvider FROM FILE = 'C:\provider_v2.dll'
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_cryptographic_provider
+          (id_)
+          (string_lit))))))
+
+=====================================
+ALTER CRYPTOGRAPHIC PROVIDER - enable
+=====================================
+
+ALTER CRYPTOGRAPHIC PROVIDER MyProvider ENABLE
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_cryptographic_provider
+          (id_))))))
+
+=====================================
+DROP CRYPTOGRAPHIC PROVIDER
+=====================================
+
+DROP CRYPTOGRAPHIC PROVIDER MyProvider
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_cryptographic_provider
+          (id_))))))
+
+=====================================
+CREATE DATABASE ENCRYPTION KEY - with certificate
+=====================================
+
+CREATE DATABASE ENCRYPTION KEY WITH ALGORITHM = AES_256 ENCRYPTION BY SERVER CERTIFICATE MyCert
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_database_encryption_key
+          (WITH)
+          (id_)
+          (id_))))))
+
+=====================================
+CREATE DATABASE ENCRYPTION KEY - with asymmetric key
+=====================================
+
+CREATE DATABASE ENCRYPTION KEY WITH ALGORITHM = AES_128 ENCRYPTION BY SERVER ASYMMETRIC KEY MyAsymKey
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_database_encryption_key
+          (WITH)
+          (id_)
+          (id_))))))
+
+=====================================
+DROP DATABASE ENCRYPTION KEY
+=====================================
+
+DROP DATABASE ENCRYPTION KEY
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_database_encryption_key)))))
+
+=====================================
+CREATE DATABASE SCOPED CREDENTIAL - identity only
+=====================================
+
+CREATE DATABASE SCOPED CREDENTIAL MyCred WITH IDENTITY = 'MyIdentity'
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_database_scoped_credential
+          (id_)
+          (WITH)
+          (string_lit))))))
+
+=====================================
+CREATE DATABASE SCOPED CREDENTIAL - with secret
+=====================================
+
+CREATE DATABASE SCOPED CREDENTIAL MyCred WITH IDENTITY = 'MyIdentity', SECRET = 'MySecret123'
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_database_scoped_credential
+          (id_)
+          (WITH)
+          (string_lit)
+          (string_lit))))))
+
+=====================================
+DROP DATABASE SCOPED CREDENTIAL
+=====================================
+
+DROP DATABASE SCOPED CREDENTIAL MyCred
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_database_scoped_credential
+          (id_))))))

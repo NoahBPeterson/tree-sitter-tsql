@@ -191,3 +191,179 @@ CREATE UNIQUE NONCLUSTERED INDEX IX_Full ON dbo.Products (ProductName)
           (alter_table_option
             (id_)
             (decimal_)))))))
+
+=====================================
+CREATE NONCLUSTERED COLUMNSTORE INDEX minimal
+=====================================
+
+CREATE NONCLUSTERED COLUMNSTORE INDEX ncci ON t (a)
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_columnstore_index
+          (id_)
+          (full_table_name
+            (id_))
+          (column_name_list
+            (id_)))))))
+
+=====================================
+CREATE NONCLUSTERED COLUMNSTORE INDEX with WHERE
+=====================================
+
+CREATE NONCLUSTERED COLUMNSTORE INDEX ncci ON t (a) WHERE a > 0
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_columnstore_index
+          (id_)
+          (full_table_name
+            (id_))
+          (column_name_list
+            (id_))
+          (search_condition
+            (predicate
+              (expression
+                (full_column_name
+                  (id_)))
+              (comparison_operator)
+              (expression
+                (primitive_expression
+                  (primitive_constant
+                    (decimal_)))))))))))
+
+=====================================
+CREATE NONCLUSTERED COLUMNSTORE INDEX with COMPRESSION_DELAY
+=====================================
+
+CREATE NONCLUSTERED COLUMNSTORE INDEX ncci ON t (a) WITH (COMPRESSION_DELAY = 42)
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_columnstore_index
+          (id_)
+          (full_table_name
+            (id_))
+          (column_name_list
+            (id_))
+          (columnstore_index_option
+            (id_)
+            (decimal_)))))))
+
+=====================================
+CREATE NONCLUSTERED COLUMNSTORE INDEX with COMPRESSION_DELAY MINUTE
+=====================================
+
+CREATE NONCLUSTERED COLUMNSTORE INDEX ncci ON t (a) WITH (COMPRESSION_DELAY = 1 MINUTE)
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_columnstore_index
+          (id_)
+          (full_table_name
+            (id_))
+          (column_name_list
+            (id_))
+          (columnstore_index_option
+            (id_)
+            (decimal_)
+            (id_)))))))
+
+=====================================
+CREATE NONCLUSTERED COLUMNSTORE INDEX with COMPRESSION_DELAY MINUTES
+=====================================
+
+CREATE NONCLUSTERED COLUMNSTORE INDEX ncci ON t (a) WITH (COMPRESSION_DELAY = 10 MINUTES)
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_columnstore_index
+          (id_)
+          (full_table_name
+            (id_))
+          (column_name_list
+            (id_))
+          (columnstore_index_option
+            (id_)
+            (decimal_)
+            (id_)))))))
+
+=====================================
+CREATE CLUSTERED COLUMNSTORE INDEX no columns
+=====================================
+
+CREATE CLUSTERED COLUMNSTORE INDEX cci ON t
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_columnstore_index
+          (id_)
+          (full_table_name
+            (id_)))))))
+
+=====================================
+CREATE CLUSTERED COLUMNSTORE INDEX with ORDER
+=====================================
+
+CREATE CLUSTERED COLUMNSTORE INDEX cci ON t WITH (ORDER(a))
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_columnstore_index
+          (id_)
+          (full_table_name
+            (id_))
+          (columnstore_index_option
+            (column_name_list
+              (id_))))))))
+
+=====================================
+CREATE CLUSTERED COLUMNSTORE INDEX multiple options
+=====================================
+
+CREATE CLUSTERED COLUMNSTORE INDEX cci ON t WITH (SORT_IN_TEMPDB = ON, ORDER(a, b))
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_columnstore_index
+          (id_)
+          (full_table_name
+            (id_))
+          (columnstore_index_option
+            (id_))
+          (columnstore_index_option
+            (column_name_list
+              (id_)
+              (id_))))))))

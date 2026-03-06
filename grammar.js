@@ -182,6 +182,7 @@ module.exports = grammar({
     ddl_clause: $ => choice(
       $.create_table
       ,$.create_index
+      ,$.create_columnstore_index
       ,$.create_or_alter_procedure
       ,$.create_or_alter_function
       ,$.create_or_alter_view
@@ -226,6 +227,40 @@ module.exports = grammar({
       ,$.drop_partition_scheme
       ,$.create_rule_statement
       ,$.create_default_statement
+      // Cryptographic DDL
+      ,$.create_master_key
+      ,$.alter_master_key
+      ,$.drop_master_key
+      ,$.create_certificate
+      ,$.alter_certificate
+      ,$.drop_certificate
+      ,$.create_symmetric_key
+      ,$.drop_symmetric_key
+      ,$.create_asymmetric_key
+      ,$.drop_asymmetric_key
+      ,$.add_signature_statement
+      // XML Schema Collection
+      ,$.create_xml_schema_collection
+      ,$.drop_xml_schema_collection
+      // ALTER SERVICE MASTER KEY
+      ,$.alter_service_master_key
+      // Application Roles
+      ,$.create_application_role
+      ,$.alter_application_role
+      ,$.drop_application_role
+      // Search Property Lists
+      ,$.create_search_property_list
+      ,$.drop_search_property_list
+      // Cryptographic Providers
+      ,$.create_cryptographic_provider
+      ,$.alter_cryptographic_provider
+      ,$.drop_cryptographic_provider
+      // Database Encryption Key
+      ,$.create_database_encryption_key
+      ,$.drop_database_encryption_key
+      // Database Scoped Credentials
+      ,$.create_database_scoped_credential
+      ,$.drop_database_scoped_credential
     ),
 
     //https://learn.microsoft.com/en-us/sql/t-sql/statements/create-database-transact-sql
@@ -526,6 +561,28 @@ module.exports = grammar({
     )),
 
     // =====================
+    // CREATE COLUMNSTORE INDEX
+    // =====================
+
+    create_columnstore_index: $ => prec.right(seq(
+      token(/CREATE/i),
+      optional(choice(token(/CLUSTERED/i), token(/NONCLUSTERED/i))),
+      token(/COLUMNSTORE/i), token(/INDEX/i),
+      $.id_,
+      token(/ON/i), $.full_table_name,
+      optional(seq('(', $.column_name_list, ')')),
+      optional(seq(token(/WHERE/i), $.search_condition)),
+      optional(seq(token(/WITH/i), '(', $.columnstore_index_option,
+        repeat(seq(',', $.columnstore_index_option)), ')')),
+      optional(seq(token(/ON/i), choice($.id_, $.string_lit))),
+    )),
+
+    columnstore_index_option: $ => choice(
+      seq(token(/ORDER/i), '(', $.column_name_list, ')'),
+      seq($.id_, token('='), choice(seq($.decimal_, optional($.id_)), $.id_, token(/ON/i), token(/OFF/i))),
+    ),
+
+    // =====================
     // CREATE/ALTER PROCEDURE
     // =====================
 
@@ -791,9 +848,15 @@ module.exports = grammar({
     create_table: $ => prec.right(seq(
       token(/CREATE/i), token(/TABLE/i),
       $.full_table_name,
-      token('('),
-      $.table_element, repeat(seq(token(','), $.table_element)),
-      token(')'),
+      optional(seq(
+        token('('),
+        $.table_element, repeat(seq(token(','), $.table_element)),
+        token(')'),
+      )),
+      optional(seq(token(/AS/i), token(/FILETABLE/i))),
+      optional(seq(token(/ON/i), choice($.id_, $.string_lit))),
+      optional(seq(token(/TEXTIMAGE_ON/i), choice($.id_, $.string_lit))),
+      optional(seq(token(/FILESTREAM_ON/i), choice($.id_, $.string_lit))),
       optional(seq($.WITH, token('('), $.create_table_option, repeat(seq(token(','), $.create_table_option)), token(')'))),
     )),
 
@@ -803,7 +866,7 @@ module.exports = grammar({
         token(/ON/i),
         token(/OFF/i),
       )),
-      seq($.id_, token('='), choice($.id_, $.decimal_, token(/ON/i), token(/OFF/i))),
+      seq($.id_, token('='), choice($.id_, $.decimal_, token(/ON/i), token(/OFF/i), $.NONE, $.string_lit, $.null_)),
     ),
 
     table_element: $ => choice(
@@ -1144,6 +1207,252 @@ module.exports = grammar({
       seq(token(/PASSWORD/i), token('='), $.string_lit),
     ),
 
+    // =====================
+    // CREATE/ALTER/DROP MASTER KEY
+    // =====================
+    create_master_key: $ => seq(
+      token(/CREATE/i), token(/MASTER/i), token(/KEY/i),
+      token(/ENCRYPTION/i), token(/BY/i), token(/PASSWORD/i), token('='), $.string_lit,
+    ),
+
+    alter_master_key: $ => prec.right(seq(
+      token(/ALTER/i), token(/MASTER/i), token(/KEY/i),
+      choice(
+        seq(optional(token(/FORCE/i)), token(/REGENERATE/i), $.WITH,
+          token(/ENCRYPTION/i), token(/BY/i), token(/PASSWORD/i), token('='), $.string_lit),
+        seq(choice(token(/ADD/i), token(/DROP/i)), token(/ENCRYPTION/i), token(/BY/i),
+          choice(
+            seq(token(/SERVICE/i), token(/MASTER/i), token(/KEY/i)),
+            seq(token(/PASSWORD/i), token('='), $.string_lit),
+          )),
+      ),
+    )),
+
+    drop_master_key: $ => seq(
+      token(/DROP/i), token(/MASTER/i), token(/KEY/i),
+    ),
+
+    // =====================
+    // CREATE/ALTER/DROP CERTIFICATE
+    // =====================
+    create_certificate: $ => prec.right(seq(
+      token(/CREATE/i), token(/CERTIFICATE/i), $.id_,
+      optional(seq(token(/AUTHORIZATION/i), $.id_)),
+      choice(
+        seq($.WITH, token(/SUBJECT/i), token('='), $.string_lit,
+          optional(seq(token(','), token(/START_DATE/i), token('='), $.string_lit)),
+          optional(seq(token(','), token(/EXPIRY_DATE/i), token('='), $.string_lit)),
+        ),
+        seq(token(/FROM/i), token(/FILE/i), token('='), $.string_lit,
+          optional(seq($.WITH, token(/PRIVATE/i), token(/KEY/i), token('('),
+            $._cert_private_key_option,
+            repeat(seq(token(','), $._cert_private_key_option)),
+            token(')'),
+          )),
+        ),
+      ),
+    )),
+
+    alter_certificate: $ => prec.right(seq(
+      token(/ALTER/i), token(/CERTIFICATE/i), $.id_,
+      choice(
+        seq(token(/REMOVE/i), token(/PRIVATE/i), token(/KEY/i)),
+        seq($.WITH, token(/PRIVATE/i), token(/KEY/i), token('('),
+          $._cert_private_key_option,
+          repeat(seq(token(','), $._cert_private_key_option)),
+          token(')'),
+        ),
+        seq($.WITH, token(/ACTIVE/i), token(/FOR/i), token(/BEGIN_DIALOG/i), token('='),
+          choice(token(/ON/i), token(/OFF/i))),
+      ),
+    )),
+
+    drop_certificate: $ => seq(
+      token(/DROP/i), token(/CERTIFICATE/i), $.id_,
+    ),
+
+    _cert_private_key_option: $ => choice(
+      seq(token(/FILE/i), token('='), $.string_lit),
+      seq(token(/DECRYPTION/i), token(/BY/i), token(/PASSWORD/i), token('='), $.string_lit),
+      seq(token(/ENCRYPTION/i), token(/BY/i), token(/PASSWORD/i), token('='), $.string_lit),
+    ),
+
+    // =====================
+    // CREATE/DROP SYMMETRIC KEY
+    // =====================
+    create_symmetric_key: $ => prec.right(seq(
+      token(/CREATE/i), token(/SYMMETRIC/i), token(/KEY/i), $.id_,
+      optional(seq(token(/AUTHORIZATION/i), $.id_)),
+      $.WITH, token(/ALGORITHM/i), token('='), $.id_,
+      token(','), token(/ENCRYPTION/i), token(/BY/i),
+      $._key_source, repeat(seq(token(','), $._key_source)),
+    )),
+
+    drop_symmetric_key: $ => seq(
+      token(/DROP/i), token(/SYMMETRIC/i), token(/KEY/i), $.id_,
+    ),
+
+    // =====================
+    // CREATE/DROP ASYMMETRIC KEY
+    // =====================
+    create_asymmetric_key: $ => prec.right(seq(
+      token(/CREATE/i), token(/ASYMMETRIC/i), token(/KEY/i), $.id_,
+      optional(seq(token(/AUTHORIZATION/i), $.id_)),
+      choice(
+        seq(token(/FROM/i), choice(
+          seq(token(/FILE/i), token('='), $.string_lit),
+          seq(token(/ASSEMBLY/i), $.id_),
+        )),
+        seq($.WITH, token(/ALGORITHM/i), token('='), $.id_),
+      ),
+    )),
+
+    drop_asymmetric_key: $ => prec.right(seq(
+      token(/DROP/i), token(/ASYMMETRIC/i), token(/KEY/i), $.id_,
+      optional(seq(token(/REMOVE/i), token(/PROVIDER/i), token(/KEY/i))),
+    )),
+
+    _key_source: $ => choice(
+      seq(token(/CERTIFICATE/i), $.id_),
+      seq(token(/ASYMMETRIC/i), token(/KEY/i), $.id_),
+      seq(token(/SYMMETRIC/i), token(/KEY/i), $.id_),
+      seq(token(/PASSWORD/i), token('='), $.string_lit),
+    ),
+
+    // =====================
+    // ADD [COUNTER] SIGNATURE
+    // =====================
+    add_signature_statement: $ => prec.right(seq(
+      token(/ADD/i), optional(token(/COUNTER/i)), token(/SIGNATURE/i),
+      token(/TO/i),
+      optional(seq($.id_, token('::'))),
+      $.id_,
+      token(/BY/i),
+      $._signature_by, repeat(seq(token(','), $._signature_by)),
+    )),
+
+    _signature_by: $ => prec.right(seq(
+      choice(
+        seq(token(/CERTIFICATE/i), $.id_),
+        seq(token(/ASYMMETRIC/i), token(/KEY/i), $.id_),
+      ),
+      optional(seq($.WITH, token(/PASSWORD/i), token('='), $.string_lit)),
+    )),
+
+    // =====================
+    // CREATE/DROP XML SCHEMA COLLECTION
+    // =====================
+    create_xml_schema_collection: $ => seq(
+      token(/CREATE/i), token(/XML/i), token(/SCHEMA/i), token(/COLLECTION/i),
+      $.func_proc_name_schema,
+      $.as, $.expression,
+    ),
+
+    drop_xml_schema_collection: $ => seq(
+      token(/DROP/i), token(/XML/i), token(/SCHEMA/i), token(/COLLECTION/i),
+      $.func_proc_name_schema,
+    ),
+
+    // =====================
+    // ALTER SERVICE MASTER KEY
+    // =====================
+    alter_service_master_key: $ => prec.right(seq(
+      token(/ALTER/i), token(/SERVICE/i), token(/MASTER/i), token(/KEY/i),
+      choice(
+        seq(optional(token(/FORCE/i)), token(/REGENERATE/i)),
+        seq($.WITH,
+          $.id_, token('='), $.string_lit, token(','),
+          $.id_, token('='), $.string_lit, token(','),
+          $.id_, token('='), $.string_lit, token(','),
+          $.id_, token('='), $.string_lit,
+        ),
+      ),
+    )),
+
+    // =====================
+    // CREATE/ALTER/DROP APPLICATION ROLE
+    // =====================
+    create_application_role: $ => prec.right(seq(
+      token(/CREATE/i), token(/APPLICATION/i), token(/ROLE/i),
+      $.id_,
+      $.WITH, $.login_option, repeat(seq(token(','), $.login_option)),
+    )),
+
+    alter_application_role: $ => prec.right(seq(
+      token(/ALTER/i), token(/APPLICATION/i), token(/ROLE/i),
+      $.id_,
+      $.WITH, $.login_option, repeat(seq(token(','), $.login_option)),
+    )),
+
+    drop_application_role: $ => seq(
+      token(/DROP/i), token(/APPLICATION/i), token(/ROLE/i), $.id_,
+    ),
+
+    // =====================
+    // CREATE/DROP SEARCH PROPERTY LIST
+    // =====================
+    create_search_property_list: $ => prec.right(seq(
+      token(/CREATE/i), token(/SEARCH/i), token(/PROPERTY/i), token(/LIST/i),
+      $.id_,
+      optional(seq(token(/FROM/i), optional(seq($.id_, token('.'))), $.id_)),
+      optional(seq(token(/AUTHORIZATION/i), $.id_)),
+    )),
+
+    drop_search_property_list: $ => seq(
+      token(/DROP/i), token(/SEARCH/i), token(/PROPERTY/i), token(/LIST/i), $.id_,
+    ),
+
+    // =====================
+    // CREATE/ALTER/DROP CRYPTOGRAPHIC PROVIDER
+    // =====================
+    create_cryptographic_provider: $ => seq(
+      token(/CREATE/i), token(/CRYPTOGRAPHIC/i), token(/PROVIDER/i),
+      $.id_,
+      token(/FROM/i), token(/FILE/i), token('='), $.string_lit,
+    ),
+
+    alter_cryptographic_provider: $ => prec.right(seq(
+      token(/ALTER/i), token(/CRYPTOGRAPHIC/i), token(/PROVIDER/i),
+      $.id_,
+      optional(seq(token(/FROM/i), token(/FILE/i), token('='), $.string_lit)),
+      optional(choice(token(/ENABLE/i), token(/DISABLE/i))),
+    )),
+
+    drop_cryptographic_provider: $ => seq(
+      token(/DROP/i), token(/CRYPTOGRAPHIC/i), token(/PROVIDER/i), $.id_,
+    ),
+
+    // =====================
+    // CREATE/DROP DATABASE ENCRYPTION KEY
+    // =====================
+    create_database_encryption_key: $ => seq(
+      token(/CREATE/i), token(/DATABASE/i), token(/ENCRYPTION/i), token(/KEY/i),
+      $.WITH, token(/ALGORITHM/i), token('='), $.id_,
+      token(/ENCRYPTION/i), token(/BY/i), token(/SERVER/i),
+      choice(
+        seq(token(/CERTIFICATE/i), $.id_),
+        seq(token(/ASYMMETRIC/i), token(/KEY/i), $.id_),
+      ),
+    ),
+
+    drop_database_encryption_key: $ => seq(
+      token(/DROP/i), token(/DATABASE/i), token(/ENCRYPTION/i), token(/KEY/i),
+    ),
+
+    // =====================
+    // CREATE/DROP DATABASE SCOPED CREDENTIAL
+    // =====================
+    create_database_scoped_credential: $ => prec.right(seq(
+      token(/CREATE/i), token(/DATABASE/i), token(/SCOPED/i), token(/CREDENTIAL/i),
+      $.id_,
+      $.WITH, token(/IDENTITY/i), token('='), $.string_lit,
+      optional(seq(token(','), token(/SECRET/i), token('='), $.string_lit)),
+    )),
+
+    drop_database_scoped_credential: $ => seq(
+      token(/DROP/i), token(/DATABASE/i), token(/SCOPED/i), token(/CREDENTIAL/i), $.id_,
+    ),
+
     // ALTER AUTHORIZATION
     // https://learn.microsoft.com/en-us/sql/t-sql/statements/alter-authorization-transact-sql
     alter_authorization_statement: $ => seq(
@@ -1422,6 +1731,7 @@ module.exports = grammar({
     /* Backup/restore option names that are also grammar keywords */
     _backup_option_keyword: $ => choice(
       token(/FORMAT/i), token(/REPLACE/i), token(/RECOVERY/i), token(/PASSWORD/i), token(/STATS/i),
+      token(/CREDENTIAL/i),
     ),
 
     // =====================
@@ -2573,6 +2883,8 @@ module.exports = grammar({
       ,token(/CALLER/i), token(/SELF/i)
       ,token(/INSERTED/i), token(/DELETED/i)
       ,token(/RESULT/i)
+      /* Crypto/DDL keywords used as identifiers */
+      ,token(/ACTIVE/i), token(/SEARCH/i)
     )),
 
     integer: $ => INT,

@@ -602,13 +602,13 @@
 - [x] `FOREIGN KEY ... REFERENCES table (col)` (Parser L1504)
 - [x] `CHECK (expression)` constraint (Parser L1510)
 - [x] `CLUSTERED` / `NONCLUSTERED` (Parser L1501)
-- [ ] `CREATE TABLE ... AS FileTable` (Parser L1520)
+- [x] `CREATE TABLE ... AS FileTable` (Parser L1520)
 - [x] Table-level `PRIMARY KEY (col, ...)` (Parser L1530)
 - [x] Table-level `UNIQUE (col, ...)` (Parser L1535)
 - [x] Table-level `FOREIGN KEY (col) REFERENCES ...` (Parser L1540)
 - [x] Table-level `CHECK (expression)` (Parser L1545)
-- [ ] `ON filegroup` (Parser L1560)
-- [ ] `TEXTIMAGE_ON filegroup` (Parser L1565)
+- [x] `ON filegroup` (Parser L1560)
+- [x] `TEXTIMAGE_ON filegroup` (Parser L1565)
 - [x] Column computed definitions — `col AS expression [PERSISTED]` (Parser L1491)
 - [ ] Temporal table — `WITH (SYSTEM_VERSIONING = ON)` (Parser L1570)
 
@@ -650,7 +650,7 @@
 - [x] `WHERE filter_predicate` (filtered index) (Parser L1295)
 - [x] `WITH (options)` — PAD_INDEX, FILLFACTOR, etc. (Parser L1300)
 - [x] `ON filegroup` (Parser L1310)
-- [ ] `CREATE COLUMNSTORE INDEX` (Parser L1320)
+- [x] `CREATE COLUMNSTORE INDEX` (Parser L1320)
 
 ### 6.5 CREATE/ALTER Procedure (Parser L2387-L2430)
 
@@ -836,7 +836,7 @@
 
 > Reference: `ScriptGenerator/SqlScriptGeneratorVisitor.Create*IndexStatement.cs`
 
-- [ ] `CREATE COLUMNSTORE INDEX` (`CreateColumnStoreIndexStatement.cs`, also in 6.4)
+- [x] `CREATE COLUMNSTORE INDEX` (`CreateColumnStoreIndexStatement.cs`, also in 6.4)
 - [ ] `CREATE NONCLUSTERED COLUMNSTORE INDEX` (`CreateColumnStoreIndexStatement.cs`)
 - [ ] `CREATE XML INDEX name ON table(xml_col)` (`CreateXmlIndexStatement.cs`)
 - [ ] `CREATE SELECTIVE XML INDEX` (`CreateSelectiveXmlIndexStatement.cs`)
@@ -891,17 +891,17 @@
 
 > Reference: `ScriptGenerator/SqlScriptGeneratorVisitor.Create*Statement.cs` — 20+ files
 
-- [ ] `CREATE MASTER KEY ENCRYPTION BY PASSWORD = 'pwd'` (`CreateMasterKeyStatement.cs`)
-- [ ] `CREATE CERTIFICATE name WITH SUBJECT = 'subject'` (`CreateCertificateStatement.cs`)
-- [ ] `CREATE SYMMETRIC KEY name WITH ALGORITHM = AES_256 ENCRYPTION BY CERTIFICATE cert` (`CreateSymmetricKeyStatement.cs`)
-- [ ] `CREATE ASYMMETRIC KEY name FROM FILE = 'path'` (`CreateAsymmetricKeyStatement.cs`)
-- [ ] `ALTER MASTER KEY ...` (`AlterMasterKeyStatement.cs`)
-- [ ] `ALTER CERTIFICATE ...` (`AlterCertificateStatement.cs`)
-- [ ] `ADD SIGNATURE TO object BY CERTIFICATE cert` (`AddSignatureStatement.cs`)
-- [ ] `DROP CERTIFICATE name` (`DropCertificateStatement.cs`)
-- [ ] `DROP SYMMETRIC KEY name` (`DropSymmetricKeyStatement.cs`)
-- [ ] `DROP ASYMMETRIC KEY name` (`DropAsymmetricKeyStatement.cs`)
-- [ ] `DROP MASTER KEY` (`DropMasterKeyStatement.cs`)
+- [x] `CREATE MASTER KEY ENCRYPTION BY PASSWORD = 'pwd'` (`CreateMasterKeyStatement.cs`)
+- [x] `CREATE CERTIFICATE name WITH SUBJECT = 'subject'` (`CreateCertificateStatement.cs`)
+- [x] `CREATE SYMMETRIC KEY name WITH ALGORITHM = AES_256 ENCRYPTION BY CERTIFICATE cert` (`CreateSymmetricKeyStatement.cs`)
+- [x] `CREATE ASYMMETRIC KEY name FROM FILE = 'path'` (`CreateAsymmetricKeyStatement.cs`)
+- [x] `ALTER MASTER KEY ...` (`AlterMasterKeyStatement.cs`)
+- [x] `ALTER CERTIFICATE ...` (`AlterCertificateStatement.cs`)
+- [x] `ADD SIGNATURE TO object BY CERTIFICATE cert` (`AddSignatureStatement.cs`)
+- [x] `DROP CERTIFICATE name` (`DropCertificateStatement.cs`)
+- [x] `DROP SYMMETRIC KEY name` (`DropSymmetricKeyStatement.cs`)
+- [x] `DROP ASYMMETRIC KEY name` (`DropAsymmetricKeyStatement.cs`)
+- [x] `DROP MASTER KEY` (`DropMasterKeyStatement.cs`)
 
 ### 7.18 Column Encryption / Always Encrypted (SqlScriptDOM)
 
@@ -1002,8 +1002,8 @@
 
 > Reference: `ScriptGenerator/SqlScriptGeneratorVisitor.CreateXmlSchemaCollectionStatement.cs`
 
-- [ ] `CREATE XML SCHEMA COLLECTION name AS 'xsd'` (`CreateXmlSchemaCollectionStatement.cs`)
-- [ ] `DROP XML SCHEMA COLLECTION name` (`DropXmlSchemaCollectionStatement.cs`)
+- [x] `CREATE XML SCHEMA COLLECTION name AS 'xsd'` (`CreateXmlSchemaCollectionStatement.cs`)
+- [x] `DROP XML SCHEMA COLLECTION name` (`DropXmlSchemaCollectionStatement.cs`)
 
 ### 7.29 Endpoints & Database Mirroring (SqlScriptDOM)
 
@@ -1033,7 +1033,7 @@
 > Reference: `ScriptGenerator/SqlScriptGeneratorVisitor.CreateCredentialStatement.cs`
 
 - [ ] `CREATE CREDENTIAL name WITH IDENTITY = '...', SECRET = '...'` (`CreateCredentialStatement.cs`)
-- [ ] `CREATE DATABASE SCOPED CREDENTIAL name WITH IDENTITY = '...'` (`CreateDatabaseScopedCredentialStatement.cs`)
+- [x] `CREATE DATABASE SCOPED CREDENTIAL name WITH IDENTITY = '...'` (`CreateDatabaseScopedCredentialStatement.cs`)
 - [ ] `ALTER CREDENTIAL name ...` (`AlterCredentialStatement.cs`)
 
 ### 7.32 Event Notifications & Extended Events (SqlScriptDOM)
@@ -1091,23 +1091,23 @@
 
 > Reference: ANTLR4 `alter_service_master_key`
 
-- [ ] `ALTER SERVICE MASTER KEY [FORCE] REGENERATE`
-- [ ] `ALTER SERVICE MASTER KEY WITH OLD_ACCOUNT|NEW_ACCOUNT = ...`
+- [x] `ALTER SERVICE MASTER KEY [FORCE] REGENERATE`
+- [x] `ALTER SERVICE MASTER KEY WITH OLD_ACCOUNT|NEW_ACCOUNT = ...`
 
 ### 7.38 Application Roles (Parser L371, L384)
 
 > Reference: ANTLR4 `alter_application_role`, `create_application_role`, `drop_application_role`
 
-- [ ] `CREATE APPLICATION ROLE name WITH PASSWORD = 'pwd' [, DEFAULT_SCHEMA = schema]`
-- [ ] `ALTER APPLICATION ROLE name WITH NAME|PASSWORD|DEFAULT_SCHEMA = ...`
-- [ ] `DROP APPLICATION ROLE name`
+- [x] `CREATE APPLICATION ROLE name WITH PASSWORD = 'pwd' [, DEFAULT_SCHEMA = schema]`
+- [x] `ALTER APPLICATION ROLE name WITH NAME|PASSWORD|DEFAULT_SCHEMA = ...`
+- [x] `DROP APPLICATION ROLE name`
 
 ### 7.39 Search Property Lists (Parser L1673)
 
 > Reference: ANTLR4 `create_search_property_list`, `drop_search_property_list`
 
-- [ ] `CREATE SEARCH PROPERTY LIST name [FROM [db.]source_list] [AUTHORIZATION owner]`
-- [ ] `DROP SEARCH PROPERTY LIST name`
+- [x] `CREATE SEARCH PROPERTY LIST name [FROM [db.]source_list] [AUTHORIZATION owner]`
+- [x] `DROP SEARCH PROPERTY LIST name`
 
 ### 7.40 Remote Service Binding (Parser L1532)
 
@@ -1129,23 +1129,23 @@
 
 > Reference: ANTLR4 `create_cryptographic_provider`, `alter_cryptographic_provider`, `drop_cryptograhic_provider`
 
-- [ ] `CREATE CRYPTOGRAPHIC PROVIDER name FROM FILE = 'path'`
-- [ ] `ALTER CRYPTOGRAPHIC PROVIDER name ...`
-- [ ] `DROP CRYPTOGRAPHIC PROVIDER name`
+- [x] `CREATE CRYPTOGRAPHIC PROVIDER name FROM FILE = 'path'`
+- [x] `ALTER CRYPTOGRAPHIC PROVIDER name ...`
+- [x] `DROP CRYPTOGRAPHIC PROVIDER name`
 
 ### 7.43 Database Encryption Key (Parser L910)
 
 > Reference: ANTLR4 `drop_database_encryption_key`
 
-- [ ] `DROP DATABASE ENCRYPTION KEY`
-- [ ] `CREATE DATABASE ENCRYPTION KEY WITH ALGORITHM = ...` (implicit from SqlScriptDOM)
+- [x] `DROP DATABASE ENCRYPTION KEY`
+- [x] `CREATE DATABASE ENCRYPTION KEY WITH ALGORITHM = ...` (implicit from SqlScriptDOM)
 
 ### 7.44 Database Scoped Credentials (Parser L915)
 
 > Reference: ANTLR4 `drop_database_scoped_credential`, `CreateDatabaseScopedCredentialStatement.cs`
 
-- [ ] `CREATE DATABASE SCOPED CREDENTIAL name WITH IDENTITY = '...'`
-- [ ] `DROP DATABASE SCOPED CREDENTIAL name`
+- [x] `CREATE DATABASE SCOPED CREDENTIAL name WITH IDENTITY = '...'`
+- [x] `DROP DATABASE SCOPED CREDENTIAL name`
 
 ### 7.45 Broker Priority (Parser L828)
 

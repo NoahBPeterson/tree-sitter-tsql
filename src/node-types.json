@@ -30,6 +30,29 @@
     "fields": {}
   },
   {
+    "type": "add_signature_statement",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "WITH",
+          "named": true
+        },
+        {
+          "type": "id_",
+          "named": true
+        },
+        {
+          "type": "string_lit",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "aggregate_functions",
     "named": true,
     "fields": {
@@ -186,6 +209,29 @@
     }
   },
   {
+    "type": "alter_application_role",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "WITH",
+          "named": true
+        },
+        {
+          "type": "id_",
+          "named": true
+        },
+        {
+          "type": "login_option",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "alter_authorization_statement",
     "named": true,
     "fields": {},
@@ -199,6 +245,48 @@
         },
         {
           "type": "id_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "alter_certificate",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "WITH",
+          "named": true
+        },
+        {
+          "type": "id_",
+          "named": true
+        },
+        {
+          "type": "string_lit",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "alter_cryptographic_provider",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "id_",
+          "named": true
+        },
+        {
+          "type": "string_lit",
           "named": true
         }
       ]
@@ -354,6 +442,25 @@
     }
   },
   {
+    "type": "alter_master_key",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "WITH",
+          "named": true
+        },
+        {
+          "type": "string_lit",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "alter_role",
     "named": true,
     "fields": {},
@@ -382,6 +489,29 @@
       "types": [
         {
           "type": "id_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "alter_service_master_key",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "WITH",
+          "named": true
+        },
+        {
+          "type": "id_",
+          "named": true
+        },
+        {
+          "type": "string_lit",
           "named": true
         }
       ]
@@ -1555,6 +1685,29 @@
     }
   },
   {
+    "type": "columnstore_index_option",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "column_name_list",
+          "named": true
+        },
+        {
+          "type": "decimal_",
+          "named": true
+        },
+        {
+          "type": "id_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "common_table_expression",
     "named": true,
     "fields": {
@@ -1652,6 +1805,129 @@
     }
   },
   {
+    "type": "create_application_role",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "WITH",
+          "named": true
+        },
+        {
+          "type": "id_",
+          "named": true
+        },
+        {
+          "type": "login_option",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "create_asymmetric_key",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "WITH",
+          "named": true
+        },
+        {
+          "type": "id_",
+          "named": true
+        },
+        {
+          "type": "string_lit",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "create_certificate",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "WITH",
+          "named": true
+        },
+        {
+          "type": "id_",
+          "named": true
+        },
+        {
+          "type": "string_lit",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "create_columnstore_index",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "column_name_list",
+          "named": true
+        },
+        {
+          "type": "columnstore_index_option",
+          "named": true
+        },
+        {
+          "type": "full_table_name",
+          "named": true
+        },
+        {
+          "type": "id_",
+          "named": true
+        },
+        {
+          "type": "search_condition",
+          "named": true
+        },
+        {
+          "type": "string_lit",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "create_cryptographic_provider",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "id_",
+          "named": true
+        },
+        {
+          "type": "string_lit",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "create_database",
     "named": true,
     "fields": {},
@@ -1687,6 +1963,25 @@
     }
   },
   {
+    "type": "create_database_encryption_key",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "WITH",
+          "named": true
+        },
+        {
+          "type": "id_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "create_database_option",
     "named": true,
     "fields": {},
@@ -1700,6 +1995,29 @@
         },
         {
           "type": "decimal_",
+          "named": true
+        },
+        {
+          "type": "id_",
+          "named": true
+        },
+        {
+          "type": "string_lit",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "create_database_scoped_credential",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "WITH",
           "named": true
         },
         {
@@ -1797,6 +2115,21 @@
         },
         {
           "type": "login_option",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "create_master_key",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "string_lit",
           "named": true
         }
       ]
@@ -2039,6 +2372,21 @@
     }
   },
   {
+    "type": "create_search_property_list",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "id_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "create_sequence",
     "named": true,
     "fields": {},
@@ -2108,6 +2456,29 @@
     }
   },
   {
+    "type": "create_symmetric_key",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "WITH",
+          "named": true
+        },
+        {
+          "type": "id_",
+          "named": true
+        },
+        {
+          "type": "string_lit",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "create_synonym",
     "named": true,
     "fields": {},
@@ -2143,6 +2514,14 @@
           "named": true
         },
         {
+          "type": "id_",
+          "named": true
+        },
+        {
+          "type": "string_lit",
+          "named": true
+        },
+        {
           "type": "table_element",
           "named": true
         }
@@ -2158,6 +2537,10 @@
       "required": false,
       "types": [
         {
+          "type": "NONE",
+          "named": true
+        },
+        {
           "type": "decimal_",
           "named": true
         },
@@ -2167,6 +2550,14 @@
         },
         {
           "type": "id_",
+          "named": true
+        },
+        {
+          "type": "null_",
+          "named": true
+        },
+        {
+          "type": "string_lit",
           "named": true
         }
       ]
@@ -2225,6 +2616,29 @@
         },
         {
           "type": "login_option",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "create_xml_schema_collection",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "as",
+          "named": true
+        },
+        {
+          "type": "expression",
+          "named": true
+        },
+        {
+          "type": "func_proc_name_schema",
           "named": true
         }
       ]
@@ -2620,6 +3034,22 @@
       "required": true,
       "types": [
         {
+          "type": "add_signature_statement",
+          "named": true
+        },
+        {
+          "type": "alter_application_role",
+          "named": true
+        },
+        {
+          "type": "alter_certificate",
+          "named": true
+        },
+        {
+          "type": "alter_cryptographic_provider",
+          "named": true
+        },
+        {
           "type": "alter_database",
           "named": true
         },
@@ -2632,11 +3062,19 @@
           "named": true
         },
         {
+          "type": "alter_master_key",
+          "named": true
+        },
+        {
           "type": "alter_role",
           "named": true
         },
         {
           "type": "alter_server_role",
+          "named": true
+        },
+        {
+          "type": "alter_service_master_key",
           "named": true
         },
         {
@@ -2648,7 +3086,35 @@
           "named": true
         },
         {
+          "type": "create_application_role",
+          "named": true
+        },
+        {
+          "type": "create_asymmetric_key",
+          "named": true
+        },
+        {
+          "type": "create_certificate",
+          "named": true
+        },
+        {
+          "type": "create_columnstore_index",
+          "named": true
+        },
+        {
+          "type": "create_cryptographic_provider",
+          "named": true
+        },
+        {
           "type": "create_database",
+          "named": true
+        },
+        {
+          "type": "create_database_encryption_key",
+          "named": true
+        },
+        {
+          "type": "create_database_scoped_credential",
           "named": true
         },
         {
@@ -2661,6 +3127,10 @@
         },
         {
           "type": "create_login",
+          "named": true
+        },
+        {
+          "type": "create_master_key",
           "named": true
         },
         {
@@ -2700,6 +3170,10 @@
           "named": true
         },
         {
+          "type": "create_search_property_list",
+          "named": true
+        },
+        {
           "type": "create_sequence",
           "named": true
         },
@@ -2709,6 +3183,10 @@
         },
         {
           "type": "create_statistics",
+          "named": true
+        },
+        {
+          "type": "create_symmetric_key",
           "named": true
         },
         {
@@ -2728,7 +3206,35 @@
           "named": true
         },
         {
+          "type": "create_xml_schema_collection",
+          "named": true
+        },
+        {
+          "type": "drop_application_role",
+          "named": true
+        },
+        {
+          "type": "drop_asymmetric_key",
+          "named": true
+        },
+        {
+          "type": "drop_certificate",
+          "named": true
+        },
+        {
+          "type": "drop_cryptographic_provider",
+          "named": true
+        },
+        {
           "type": "drop_database",
+          "named": true
+        },
+        {
+          "type": "drop_database_encryption_key",
+          "named": true
+        },
+        {
+          "type": "drop_database_scoped_credential",
           "named": true
         },
         {
@@ -2741,6 +3247,10 @@
         },
         {
           "type": "drop_login",
+          "named": true
+        },
+        {
+          "type": "drop_master_key",
           "named": true
         },
         {
@@ -2764,6 +3274,10 @@
           "named": true
         },
         {
+          "type": "drop_search_property_list",
+          "named": true
+        },
+        {
           "type": "drop_sequence",
           "named": true
         },
@@ -2773,6 +3287,10 @@
         },
         {
           "type": "drop_statistics",
+          "named": true
+        },
+        {
+          "type": "drop_symmetric_key",
           "named": true
         },
         {
@@ -2797,6 +3315,10 @@
         },
         {
           "type": "drop_view",
+          "named": true
+        },
+        {
+          "type": "drop_xml_schema_collection",
           "named": true
         },
         {
@@ -3002,11 +3524,91 @@
     "fields": {}
   },
   {
+    "type": "drop_application_role",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "id_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "drop_asymmetric_key",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "id_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "drop_certificate",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "id_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "drop_cryptographic_provider",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "id_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "drop_database",
     "named": true,
     "fields": {},
     "children": {
       "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "id_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "drop_database_encryption_key",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "drop_database_scoped_credential",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
       "required": true,
       "types": [
         {
@@ -3085,6 +3687,11 @@
     }
   },
   {
+    "type": "drop_master_key",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "drop_partition_function",
     "named": true,
     "fields": {},
@@ -3160,6 +3767,21 @@
     }
   },
   {
+    "type": "drop_search_property_list",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "id_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "drop_sequence",
     "named": true,
     "fields": {},
@@ -3199,6 +3821,21 @@
       "types": [
         {
           "type": "full_table_name",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "drop_symmetric_key",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "id_",
           "named": true
         }
       ]
@@ -3289,6 +3926,21 @@
       "types": [
         {
           "type": "full_table_name",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "drop_xml_schema_collection",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "func_proc_name_schema",
           "named": true
         }
       ]
@@ -7832,6 +8484,10 @@
   },
   {
     "type": "-=",
+    "named": false
+  },
+  {
+    "type": ".",
     "named": false
   },
   {
