@@ -1,0 +1,141 @@
+=====================================
+CREATE RULE
+=====================================
+
+CREATE RULE salary_rule AS @salary > 0
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_rule_statement
+          (full_table_name
+            (id_))
+          (as)
+          (search_condition
+            (predicate
+              (expression
+                (primitive_expression
+                  (LOCAL_ID_)))
+              (comparison_operator)
+              (expression
+                (primitive_expression
+                  (primitive_constant
+                    (decimal_)))))))))))
+
+=====================================
+CREATE DEFAULT
+=====================================
+
+CREATE DEFAULT phone_default AS '000-000-0000'
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_default_statement
+          (default)
+          (full_table_name
+            (id_))
+          (as)
+          (expression
+            (primitive_expression
+              (primitive_constant
+                (string_lit)))))))))
+
+=====================================
+READTEXT
+=====================================
+
+READTEXT pub_info.pr_info @ptrval 1 25
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (readtext_statement
+          (full_column_name
+            (id_)
+            (id_))
+          (LOCAL_ID_)
+          (expression
+            (primitive_expression
+              (primitive_constant
+                (decimal_))))
+          (expression
+            (primitive_expression
+              (primitive_constant
+                (decimal_)))))))))
+
+=====================================
+WRITETEXT
+=====================================
+
+WRITETEXT pub_info.pr_info @ptrval 'New text data'
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (writetext_statement
+          (full_column_name
+            (id_)
+            (id_))
+          (LOCAL_ID_)
+          (expression
+            (primitive_expression
+              (primitive_constant
+                (string_lit)))))))))
+
+=====================================
+UPDATETEXT
+=====================================
+
+UPDATETEXT pub_info.pr_info @ptrval 0 5 'Hello'
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (updatetext_statement
+          (full_column_name
+            (id_)
+            (id_))
+          (LOCAL_ID_)
+          (expression
+            (primitive_expression
+              (primitive_constant
+                (decimal_))))
+          (expression
+            (primitive_expression
+              (primitive_constant
+                (decimal_))))
+          (expression
+            (primitive_expression
+              (primitive_constant
+                (string_lit)))))))))
+
+=====================================
+LINENO
+=====================================
+
+LINENO 100
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (lineno_statement
+          (decimal_))))))

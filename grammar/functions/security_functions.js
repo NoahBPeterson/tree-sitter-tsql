@@ -5,6 +5,7 @@ module.exports = {
   security_functions: $ => choice(
     // bare keywords (no parens)
     $._security_bare
+    ,$.USER
     // 0-or-1 arg
     ,seq($._security_0or1, parens(optional($.expression)))
     // 1-arg

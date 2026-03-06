@@ -7,6 +7,7 @@ const bit_manipulation_functions = require('./grammar/functions/bit_manipulation
 const collation_functions = require('./grammar/functions/collation_functions.js');
 const configuration_functions = require('./grammar/functions/configuration_functions.js');
 const conversion_functions = require('./grammar/functions/conversion_functions.js');
+const cryptography_functions = require('./grammar/functions/cryptography_functions.js');
 const cursor_functions = require('./grammar/functions/cursor_functions.js');
 const datatype_functions = require('./grammar/functions/datatype_functions.js');
 const datetime_functions = require('./grammar/functions/datetime_functions.js');
@@ -214,6 +215,8 @@ module.exports = grammar({
       ,$.create_partition_scheme
       ,$.drop_partition_function
       ,$.drop_partition_scheme
+      ,$.create_rule_statement
+      ,$.create_default_statement
     ),
 
     //https://learn.microsoft.com/en-us/sql/t-sql/statements/alter-database-transact-sql-file-and-filegroup-options
@@ -663,7 +666,9 @@ module.exports = grammar({
       ),
     )),
 
-    login_option: $ => seq($.id_, optional(seq('=', $.expression))),
+    login_option: $ => seq(choice($.id_, alias($._login_option_keyword, $.id_)), optional(seq('=', $.expression))),
+
+    _login_option_keyword: $ => choice(token(/PASSWORD/i)),
 
     // =====================
     // CREATE/ALTER USER
@@ -771,6 +776,7 @@ module.exports = grammar({
           $.identity_column,
           $.column_constraint,
           $.generated_always,
+          seq(token(/COLLATE/i), $.id_),
         ))),
         seq(token(/AS/i), $.expression, optional(token(/PERSISTED/i))),
       ),
@@ -796,8 +802,8 @@ module.exports = grammar({
     column_constraint: $ => seq(
       optional(seq(token(/CONSTRAINT/i), field('name', $.id_))),
       choice(
-        seq(token(/PRIMARY/i), token(/KEY/i)),
-        token(/UNIQUE/i),
+        seq(token(/PRIMARY/i), token(/KEY/i), optional($._clustered_option)),
+        seq(token(/UNIQUE/i), optional($._clustered_option)),
         seq($.default, $.expression),
         seq(token(/CHECK/i), token('('), $.search_condition, token(')')),
         seq(optional(seq(token(/FOREIGN/i), token(/KEY/i))),
@@ -809,9 +815,9 @@ module.exports = grammar({
     table_constraint: $ => seq(
       optional(seq(token(/CONSTRAINT/i), field('name', $.id_))),
       choice(
-        seq(token(/PRIMARY/i), token(/KEY/i),
+        seq(token(/PRIMARY/i), token(/KEY/i), optional($._clustered_option),
           token('('), $.column_name_list, token(')')),
-        seq(token(/UNIQUE/i),
+        seq(token(/UNIQUE/i), optional($._clustered_option),
           token('('), $.column_name_list, token(')')),
         seq(token(/FOREIGN/i), token(/KEY/i),
           token('('), $.column_name_list, token(')'),
@@ -821,6 +827,8 @@ module.exports = grammar({
         seq($.default, $.expression, token(/FOR/i), $.id_),
       )
     ),
+
+    _clustered_option: $ => choice(token(/CLUSTERED/i), token(/NONCLUSTERED/i)),
 
     //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L250-L264
     cfl_statement: $ => choice(
@@ -939,6 +947,13 @@ module.exports = grammar({
       ,$.receive_statement
       ,$.get_conversation_group_statement
       ,$.move_conversation_statement
+      ,$.open_key_statement
+      ,$.close_key_statement
+      ,$.alter_authorization_statement
+      ,$.readtext_statement
+      ,$.writetext_statement
+      ,$.updatetext_statement
+      ,$.lineno_statement
     ),
 
     revert_statement: $ => prec.right(seq(
@@ -1057,6 +1072,82 @@ module.exports = grammar({
       $.id_, token('='), $.expression,  // TIMEOUT = expr
     ),
 
+    // OPEN/CLOSE SYMMETRIC KEY / MASTER KEY
+    // https://learn.microsoft.com/en-us/sql/t-sql/statements/open-symmetric-key-transact-sql
+    open_key_statement: $ => choice(
+      seq(token(/OPEN/i), token(/SYMMETRIC/i), token(/KEY/i), $.id_,
+        token(/DECRYPTION/i), token(/BY/i), $._key_decryption_mechanism),
+      seq(token(/OPEN/i), token(/MASTER/i), token(/KEY/i),
+        token(/DECRYPTION/i), token(/BY/i), token(/PASSWORD/i), token('='), $.string_lit),
+    ),
+
+    close_key_statement: $ => choice(
+      seq(token(/CLOSE/i), token(/SYMMETRIC/i), token(/KEY/i), $.id_),
+      seq(token(/CLOSE/i), token(/ALL/i), token(/SYMMETRIC/i), token(/KEYS/i)),
+      seq(token(/CLOSE/i), token(/MASTER/i), token(/KEY/i)),
+    ),
+
+    _key_decryption_mechanism: $ => choice(
+      seq(token(/CERTIFICATE/i), $.id_),
+      seq(token(/ASYMMETRIC/i), token(/KEY/i), $.id_),
+      seq(token(/SYMMETRIC/i), token(/KEY/i), $.id_),
+      seq(token(/PASSWORD/i), token('='), $.string_lit),
+    ),
+
+    // ALTER AUTHORIZATION
+    // https://learn.microsoft.com/en-us/sql/t-sql/statements/alter-authorization-transact-sql
+    alter_authorization_statement: $ => seq(
+      token(/ALTER/i), token(/AUTHORIZATION/i),
+      token(/ON/i), optional(seq($._authorization_class_type, token('::'))),
+      $.full_table_name,
+      token(/TO/i), choice($.id_, token(/SCHEMA/i), token(/OWNER/i)),
+    ),
+
+    _authorization_class_type: $ => choice(
+      token(/OBJECT/i),
+      token(/SCHEMA/i),
+      token(/DATABASE/i),
+      $.id_,
+    ),
+
+    // Legacy statements — deprecated but still parsed by SQL Server
+    // CREATE RULE name AS condition (condition uses @var)
+    create_rule_statement: $ => prec.right(seq(
+      token(/CREATE/i), token(/RULE/i), $.full_table_name,
+      $.as, $.search_condition,
+    )),
+
+    // CREATE DEFAULT name AS expression
+    create_default_statement: $ => seq(
+      token(/CREATE/i), $.default, $.full_table_name,
+      $.as, $.expression,
+    ),
+
+    // READTEXT table.column text_ptr offset size [HOLDLOCK]
+    readtext_statement: $ => prec.right(seq(
+      token(/READTEXT/i), $.full_column_name, $.LOCAL_ID_,
+      $.expression, $.expression,
+      optional(token(/HOLDLOCK/i)),
+    )),
+
+    // WRITETEXT table.column text_ptr [WITH LOG] data
+    writetext_statement: $ => prec.right(seq(
+      token(/WRITETEXT/i), $.full_column_name, $.LOCAL_ID_,
+      optional(seq($.WITH, token(/LOG/i))),
+      $.expression,
+    )),
+
+    // UPDATETEXT table.column text_ptr insert_offset delete_length [WITH LOG] [data]
+    updatetext_statement: $ => prec.right(seq(
+      token(/UPDATETEXT/i), $.full_column_name, $.LOCAL_ID_,
+      $.expression, $.expression,
+      optional(seq($.WITH, token(/LOG/i))),
+      optional($.expression),
+    )),
+
+    // LINENO integer
+    lineno_statement: $ => seq(token(/LINENO/i), $.decimal_),
+
     //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L2981
     declare_statement: $ => choice(
       seq(token(/DECLARE/i), $.declare_local, repeat(seq(token(','), $.declare_local))),
@@ -1167,7 +1258,11 @@ module.exports = grammar({
     ),
 
     //https://learn.microsoft.com/en-us/sql/t-sql/language-elements/kill-transact-sql
-    kill_statement: $ => seq(token(/KILL/i), $.expression),
+    kill_statement: $ => prec.right(seq(token(/KILL/i), choice(
+      seq(token(/QUERY/i), token(/NOTIFICATION/i), token(/SUBSCRIPTION/i), choice(token(/ALL/i), $.expression)),
+      seq(token(/STATS/i), token(/JOB/i), $.expression),
+      $.expression,
+    ))),
 
     //https://learn.microsoft.com/en-us/sql/t-sql/language-elements/reconfigure-transact-sql
     reconfigure_statement: $ => prec.right(seq(
@@ -1214,17 +1309,17 @@ module.exports = grammar({
           token(/TO/i), token(/FILE/i), '=', $.string_lit,
           optional(seq($.WITH, token(/PRIVATE/i), token(/KEY/i), '(',
             token(/FILE/i), '=', $.string_lit, ',',
-            token(/ENCRYPTION/i), token(/BY/i), $.id_, '=', $.string_lit,
-            optional(seq(',', $.id_, token(/BY/i), $.id_, '=', $.string_lit)),
+            token(/ENCRYPTION/i), token(/BY/i), token(/PASSWORD/i), '=', $.string_lit,
+            optional(seq(',', token(/DECRYPTION/i), token(/BY/i), token(/PASSWORD/i), '=', $.string_lit)),
           ')'))),
         // BACKUP MASTER KEY TO FILE = 'path' ENCRYPTION BY PASSWORD = 'pwd'
         seq(token(/MASTER/i), token(/KEY/i),
           token(/TO/i), token(/FILE/i), '=', $.string_lit,
-          token(/ENCRYPTION/i), token(/BY/i), $.id_, '=', $.string_lit),
+          token(/ENCRYPTION/i), token(/BY/i), token(/PASSWORD/i), '=', $.string_lit),
         // BACKUP SERVICE MASTER KEY TO FILE = 'path' ENCRYPTION BY PASSWORD = 'pwd'
         seq(token(/SERVICE/i), token(/MASTER/i), token(/KEY/i),
           token(/TO/i), token(/FILE/i), '=', $.string_lit,
-          token(/ENCRYPTION/i), token(/BY/i), $.id_, '=', $.string_lit),
+          token(/ENCRYPTION/i), token(/BY/i), token(/PASSWORD/i), '=', $.string_lit),
       ),
     )),
 
@@ -1269,7 +1364,7 @@ module.exports = grammar({
 
     /* Backup/restore option names that are also grammar keywords */
     _backup_option_keyword: $ => choice(
-      token(/FORMAT/i), token(/REPLACE/i), token(/RECOVERY/i),
+      token(/FORMAT/i), token(/REPLACE/i), token(/RECOVERY/i), token(/PASSWORD/i), token(/STATS/i),
     ),
 
     // =====================
@@ -1433,7 +1528,10 @@ module.exports = grammar({
       ,$.update_elem, repeat(seq(token(','), $.update_elem))
       ,optional($.output_clause)
       ,optional(seq(token(/FROM/i), $.table_sources))
-      ,optional(seq(token(/WHERE/i), $.search_condition))
+      ,optional(seq(token(/WHERE/i), choice(
+        seq(token(/CURRENT/i), token(/OF/i), choice($.id_, $.LOCAL_ID_)),
+        $.search_condition,
+      )))
     )),
 
     update_target: $ => choice(
@@ -1457,7 +1555,10 @@ module.exports = grammar({
       ,$.delete_target
       ,optional($.output_clause)
       ,optional(seq(token(/FROM/i), $.table_sources))
-      ,optional(seq(token(/WHERE/i), $.search_condition))
+      ,optional(seq(token(/WHERE/i), choice(
+        seq(token(/CURRENT/i), token(/OF/i), choice($.id_, $.LOCAL_ID_)),
+        $.search_condition,
+      )))
     )),
 
     delete_target: $ => choice(
@@ -1770,6 +1871,7 @@ module.exports = grammar({
         ,$.openquery            // OPENQUERY
         ,$.opendatasource       // OPENDATASOURCE
         ,$.change_table         // CHANGETABLE
+        ,$.freetext_table_function  // CONTAINSTABLE, FREETEXTTABLE, SEMANTIC*
         ,$.nodes_method         // XML .nodes() method
         ,$.table_valued_function  // must be before full_table_name (both start with id_)
         ,$.full_table_name
@@ -1845,6 +1947,33 @@ module.exports = grammar({
       ,seq(token(/CHANGETABLE/i), token('('), token(/VERSION/i), $.table_name, token(','),
         token('('), $.full_column_name, repeat(seq(token(','), $.full_column_name)), token(')'), token(','),
         token('('), $.expression_list_, token(')'),
+        token(')'))
+    ),
+
+    // Freetext table functions — https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L4302-L4320
+    freetext_table_function: $ => choice(
+      // CONTAINSTABLE / FREETEXTTABLE — optional LANGUAGE and top_n
+      seq(
+        choice(token(/CONTAINSTABLE/i), token(/FREETEXTTABLE/i)),
+        token('('), $.table_name, token(','),
+        choice($.full_column_name, seq(token('('), $.full_column_name, repeat(seq(token(','), $.full_column_name)), token(')')), $.asterisk),
+        token(','), $.expression,
+        optional(seq(token(','), token(/LANGUAGE/i), $.expression)),
+        optional(seq(token(','), $.expression)),
+        token(')'))
+      // SEMANTICSIMILARITYTABLE / SEMANTICKEYPHRASETABLE
+      ,seq(
+        choice(token(/SEMANTICSIMILARITYTABLE/i), token(/SEMANTICKEYPHRASETABLE/i)),
+        token('('), $.table_name, token(','),
+        choice($.full_column_name, seq(token('('), $.full_column_name, repeat(seq(token(','), $.full_column_name)), token(')')), $.asterisk),
+        token(','), $.expression,
+        token(')'))
+      // SEMANTICSIMILARITYDETAILSTABLE — dual col/expr pairs
+      ,seq(
+        token(/SEMANTICSIMILARITYDETAILSTABLE/i),
+        token('('), $.table_name, token(','),
+        $.full_column_name, token(','), $.expression, token(','),
+        $.full_column_name, token(','), $.expression,
         token(')'))
     ),
 
@@ -2088,12 +2217,13 @@ module.exports = grammar({
       ,$.partition_function
       //TODO https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L4287
       ,$.hierarchyid_static_method
-      //TODO freetext_function
+      // freetext table functions are in table_source_item (not here — they're table-valued)
       ,$.odbc_scalar_functions
       ,$.bit_manipulation_functions
       ,$.collation_functions
       ,$.configuration_functions
       ,$.conversion_functions
+      ,$.cryptography_functions
       ,$.cursor_functions
       ,$.datatype_functions
       ,$.datetime_functions
@@ -2125,6 +2255,7 @@ module.exports = grammar({
     ...collation_functions,
     ...configuration_functions,
     ...conversion_functions,
+    ...cryptography_functions,
     ...cursor_functions,
     ...datatype_functions,
     ...datetime_functions,

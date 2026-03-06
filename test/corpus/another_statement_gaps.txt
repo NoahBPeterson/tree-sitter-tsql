@@ -538,3 +538,53 @@ WAITFOR (RECEIVE * FROM dbo.myqueue), TIMEOUT 5000
             (primitive_expression
               (primitive_constant
                 (decimal_)))))))))
+
+=====================================
+KILL QUERY NOTIFICATION SUBSCRIPTION ALL
+=====================================
+
+KILL QUERY NOTIFICATION SUBSCRIPTION ALL
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (kill_statement)))))
+
+=====================================
+KILL QUERY NOTIFICATION SUBSCRIPTION id
+=====================================
+
+KILL QUERY NOTIFICATION SUBSCRIPTION 42
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (kill_statement
+          (expression
+            (primitive_expression
+              (primitive_constant
+                (decimal_)))))))))
+
+=====================================
+KILL STATS JOB
+=====================================
+
+KILL STATS JOB 1
+
+-------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (kill_statement
+          (expression
+            (primitive_expression
+              (primitive_constant
+                (decimal_)))))))))

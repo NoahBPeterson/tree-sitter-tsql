@@ -181,6 +181,25 @@
     }
   },
   {
+    "type": "alter_authorization_statement",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "full_table_name",
+          "named": true
+        },
+        {
+          "type": "id_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "alter_database",
     "named": true,
     "fields": {},
@@ -658,11 +677,19 @@
       "required": true,
       "types": [
         {
+          "type": "alter_authorization_statement",
+          "named": true
+        },
+        {
           "type": "backup_statement",
           "named": true
         },
         {
           "type": "checkpoint_statement",
+          "named": true
+        },
+        {
+          "type": "close_key_statement",
           "named": true
         },
         {
@@ -710,7 +737,19 @@
           "named": true
         },
         {
+          "type": "lineno_statement",
+          "named": true
+        },
+        {
           "type": "move_conversation_statement",
+          "named": true
+        },
+        {
+          "type": "open_key_statement",
+          "named": true
+        },
+        {
+          "type": "readtext_statement",
           "named": true
         },
         {
@@ -758,7 +797,15 @@
           "named": true
         },
         {
+          "type": "updatetext_statement",
+          "named": true
+        },
+        {
           "type": "use_statement",
+          "named": true
+        },
+        {
+          "type": "writetext_statement",
           "named": true
         }
       ]
@@ -1251,6 +1298,21 @@
     }
   },
   {
+    "type": "close_key_statement",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "id_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "coalesce_function",
     "named": true,
     "fields": {},
@@ -1443,6 +1505,10 @@
           "named": true
         },
         {
+          "type": "id_",
+          "named": true
+        },
+        {
           "type": "identity_column",
           "named": true
         },
@@ -1575,6 +1641,33 @@
         },
         {
           "type": "try_parse_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "create_default_statement",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "as",
+          "named": true
+        },
+        {
+          "type": "default",
+          "named": true
+        },
+        {
+          "type": "expression",
+          "named": true
+        },
+        {
+          "type": "full_table_name",
           "named": true
         }
       ]
@@ -1841,6 +1934,29 @@
     }
   },
   {
+    "type": "create_rule_statement",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "as",
+          "named": true
+        },
+        {
+          "type": "full_table_name",
+          "named": true
+        },
+        {
+          "type": "search_condition",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "create_schema",
     "named": true,
     "fields": {},
@@ -2042,6 +2158,21 @@
         },
         {
           "type": "login_option",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "cryptography_functions",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "expression",
           "named": true
         }
       ]
@@ -2321,10 +2452,6 @@
         {
           "type": "expression",
           "named": true
-        },
-        {
-          "type": "sql_variant_property_",
-          "named": true
         }
       ]
     }
@@ -2442,6 +2569,10 @@
           "named": true
         },
         {
+          "type": "create_default_statement",
+          "named": true
+        },
+        {
           "type": "create_index",
           "named": true
         },
@@ -2475,6 +2606,10 @@
         },
         {
           "type": "create_role",
+          "named": true
+        },
+        {
+          "type": "create_rule_statement",
           "named": true
         },
         {
@@ -2661,7 +2796,15 @@
       "required": true,
       "types": [
         {
+          "type": "LOCAL_ID_",
+          "named": true
+        },
+        {
           "type": "delete_target",
+          "named": true
+        },
+        {
+          "type": "id_",
           "named": true
         },
         {
@@ -3440,7 +3583,7 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": true,
       "types": [
         {
@@ -3653,6 +3796,33 @@
         },
         {
           "type": "full_column_name",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "freetext_table_function",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "asterisk",
+          "named": true
+        },
+        {
+          "type": "expression",
+          "named": true
+        },
+        {
+          "type": "full_column_name",
+          "named": true
+        },
+        {
+          "type": "table_name",
           "named": true
         }
       ]
@@ -3951,6 +4121,10 @@
         },
         {
           "type": "conversion_functions",
+          "named": true
+        },
+        {
+          "type": "cryptography_functions",
           "named": true
         },
         {
@@ -4579,7 +4753,7 @@
     "fields": {},
     "children": {
       "multiple": false,
-      "required": true,
+      "required": false,
       "types": [
         {
           "type": "expression",
@@ -4645,6 +4819,21 @@
     "fields": {}
   },
   {
+    "type": "lineno_statement",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "decimal_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "local_id_",
     "named": true,
     "fields": {}
@@ -4662,6 +4851,10 @@
       "multiple": true,
       "required": true,
       "types": [
+        {
+          "type": "choose_",
+          "named": true
+        },
         {
           "type": "expression",
           "named": true
@@ -5047,6 +5240,25 @@
         },
         {
           "type": "json_declaration",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "open_key_statement",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "id_",
+          "named": true
+        },
+        {
+          "type": "string_lit",
           "named": true
         }
       ]
@@ -5615,6 +5827,10 @@
           "named": true
         },
         {
+          "type": "search_condition",
+          "named": true
+        },
+        {
           "type": "select",
           "named": true
         },
@@ -5687,6 +5903,29 @@
         },
         {
           "type": "row_number_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "readtext_statement",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "LOCAL_ID_",
+          "named": true
+        },
+        {
+          "type": "expression",
+          "named": true
+        },
+        {
+          "type": "full_column_name",
           "named": true
         }
       ]
@@ -5945,6 +6184,10 @@
       "multiple": true,
       "required": false,
       "types": [
+        {
+          "type": "USER",
+          "named": true
+        },
         {
           "type": "expression",
           "named": true
@@ -6588,6 +6831,10 @@
           "named": true
         },
         {
+          "type": "freetext_table_function",
+          "named": true
+        },
+        {
           "type": "full_table_name",
           "named": true
         },
@@ -6946,6 +7193,14 @@
       "required": true,
       "types": [
         {
+          "type": "LOCAL_ID_",
+          "named": true
+        },
+        {
+          "type": "id_",
+          "named": true
+        },
+        {
           "type": "output_clause",
           "named": true
         },
@@ -7017,6 +7272,33 @@
         },
         {
           "type": "local_id_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "updatetext_statement",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "LOCAL_ID_",
+          "named": true
+        },
+        {
+          "type": "WITH",
+          "named": true
+        },
+        {
+          "type": "expression",
+          "named": true
+        },
+        {
+          "type": "full_column_name",
           "named": true
         }
       ]
@@ -7239,6 +7521,33 @@
     "fields": {}
   },
   {
+    "type": "writetext_statement",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "LOCAL_ID_",
+          "named": true
+        },
+        {
+          "type": "WITH",
+          "named": true
+        },
+        {
+          "type": "expression",
+          "named": true
+        },
+        {
+          "type": "full_column_name",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "xml_common_directives",
     "named": true,
     "fields": {},
@@ -7294,7 +7603,15 @@
     "named": false
   },
   {
+    "type": "%",
+    "named": false
+  },
+  {
     "type": "%=",
+    "named": false
+  },
+  {
+    "type": "&",
     "named": false
   },
   {
@@ -7334,6 +7651,10 @@
     "named": false
   },
   {
+    "type": "/",
+    "named": false
+  },
+  {
     "type": "/=",
     "named": false
   },
@@ -7350,7 +7671,27 @@
     "named": false
   },
   {
+    "type": "<",
+    "named": false
+  },
+  {
+    "type": "<=",
+    "named": false
+  },
+  {
+    "type": "<>",
+    "named": false
+  },
+  {
     "type": "=",
+    "named": false
+  },
+  {
+    "type": ">",
+    "named": false
+  },
+  {
+    "type": ">=",
     "named": false
   },
   {
@@ -7451,6 +7792,10 @@
   },
   {
     "type": "checksum_agg_",
+    "named": true
+  },
+  {
+    "type": "choose_",
     "named": true
   },
   {
@@ -7802,10 +8147,6 @@
     "named": true
   },
   {
-    "type": "sql_variant_property_",
-    "named": true
-  },
-  {
     "type": "stdev_",
     "named": true
   },
@@ -7878,11 +8219,23 @@
     "named": false
   },
   {
+    "type": "|",
+    "named": false
+  },
+  {
     "type": "|=",
     "named": false
   },
   {
+    "type": "||",
+    "named": false
+  },
+  {
     "type": "}",
+    "named": false
+  },
+  {
+    "type": "~",
     "named": false
   }
 ]

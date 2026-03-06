@@ -280,3 +280,99 @@ CREATE TABLE Employees (
                       (primitive_expression
                         (primitive_constant
                           (decimal_))))))))))))))
+
+=====================================
+Column with COLLATE
+=====================================
+
+CREATE TABLE t1 (col1 VARCHAR(100) COLLATE Latin1_General_CI_AS NOT NULL)
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_table
+          (full_table_name
+            (id_))
+          (table_element
+            (column_definition
+              (id_)
+              (data_type
+                (varchar_)
+                (decimal_))
+              (id_)
+              (null_notnull
+                (null_)))))))))
+
+=====================================
+PRIMARY KEY CLUSTERED column constraint
+=====================================
+
+CREATE TABLE t1 (id INT PRIMARY KEY CLUSTERED)
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_table
+          (full_table_name
+            (id_))
+          (table_element
+            (column_definition
+              (id_)
+              (data_type
+                (int_))
+              (column_constraint))))))))
+
+=====================================
+PRIMARY KEY CLUSTERED table constraint
+=====================================
+
+CREATE TABLE t2 (id INT, CONSTRAINT PK_t2 PRIMARY KEY CLUSTERED (id))
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_table
+          (full_table_name
+            (id_))
+          (table_element
+            (column_definition
+              (id_)
+              (data_type
+                (int_))))
+          (table_element
+            (table_constraint
+              (id_)
+              (column_name_list
+                (id_)))))))))
+
+=====================================
+UNIQUE NONCLUSTERED constraint
+=====================================
+
+CREATE TABLE t1 (name VARCHAR(50) UNIQUE NONCLUSTERED)
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_table
+          (full_table_name
+            (id_))
+          (table_element
+            (column_definition
+              (id_)
+              (data_type
+                (varchar_)
+                (decimal_))
+              (column_constraint))))))))

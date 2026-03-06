@@ -19,6 +19,7 @@ module.exports = {
     //Approximate numerics
     seq($.floatty_,optional(parens($.decimal_))),
     seq($.realty_,optional(parens($.decimal_))),
+    seq(token(/DOUBLE/i), token(/PRECISION/i)),
 
     //Character strings
     seq($.char_, optional(parens($.decimal_))),

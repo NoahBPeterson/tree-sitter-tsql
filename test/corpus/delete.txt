@@ -65,3 +65,21 @@ DELETE u FROM users u INNER JOIN tmp t ON u.id = t.id
                       (full_column_name
                         (id_)
                         (id_)))))))))))))
+
+=====================================
+DELETE WHERE CURRENT OF cursor variable
+=====================================
+
+DELETE FROM t WHERE CURRENT OF @cur
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (delete_statement
+          (delete_target
+            (full_table_name
+              (id_)))
+          (LOCAL_ID_))))))

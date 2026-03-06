@@ -14,6 +14,8 @@
 
 #include "tree_sitter/parser.h"
 #include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 enum TokenType {
   NON_KEYWORD_ID,
@@ -54,6 +56,9 @@ static const char *KEYWORDS[] = {
   "ASCII",
   "ASIN",
   "ASSEMBLYPROPERTY",
+  "ASYMKEYPROPERTY",
+  "ASYMKEY_ID",
+  "ASYMMETRIC",
   "AT",
   "ATAN",
   "ATN2",
@@ -84,6 +89,8 @@ static const char *KEYWORDS[] = {
   "CERTENCODED",
   "CERTIFICATE",
   "CERTPRIVATEKEY",
+  "CERTPROPERTY",
+  "CERT_ID",
   "CHANGES",
   "CHANGETABLE",
   "CHAR",
@@ -92,6 +99,7 @@ static const char *KEYWORDS[] = {
   "CHECKPOINT",
   "CHECKSUM",
   "CHECKSUM_AGG",
+  "CHOOSE",
   "CLOSE",
   "CLUSTERED",
   "COALESCE",
@@ -111,6 +119,7 @@ static const char *KEYWORDS[] = {
   "CONSTRAINT",
   "CONTAINED",
   "CONTAINS",
+  "CONTAINSTABLE",
   "CONTEXT_INFO",
   "CONTINUE",
   "CONVERT",
@@ -121,6 +130,7 @@ static const char *KEYWORDS[] = {
   "COUNT_BIG",
   "CREATE",
   "CROSS",
+  "CRYPT_GEN_RANDOM",
   "CUBE",
   "CUME_DIST",
   "CURRENT",
@@ -163,6 +173,11 @@ static const char *KEYWORDS[] = {
   "DECIMAL",
   "DECLARE",
   "DECOMPRESS",
+  "DECRYPTBYASYMKEY",
+  "DECRYPTBYCERT",
+  "DECRYPTBYKEY",
+  "DECRYPTBYPASSPHRASE",
+  "DECRYPTION",
   "DEFAULT",
   "DEGREES",
   "DELAY",
@@ -176,12 +191,17 @@ static const char *KEYWORDS[] = {
   "DISK",
   "DISTINCT",
   "DISTRIBUTED",
+  "DOUBLE",
   "DROP",
   "DYNAMIC",
   "E",
   "ELEMENTS",
   "ELSE",
   "ENABLE",
+  "ENCRYPTBYASYMKEY",
+  "ENCRYPTBYCERT",
+  "ENCRYPTBYKEY",
+  "ENCRYPTBYPASSPHRASE",
   "ENCRYPTION",
   "END",
   "EOMONTH",
@@ -229,6 +249,7 @@ static const char *KEYWORDS[] = {
   "FORMATMESSAGE",
   "FORWARD_ONLY",
   "FREETEXT",
+  "FREETEXTTABLE",
   "FROM",
   "FULL",
   "FULLTEXTCATALOGPROPERTY",
@@ -256,6 +277,7 @@ static const char *KEYWORDS[] = {
   "GROUPING",
   "GROUPING_ID",
   "HASH",
+  "HASHBYTES",
   "HAS_DBACCESS",
   "HAS_PERMS_BY_NAME",
   "HAVING",
@@ -298,8 +320,10 @@ static const char *KEYWORDS[] = {
   "ISNUMERIC",
   "ISOLATION",
   "IS_MEMBER",
+  "IS_OBJECTSIGNED",
   "IS_ROLEMEMBER",
   "IS_SRVROLEMEMBER",
+  "JOB",
   "JOIN",
   "JSON",
   "JSON_ARRAY",
@@ -310,7 +334,11 @@ static const char *KEYWORDS[] = {
   "JSON_VALUE",
   "KEEP",
   "KEY",
+  "KEYS",
   "KEYSET",
+  "KEY_GUID",
+  "KEY_ID",
+  "KEY_NAME",
   "KILL",
   "LAG",
   "LANGUAGE",
@@ -323,6 +351,7 @@ static const char *KEYWORDS[] = {
   "LEN",
   "LEVEL",
   "LIKE",
+  "LINENO",
   "LOCAL",
   "LOCK_ESCALATION",
   "LOG",
@@ -364,6 +393,7 @@ static const char *KEYWORDS[] = {
   "NONCLUSTERED",
   "NONE",
   "NOT",
+  "NOTIFICATION",
   "NOWAIT",
   "NO_WAIT",
   "NTEXT",
@@ -410,6 +440,7 @@ static const char *KEYWORDS[] = {
   "PARSENAME",
   "PARSEONLY",
   "PARTITION",
+  "PASSWORD",
   "PATH",
   "PATINDEX",
   "PERCENT",
@@ -424,6 +455,7 @@ static const char *KEYWORDS[] = {
   "PLAN",
   "POWER",
   "PRECEDING",
+  "PRECISION",
   "PRIMARY",
   "PRINT",
   "PRIOR",
@@ -446,6 +478,7 @@ static const char *KEYWORDS[] = {
   "READCOMMITTED",
   "READCOMMITTEDLOCK",
   "READONLY",
+  "READTEXT",
   "READUNCOMMITTED",
   "READ_ONLY",
   "REAL",
@@ -486,6 +519,7 @@ static const char *KEYWORDS[] = {
   "ROWVERSION",
   "ROW_NUMBER",
   "RTRIM",
+  "RULE",
   "S",
   "SAVE",
   "SCHEMA",
@@ -498,6 +532,9 @@ static const char *KEYWORDS[] = {
   "SCROLL_LOCKS",
   "SELECT",
   "SELF",
+  "SEMANTICKEYPHRASETABLE",
+  "SEMANTICSIMILARITYDETAILSTABLE",
+  "SEMANTICSIMILARITYTABLE",
   "SEND",
   "SEQUENCE",
   "SERIALIZABLE",
@@ -517,6 +554,8 @@ static const char *KEYWORDS[] = {
   "SHOWPLAN_XML",
   "SHUTDOWN",
   "SIGN",
+  "SIGNBYASYMKEY",
+  "SIGNBYCERT",
   "SIN",
   "SIZE",
   "SMALLDATETIME",
@@ -539,6 +578,7 @@ static const char *KEYWORDS[] = {
   "STATISTICS_PROFILE",
   "STATISTICS_TIME",
   "STATISTICS_XML",
+  "STATS",
   "STATS_DATE",
   "STDEV",
   "STDEVP",
@@ -546,6 +586,7 @@ static const char *KEYWORDS[] = {
   "STRING_AGG",
   "STRING_ESCAPE",
   "STUFF",
+  "SUBSCRIPTION",
   "SUBSTRING",
   "SUM",
   "SUSER_ID",
@@ -554,6 +595,8 @@ static const char *KEYWORDS[] = {
   "SUSER_SNAME",
   "SWITCH",
   "SWITCHOFFSET",
+  "SYMKEYPROPERTY",
+  "SYMMETRIC",
   "SYNONYM",
   "SYSDATETIME",
   "SYSDATETIMEOFFSET",
@@ -572,7 +615,9 @@ static const char *KEYWORDS[] = {
   "TARGET",
   "TERTIARY_WEIGHTS",
   "TEXT",
+  "TEXTPTR",
   "TEXTSIZE",
+  "TEXTVALID",
   "THEN",
   "THROW",
   "TIES",
@@ -610,6 +655,7 @@ static const char *KEYWORDS[] = {
   "UNLIMITED",
   "UNPIVOT",
   "UPDATE",
+  "UPDATETEXT",
   "UPDLOCK",
   "UPPER",
   "URL",
@@ -625,6 +671,8 @@ static const char *KEYWORDS[] = {
   "VARCHAR",
   "VARP",
   "VARYING",
+  "VERIFYSIGNEDBYASYMKEY",
+  "VERIFYSIGNEDBYCERT",
   "VERSION",
   "VIEW",
   "VIEW_METADATA",
@@ -638,6 +686,7 @@ static const char *KEYWORDS[] = {
   "WITHOUT",
   "WITHOUT_ARRAY_WRAPPER",
   "WORK",
+  "WRITETEXT",
   "XACT_ABORT",
   "XACT_STATE",
   "XLOCK",
@@ -692,7 +741,27 @@ static int is_id_continue(int32_t c) {
 
 /* --- Required tree-sitter external scanner API --- */
 
+/* ASCII-order strcmp for keyword sort verification (uppercase compare) */
+static int ascii_strcmp(const char *a, const char *b) {
+  while (*a && *b) {
+    if ((unsigned char)*a != (unsigned char)*b)
+      return (unsigned char)*a - (unsigned char)*b;
+    a++;
+    b++;
+  }
+  return (unsigned char)*a - (unsigned char)*b;
+}
+
 void *tree_sitter_TSQL_external_scanner_create(void) {
+  /* Verify KEYWORDS array is sorted on first use */
+  for (int i = 1; i < KEYWORD_COUNT; i++) {
+    if (ascii_strcmp(KEYWORDS[i - 1], KEYWORDS[i]) >= 0) {
+      fprintf(stderr,
+        "tree-sitter-tsql: KEYWORDS sort error at index %d: \"%s\" >= \"%s\"\n",
+        i, KEYWORDS[i - 1], KEYWORDS[i]);
+      abort();
+    }
+  }
   return NULL;  /* stateless scanner */
 }
 

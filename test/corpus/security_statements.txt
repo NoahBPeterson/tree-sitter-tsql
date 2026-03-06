@@ -553,3 +553,153 @@ DROP SERVER ROLE AppAdmins
       (ddl_clause
         (drop_server_role
           (id_))))))
+
+=====================================
+SELECT USER bare keyword
+=====================================
+
+SELECT USER
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (function_call
+                          (security_functions
+                            (USER)))))))))))))))
+
+=====================================
+OPEN SYMMETRIC KEY
+=====================================
+
+OPEN SYMMETRIC KEY MyKey DECRYPTION BY CERTIFICATE MyCert
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (open_key_statement
+          (id_)
+          (id_))))))
+
+=====================================
+OPEN SYMMETRIC KEY with PASSWORD
+=====================================
+
+OPEN SYMMETRIC KEY MyKey DECRYPTION BY PASSWORD = 'secret'
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (open_key_statement
+          (id_)
+          (string_lit))))))
+
+=====================================
+CLOSE SYMMETRIC KEY
+=====================================
+
+CLOSE SYMMETRIC KEY MyKey
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (close_key_statement
+          (id_))))))
+
+=====================================
+CLOSE ALL SYMMETRIC KEYS
+=====================================
+
+CLOSE ALL SYMMETRIC KEYS
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (close_key_statement)))))
+
+=====================================
+OPEN MASTER KEY
+=====================================
+
+OPEN MASTER KEY DECRYPTION BY PASSWORD = 'secret'
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (open_key_statement
+          (string_lit))))))
+
+=====================================
+CLOSE MASTER KEY
+=====================================
+
+CLOSE MASTER KEY
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (close_key_statement)))))
+
+=====================================
+ALTER AUTHORIZATION basic
+=====================================
+
+ALTER AUTHORIZATION ON dbo.MyTable TO NewOwner
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (alter_authorization_statement
+          (full_table_name
+            (id_)
+            (id_))
+          (id_))))))
+
+=====================================
+ALTER AUTHORIZATION with class type
+=====================================
+
+ALTER AUTHORIZATION ON SCHEMA::HumanResources TO NewOwner
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (alter_authorization_statement
+          (full_table_name
+            (id_))
+          (id_))))))

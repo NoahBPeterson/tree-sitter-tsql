@@ -1247,3 +1247,18 @@ SELECT CAST('12:25' as SMALLDATETIME)
                             (as)
                             (data_type
                               (smalldatetime_))))))))))))))))
+
+=================================================
+DOUBLE PRECISION data type
+=================================================
+DECLARE @x DOUBLE PRECISION
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (declare_statement
+          (declare_local
+            (LOCAL_ID_)
+            (data_type)))))))

@@ -80,3 +80,28 @@ UPDATE u SET u.name = t.name FROM users u INNER JOIN tmp t ON u.id = t.id
                       (full_column_name
                         (id_)
                         (id_)))))))))))))
+
+=====================================
+UPDATE WHERE CURRENT OF cursor
+=====================================
+
+UPDATE t SET col1 = 1 WHERE CURRENT OF my_cursor
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (update_statement
+          (update_target
+            (full_table_name
+              (id_)))
+          (update_elem
+            (full_column_name
+              (id_))
+            (expression
+              (primitive_expression
+                (primitive_constant
+                  (decimal_)))))
+          (id_))))))

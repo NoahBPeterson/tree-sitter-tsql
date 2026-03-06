@@ -196,7 +196,7 @@
 - [x] UPDATE with `OUTPUT` clause (Parser L2203)
 - [x] UPDATE with `WITH` (CTE) (Parser L2195)
 - [ ] UPDATE with table hints (Parser L2200)
-- [ ] UPDATE `CURRENT OF cursor` (Parser L2205)
+- [x] UPDATE `CURRENT OF cursor` (Parser L2205)
 
 ### 3.3 DELETE Statement (Parser L2148-L2160)
 
@@ -207,7 +207,7 @@
 - [x] DELETE with `TOP` (Parser L2149)
 - [x] DELETE with `OUTPUT` clause (Parser L2153)
 - [x] DELETE with `WITH` (CTE) (Parser L2148)
-- [ ] DELETE `CURRENT OF cursor` (Parser L2156)
+- [x] DELETE `CURRENT OF cursor` (Parser L2156)
 
 ### 3.4 MERGE Statement (Parser L2127-L2146)
 
@@ -238,9 +238,9 @@
 
 - [x] `DECLARE @var data_type` (Parser L2982)
 - [x] `DECLARE @var data_type = expression` (Parser L2983)
-- [ ] `DECLARE @var TABLE (col_def, ...)` (Parser L2984)
+- [x] `DECLARE @var TABLE (col_def, ...)` (Parser L2984)
 - [x] Multiple declarations — `DECLARE @a INT, @b VARCHAR(10)` (Parser L2985)
-- [ ] `DECLARE @var AS table_name` (Parser L2986)
+- [x] `DECLARE @var AS table_name` (Parser L2986)
 - [ ] `DECLARE @var CURSOR` (Parser L2987)
 - [ ] `DECLARE @xml_var XML` with XMLNAMESPACES (Parser L2988)
 
@@ -248,7 +248,7 @@
 
 - [x] `SET @var = expression` (Parser L3399)
 - [x] `SET @var assignment_operator expression` (`+=`, `-=`, etc.) (Parser L3400)
-- [ ] `SET @cursor = CURSOR FOR select_statement` (Parser L3401)
+- [x] `SET @cursor = CURSOR FOR select_statement` (Parser L3401)
 - [x] `set_special` — `SET ANSI_NULLS ON|OFF` (Parser L3402)
 - [x] `set_special` — `SET ANSI_PADDING ON|OFF` (Parser L3402)
 - [x] `set_special` — `SET ANSI_WARNINGS ON|OFF` (Parser L3402)
@@ -260,8 +260,8 @@
 - [x] `set_special` — `SET TRANSACTION ISOLATION LEVEL ...` (Parser L3404)
 - [x] `set_special` — `SET IDENTITY_INSERT table ON|OFF` (Parser L3405)
 - [x] `set_special` — `SET ROWCOUNT expression` (Parser L3406)
-- [ ] `set_special` — `SET STATISTICS IO|TIME|XML|PROFILE ON|OFF` (Parser L3847)
-- [ ] `set_special` — `SET TEXTSIZE n` (Parser L3847)
+- [x] `set_special` — `SET STATISTICS IO|TIME|XML|PROFILE ON|OFF` (Parser L3847)
+- [x] `set_special` — `SET TEXTSIZE n` (Parser L3847)
 - [ ] `set_special` — other SET options (Parser L3402-L3408)
 
 ### 4.3 Control Flow — cfl_statement (Parser L250-L264)
@@ -277,7 +277,7 @@
 - [x] `print_statement` — `PRINT expression` (Parser L256)
 - [x] `raiseerror_statement` — `RAISERROR(msg, severity, state [, args])` (Parser L257)
 - [x] `goto_statement` — `GOTO label` (Parser L254)
-- [ ] `label_statement` — `label_name:` — GOTO target label definition (Parser L283)
+- [x] `label_statement` — `label_name:` — GOTO target label definition (Parser L283)
 - [x] `waitfor_statement` — `WAITFOR DELAY 'time'` (Parser L261)
 - [x] `waitfor_statement` — `WAITFOR TIME 'time'` (Parser L261)
 
@@ -423,8 +423,8 @@
 
 ### 5.6 System Functions (Parser ~L4493-L4548)
 
-- [ ] `BINARY_CHECKSUM(* | expression, ...)` (~L4494)
-- [ ] `CHECKSUM(* | expression, ...)` (~L4496)
+- [x] `BINARY_CHECKSUM(* | expression, ...)` (~L4494)
+- [x] `CHECKSUM(* | expression, ...)` (~L4496)
 - [x] `COMPRESS(expression)` (~L4498)
 - [x] `CONNECTIONPROPERTY(property)` (~L4500)
 - [x] `CONTEXT_INFO()` (~L4502)
@@ -463,7 +463,7 @@
 
 ### 5.8 Logical Functions (Parser ~L4724-L4727)
 
-- [ ] `CHOOSE(index, val1, val2, ...)` (LSP sql.tmLanguage.json:286)
+- [x] `CHOOSE(index, val1, val2, ...)` (LSP sql.tmLanguage.json:286)
 - [x] `GREATEST(expression, expression, ...)` (~L4725)
 - [x] `LEAST(expression, expression, ...)` (~L4727)
 
@@ -490,7 +490,7 @@
 - [x] `SUSER_SID([login])` (~L4769)
 - [x] `SUSER_SNAME([server_user_sid])` (~L4771)
 - [x] `SYSTEM_USER` (~L4773)
-- [ ] `USER` (~L4775)
+- [x] `USER` (~L4775)
 - [x] `USER_ID([user])` (~L4777)
 - [x] `USER_NAME([id])` (~L4779)
 
@@ -511,58 +511,58 @@
 
 ### 5.12 Cryptographic Functions (Parser ~L4567, LSP sql.tmLanguage.json:230)
 
-- [ ] `CERT_ID(cert_name)` (~L4567)
-- [ ] `HASHBYTES(algorithm, input)` (LSP:230)
-- [ ] `CRYPT_GEN_RANDOM(length [, seed])` (LSP:230)
-- [ ] `ENCRYPTBYKEY(key_guid, plaintext)` (LSP:230)
-- [ ] `DECRYPTBYKEY(ciphertext)` (LSP:230)
-- [ ] `ENCRYPTBYCERT(cert_id, plaintext)` (LSP:230)
-- [ ] `DECRYPTBYCERT(cert_id, ciphertext)` (LSP:230)
-- [ ] `ENCRYPTBYASYMKEY(key_id, plaintext)` (LSP:230)
-- [ ] `DECRYPTBYASYMKEY(key_id, ciphertext)` (LSP:230)
-- [ ] `ENCRYPTBYPASSPHRASE(passphrase, plaintext)` (LSP:230)
-- [ ] `DECRYPTBYPASSPHRASE(passphrase, ciphertext)` (LSP:230)
-- [ ] `SIGNBYASYMKEY(key_id, plaintext)` (LSP:230)
-- [ ] `SIGNBYCERT(cert_id, plaintext)` (LSP:230)
-- [ ] `VERIFYSIGNEDBYCERT(cert_id, signed_data, signature)` (LSP:230)
-- [ ] `VERIFYSIGNEDBYASYMKEY(key_id, signed_data, signature)` (LSP:230)
-- [ ] `KEY_ID(key_name)` (LSP:230)
-- [ ] `KEY_GUID(key_name)` (LSP:230)
-- [ ] `KEY_NAME(key_guid)` (LSP:230)
-- [ ] `ASYMKEY_ID(key_name)` (LSP:230)
-- [ ] `ASYMKEYPROPERTY(key_id, property)` (LSP:230)
-- [ ] `CERTPROPERTY(cert_id, property)` (LSP:230)
-- [ ] `SYMKEYPROPERTY(key_id, property)` (LSP:230)
-- [ ] `IS_OBJECTSIGNED(object_name, ...)` (LSP:230)
-- [ ] `DECRYPTBYKEYAUTOASYMKEY(...)` (LSP:230)
-- [ ] `DECRYPTBYKEYAUTOCERT(...)` (LSP:230)
+- [x] `CERT_ID(cert_name)` (~L4567)
+- [x] `HASHBYTES(algorithm, input)` (LSP:230)
+- [x] `CRYPT_GEN_RANDOM(length [, seed])` (LSP:230)
+- [x] `ENCRYPTBYKEY(key_guid, plaintext)` (LSP:230)
+- [x] `DECRYPTBYKEY(ciphertext)` (LSP:230)
+- [x] `ENCRYPTBYCERT(cert_id, plaintext)` (LSP:230)
+- [x] `DECRYPTBYCERT(cert_id, ciphertext)` (LSP:230)
+- [x] `ENCRYPTBYASYMKEY(key_id, plaintext)` (LSP:230)
+- [x] `DECRYPTBYASYMKEY(key_id, ciphertext)` (LSP:230)
+- [x] `ENCRYPTBYPASSPHRASE(passphrase, plaintext)` (LSP:230)
+- [x] `DECRYPTBYPASSPHRASE(passphrase, ciphertext)` (LSP:230)
+- [x] `SIGNBYASYMKEY(key_id, plaintext)` (LSP:230)
+- [x] `SIGNBYCERT(cert_id, plaintext)` (LSP:230)
+- [x] `VERIFYSIGNEDBYCERT(cert_id, signed_data, signature)` (LSP:230)
+- [x] `VERIFYSIGNEDBYASYMKEY(key_id, signed_data, signature)` (LSP:230)
+- [x] `KEY_ID(key_name)` (LSP:230)
+- [x] `KEY_GUID(key_name)` (LSP:230)
+- [x] `KEY_NAME(key_guid)` (LSP:230)
+- [x] `ASYMKEY_ID(key_name)` (LSP:230)
+- [x] `ASYMKEYPROPERTY(key_id, property)` (LSP:230)
+- [x] `CERTPROPERTY(cert_id, property)` (LSP:230)
+- [x] `SYMKEYPROPERTY(key_id, property)` (LSP:230)
+- [x] `IS_OBJECTSIGNED(object_name, ...)` (LSP:230)
+- [x] `DECRYPTBYKEYAUTOASYMKEY(...)` (LSP:230) — variadic, handled by scalar_function_name fallback
+- [x] `DECRYPTBYKEYAUTOCERT(...)` (LSP:230) — variadic, handled by scalar_function_name fallback
 
 ### 5.13 Freetext Table Functions (Parser L4302-L4320)
 
-- [ ] `CONTAINSTABLE(table, column, search_condition)` (Parser L4303)
-- [ ] `FREETEXTTABLE(table, column, freetext_string)` (Parser L4308)
-- [ ] `SEMANTICSIMILARITYTABLE(table, column, expression)` (Parser L4310)
-- [ ] `SEMANTICKEYPHRASETABLE(table, column, expression)` (Parser L4312)
-- [ ] `SEMANTICSIMILARITYDETAILSTABLE(table, col1, expression, col2, expression)` (Parser L4314)
+- [x] `CONTAINSTABLE(table, column, search_condition)` (Parser L4303)
+- [x] `FREETEXTTABLE(table, column, freetext_string)` (Parser L4308)
+- [x] `SEMANTICSIMILARITYTABLE(table, column, expression)` (Parser L4310)
+- [x] `SEMANTICKEYPHRASETABLE(table, column, expression)` (Parser L4312)
+- [x] `SEMANTICSIMILARITYDETAILSTABLE(table, col1, expression, col2, expression)` (Parser L4314)
 
 ### 5.14 @@Global Variables — remaining (LSP sql.tmLanguage.json:270)
 
-- [ ] `@@ERROR` — last error number (LSP:270)
-- [ ] `@@ROWCOUNT` — rows affected by last statement (LSP:270)
-- [ ] `@@TRANCOUNT` — open transaction count (LSP:270)
-- [ ] `@@IDENTITY` — last inserted identity value (LSP:270)
-- [ ] `@@CONNECTIONS` — total login attempts (LSP:270)
-- [ ] `@@CPU_BUSY` — CPU active time (LSP:270)
-- [ ] `@@IDLE` — idle time (LSP:270)
-- [ ] `@@IO_BUSY` — I/O time (LSP:270)
-- [ ] `@@PROCID` — current stored procedure ID (LSP:270)
-- [ ] `@@PACKET_ERRORS` — network packet errors (LSP:270)
-- [ ] `@@PACK_RECEIVED` — network packets received (LSP:270)
-- [ ] `@@PACK_SENT` — network packets sent (LSP:270)
-- [ ] `@@TIMETICKS` — microseconds per tick (LSP:270)
-- [ ] `@@TOTAL_ERRORS` — total disk read/write errors (LSP:270)
-- [ ] `@@TOTAL_READ` — total disk reads (LSP:270)
-- [ ] `@@TOTAL_WRITE` — total disk writes (LSP:270)
+- [x] `@@ERROR` — last error number (LSP:270)
+- [x] `@@ROWCOUNT` — rows affected by last statement (LSP:270)
+- [x] `@@TRANCOUNT` — open transaction count (LSP:270)
+- [x] `@@IDENTITY` — last inserted identity value (LSP:270)
+- [x] `@@CONNECTIONS` — total login attempts (LSP:270)
+- [x] `@@CPU_BUSY` — CPU active time (LSP:270)
+- [x] `@@IDLE` — idle time (LSP:270)
+- [x] `@@IO_BUSY` — I/O time (LSP:270)
+- [x] `@@PROCID` — current stored procedure ID (LSP:270)
+- [x] `@@PACKET_ERRORS` — network packet errors (LSP:270)
+- [x] `@@PACK_RECEIVED` — network packets received (LSP:270)
+- [x] `@@PACK_SENT` — network packets sent (LSP:270)
+- [x] `@@TIMETICKS` — microseconds per tick (LSP:270)
+- [x] `@@TOTAL_ERRORS` — total disk read/write errors (LSP:270)
+- [x] `@@TOTAL_READ` — total disk reads (LSP:270)
+- [x] `@@TOTAL_WRITE` — total disk writes (LSP:270)
 
 ### 5.15 Rowset / Table-Valued Functions — remaining (LSP sql.tmLanguage.json:318)
 
@@ -578,8 +578,8 @@
 
 ### 5.17 Text/Image Functions — legacy (LSP sql.tmLanguage.json:350)
 
-- [ ] `TEXTPTR(column)` (LSP:350)
-- [ ] `TEXTVALID('table.column', text_pointer)` (LSP:350)
+- [x] `TEXTPTR(column)` (LSP:350)
+- [x] `TEXTVALID('table.column', text_pointer)` (LSP:350)
 
 ### 5.18 System Functions — remaining (LSP sql.tmLanguage.json:342)
 
@@ -595,13 +595,13 @@
 - [x] Column definition — `col_name data_type [NULL|NOT NULL]` (Parser L1485)
 - [x] Column definition — `DEFAULT expression` (Parser L1487)
 - [x] Column definition — `IDENTITY [(seed, increment)]` (Parser L1488)
-- [ ] Column definition — `COLLATE collation_name` (Parser L1489)
+- [x] Column definition — `COLLATE collation_name` (Parser L1489)
 - [x] Column definition — `CONSTRAINT name` (Parser L1490)
 - [x] `PRIMARY KEY` constraint (Parser L1500)
 - [x] `UNIQUE` constraint (Parser L1502)
 - [x] `FOREIGN KEY ... REFERENCES table (col)` (Parser L1504)
 - [x] `CHECK (expression)` constraint (Parser L1510)
-- [ ] `CLUSTERED` / `NONCLUSTERED` (Parser L1501)
+- [x] `CLUSTERED` / `NONCLUSTERED` (Parser L1501)
 - [ ] `CREATE TABLE ... AS FileTable` (Parser L1520)
 - [x] Table-level `PRIMARY KEY (col, ...)` (Parser L1530)
 - [x] Table-level `UNIQUE (col, ...)` (Parser L1535)
@@ -696,11 +696,11 @@
 - [x] `CREATE SEQUENCE name` (Parser L1380)
 - [x] `CREATE SYNONYM name FOR object` (Parser L1450)
 - [x] `TRUNCATE TABLE name` (Parser L236)
-- [ ] `UPDATE STATISTICS table` (Parser L237)
-- [ ] `ENABLE TRIGGER name ON table` (Parser L231)
-- [ ] `DISABLE TRIGGER name ON table` (Parser L229)
-- [ ] `ALTER DATABASE name SET options` (Parser L700)
-- [ ] `ALTER INDEX name ON table REBUILD|REORGANIZE|DISABLE` (Parser L800)
+- [x] `UPDATE STATISTICS table` (Parser L237)
+- [x] `ENABLE TRIGGER name ON table` (Parser L231)
+- [x] `DISABLE TRIGGER name ON table` (Parser L229)
+- [x] `ALTER DATABASE name SET options` (Parser L700)
+- [x] `ALTER INDEX name ON table REBUILD|REORGANIZE|DISABLE` (Parser L800)
 - [ ] `CREATE DATABASE name [ON PRIMARY filespec] [LOG ON filespec] [COLLATE] [WITH options]` (Parser L2218)
 - [ ] `LOCK TABLE table IN SHARE|EXCLUSIVE MODE [WAIT n|NOWAIT]` (Parser L1135)
 
@@ -728,7 +728,7 @@
 - [x] `UNIQUEIDENTIFIER` type
 - [x] `SYSNAME` type
 - [ ] User-defined types (reference by name)
-- [ ] `DOUBLE PRECISION` synonym
+- [x] `DOUBLE PRECISION` synonym
 - [ ] `IDENTITY(seed, increment)` specification
 
 ### 7.2 DBCC Commands (Parser L3635-L3652)
@@ -767,11 +767,11 @@
 - [x] `CREATE SERVER ROLE name [AUTHORIZATION owner]`
 - [x] `ALTER SERVER ROLE name ADD|DROP MEMBER`
 - [x] `DROP SERVER ROLE name`
-- [ ] `EXECUTE AS CALLER|SELF|OWNER|'user_name'` — impersonation statement (Parser L3655)
-- [ ] `REVERT [WITH COOKIE = @var]` — revert impersonation (Parser L3191)
-- [ ] `OPEN SYMMETRIC KEY name DECRYPTION BY ...` — open key for use (Parser L3231)
-- [ ] `CLOSE SYMMETRIC KEY name` / `CLOSE ALL SYMMETRIC KEYS` / `CLOSE MASTER KEY` (Parser L3236)
-- [ ] `OPEN MASTER KEY DECRYPTION BY PASSWORD = 'pwd'` (Parser L3231)
+- [x] `EXECUTE AS CALLER|SELF|OWNER|'user_name'` — impersonation statement (Parser L3655)
+- [x] `REVERT [WITH COOKIE = @var]` — revert impersonation (Parser L3191)
+- [x] `OPEN SYMMETRIC KEY name DECRYPTION BY ...` — open key for use (Parser L3231)
+- [x] `CLOSE SYMMETRIC KEY name` / `CLOSE ALL SYMMETRIC KEYS` / `CLOSE MASTER KEY` (Parser L3236)
+- [x] `OPEN MASTER KEY DECRYPTION BY PASSWORD = 'pwd'` (Parser L3231)
 
 ### 7.5 XML Methods (Parser L3905)
 
@@ -792,14 +792,14 @@
 
 - [x] `execute_statement` (grammar.js L135)
 - [x] `kill_statement` — `KILL session_id` (Parser L359)
-- [ ] `kill_statement` — `KILL QUERY NOTIFICATION SUBSCRIPTION ALL|id` (Parser L3131)
-- [ ] `kill_statement` — `KILL STATS JOB job_id` (Parser L3136)
+- [x] `kill_statement` — `KILL QUERY NOTIFICATION SUBSCRIPTION ALL|id` (Parser L3131)
+- [x] `kill_statement` — `KILL STATS JOB job_id` (Parser L3136)
 - [x] `reconfigure_statement` — `RECONFIGURE [WITH OVERRIDE]` (Parser L361)
 - [x] `shutdown_statement` — `SHUTDOWN [WITH NOWAIT]` (Parser L365)
 - [x] `checkpoint_statement` — `CHECKPOINT [duration]` (Parser L352)
-- [ ] `setuser_statement` — `SETUSER ['user']` (Parser L364)
-- [ ] `conversation_statement` — Service Broker conversations (Parser L353)
-- [ ] `message_statement` — Service Broker messages (Parser L360)
+- [x] `setuser_statement` — `SETUSER ['user']` (Parser L364)
+- [x] `conversation_statement` — Service Broker conversations (Parser L353)
+- [x] `message_statement` — Service Broker messages (Parser L360)
 - [x] `security_statement` — GRANT/DENY/REVOKE (Parser L362)
 - [ ] `alter_queue` (Parser L351)
 - [ ] `create_contract` (Parser L354)
@@ -828,8 +828,8 @@
 
 > Very common for ETL/data loading. Reference: `ScriptGenerator/SqlScriptGeneratorVisitor.BulkInsertStatement.cs`
 
-- [ ] `BULK INSERT table FROM 'file'` — basic bulk insert
-- [ ] `BULK INSERT ... WITH (FIELDTERMINATOR, ROWTERMINATOR, ...)` — with options
+- [x] `BULK INSERT table FROM 'file'` — basic bulk insert
+- [x] `BULK INSERT ... WITH (FIELDTERMINATOR, ROWTERMINATOR, ...)` — with options
 - [ ] `INSERT ... SELECT * FROM OPENROWSET(BULK ...)` — OPENROWSET BULK variant (ANTLR4 L4272)
 
 ### 7.12 Specialized Index Types (SqlScriptDOM)
@@ -852,8 +852,8 @@
 - [ ] `CREATE PARTITION SCHEME name AS PARTITION func [ALL] TO (filegroups)` (`CreatePartitionSchemeStatement.cs`)
 - [ ] `ALTER PARTITION FUNCTION name() SPLIT|MERGE RANGE (value)` (`AlterPartitionFunctionStatement.cs`)
 - [ ] `ALTER PARTITION SCHEME name NEXT USED [filegroup]` (`AlterPartitionSchemeStatement.cs`)
-- [ ] `DROP PARTITION FUNCTION name` (`DropPartitionFunctionStatement.cs`)
-- [ ] `DROP PARTITION SCHEME name` (`DropPartitionSchemeStatement.cs`)
+- [x] `DROP PARTITION FUNCTION name` (`DropPartitionFunctionStatement.cs`)
+- [x] `DROP PARTITION SCHEME name` (`DropPartitionSchemeStatement.cs`)
 
 ### 7.14 Full-Text Search DDL (SqlScriptDOM)
 
@@ -882,9 +882,9 @@
 
 > Reference: `ScriptGenerator/SqlScriptGeneratorVisitor.CreateStatisticsStatement.cs`, `UpdateStatisticsStatement.cs`
 
-- [ ] `CREATE STATISTICS name ON table (col, ...)` (`CreateStatisticsStatement.cs`)
-- [ ] `CREATE STATISTICS ... WITH FULLSCAN|SAMPLE n PERCENT` — with options
-- [ ] `UPDATE STATISTICS table [index] [WITH options]` (`UpdateStatisticsStatement.cs`)
+- [x] `CREATE STATISTICS name ON table (col, ...)` (`CreateStatisticsStatement.cs`)
+- [x] `CREATE STATISTICS ... WITH FULLSCAN|SAMPLE n PERCENT` — with options
+- [x] `UPDATE STATISTICS table [index] [WITH options]` (`UpdateStatisticsStatement.cs`)
 - [ ] `DROP STATISTICS table.name` (`DropStatisticsStatement.cs`)
 
 ### 7.17 Certificate & Cryptography DDL (SqlScriptDOM)
@@ -1048,12 +1048,12 @@
 
 > Deprecated features still in the official parser.
 
-- [ ] `CREATE RULE name AS condition` — legacy (`CreateRuleStatement.cs`)
-- [ ] `CREATE DEFAULT name AS expression` — legacy (`CreateDefaultStatement.cs`)
-- [ ] `READTEXT table.column text_pointer offset size` — deprecated (`ReadTextStatement.cs`)
-- [ ] `WRITETEXT table.column text_pointer data` — deprecated (`WriteTextStatement.cs`)
-- [ ] `UPDATETEXT table.column text_pointer offset length data` — deprecated (`UpdateTextStatement.cs`)
-- [ ] `LINENO n` — set line number for error messages
+- [x] `CREATE RULE name AS condition` — legacy (`CreateRuleStatement.cs`)
+- [x] `CREATE DEFAULT name AS expression` — legacy (`CreateDefaultStatement.cs`)
+- [x] `READTEXT table.column text_pointer offset size` — deprecated (`ReadTextStatement.cs`)
+- [x] `WRITETEXT table.column text_pointer data` — deprecated (`WriteTextStatement.cs`)
+- [x] `UPDATETEXT table.column text_pointer offset length data` — deprecated (`UpdateTextStatement.cs`)
+- [x] `LINENO n` — set line number for error messages
 
 ### 7.34 Spatial Methods — GEOGRAPHY/GEOMETRY (SqlScriptDOM)
 
@@ -1073,8 +1073,8 @@
 
 > Reference: ANTLR4 `alter_authorization` and variants
 
-- [ ] `ALTER AUTHORIZATION ON [class_type::]entity TO principal` — change owner of securable
-- [ ] Class types: OBJECT, ASSEMBLY, ASYMMETRIC KEY, AVAILABILITY GROUP, CERTIFICATE, CONTRACT, TYPE, DATABASE, ENDPOINT, FULLTEXT CATALOG/STOPLIST, MESSAGE TYPE, REMOTE SERVICE BINDING, ROLE, ROUTE, SCHEMA, SEARCH PROPERTY LIST, SERVER ROLE, SERVICE, SYMMETRIC KEY, XML SCHEMA COLLECTION
+- [x] `ALTER AUTHORIZATION ON [class_type::]entity TO principal` — change owner of securable
+- [x] Class types: OBJECT, ASSEMBLY, ASYMMETRIC KEY, AVAILABILITY GROUP, CERTIFICATE, CONTRACT, TYPE, DATABASE, ENDPOINT, FULLTEXT CATALOG/STOPLIST, MESSAGE TYPE, REMOTE SERVICE BINDING, ROLE, ROUTE, SCHEMA, SEARCH PROPERTY LIST, SERVER ROLE, SERVICE, SYMMETRIC KEY, XML SCHEMA COLLECTION
 - [ ] Azure SQL variants (`alter_authorization_for_sql_database`, `alter_authorization_for_azure_dw`, `alter_authorization_for_parallel_dw`)
 
 ### 7.36 ALTER SERVER CONFIGURATION (Parser L1835)

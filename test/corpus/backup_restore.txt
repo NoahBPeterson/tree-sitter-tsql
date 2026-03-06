@@ -231,7 +231,6 @@ BACKUP CERTIFICATE MyCert TO FILE = '/tmp/cert.cer' WITH PRIVATE KEY (FILE = '/t
           (string_lit)
           (WITH)
           (string_lit)
-          (id_)
           (string_lit))))))
 
 =====================================
@@ -248,7 +247,6 @@ BACKUP MASTER KEY TO FILE = '/tmp/master.key' ENCRYPTION BY PASSWORD = 'StrongP@
       (another_statement
         (backup_statement
           (string_lit)
-          (id_)
           (string_lit))))))
 
 =====================================
@@ -265,7 +263,6 @@ BACKUP SERVICE MASTER KEY TO FILE = '/tmp/smk.key' ENCRYPTION BY PASSWORD = 'Str
       (another_statement
         (backup_statement
           (string_lit)
-          (id_)
           (string_lit))))))
 
 =====================================
