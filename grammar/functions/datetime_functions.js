@@ -3,8 +3,9 @@ const { parens, parensComma } = require('../utils.js');
 module.exports = {
   // https://learn.microsoft.com/en-us/sql/t-sql/functions/date-and-time-data-types-and-functions-transact-sql
   datetime_functions: $ => choice(
-    // bare keyword
+    // bare keywords
     $.current_timestamp_
+    ,$.current_date_
     // 0-arg group
     ,seq($._datetime_0arg, parens())
     // 1-arg group
@@ -85,6 +86,7 @@ module.exports = {
   )),
 
   current_timestamp_: $ => token(/CURRENT_TIMESTAMP/i),
+  current_date_: $ => token(/CURRENT_DATE/i),
   datefromparts_: $ => token(/DATEFROMPARTS/i),
   eomonth_: $ => token(/EOMONTH/i),
   datetime2fromparts_: $ => token(/DATETIME2FROMPARTS/i),

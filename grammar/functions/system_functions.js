@@ -30,6 +30,7 @@ module.exports = {
     /NEWID/i,
     /NEWSEQUENTIALID/i,
     /ROWCOUNT_BIG/i,
+    /SESSION_ID/i,
     /XACT_STATE/i,
   )),
 

@@ -1,0 +1,315 @@
+=====================================
+UPDATE with table hints
+=====================================
+UPDATE t WITH (ROWLOCK) SET x = 1
+---
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (update_statement
+          (update_target
+            (full_table_name
+              (id_)))
+          (with_table_hints
+            (table_hint))
+          (update_elem
+            (full_column_name
+              (id_))
+            (expression
+              (primitive_expression
+                (primitive_constant
+                  (decimal_))))))))))
+
+=====================================
+UPDATE with multiple table hints
+=====================================
+UPDATE t WITH (ROWLOCK, UPDLOCK) SET x = 1
+---
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (update_statement
+          (update_target
+            (full_table_name
+              (id_)))
+          (with_table_hints
+            (table_hint)
+            (table_hint))
+          (update_elem
+            (full_column_name
+              (id_))
+            (expression
+              (primitive_expression
+                (primitive_constant
+                  (decimal_))))))))))
+
+=====================================
+SET LANGUAGE identifier
+=====================================
+SET LANGUAGE us_english
+---
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (set_statement
+          (set_special
+            (id_)))))))
+
+=====================================
+SET LANGUAGE variable
+=====================================
+SET LANGUAGE @lang
+---
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (set_statement
+          (set_special
+            (LOCAL_ID_)))))))
+
+=====================================
+SET LANGUAGE string
+=====================================
+SET LANGUAGE 'us_english'
+---
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (set_statement
+          (set_special
+            (string_lit)))))))
+
+=====================================
+SET DATEFORMAT
+=====================================
+SET DATEFORMAT mdy
+---
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (set_statement
+          (set_special
+            (id_)))))))
+
+=====================================
+SET DATEFIRST
+=====================================
+SET DATEFIRST 1
+---
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (set_statement
+          (set_special
+            (expression
+              (primitive_expression
+                (primitive_constant
+                  (decimal_))))))))))
+
+=====================================
+SET LOCK_TIMEOUT
+=====================================
+SET LOCK_TIMEOUT 1000
+---
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (set_statement
+          (set_special
+            (expression
+              (primitive_expression
+                (primitive_constant
+                  (decimal_))))))))))
+
+=====================================
+SET DEADLOCK_PRIORITY LOW
+=====================================
+SET DEADLOCK_PRIORITY LOW
+---
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (set_statement
+          (set_special))))))
+
+=====================================
+SET DEADLOCK_PRIORITY HIGH
+=====================================
+SET DEADLOCK_PRIORITY HIGH
+---
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (set_statement
+          (set_special))))))
+
+=====================================
+SET CONTEXT_INFO
+=====================================
+SET CONTEXT_INFO 0x1234
+---
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (set_statement
+          (set_special
+            (expression
+              (primitive_expression
+                (primitive_constant
+                  (binary))))))))))
+
+=====================================
+SET QUERY_GOVERNOR_COST_LIMIT
+=====================================
+SET QUERY_GOVERNOR_COST_LIMIT 0
+---
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (set_statement
+          (set_special
+            (expression
+              (primitive_expression
+                (primitive_constant
+                  (decimal_))))))))))
+
+=====================================
+DECLARE variable CURSOR
+=====================================
+DECLARE @c CURSOR
+---
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (declare_statement
+          (declare_local
+            (LOCAL_ID_)
+            (data_type
+              (cursor_dt_))))))))
+
+=====================================
+WITH XMLNAMESPACES uri AS prefix
+=====================================
+WITH XMLNAMESPACES('http://example.com' AS ns)
+SELECT col FROM t
+---
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (with_expression
+            (xml_namespaces
+              (xml_namespace_element
+                (string_lit)
+                (as)
+                (id_))))
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (full_column_name
+                          (id_))))))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_)))))))))))))
+
+=====================================
+WITH XMLNAMESPACES DEFAULT uri
+=====================================
+WITH XMLNAMESPACES(DEFAULT 'http://example.com')
+SELECT col FROM t
+---
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (with_expression
+            (xml_namespaces
+              (xml_namespace_element
+                (string_lit))))
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (full_column_name
+                          (id_))))))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_)))))))))))))
+
+=====================================
+WITH XMLNAMESPACES and CTE
+=====================================
+WITH XMLNAMESPACES('http://a.com' AS a, DEFAULT 'http://b.com'),
+cte AS (SELECT 1 AS x)
+SELECT * FROM cte
+---
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (with_expression
+            (xml_namespaces
+              (xml_namespace_element
+                (string_lit)
+                (as)
+                (id_))
+              (xml_namespace_element
+                (string_lit)))
+            (common_table_expression
+              (id_)
+              (select_statement
+                (query_expression
+                  (query_specification
+                    (select)
+                    (select_list
+                      (select_list_elem
+                        (expression_elem
+                          (expression
+                            (primitive_expression
+                              (primitive_constant
+                                (decimal_))))
+                          (as_column_alias
+                            (as)
+                            (column_alias
+                              (id_)))))))))))
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_)))))))))))))

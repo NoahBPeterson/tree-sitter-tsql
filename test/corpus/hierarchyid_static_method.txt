@@ -60,7 +60,7 @@ FROM FOO
                         (id_)))))))))))))
 
 =====================================
-HIERARCHYID Static Method GetAncestor
+HIERARCHYID Instance Method GetAncestor
 =====================================
 SELECT foo.GetAncestor(bar)
 FROM BAZ
@@ -82,10 +82,11 @@ FROM BAZ
                         (function_call
                           (hierarchyid_static_method
                             (id_)
-                            (getancestor_)
-                            (expression
-                              (full_column_name
-                                (id_)))))))))
+                            (hierarchyid_call
+                              (getancestor_)
+                              (expression
+                                (full_column_name
+                                  (id_))))))))))
                 (table_sources
                   (table_source
                     (table_source_item
@@ -93,7 +94,7 @@ FROM BAZ
                         (id_)))))))))))))
 
 =====================================
-HIERARCHYID Static Method GetLevel
+HIERARCHYID Instance Method GetLevel
 =====================================
 SELECT foo.GetLevel()
 FROM BAZ
@@ -114,7 +115,8 @@ FROM BAZ
                         (function_call
                           (hierarchyid_static_method
                             (id_)
-                            (getlevel_)))))))
+                            (hierarchyid_call
+                              (getlevel_))))))))
                 (table_sources
                   (table_source
                     (table_source_item
@@ -122,7 +124,7 @@ FROM BAZ
                         (id_)))))))))))))
 
 =====================================
-HIERARCHYID Static Method IsDescendantOf
+HIERARCHYID Instance Method IsDescendantOf
 =====================================
 SELECT foo.IsDescendantOf(bar)
 FROM BAZ
@@ -143,10 +145,11 @@ FROM BAZ
                         (function_call
                           (hierarchyid_static_method
                             (id_)
-                            (is_descendant_of_)
-                            (expression
-                              (full_column_name
-                                (id_)))))))))
+                            (hierarchyid_call
+                              (is_descendant_of_)
+                              (expression
+                                (full_column_name
+                                  (id_))))))))))
                 (table_sources
                   (table_source
                     (table_source_item
@@ -154,7 +157,7 @@ FROM BAZ
                         (id_)))))))))))))
 
 =====================================
-HIERARCHYID Static Method ToString
+HIERARCHYID Instance Method ToString
 =====================================
 SELECT foo.ToString()
 FROM BAZ
@@ -175,7 +178,8 @@ FROM BAZ
                         (function_call
                           (hierarchyid_static_method
                             (id_)
-                            (tostring_)))))))
+                            (hierarchyid_call
+                              (tostring_))))))))
                 (table_sources
                   (table_source
                     (table_source_item
@@ -183,7 +187,7 @@ FROM BAZ
                         (id_)))))))))))))
 
 =====================================
-HIERARCHYID Static Method GetReparentedValue
+HIERARCHYID Instance Method GetReparentedValue
 =====================================
 SELECT foo.GetReparentedValue(oldroot, newroot)
 FROM BAZ
@@ -204,13 +208,14 @@ FROM BAZ
                         (function_call
                           (hierarchyid_static_method
                             (id_)
-                            (get_reparented_value_)
-                            (expression
-                              (full_column_name
-                                (id_)))
-                            (expression
-                              (full_column_name
-                                (id_)))))))))
+                            (hierarchyid_call
+                              (get_reparented_value_)
+                              (expression
+                                (full_column_name
+                                  (id_)))
+                              (expression
+                                (full_column_name
+                                  (id_))))))))))
                 (table_sources
                   (table_source
                     (table_source_item
@@ -218,7 +223,7 @@ FROM BAZ
                         (id_)))))))))))))
 
 =====================================
-HIERARCHYID Static Method GetDescendant
+HIERARCHYID Instance Method GetDescendant
 =====================================
 SELECT foo.GetDescendant(foo, bar)
 FROM BAZ
@@ -239,13 +244,14 @@ FROM BAZ
                         (function_call
                           (hierarchyid_static_method
                             (id_)
-                            (get_descendant_)
-                            (expression
-                              (full_column_name
-                                (id_)))
-                            (expression
-                              (full_column_name
-                                (id_)))))))))
+                            (hierarchyid_call
+                              (get_descendant_)
+                              (expression
+                                (full_column_name
+                                  (id_)))
+                              (expression
+                                (full_column_name
+                                  (id_))))))))))
                 (table_sources
                   (table_source
                     (table_source_item

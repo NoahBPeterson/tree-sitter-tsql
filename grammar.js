@@ -67,6 +67,14 @@ module.exports = grammar({
     ,[$.top_clause, $.bracket_expression]
     ,[$.table_source_item, $.nodes_method]
     ,[$.block_statement, $.end_conversation_statement]
+    ,[$.data_type]
+    ,[$.func_proc_name_schema, $.full_table_name]
+    ,[$.xml_common_directives]
+    ,[$.json_option]
+    ,[$.identity_column]
+    ,[$.column_constraint]
+    ,[$.func_proc_name_database_schema, $.full_table_name]
+    ,[$.table_constraint]
   ],
 
   extras: $ => [
@@ -1191,6 +1199,13 @@ module.exports = grammar({
         ,seq(token(/IDENTITY_INSERT/i), $.full_table_name, choice(token(/ON/i), token(/OFF/i)))
         ,seq(token(/ROWCOUNT/i), $.expression)
         ,seq(token(/TEXTSIZE/i), $.expression)
+        ,seq(token(/LANGUAGE/i), choice($.id_, $.LOCAL_ID_, $.string_lit))
+        ,seq(token(/DATEFORMAT/i), choice($.id_, $.LOCAL_ID_))
+        ,seq(token(/DATEFIRST/i), $.expression)
+        ,seq(token(/LOCK_TIMEOUT/i), $.expression)
+        ,seq(token(/DEADLOCK_PRIORITY/i), choice(token(/LOW/i), token(/NORMAL/i), token(/HIGH/i), $.expression))
+        ,seq(token(/CONTEXT_INFO/i), $.expression)
+        ,seq(token(/QUERY_GOVERNOR_COST_LIMIT/i), $.expression)
       )
     ),
 
@@ -1524,6 +1539,7 @@ module.exports = grammar({
       ,token(/UPDATE/i)
       ,optional($.top_clause)
       ,$.update_target
+      ,optional($.with_table_hints)
       ,token(/SET/i)
       ,$.update_elem, repeat(seq(token(','), $.update_elem))
       ,optional($.output_clause)
@@ -1630,7 +1646,22 @@ module.exports = grammar({
     //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L3955
     with_expression: $ => seq(
       token(/WITH/i)
-      ,$.common_table_expression, repeat(seq(token(','), $.common_table_expression))
+      ,choice(
+        seq($.xml_namespaces, optional(seq(token(','),
+          $.common_table_expression, repeat(seq(token(','), $.common_table_expression)))))
+        ,seq($.common_table_expression, repeat(seq(token(','), $.common_table_expression)))
+      )
+    ),
+
+    xml_namespaces: $ => seq(
+      token(/XMLNAMESPACES/i), token('('),
+      $.xml_namespace_element, repeat(seq(token(','), $.xml_namespace_element)),
+      token(')')
+    ),
+
+    xml_namespace_element: $ => choice(
+      seq($.string_lit, $.as, $.id_)
+      ,seq(token(/DEFAULT/i), $.string_lit)
     ),
 
     //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L3959
@@ -1719,9 +1750,13 @@ module.exports = grammar({
     ),
 
     query_expression: $ => prec.left(seq(
-      $.query_specification, repeat($.sql_union)
-      //TODO parenthesized query_expression https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L3999
+      $._query_unit, repeat($.sql_union)
     )),
+
+    _query_unit: $ => choice(
+      $.query_specification
+      ,seq(token('('), $.query_expression, token(')'))
+    ),
 
     sql_union: $ => seq(
       choice(
@@ -1729,7 +1764,7 @@ module.exports = grammar({
         ,token(/EXCEPT/i)
         ,token(/INTERSECT/i)
       )
-      ,choice($.query_specification, seq(token('('), $.query_expression, token(')')))
+      ,$._query_unit
     ),
 
     query_specification: $ => prec.right(seq(
@@ -1826,7 +1861,7 @@ module.exports = grammar({
 
     //https://learn.microsoft.com/en-us/sql/t-sql/queries/select-clause-transact-sql?view=sql-server-ver16
     //https://github.com/antlr/grammars-v4/blob/master/sql/tsql/TSqlParser.g4#L4133
-    udt_elem: $ => prec.left(10, choice(
+    udt_elem: $ => prec.right(10, choice(
       seq(field('udt_column_name', $.id_), DOT, field('non_static_attr',$.id_), $.udt_method_arguments, optional($.as_column_alias))
 
       ,seq(field('udt_column_name', $.id_), DOUBLE_COLON, field('non_static_attr',$.id_)
@@ -2272,24 +2307,15 @@ module.exports = grammar({
       seq($.hierachyid_, DOUBLE_COLON, choice(
         seq($.getroot_, parens())
         ,seq($.parse_, parens(field('input',$.expression)))
-        )
-      )
-      ,seq($.id_, DOT, choice(
-        $.getlevel_
-        ,$.tostring_
-      ), parens())
+      ))
+      ,seq($.id_, DOT, $.hierarchyid_call)
+    ),
 
-      ,seq($.id_, DOT, choice(
-        $.getancestor_
-        ,$.is_descendant_of_
-      ), parens($.expression))
-
-      ,seq($.id_, DOT, choice(
-        $.get_reparented_value_
-        ,$.get_descendant_
-      ), parens(seq($.expression, token(','), $.expression)))
-
-
+    // hierarchyid instance methods (called on expressions via dot-access)
+    hierarchyid_call: $ => choice(
+      seq(choice($.getlevel_, $.tostring_), parens())
+      ,seq(choice($.getancestor_, $.is_descendant_of_), parens($.expression))
+      ,seq(choice($.get_reparented_value_, $.get_descendant_), parens(seq($.expression, token(','), $.expression)))
     ),
 
     hierachyid_: $ => token(/HIERARCHYID/i),

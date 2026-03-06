@@ -2450,7 +2450,15 @@
       "required": true,
       "types": [
         {
+          "type": "data_type",
+          "named": true
+        },
+        {
           "type": "expression",
+          "named": true
+        },
+        {
+          "type": "identity_",
           "named": true
         }
       ]
@@ -2474,6 +2482,10 @@
       "multiple": true,
       "required": false,
       "types": [
+        {
+          "type": "current_date_",
+          "named": true
+        },
         {
           "type": "current_timestamp_",
           "named": true
@@ -4368,20 +4380,9 @@
     }
   },
   {
-    "type": "hierarchyid_static_method",
+    "type": "hierarchyid_call",
     "named": true,
-    "fields": {
-      "input": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "expression",
-            "named": true
-          }
-        ]
-      }
-    },
+    "fields": {},
     "children": {
       "multiple": true,
       "required": true,
@@ -4407,6 +4408,36 @@
           "named": true
         },
         {
+          "type": "is_descendant_of_",
+          "named": true
+        },
+        {
+          "type": "tostring_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "hierarchyid_static_method",
+    "named": true,
+    "fields": {
+      "input": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "expression",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
           "type": "getroot_",
           "named": true
         },
@@ -4415,19 +4446,15 @@
           "named": true
         },
         {
+          "type": "hierarchyid_call",
+          "named": true
+        },
+        {
           "type": "id_",
           "named": true
         },
         {
-          "type": "is_descendant_of_",
-          "named": true
-        },
-        {
           "type": "parse_",
-          "named": true
-        },
-        {
-          "type": "tostring_",
           "named": true
         }
       ]
@@ -4452,6 +4479,11 @@
         }
       ]
     }
+  },
+  {
+    "type": "identity_",
+    "named": true,
+    "fields": {}
   },
   {
     "type": "identity_column",
@@ -5777,6 +5809,10 @@
       "required": true,
       "types": [
         {
+          "type": "query_expression",
+          "named": true
+        },
+        {
           "type": "query_specification",
           "named": true
         },
@@ -6394,6 +6430,10 @@
       "required": false,
       "types": [
         {
+          "type": "LOCAL_ID_",
+          "named": true
+        },
+        {
           "type": "expression",
           "named": true
         },
@@ -6402,7 +6442,15 @@
           "named": true
         },
         {
+          "type": "id_",
+          "named": true
+        },
+        {
           "type": "set_on_off_option",
+          "named": true
+        },
+        {
+          "type": "string_lit",
           "named": true
         }
       ]
@@ -7227,6 +7275,10 @@
         {
           "type": "with_expression",
           "named": true
+        },
+        {
+          "type": "with_table_hints",
+          "named": true
         }
       ]
     }
@@ -7496,6 +7548,10 @@
         {
           "type": "common_table_expression",
           "named": true
+        },
+        {
+          "type": "xml_namespaces",
+          "named": true
         }
       ]
     }
@@ -7570,6 +7626,44 @@
     "type": "xml_dt_",
     "named": true,
     "fields": {}
+  },
+  {
+    "type": "xml_namespace_element",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "as",
+          "named": true
+        },
+        {
+          "type": "id_",
+          "named": true
+        },
+        {
+          "type": "string_lit",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "xml_namespaces",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "xml_namespace_element",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "xml_option",

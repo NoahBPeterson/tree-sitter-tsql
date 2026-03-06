@@ -5,6 +5,7 @@ module.exports = {
   datatype_functions: $ => choice(
     seq($._datatype_1arg, parens($.expression))
     ,seq($._datatype_2arg, parensComma($.expression, $.expression))
+    ,seq($.identity_, token('('), $.data_type, optional(seq(token(','), $.expression, token(','), $.expression)), token(')'))
   ),
 
   _datatype_1arg: $ => token(choice(
@@ -19,4 +20,6 @@ module.exports = {
     /SQL_VARIANT_PROPERTY/i,
     /TEXTVALID/i,
   )),
+
+  identity_: $ => token(/IDENTITY/i),
 };

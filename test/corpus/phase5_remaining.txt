@@ -1,0 +1,300 @@
+================================================================================
+CURRENT_DATE bare keyword
+================================================================================
+SELECT CURRENT_DATE
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (function_call
+                          (datetime_functions
+                            (current_date_)))))))))))))))
+
+================================================================================
+IDENTITY function with seed and increment
+================================================================================
+SELECT IDENTITY(int, 1, 1) AS id_col INTO #t FROM src
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (function_call
+                          (datatype_functions
+                            (identity_)
+                            (data_type
+                              (int_))
+                            (expression
+                              (primitive_expression
+                                (primitive_constant
+                                  (decimal_))))
+                            (expression
+                              (primitive_expression
+                                (primitive_constant
+                                  (decimal_)))))))
+                      (as_column_alias
+                        (as)
+                        (column_alias
+                          (id_))))))
+                (full_table_name
+                  (id_
+                    (TEMP_ID_)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_)))))))))))))
+
+================================================================================
+IDENTITY function without seed
+================================================================================
+SELECT IDENTITY(int) AS id_col INTO #t FROM src
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (function_call
+                          (datatype_functions
+                            (identity_)
+                            (data_type
+                              (int_)))))
+                      (as_column_alias
+                        (as)
+                        (column_alias
+                          (id_))))))
+                (full_table_name
+                  (id_
+                    (TEMP_ID_)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_)))))))))))))
+
+================================================================================
+STRING_SPLIT table-valued function
+================================================================================
+SELECT * FROM STRING_SPLIT('a,b,c', ',')
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (table_valued_function
+                        (func_proc_name_database_schema
+                          (func_proc_name_schema
+                            (id_)))
+                        (expression_list_
+                          (expression
+                            (primitive_expression
+                              (primitive_constant
+                                (string_lit))))
+                          (expression
+                            (primitive_expression
+                              (primitive_constant
+                                (string_lit)))))))))))))))))
+
+================================================================================
+GENERATE_SERIES table-valued function
+================================================================================
+SELECT * FROM GENERATE_SERIES(1, 10)
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (table_valued_function
+                        (func_proc_name_database_schema
+                          (func_proc_name_schema
+                            (id_)))
+                        (expression_list_
+                          (expression
+                            (primitive_expression
+                              (primitive_constant
+                                (decimal_))))
+                          (expression
+                            (primitive_expression
+                              (primitive_constant
+                                (decimal_)))))))))))))))))
+
+================================================================================
+GENERATE_SERIES with step argument
+================================================================================
+SELECT * FROM GENERATE_SERIES(1, 100, 5)
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (table_valued_function
+                        (func_proc_name_database_schema
+                          (func_proc_name_schema
+                            (id_)))
+                        (expression_list_
+                          (expression
+                            (primitive_expression
+                              (primitive_constant
+                                (decimal_))))
+                          (expression
+                            (primitive_expression
+                              (primitive_constant
+                                (decimal_))))
+                          (expression
+                            (primitive_expression
+                              (primitive_constant
+                                (decimal_)))))))))))))))))
+
+================================================================================
+VECTOR_DISTANCE scalar function
+================================================================================
+SELECT VECTOR_DISTANCE('cosine', @v1, @v2)
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (function_call
+                          (scalar_function_name
+                            (func_proc_name_database_schema
+                              (func_proc_name_schema
+                                (id_))))
+                          (expression_list_
+                            (expression
+                              (primitive_expression
+                                (primitive_constant
+                                  (string_lit))))
+                            (expression
+                              (primitive_expression
+                                (LOCAL_ID_)))
+                            (expression
+                              (primitive_expression
+                                (LOCAL_ID_)))))))))))))))))
+
+================================================================================
+VECTOR_NORM scalar function
+================================================================================
+SELECT VECTOR_NORM(@v)
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (function_call
+                          (scalar_function_name
+                            (func_proc_name_database_schema
+                              (func_proc_name_schema
+                                (id_))))
+                          (expression_list_
+                            (expression
+                              (primitive_expression
+                                (LOCAL_ID_)))))))))))))))))
+
+================================================================================
+SESSION_ID system function
+================================================================================
+SELECT SESSION_ID()
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (expression_elem
+                      (expression
+                        (function_call
+                          (system_functions))))))))))))))

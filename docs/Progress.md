@@ -30,9 +30,9 @@
 - [x] XML `.query()` method (Parser L3905)
 - [x] XML `.exist()` method (Parser L3905)
 - [x] XML `.modify()` method (Parser L3905)
-- [ ] `expression.hierarchyid_call` (Parser L3906)
+- [x] `expression.hierarchyid_call` (Parser L3906)
 - [x] `DOLLAR_ACTION` — `$action` for MERGE (Parser L3916)
-- [ ] `over_clause` as standalone expression (Parser L3915)
+- [~] `over_clause` as standalone expression (Parser L3915) — skipped: semantically invalid SQL (OVER must attach to aggregate/window function)
 
 ### 1.2 Search Condition / Predicates (Parser L3977-L3993)
 
@@ -112,7 +112,7 @@
 - [x] `sql_union` — `UNION [ALL]` (Parser L4002)
 - [x] `sql_union` — `EXCEPT` (Parser L4002)
 - [x] `sql_union` — `INTERSECT` (Parser L4002)
-- [ ] Parenthesized `query_expression` — `(query_expression)` (Parser L3999)
+- [x] Parenthesized `query_expression` — `(query_expression)` (Parser L3999) — hidden `_query_unit` rule: `choice(query_specification, '(' query_expression ')')`
 
 ### 2.3 Table Sources / FROM Clause (Parser L4150-L4256)
 
@@ -195,7 +195,7 @@
 - [x] UPDATE with `TOP` (Parser L2196)
 - [x] UPDATE with `OUTPUT` clause (Parser L2203)
 - [x] UPDATE with `WITH` (CTE) (Parser L2195)
-- [ ] UPDATE with table hints (Parser L2200)
+- [x] UPDATE with table hints (Parser L2200)
 - [x] UPDATE `CURRENT OF cursor` (Parser L2205)
 
 ### 3.3 DELETE Statement (Parser L2148-L2160)
@@ -241,8 +241,8 @@
 - [x] `DECLARE @var TABLE (col_def, ...)` (Parser L2984)
 - [x] Multiple declarations — `DECLARE @a INT, @b VARCHAR(10)` (Parser L2985)
 - [x] `DECLARE @var AS table_name` (Parser L2986)
-- [ ] `DECLARE @var CURSOR` (Parser L2987)
-- [ ] `DECLARE @xml_var XML` with XMLNAMESPACES (Parser L2988)
+- [x] `DECLARE @var CURSOR` (Parser L2987) — works via `cursor_dt_` data type
+- [x] `DECLARE @xml_var XML` with XMLNAMESPACES (Parser L2988) — XMLNAMESPACES supported in `with_expression`
 
 ### 4.2 SET Statement (Parser L3398-L3408)
 
@@ -262,7 +262,7 @@
 - [x] `set_special` — `SET ROWCOUNT expression` (Parser L3406)
 - [x] `set_special` — `SET STATISTICS IO|TIME|XML|PROFILE ON|OFF` (Parser L3847)
 - [x] `set_special` — `SET TEXTSIZE n` (Parser L3847)
-- [ ] `set_special` — other SET options (Parser L3402-L3408)
+- [x] `set_special` — other SET options: LANGUAGE, DATEFORMAT, DATEFIRST, LOCK_TIMEOUT, DEADLOCK_PRIORITY, CONTEXT_INFO, QUERY_GOVERNOR_COST_LIMIT (Parser L3402-L3408)
 
 ### 4.3 Control Flow — cfl_statement (Parser L250-L264)
 
@@ -365,7 +365,7 @@
 
 ### 5.4 Date/Time Functions (Parser ~L4583-L4649)
 
-- [ ] `CURRENT_DATE` (~L4584)
+- [x] `CURRENT_DATE` (~L4584)
 - [x] `CURRENT_TIMESTAMP` (~L4586)
 - [x] `CURRENT_TIMEZONE()` (~L4588)
 - [x] `CURRENT_TIMEZONE_ID()` (~L4590)
@@ -506,7 +506,7 @@
 - [x] `IDENT_CURRENT(table_name)` (~L4573)
 - [x] `IDENT_INCR(table_name)` (~L4575)
 - [x] `IDENT_SEED(table_name)` (~L4577)
-- [ ] `IDENTITY(data_type [, seed, increment])` (~L4579)
+- [x] `IDENTITY(data_type [, seed, increment])` (~L4579)
 - [x] `SQL_VARIANT_PROPERTY(expression, property)` (~L4580)
 
 ### 5.12 Cryptographic Functions (Parser ~L4567, LSP sql.tmLanguage.json:230)
@@ -566,15 +566,15 @@
 
 ### 5.15 Rowset / Table-Valued Functions — remaining (LSP sql.tmLanguage.json:318)
 
-- [ ] `STRING_SPLIT(string, separator [, enable_ordinal])` (LSP:318,334)
-- [ ] `GENERATE_SERIES(start, stop [, step])` (LSP:318)
-- [ ] `PREDICT(MODEL = @model, DATA = ...)` (LSP:318 — ML Services)
+- [x] `STRING_SPLIT(string, separator [, enable_ordinal])` (LSP:318,334)
+- [x] `GENERATE_SERIES(start, stop [, step])` (LSP:318)
+- [ ] `PREDICT(MODEL = @model, DATA = ...)` (LSP:318 — ML Services, needs dedicated rule for `=` named params)
 
 ### 5.16 Vector Functions (LSP sql.tmLanguage.json:358 — SQL Server 2025)
 
-- [ ] `VECTOR_DISTANCE(metric, vector1, vector2)` (LSP:358)
-- [ ] `VECTOR_NORM(vector)` (LSP:358)
-- [ ] `VECTOR_NORMALIZE(vector)` (LSP:358)
+- [x] `VECTOR_DISTANCE(metric, vector1, vector2)` (LSP:358)
+- [x] `VECTOR_NORM(vector)` (LSP:358)
+- [x] `VECTOR_NORMALIZE(vector)` (LSP:358)
 
 ### 5.17 Text/Image Functions — legacy (LSP sql.tmLanguage.json:350)
 
@@ -583,7 +583,7 @@
 
 ### 5.18 System Functions — remaining (LSP sql.tmLanguage.json:342)
 
-- [ ] `SESSION_ID()` (LSP:342)
+- [x] `SESSION_ID()` (LSP:342)
 
 ---
 
@@ -816,7 +816,7 @@
 ### 7.9 Constants / Literals — remaining
 
 - [x] String literals, binary, decimal, float, real, money, parameter
-- [ ] Negative constant prefix — `constant` allows `-` (Parser L5273)
+- [x] Negative constant prefix — `constant` allows `-` (Parser L5273) — works via `unary_operator_expression`
 - [x] `$action` token (Parser L3916)
 
 ### 7.10 Comments (Lexer L1214-L1215)

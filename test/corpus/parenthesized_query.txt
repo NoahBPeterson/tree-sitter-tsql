@@ -1,0 +1,450 @@
+=====================================
+1. Standalone parenthesized SELECT
+=====================================
+(SELECT 1)
+---
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_expression
+                (query_specification
+                  (select)
+                  (select_list
+                    (select_list_elem
+                      (expression_elem
+                        (expression
+                          (primitive_expression
+                            (primitive_constant
+                              (decimal_))))))))))))))))
+
+=====================================
+2. Standalone with alias column
+=====================================
+(SELECT 1 AS x)
+---
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_expression
+                (query_specification
+                  (select)
+                  (select_list
+                    (select_list_elem
+                      (expression_elem
+                        (expression
+                          (primitive_expression
+                            (primitive_constant
+                              (decimal_))))
+                        (as_column_alias
+                          (as)
+                          (column_alias
+                            (id_)))))))))))))))
+
+=====================================
+3. Standalone with FROM
+=====================================
+(SELECT a FROM t1)
+---
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_expression
+                (query_specification
+                  (select)
+                  (select_list
+                    (select_list_elem
+                      (expression_elem
+                        (expression
+                          (full_column_name
+                            (id_))))))
+                  (table_sources
+                    (table_source
+                      (table_source_item
+                        (full_table_name
+                          (id_))))))))))))))
+
+=====================================
+4. Standalone with WHERE
+=====================================
+(SELECT a FROM t1 WHERE a > 1)
+---
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_expression
+                (query_specification
+                  (select)
+                  (select_list
+                    (select_list_elem
+                      (expression_elem
+                        (expression
+                          (full_column_name
+                            (id_))))))
+                  (table_sources
+                    (table_source
+                      (table_source_item
+                        (full_table_name
+                          (id_)))))
+                  (search_condition
+                    (predicate
+                      (expression
+                        (full_column_name
+                          (id_)))
+                      (comparison_operator)
+                      (expression
+                        (primitive_expression
+                          (primitive_constant
+                            (decimal_)))))))))))))))
+
+=====================================
+5. Nested parens
+=====================================
+((SELECT 1))
+---
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_expression
+                (query_expression
+                  (query_specification
+                    (select)
+                    (select_list
+                      (select_list_elem
+                        (expression_elem
+                          (expression
+                            (primitive_expression
+                              (primitive_constant
+                                (decimal_)))))))))))))))))
+
+=====================================
+6. Triple nested
+=====================================
+(((SELECT 1)))
+---
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_expression
+                (query_expression
+                  (query_expression
+                    (query_specification
+                      (select)
+                      (select_list
+                        (select_list_elem
+                          (expression_elem
+                            (expression
+                              (primitive_expression
+                                (primitive_constant
+                                  (decimal_))))))))))))))))))
+
+=====================================
+7. UNION both sides paren
+=====================================
+(SELECT a FROM t1) UNION (SELECT b FROM t2)
+---
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_expression
+                (query_specification
+                  (select)
+                  (select_list
+                    (select_list_elem
+                      (expression_elem
+                        (expression
+                          (full_column_name
+                            (id_))))))
+                  (table_sources
+                    (table_source
+                      (table_source_item
+                        (full_table_name
+                          (id_)))))))
+              (sql_union
+                (query_expression
+                  (query_specification
+                    (select)
+                    (select_list
+                      (select_list_elem
+                        (expression_elem
+                          (expression
+                            (full_column_name
+                              (id_))))))
+                    (table_sources
+                      (table_source
+                        (table_source_item
+                          (full_table_name
+                            (id_)))))))))))))))
+
+=====================================
+11. Paren left, bare right
+=====================================
+(SELECT a FROM t1) UNION SELECT b FROM t2
+---
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_expression
+                (query_specification
+                  (select)
+                  (select_list
+                    (select_list_elem
+                      (expression_elem
+                        (expression
+                          (full_column_name
+                            (id_))))))
+                  (table_sources
+                    (table_source
+                      (table_source_item
+                        (full_table_name
+                          (id_)))))))
+              (sql_union
+                (query_specification
+                  (select)
+                  (select_list
+                    (select_list_elem
+                      (expression_elem
+                        (expression
+                          (full_column_name
+                            (id_))))))
+                  (table_sources
+                    (table_source
+                      (table_source_item
+                        (full_table_name
+                          (id_))))))))))))))
+
+=====================================
+13. Precedence: union inside parens, then except
+=====================================
+(SELECT a FROM t1 UNION SELECT b FROM t2) EXCEPT SELECT c FROM t3
+---
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_expression
+                (query_specification
+                  (select)
+                  (select_list
+                    (select_list_elem
+                      (expression_elem
+                        (expression
+                          (full_column_name
+                            (id_))))))
+                  (table_sources
+                    (table_source
+                      (table_source_item
+                        (full_table_name
+                          (id_))))))
+                (sql_union
+                  (query_specification
+                    (select)
+                    (select_list
+                      (select_list_elem
+                        (expression_elem
+                          (expression
+                            (full_column_name
+                              (id_))))))
+                    (table_sources
+                      (table_source
+                        (table_source_item
+                          (full_table_name
+                            (id_))))))))
+              (sql_union
+                (query_specification
+                  (select)
+                  (select_list
+                    (select_list_elem
+                      (expression_elem
+                        (expression
+                          (full_column_name
+                            (id_))))))
+                  (table_sources
+                    (table_source
+                      (table_source_item
+                        (full_table_name
+                          (id_))))))))))))))
+
+=====================================
+26. Paren query in CTE
+=====================================
+WITH cte AS ((SELECT 1 AS x) UNION (SELECT 2)) SELECT * FROM cte
+---
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (with_expression
+            (common_table_expression
+              (id_)
+              (select_statement
+                (query_expression
+                  (query_expression
+                    (query_specification
+                      (select)
+                      (select_list
+                        (select_list_elem
+                          (expression_elem
+                            (expression
+                              (primitive_expression
+                                (primitive_constant
+                                  (decimal_))))
+                            (as_column_alias
+                              (as)
+                              (column_alias
+                                (id_))))))))
+                  (sql_union
+                    (query_expression
+                      (query_specification
+                        (select)
+                        (select_list
+                          (select_list_elem
+                            (expression_elem
+                              (expression
+                                (primitive_expression
+                                  (primitive_constant
+                                    (decimal_))))))))))))))
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_)))))))))))))
+
+=====================================
+47. Three levels of nesting
+=====================================
+(((SELECT 1) UNION (SELECT 2)) EXCEPT (SELECT 3))
+---
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_expression
+                (query_expression
+                  (query_expression
+                    (query_specification
+                      (select)
+                      (select_list
+                        (select_list_elem
+                          (expression_elem
+                            (expression
+                              (primitive_expression
+                                (primitive_constant
+                                  (decimal_)))))))))
+                  (sql_union
+                    (query_expression
+                      (query_specification
+                        (select)
+                        (select_list
+                          (select_list_elem
+                            (expression_elem
+                              (expression
+                                (primitive_expression
+                                  (primitive_constant
+                                    (decimal_)))))))))))
+                (sql_union
+                  (query_expression
+                    (query_specification
+                      (select)
+                      (select_list
+                        (select_list_elem
+                          (expression_elem
+                            (expression
+                              (primitive_expression
+                                (primitive_constant
+                                  (decimal_))))))))))))))))))
+
+=====================================
+49. Paren in derived table context
+=====================================
+SELECT * FROM ((SELECT 1 AS x) UNION (SELECT 2)) AS sub
+---
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (select_statement
+                        (query_expression
+                          (query_expression
+                            (query_specification
+                              (select)
+                              (select_list
+                                (select_list_elem
+                                  (expression_elem
+                                    (expression
+                                      (primitive_expression
+                                        (primitive_constant
+                                          (decimal_))))
+                                    (as_column_alias
+                                      (as)
+                                      (column_alias
+                                        (id_))))))))
+                          (sql_union
+                            (query_expression
+                              (query_specification
+                                (select)
+                                (select_list
+                                  (select_list_elem
+                                    (expression_elem
+                                      (expression
+                                        (primitive_expression
+                                          (primitive_constant
+                                            (decimal_))))))))))))
+                      (as_table_alias
+                        (id_)))))))))))))
