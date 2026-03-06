@@ -1,0 +1,229 @@
+================================================================================
+CONTAINSTABLE basic
+================================================================================
+SELECT * FROM CONTAINSTABLE(docs, *, 'search')
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (freetext_table_function
+                        (table_name
+                          (id_))
+                        (asterisk)
+                        (expression
+                          (primitive_expression
+                            (primitive_constant
+                              (string_lit))))))))))))))))
+
+================================================================================
+FREETEXTTABLE with LANGUAGE and top_n
+================================================================================
+SELECT * FROM FREETEXTTABLE(docs, content, 'text', LANGUAGE 1033, 10)
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (freetext_table_function
+                        (table_name
+                          (id_))
+                        (full_column_name
+                          (id_))
+                        (expression
+                          (primitive_expression
+                            (primitive_constant
+                              (string_lit))))
+                        (expression
+                          (primitive_expression
+                            (primitive_constant
+                              (decimal_))))
+                        (expression
+                          (primitive_expression
+                            (primitive_constant
+                              (decimal_))))))))))))))))
+
+================================================================================
+CONTAINSTABLE with column list
+================================================================================
+SELECT * FROM CONTAINSTABLE(docs, (title, body), 'query')
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (freetext_table_function
+                        (table_name
+                          (id_))
+                        (full_column_name
+                          (id_))
+                        (full_column_name
+                          (id_))
+                        (expression
+                          (primitive_expression
+                            (primitive_constant
+                              (string_lit))))))))))))))))
+
+================================================================================
+SEMANTICSIMILARITYTABLE
+================================================================================
+SELECT * FROM SEMANTICSIMILARITYTABLE(docs, content, @id)
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (freetext_table_function
+                        (table_name
+                          (id_))
+                        (full_column_name
+                          (id_))
+                        (expression
+                          (primitive_expression
+                            (LOCAL_ID_)))))))))))))))
+
+================================================================================
+SEMANTICKEYPHRASETABLE
+================================================================================
+SELECT * FROM SEMANTICKEYPHRASETABLE(docs, content, @id)
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (freetext_table_function
+                        (table_name
+                          (id_))
+                        (full_column_name
+                          (id_))
+                        (expression
+                          (primitive_expression
+                            (LOCAL_ID_)))))))))))))))
+
+================================================================================
+SEMANTICSIMILARITYDETAILSTABLE
+================================================================================
+SELECT * FROM SEMANTICSIMILARITYDETAILSTABLE(docs, col1, @id1, col2, @id2)
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (freetext_table_function
+                        (table_name
+                          (id_))
+                        (full_column_name
+                          (id_))
+                        (expression
+                          (primitive_expression
+                            (LOCAL_ID_)))
+                        (full_column_name
+                          (id_))
+                        (expression
+                          (primitive_expression
+                            (LOCAL_ID_)))))))))))))))
+
+================================================================================
+CONTAINSTABLE with alias
+================================================================================
+SELECT ft.* FROM CONTAINSTABLE(docs, *, 'test') AS ft
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (id_)
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (freetext_table_function
+                        (table_name
+                          (id_))
+                        (asterisk)
+                        (expression
+                          (primitive_expression
+                            (primitive_constant
+                              (string_lit)))))
+                      (as_table_alias
+                        (id_)))))))))))))
