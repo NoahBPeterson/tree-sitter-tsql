@@ -610,7 +610,7 @@
 - [x] `ON filegroup` (Parser L1560)
 - [x] `TEXTIMAGE_ON filegroup` (Parser L1565)
 - [x] Column computed definitions — `col AS expression [PERSISTED]` (Parser L1491)
-- [ ] Temporal table — `WITH (SYSTEM_VERSIONING = ON)` (Parser L1570)
+- [x] Temporal table — `WITH (SYSTEM_VERSIONING = ON)` (Parser L1570)
 
 ### 6.2 ALTER TABLE (Parser L573-L650)
 
@@ -870,13 +870,13 @@
 
 > Reference: `ScriptGenerator/SqlScriptGeneratorVisitor.TemporalClause.cs`, `SystemTimePeriodDefinition.cs`, `SystemVersioningTableOption.cs`
 
-- [ ] `PERIOD FOR SYSTEM_TIME (start_col, end_col)` — period definition
-- [ ] `WITH (SYSTEM_VERSIONING = ON (...))` — enable temporal on CREATE TABLE
-- [ ] `FOR SYSTEM_TIME AS OF datetime` — point-in-time query
-- [ ] `FOR SYSTEM_TIME FROM ... TO ...` — range query
-- [ ] `FOR SYSTEM_TIME BETWEEN ... AND ...` — between query
-- [ ] `FOR SYSTEM_TIME CONTAINED IN (start, end)` — contained query
-- [ ] `FOR SYSTEM_TIME ALL` — all rows including history
+- [x] `PERIOD FOR SYSTEM_TIME (start_col, end_col)` — period definition
+- [x] `WITH (SYSTEM_VERSIONING = ON (...))` — enable temporal on CREATE TABLE
+- [x] `FOR SYSTEM_TIME AS OF datetime` — point-in-time query
+- [x] `FOR SYSTEM_TIME FROM ... TO ...` — range query
+- [x] `FOR SYSTEM_TIME BETWEEN ... AND ...` — between query
+- [x] `FOR SYSTEM_TIME CONTAINED IN (start, end)` — contained query
+- [x] `FOR SYSTEM_TIME ALL` — all rows including history
 
 ### 7.16 Statistics (SqlScriptDOM)
 

@@ -579,6 +579,41 @@ SELECT * FROM t FOR SYSTEM_TIME AS OF '2024-01-01'
                               (string_lit))))))))))))))))
 
 =====================================
+SELECT FOR SYSTEM_TIME FROM TO
+=====================================
+
+SELECT * FROM t FOR SYSTEM_TIME FROM '2024-01-01' TO '2024-12-31'
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (dml_clause
+        (select_statement_standalone
+          (select_statement
+            (query_expression
+              (query_specification
+                (select)
+                (select_list
+                  (select_list_elem
+                    (asterisk)))
+                (table_sources
+                  (table_source
+                    (table_source_item
+                      (full_table_name
+                        (id_))
+                      (for_system_time
+                        (expression
+                          (primitive_expression
+                            (primitive_constant
+                              (string_lit))))
+                        (expression
+                          (primitive_expression
+                            (primitive_constant
+                              (string_lit))))))))))))))))
+
+=====================================
 SELECT FOR SYSTEM_TIME BETWEEN
 =====================================
 
