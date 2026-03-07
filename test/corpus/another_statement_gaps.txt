@@ -286,7 +286,6 @@ SEND ON CONVERSATION @handle MESSAGE TYPE mytype (@body)
           (LOCAL_ID_)
           (id_)
           (id_)
-          (id_)
           (expression
             (primitive_expression
               (LOCAL_ID_))))))))

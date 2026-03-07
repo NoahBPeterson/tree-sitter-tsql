@@ -934,17 +934,17 @@
 
 > Reference: `ScriptGenerator/SqlScriptGeneratorVisitor.Create*Statement.cs` (Service, Queue, Contract, Route, etc.)
 
-- [ ] `CREATE MESSAGE TYPE name VALIDATION = ...` (`CreateMessageTypeStatement.cs`)
-- [ ] `CREATE CONTRACT name (msg_type SENT BY ...)` (`CreateContractStatement.cs`)
-- [ ] `CREATE QUEUE name [WITH STATUS = ON|OFF]` (`CreateQueueStatement.cs`)
-- [ ] `CREATE SERVICE name ON QUEUE queue (contract)` (`CreateServiceStatement.cs`)
-- [ ] `CREATE ROUTE name WITH SERVICE_NAME = ..., ADDRESS = ...` (`CreateRouteStatement.cs`)
-- [ ] `BEGIN DIALOG @handle FROM SERVICE ... TO SERVICE ...` (`BeginDialogStatement.cs`)
-- [ ] `SEND ON CONVERSATION @handle MESSAGE TYPE ... (@body)` (`SendStatement.cs`)
-- [ ] `RECEIVE ... FROM queue` (`ReceiveStatement.cs`)
-- [ ] `END CONVERSATION @handle` (`EndConversationStatement.cs`)
-- [ ] `GET CONVERSATION GROUP @id FROM queue` (`GetConversationGroupStatement.cs`)
-- [ ] `ALTER QUEUE name ...` (`AlterQueueStatement.cs`)
+- [x] `CREATE MESSAGE TYPE name VALIDATION = ...` (`CreateMessageTypeStatement.cs`)
+- [x] `CREATE CONTRACT name (msg_type SENT BY ...)` (`CreateContractStatement.cs`)
+- [x] `CREATE QUEUE name [WITH STATUS = ON|OFF]` (`CreateQueueStatement.cs`)
+- [x] `CREATE SERVICE name ON QUEUE queue (contract)` (`CreateServiceStatement.cs`)
+- [x] `CREATE ROUTE name WITH SERVICE_NAME = ..., ADDRESS = ...` (`CreateRouteStatement.cs`)
+- [x] `BEGIN DIALOG @handle FROM SERVICE ... TO SERVICE ...` (`BeginDialogStatement.cs`)
+- [x] `SEND ON CONVERSATION @handle MESSAGE TYPE ... (@body)` (`SendStatement.cs`)
+- [x] `RECEIVE ... FROM queue` (`ReceiveStatement.cs`)
+- [x] `END CONVERSATION @handle` (`EndConversationStatement.cs`)
+- [x] `GET CONVERSATION GROUP @id FROM queue` (`GetConversationGroupStatement.cs`)
+- [x] `ALTER QUEUE name ...` (`AlterQueueStatement.cs`)
 
 ### 7.22 Graph Database (SqlScriptDOM)
 

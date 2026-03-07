@@ -507,6 +507,41 @@
     }
   },
   {
+    "type": "alter_queue",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "WITH",
+          "named": true
+        },
+        {
+          "type": "as",
+          "named": true
+        },
+        {
+          "type": "expression",
+          "named": true
+        },
+        {
+          "type": "full_table_name",
+          "named": true
+        },
+        {
+          "type": "id_",
+          "named": true
+        },
+        {
+          "type": "string_lit",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "alter_role",
     "named": true,
     "fields": {},
@@ -2028,6 +2063,21 @@
     }
   },
   {
+    "type": "create_contract",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "id_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "create_cryptographic_provider",
     "named": true,
     "fields": {},
@@ -2424,6 +2474,29 @@
     }
   },
   {
+    "type": "create_message_type",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "WITH",
+          "named": true
+        },
+        {
+          "type": "full_table_name",
+          "named": true
+        },
+        {
+          "type": "id_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "create_or_alter",
     "named": true,
     "fields": {}
@@ -2607,6 +2680,41 @@
     }
   },
   {
+    "type": "create_queue",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "WITH",
+          "named": true
+        },
+        {
+          "type": "as",
+          "named": true
+        },
+        {
+          "type": "expression",
+          "named": true
+        },
+        {
+          "type": "full_table_name",
+          "named": true
+        },
+        {
+          "type": "id_",
+          "named": true
+        },
+        {
+          "type": "string_lit",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "create_role",
     "named": true,
     "fields": {},
@@ -2614,6 +2722,29 @@
       "multiple": true,
       "required": true,
       "types": [
+        {
+          "type": "id_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "create_route",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "WITH",
+          "named": true
+        },
+        {
+          "type": "expression",
+          "named": true
+        },
         {
           "type": "id_",
           "named": true
@@ -2705,6 +2836,25 @@
       "multiple": true,
       "required": true,
       "types": [
+        {
+          "type": "id_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "create_service",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "full_table_name",
+          "named": true
+        },
         {
           "type": "id_",
           "named": true
@@ -3362,6 +3512,10 @@
           "named": true
         },
         {
+          "type": "alter_queue",
+          "named": true
+        },
+        {
           "type": "alter_role",
           "named": true
         },
@@ -3403,6 +3557,10 @@
         },
         {
           "type": "create_columnstore_index",
+          "named": true
+        },
+        {
+          "type": "create_contract",
           "named": true
         },
         {
@@ -3466,6 +3624,10 @@
           "named": true
         },
         {
+          "type": "create_message_type",
+          "named": true
+        },
+        {
           "type": "create_or_alter_function",
           "named": true
         },
@@ -3490,7 +3652,15 @@
           "named": true
         },
         {
+          "type": "create_queue",
+          "named": true
+        },
+        {
           "type": "create_role",
+          "named": true
+        },
+        {
+          "type": "create_route",
           "named": true
         },
         {
@@ -3511,6 +3681,10 @@
         },
         {
           "type": "create_server_role",
+          "named": true
+        },
+        {
+          "type": "create_service",
           "named": true
         },
         {

@@ -278,6 +278,13 @@ module.exports = grammar({
       ,$.drop_fulltext_index
       ,$.create_fulltext_stoplist
       ,$.drop_fulltext_stoplist
+      // Service Broker DDL
+      ,$.create_message_type
+      ,$.create_contract
+      ,$.create_queue
+      ,$.alter_queue
+      ,$.create_service
+      ,$.create_route
       // External Tables / PolyBase
       ,$.create_external_data_source
       ,$.drop_external_data_source
@@ -1139,6 +1146,93 @@ module.exports = grammar({
       choice($.full_table_name, token(/DATABASE/i), seq(token(/ALL/i), token(/SERVER/i))),
     ),
 
+    // =====================
+    // Service Broker DDL
+    // =====================
+
+    // CREATE MESSAGE TYPE name [AUTHORIZATION owner]
+    //   [VALIDATION = NONE|EMPTY|WELL_FORMED_XML|VALID_XML WITH SCHEMA COLLECTION name]
+    create_message_type: $ => prec.right(seq(
+      token(/CREATE/i), token(/MESSAGE/i), $.id_,  // TYPE as id_
+      $.id_,                            // message type name
+      optional(seq(token(/AUTHORIZATION/i), $.id_)),
+      optional(seq($.id_, '=',         // VALIDATION =
+        $.id_,                          // NONE | EMPTY | WELL_FORMED_XML | VALID_XML
+        optional(seq($.WITH, token(/SCHEMA/i), token(/COLLECTION/i), $.full_table_name)),  // WITH SCHEMA COLLECTION schema.name
+      )),
+    )),
+
+    // CREATE CONTRACT name [AUTHORIZATION owner]
+    //   (message_type SENT BY {INITIATOR|TARGET|ANY} [, ...])
+    create_contract: $ => prec.right(seq(
+      token(/CREATE/i), token(/CONTRACT/i),
+      $.id_,                     // contract name
+      optional(seq(token(/AUTHORIZATION/i), $.id_)),
+      '(', $._contract_message, repeat(seq(',', $._contract_message)), ')',
+    )),
+
+    _contract_message: $ => seq(
+      $.id_,            // message_type name
+      $.id_, token(/BY/i),  // SENT BY
+      choice($.id_, token(/ANY/i)),  // INITIATOR | TARGET | ANY
+    ),
+
+    // CREATE QUEUE [schema.]name [WITH STATUS = ON|OFF [, ...]] [ON filegroup]
+    create_queue: $ => prec.right(seq(
+      token(/CREATE/i), token(/QUEUE/i),
+      $.full_table_name,
+      optional(seq($.WITH, $._queue_option, repeat(seq(',', $._queue_option)))),
+      optional(seq(token(/ON/i), $.id_)),
+    )),
+
+    // ALTER QUEUE [schema.]name WITH (...) | REBUILD [WITH (...)] | MOVE TO filegroup | REORGANIZE
+    alter_queue: $ => prec.right(seq(
+      token(/ALTER/i), token(/QUEUE/i),
+      $.full_table_name,
+      choice(
+        seq($.WITH, $._queue_option, repeat(seq(',', $._queue_option))),
+        seq($.id_, optional(seq($.WITH, '(', $._queue_rebuild_option,
+          repeat(seq(',', $._queue_rebuild_option)), ')'))),  // REBUILD [WITH (...)]
+      ),
+    )),
+
+    _queue_option: $ => choice(
+      seq($.id_, '=', choice($.expression, token(/ON/i), token(/OFF/i))),
+      seq($.id_, '(',                          // ACTIVATION (
+        $._activation_option, repeat(seq(',', $._activation_option)),
+      ')'),
+    ),
+
+    _activation_option: $ => choice(
+      seq(choice($.id_, alias(token(/DROP/i), $.id_)),
+        '=', choice($.expression, token(/ON/i), token(/OFF/i))),
+      seq(token(/EXECUTE/i), $.as, choice($.id_, $.string_lit)),  // EXECUTE AS SELF|OWNER|'user'
+    ),
+
+    _queue_rebuild_option: $ => seq($.id_, '=', choice($.expression, token(/ON/i), token(/OFF/i))),
+
+    // CREATE SERVICE name [AUTHORIZATION owner] ON QUEUE [schema.]queue [(contract [, ...])]
+    create_service: $ => prec.right(seq(
+      token(/CREATE/i), token(/SERVICE/i), $.id_,
+      optional(seq(token(/AUTHORIZATION/i), $.id_)),
+      token(/ON/i), token(/QUEUE/i), $.full_table_name,  // QUEUE [schema.]name
+      optional(seq('(', $.id_, repeat(seq(',', $.id_)), ')')),  // contract list
+    )),
+
+    // CREATE ROUTE name [AUTHORIZATION owner] WITH option = value [, ...]
+    create_route: $ => prec.right(seq(
+      token(/CREATE/i), token(/ROUTE/i),
+      $.id_,                     // route name
+      optional(seq(token(/AUTHORIZATION/i), $.id_)),
+      $.WITH,
+      $._route_option, repeat(seq(',', $._route_option)),
+    )),
+
+    _route_option: $ => seq(
+      choice($.id_, alias(token(/SERVICE/i), $.id_)),
+      '=', $.expression,
+    ),
+
     // Service Broker: END CONVERSATION
     // https://learn.microsoft.com/en-us/sql/t-sql/statements/end-conversation-transact-sql
     end_conversation_statement: $ => prec.right(seq(
@@ -1157,7 +1251,7 @@ module.exports = grammar({
     send_statement: $ => prec.right(seq(
       token(/SEND/i), token(/ON/i), $.id_,  // CONVERSATION as id_
       $.LOCAL_ID_,                            // conversation handle (always a variable)
-      optional(seq($.id_, $.id_, choice($.id_, $.LOCAL_ID_))),  // MESSAGE TYPE name
+      optional(seq(token(/MESSAGE/i), $.id_, choice($.id_, $.LOCAL_ID_))),  // MESSAGE TYPE name
       optional(seq(token('('), $.expression, token(')'))),       // (body)
     )),
 
@@ -3132,6 +3226,8 @@ module.exports = grammar({
       ,token(/RESULT/i)
       /* Crypto/DDL keywords used as identifiers */
       ,token(/ACTIVE/i), token(/SEARCH/i), token(/ENDPOINT/i)
+      /* Service Broker keywords */
+      ,token(/MESSAGE/i), token(/CONTRACT/i), token(/QUEUE/i), token(/ROUTE/i)
     )),
 
     integer: $ => INT,

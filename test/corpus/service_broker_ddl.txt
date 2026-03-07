@@ -1,0 +1,232 @@
+=====================================
+CREATE MESSAGE TYPE - basic
+=====================================
+
+CREATE MESSAGE TYPE MyMessageType
+VALIDATION = WELL_FORMED_XML;
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_message_type
+          (id_)
+          (id_)
+          (id_)
+          (id_))))))
+
+=====================================
+CREATE MESSAGE TYPE - VALID_XML WITH SCHEMA COLLECTION
+=====================================
+
+CREATE MESSAGE TYPE ValidatedMsg
+AUTHORIZATION dbo
+VALIDATION = VALID_XML WITH SCHEMA COLLECTION dbo.MySchemaCollection;
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_message_type
+          (id_)
+          (id_)
+          (id_)
+          (id_)
+          (id_)
+          (WITH)
+          (full_table_name
+            (id_)
+            (id_)))))))
+
+=====================================
+CREATE CONTRACT - single message type
+=====================================
+
+CREATE CONTRACT MyContract
+(MyMessageType SENT BY INITIATOR);
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_contract
+          (id_)
+          (id_)
+          (id_)
+          (id_))))))
+
+=====================================
+CREATE CONTRACT - multiple message types
+=====================================
+
+CREATE CONTRACT MyContract
+AUTHORIZATION dbo
+(RequestMsg SENT BY INITIATOR, ReplyMsg SENT BY TARGET);
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_contract
+          (id_)
+          (id_)
+          (id_)
+          (id_)
+          (id_)
+          (id_)
+          (id_)
+          (id_))))))
+
+=====================================
+CREATE QUEUE - basic
+=====================================
+
+CREATE QUEUE dbo.MyQueue;
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_queue
+          (full_table_name
+            (id_)
+            (id_)))))))
+
+=====================================
+CREATE QUEUE - with options and filegroup
+=====================================
+
+CREATE QUEUE dbo.MyQueue
+WITH STATUS = ON, RETENTION = OFF
+ON [PRIMARY];
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_queue
+          (full_table_name
+            (id_)
+            (id_))
+          (WITH)
+          (id_)
+          (id_)
+          (id_))))))
+
+=====================================
+ALTER QUEUE - change status
+=====================================
+
+ALTER QUEUE dbo.MyQueue
+WITH STATUS = OFF;
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_queue
+          (full_table_name
+            (id_)
+            (id_))
+          (WITH)
+          (id_))))))
+
+=====================================
+ALTER QUEUE - with ACTIVATION
+=====================================
+
+ALTER QUEUE dbo.MyQueue
+WITH ACTIVATION (
+  STATUS = ON,
+  PROCEDURE_NAME = dbo.ProcessQueue,
+  MAX_QUEUE_READERS = 5,
+  EXECUTE AS SELF
+);
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_queue
+          (full_table_name
+            (id_)
+            (id_))
+          (WITH)
+          (id_)
+          (id_)
+          (id_)
+          (expression
+            (full_column_name
+              (id_)
+              (id_)))
+          (id_)
+          (expression
+            (primitive_expression
+              (primitive_constant
+                (decimal_))))
+          (as)
+          (id_))))))
+
+=====================================
+CREATE SERVICE - with contract
+=====================================
+
+CREATE SERVICE MyService
+ON QUEUE dbo.MyQueue
+(MyContract);
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_service
+          (id_)
+          (full_table_name
+            (id_)
+            (id_))
+          (id_))))))
+
+=====================================
+CREATE ROUTE - with options
+=====================================
+
+CREATE ROUTE MyRoute
+WITH SERVICE_NAME = 'MyService', ADDRESS = 'TCP://server:4022';
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_route
+          (id_)
+          (WITH)
+          (id_)
+          (expression
+            (primitive_expression
+              (primitive_constant
+                (string_lit))))
+          (id_)
+          (expression
+            (primitive_expression
+              (primitive_constant
+                (string_lit)))))))))
