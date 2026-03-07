@@ -415,6 +415,29 @@
     }
   },
   {
+    "type": "alter_fulltext_index",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "expression",
+          "named": true
+        },
+        {
+          "type": "full_table_name",
+          "named": true
+        },
+        {
+          "type": "id_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "alter_index",
     "named": true,
     "fields": {},
@@ -2178,6 +2201,152 @@
     }
   },
   {
+    "type": "create_external_data_source",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "WITH",
+          "named": true
+        },
+        {
+          "type": "expression",
+          "named": true
+        },
+        {
+          "type": "id_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "create_external_file_format",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "WITH",
+          "named": true
+        },
+        {
+          "type": "expression",
+          "named": true
+        },
+        {
+          "type": "id_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "create_external_table",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "WITH",
+          "named": true
+        },
+        {
+          "type": "expression",
+          "named": true
+        },
+        {
+          "type": "full_table_name",
+          "named": true
+        },
+        {
+          "type": "id_",
+          "named": true
+        },
+        {
+          "type": "table_element",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "create_fulltext_catalog",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "WITH",
+          "named": true
+        },
+        {
+          "type": "as",
+          "named": true
+        },
+        {
+          "type": "id_",
+          "named": true
+        },
+        {
+          "type": "string_lit",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "create_fulltext_index",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "WITH",
+          "named": true
+        },
+        {
+          "type": "expression",
+          "named": true
+        },
+        {
+          "type": "full_table_name",
+          "named": true
+        },
+        {
+          "type": "id_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "create_fulltext_stoplist",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "id_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "create_index",
     "named": true,
     "fields": {},
@@ -3177,6 +3346,10 @@
           "named": true
         },
         {
+          "type": "alter_fulltext_index",
+          "named": true
+        },
+        {
           "type": "alter_index",
           "named": true
         },
@@ -3254,6 +3427,30 @@
         },
         {
           "type": "create_endpoint",
+          "named": true
+        },
+        {
+          "type": "create_external_data_source",
+          "named": true
+        },
+        {
+          "type": "create_external_file_format",
+          "named": true
+        },
+        {
+          "type": "create_external_table",
+          "named": true
+        },
+        {
+          "type": "create_fulltext_catalog",
+          "named": true
+        },
+        {
+          "type": "create_fulltext_index",
+          "named": true
+        },
+        {
+          "type": "create_fulltext_stoplist",
           "named": true
         },
         {
@@ -3382,6 +3579,30 @@
         },
         {
           "type": "drop_endpoint",
+          "named": true
+        },
+        {
+          "type": "drop_external_data_source",
+          "named": true
+        },
+        {
+          "type": "drop_external_file_format",
+          "named": true
+        },
+        {
+          "type": "drop_external_table",
+          "named": true
+        },
+        {
+          "type": "drop_fulltext_catalog",
+          "named": true
+        },
+        {
+          "type": "drop_fulltext_index",
+          "named": true
+        },
+        {
+          "type": "drop_fulltext_stoplist",
           "named": true
         },
         {
@@ -3797,6 +4018,96 @@
   },
   {
     "type": "drop_endpoint",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "id_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "drop_external_data_source",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "id_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "drop_external_file_format",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "id_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "drop_external_table",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "full_table_name",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "drop_fulltext_catalog",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "id_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "drop_fulltext_index",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "full_table_name",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "drop_fulltext_stoplist",
     "named": true,
     "fields": {},
     "children": {

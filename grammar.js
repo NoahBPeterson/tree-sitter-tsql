@@ -270,6 +270,21 @@ module.exports = grammar({
       ,$.create_endpoint
       ,$.alter_endpoint
       ,$.drop_endpoint
+      // Full-Text Search
+      ,$.create_fulltext_catalog
+      ,$.drop_fulltext_catalog
+      ,$.create_fulltext_index
+      ,$.alter_fulltext_index
+      ,$.drop_fulltext_index
+      ,$.create_fulltext_stoplist
+      ,$.drop_fulltext_stoplist
+      // External Tables / PolyBase
+      ,$.create_external_data_source
+      ,$.drop_external_data_source
+      ,$.create_external_file_format
+      ,$.drop_external_file_format
+      ,$.create_external_table
+      ,$.drop_external_table
     ),
 
     //https://learn.microsoft.com/en-us/sql/t-sql/statements/create-database-transact-sql
@@ -1560,6 +1575,129 @@ module.exports = grammar({
     _endpoint_option_keyword: $ => choice(
       token(/ENCRYPTION/i), token(/CERTIFICATE/i), token(/ROLE/i),
       token(/ALL/i), token(/DISABLED/i), token(/WINDOWS/i),
+    ),
+
+    // =====================
+    // FULL-TEXT SEARCH DDL
+    // =====================
+
+    create_fulltext_catalog: $ => prec.right(seq(
+      token(/CREATE/i), token(/FULLTEXT/i), token(/CATALOG/i), $.id_,
+      optional(seq(token(/ON/i), token(/FILEGROUP/i), $.id_)),
+      optional(seq(token(/IN/i), token(/PATH/i), $.string_lit)),
+      optional(seq($.WITH, $.id_, '=', choice($.id_, alias($._fulltext_keyword_value, $.id_)))),
+      optional(seq(token(/AUTHORIZATION/i), $.id_)),
+      optional(seq($.as, token(/DEFAULT/i))),
+    )),
+
+    drop_fulltext_catalog: $ => seq(
+      token(/DROP/i), token(/FULLTEXT/i), token(/CATALOG/i), $.id_,
+    ),
+
+    create_fulltext_index: $ => prec.right(seq(
+      token(/CREATE/i), token(/FULLTEXT/i), token(/INDEX/i),
+      token(/ON/i), $.full_table_name,
+      '(', $.id_, optional(seq(token(/LANGUAGE/i), $.expression)),
+      repeat(seq(',', $.id_, optional(seq(token(/LANGUAGE/i), $.expression)))),
+      ')',
+      token(/KEY/i), token(/INDEX/i), $.id_,
+      optional(seq(token(/ON/i), $.id_)),
+      optional(seq($.WITH, $._fulltext_index_option,
+        repeat(seq(',', $._fulltext_index_option)))),
+    )),
+
+    _fulltext_index_option: $ => seq(
+      $.id_, '=', choice($.expression, alias($._fulltext_keyword_value, $.id_)),
+    ),
+
+    _fulltext_keyword_value: $ => choice(
+      token(/OFF/i), token(/ON/i), token(/AUTO/i),
+    ),
+
+    alter_fulltext_index: $ => prec.right(seq(
+      token(/ALTER/i), token(/FULLTEXT/i), token(/INDEX/i),
+      token(/ON/i), $.full_table_name,
+      choice(
+        token(/ENABLE/i),
+        token(/DISABLE/i),
+        seq(token(/SET/i), $.id_, '=', choice($.expression, alias(token(/OFF/i), $.id_))),
+        seq(token(/ADD/i), '(',
+          $.id_, optional(seq(token(/LANGUAGE/i), $.expression)),
+          repeat(seq(',', $.id_, optional(seq(token(/LANGUAGE/i), $.expression)))),
+          ')'),
+        seq(token(/DROP/i), '(', $.id_, repeat(seq(',', $.id_)), ')'),
+        seq(token(/START/i), choice($.id_, token(/FULL/i)),
+          optional(seq(',', $.id_))),
+        seq(token(/STOP/i), $.id_),
+      ),
+    )),
+
+    drop_fulltext_index: $ => seq(
+      token(/DROP/i), token(/FULLTEXT/i), token(/INDEX/i),
+      token(/ON/i), $.full_table_name,
+    ),
+
+    create_fulltext_stoplist: $ => prec.right(seq(
+      token(/CREATE/i), token(/FULLTEXT/i), token(/STOPLIST/i), $.id_,
+      optional(seq(token(/FROM/i), choice(
+        seq(optional(seq($.id_, DOT)), $.id_),
+        seq(token(/SYSTEM/i), token(/STOPLIST/i)),
+      ))),
+      optional(seq(token(/AUTHORIZATION/i), $.id_)),
+    )),
+
+    drop_fulltext_stoplist: $ => seq(
+      token(/DROP/i), token(/FULLTEXT/i), token(/STOPLIST/i), $.id_,
+    ),
+
+    // =====================
+    // EXTERNAL TABLES / POLYBASE
+    // =====================
+
+    create_external_data_source: $ => prec.right(seq(
+      token(/CREATE/i), token(/EXTERNAL/i), token(/DATA/i), token(/SOURCE/i), $.id_,
+      $.WITH, '(',
+      $._external_option, repeat(seq(',', $._external_option)),
+      ')',
+    )),
+
+    drop_external_data_source: $ => seq(
+      token(/DROP/i), token(/EXTERNAL/i), token(/DATA/i), token(/SOURCE/i),
+      optional($._if_exists), $.id_,
+    ),
+
+    create_external_file_format: $ => prec.right(seq(
+      token(/CREATE/i), token(/EXTERNAL/i), token(/FILE/i), token(/FORMAT/i), $.id_,
+      $.WITH, '(',
+      $._external_option, repeat(seq(',', $._external_option)),
+      ')',
+    )),
+
+    drop_external_file_format: $ => seq(
+      token(/DROP/i), token(/EXTERNAL/i), token(/FILE/i), token(/FORMAT/i),
+      optional($._if_exists), $.id_,
+    ),
+
+    create_external_table: $ => prec.right(seq(
+      token(/CREATE/i), token(/EXTERNAL/i), token(/TABLE/i), $.full_table_name,
+      '(', $.table_element, repeat(seq(',', $.table_element)), ')',
+      $.WITH, '(',
+      $._external_option, repeat(seq(',', $._external_option)),
+      ')',
+    )),
+
+    drop_external_table: $ => seq(
+      token(/DROP/i), token(/EXTERNAL/i), token(/TABLE/i),
+      optional($._if_exists), $.full_table_name,
+    ),
+
+    _external_option: $ => seq(
+      choice($.id_, alias($._external_option_keyword, $.id_)),
+      '=', choice($.expression, alias($._external_option_keyword, $.id_)),
+    ),
+
+    _external_option_keyword: $ => choice(
+      token(/FORMAT/i), token(/CREDENTIAL/i),
     ),
 
     // ALTER AUTHORIZATION

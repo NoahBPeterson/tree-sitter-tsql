@@ -1,0 +1,181 @@
+=====================================
+CREATE EXTERNAL DATA SOURCE - basic
+=====================================
+
+CREATE EXTERNAL DATA SOURCE MyDataSource
+WITH (
+  TYPE = HADOOP,
+  LOCATION = 'hdfs://namenode:8020'
+);
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_external_data_source
+          (id_)
+          (WITH)
+          (id_)
+          (expression
+            (full_column_name
+              (id_)))
+          (id_)
+          (expression
+            (primitive_expression
+              (primitive_constant
+                (string_lit)))))))))
+
+=====================================
+CREATE EXTERNAL DATA SOURCE - with CREDENTIAL
+=====================================
+
+CREATE EXTERNAL DATA SOURCE MyBlobStorage
+WITH (
+  TYPE = BLOB_STORAGE,
+  LOCATION = 'https://myaccount.blob.core.windows.net/mycontainer',
+  CREDENTIAL = MyCredential
+);
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_external_data_source
+          (id_)
+          (WITH)
+          (id_)
+          (expression
+            (full_column_name
+              (id_)))
+          (id_)
+          (expression
+            (primitive_expression
+              (primitive_constant
+                (string_lit))))
+          (id_)
+          (expression
+            (full_column_name
+              (id_))))))))
+
+=====================================
+DROP EXTERNAL DATA SOURCE
+=====================================
+
+DROP EXTERNAL DATA SOURCE MyDataSource;
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_external_data_source
+          (id_))))))
+
+=====================================
+CREATE EXTERNAL FILE FORMAT
+=====================================
+
+CREATE EXTERNAL FILE FORMAT CsvFormat
+WITH (
+  FORMAT_TYPE = DELIMITEDTEXT
+);
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_external_file_format
+          (id_)
+          (WITH)
+          (id_)
+          (expression
+            (full_column_name
+              (id_))))))))
+
+=====================================
+DROP EXTERNAL FILE FORMAT
+=====================================
+
+DROP EXTERNAL FILE FORMAT CsvFormat;
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_external_file_format
+          (id_))))))
+
+=====================================
+CREATE EXTERNAL TABLE
+=====================================
+
+CREATE EXTERNAL TABLE dbo.ExternalOrders (
+  OrderId INT,
+  OrderDate DATETIME
+)
+WITH (
+  LOCATION = '/data/orders/',
+  DATA_SOURCE = MyDataSource,
+  FILE_FORMAT = CsvFormat
+);
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_external_table
+          (full_table_name
+            (id_)
+            (id_))
+          (table_element
+            (column_definition
+              (id_)
+              (data_type
+                (int_))))
+          (table_element
+            (column_definition
+              (id_)
+              (data_type
+                (datetime_))))
+          (WITH)
+          (id_)
+          (expression
+            (primitive_expression
+              (primitive_constant
+                (string_lit))))
+          (id_)
+          (expression
+            (full_column_name
+              (id_)))
+          (id_)
+          (expression
+            (full_column_name
+              (id_))))))))
+
+=====================================
+DROP EXTERNAL TABLE IF EXISTS
+=====================================
+
+DROP EXTERNAL TABLE IF EXISTS dbo.ExternalOrders;
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_external_table
+          (full_table_name
+            (id_)
+            (id_)))))))

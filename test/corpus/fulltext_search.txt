@@ -1,0 +1,225 @@
+=====================================
+CREATE FULLTEXT CATALOG - basic
+=====================================
+
+CREATE FULLTEXT CATALOG MyCatalog;
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_fulltext_catalog
+          (id_))))))
+
+=====================================
+CREATE FULLTEXT CATALOG - full options
+=====================================
+
+CREATE FULLTEXT CATALOG MyCatalog
+ON FILEGROUP MyFileGroup
+IN PATH 'C:\FTData'
+WITH ACCENT_SENSITIVITY = OFF
+AUTHORIZATION dbo
+AS DEFAULT;
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_fulltext_catalog
+          (id_)
+          (id_)
+          (string_lit)
+          (WITH)
+          (id_)
+          (id_)
+          (id_)
+          (as))))))
+
+=====================================
+DROP FULLTEXT CATALOG
+=====================================
+
+DROP FULLTEXT CATALOG MyCatalog;
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_fulltext_catalog
+          (id_))))))
+
+=====================================
+CREATE FULLTEXT INDEX - basic with LANGUAGE
+=====================================
+
+CREATE FULLTEXT INDEX ON dbo.Documents
+(Title, Content LANGUAGE 1033)
+KEY INDEX PK_Documents
+ON MyCatalog;
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_fulltext_index
+          (full_table_name
+            (id_)
+            (id_))
+          (id_)
+          (id_)
+          (expression
+            (primitive_expression
+              (primitive_constant
+                (decimal_))))
+          (id_)
+          (id_))))))
+
+=====================================
+CREATE FULLTEXT INDEX - with CHANGE_TRACKING
+=====================================
+
+CREATE FULLTEXT INDEX ON dbo.Products
+(ProductName LANGUAGE 1033, Description LANGUAGE 1033)
+KEY INDEX PK_Products
+WITH CHANGE_TRACKING = AUTO;
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_fulltext_index
+          (full_table_name
+            (id_)
+            (id_))
+          (id_)
+          (expression
+            (primitive_expression
+              (primitive_constant
+                (decimal_))))
+          (id_)
+          (expression
+            (primitive_expression
+              (primitive_constant
+                (decimal_))))
+          (id_)
+          (WITH)
+          (id_)
+          (id_))))))
+
+=====================================
+ALTER FULLTEXT INDEX - ENABLE
+=====================================
+
+ALTER FULLTEXT INDEX ON dbo.Documents ENABLE;
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_fulltext_index
+          (full_table_name
+            (id_)
+            (id_)))))))
+
+=====================================
+ALTER FULLTEXT INDEX - ADD column
+=====================================
+
+ALTER FULLTEXT INDEX ON dbo.Documents
+ADD (Summary LANGUAGE 1033);
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_fulltext_index
+          (full_table_name
+            (id_)
+            (id_))
+          (id_)
+          (expression
+            (primitive_expression
+              (primitive_constant
+                (decimal_)))))))))
+
+=====================================
+ALTER FULLTEXT INDEX - DROP column
+=====================================
+
+ALTER FULLTEXT INDEX ON dbo.Documents
+DROP (Summary);
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_fulltext_index
+          (full_table_name
+            (id_)
+            (id_))
+          (id_))))))
+
+=====================================
+DROP FULLTEXT INDEX
+=====================================
+
+DROP FULLTEXT INDEX ON dbo.Documents;
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_fulltext_index
+          (full_table_name
+            (id_)
+            (id_)))))))
+
+=====================================
+CREATE FULLTEXT STOPLIST - from system
+=====================================
+
+CREATE FULLTEXT STOPLIST MyStoplist
+FROM SYSTEM STOPLIST;
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_fulltext_stoplist
+          (id_))))))
+
+=====================================
+DROP FULLTEXT STOPLIST
+=====================================
+
+DROP FULLTEXT STOPLIST MyStoplist;
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_fulltext_stoplist
+          (id_))))))

@@ -859,12 +859,12 @@
 
 > Reference: `ScriptGenerator/SqlScriptGeneratorVisitor.CreateFulltext*.cs`
 
-- [ ] `CREATE FULLTEXT CATALOG name` (`CreateFulltextCatalogStatement.cs`)
-- [ ] `CREATE FULLTEXT INDEX ON table(cols) KEY INDEX idx` (`CreateFulltextIndexStatement.cs`)
-- [ ] `ALTER FULLTEXT INDEX ON table ADD|DROP (col)` (`AlterFulltextIndexStatement.cs`)
-- [ ] `CREATE FULLTEXT STOPLIST name` (`CreateFulltextStoplistStatement.cs`)
-- [ ] `DROP FULLTEXT INDEX ON table` (`DropFulltextIndexStatement.cs`)
-- [ ] `DROP FULLTEXT CATALOG name` (`DropFulltextCatalogStatement.cs`)
+- [x] `CREATE FULLTEXT CATALOG name` (`CreateFulltextCatalogStatement.cs`)
+- [x] `CREATE FULLTEXT INDEX ON table(cols) KEY INDEX idx` (`CreateFulltextIndexStatement.cs`)
+- [x] `ALTER FULLTEXT INDEX ON table ADD|DROP (col)` (`AlterFulltextIndexStatement.cs`)
+- [x] `CREATE FULLTEXT STOPLIST name` (`CreateFulltextStoplistStatement.cs`)
+- [x] `DROP FULLTEXT INDEX ON table` (`DropFulltextIndexStatement.cs`)
+- [x] `DROP FULLTEXT CATALOG name` (`DropFulltextCatalogStatement.cs`)
 
 ### 7.15 Temporal Tables (SqlScriptDOM `TemporalClause.cs`)
 
@@ -923,12 +923,12 @@
 
 > Reference: `ScriptGenerator/SqlScriptGeneratorVisitor.CreateExternalTableStatement.cs` — 16+ files
 
-- [ ] `CREATE EXTERNAL DATA SOURCE name WITH (TYPE = ..., LOCATION = ...)` (`CreateExternalDataSourceStatement.cs`)
-- [ ] `CREATE EXTERNAL FILE FORMAT name WITH (FORMAT_TYPE = ...)` (`CreateExternalFileFormatStatement.cs`)
-- [ ] `CREATE EXTERNAL TABLE name (...) WITH (LOCATION = ..., DATA_SOURCE = ...)` (`CreateExternalTableStatement.cs`)
-- [ ] `DROP EXTERNAL DATA SOURCE name` (`DropExternalDataSourceStatement.cs`)
-- [ ] `DROP EXTERNAL FILE FORMAT name` (`DropExternalFileFormatStatement.cs`)
-- [ ] `DROP EXTERNAL TABLE name` (`DropExternalTableStatement.cs`)
+- [x] `CREATE EXTERNAL DATA SOURCE name WITH (TYPE = ..., LOCATION = ...)` (`CreateExternalDataSourceStatement.cs`)
+- [x] `CREATE EXTERNAL FILE FORMAT name WITH (FORMAT_TYPE = ...)` (`CreateExternalFileFormatStatement.cs`)
+- [x] `CREATE EXTERNAL TABLE name (...) WITH (LOCATION = ..., DATA_SOURCE = ...)` (`CreateExternalTableStatement.cs`)
+- [x] `DROP EXTERNAL DATA SOURCE name` (`DropExternalDataSourceStatement.cs`)
+- [x] `DROP EXTERNAL FILE FORMAT name` (`DropExternalFileFormatStatement.cs`)
+- [x] `DROP EXTERNAL TABLE name` (`DropExternalTableStatement.cs`)
 
 ### 7.21 Service Broker (SqlScriptDOM — 30+ files)
 
