@@ -1,0 +1,292 @@
+=====================================
+CREATE COLUMN ENCRYPTION KEY - single value
+=====================================
+
+CREATE COLUMN ENCRYPTION KEY MyCEK
+WITH VALUES
+(
+  COLUMN_MASTER_KEY = MyCMK,
+  ALGORITHM = 'RSA_OAEP',
+  ENCRYPTED_VALUE = 0xABCD
+);
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_column_encryption_key
+          (id_)
+          (WITH)
+          (id_)
+          (expression
+            (full_column_name
+              (id_)))
+          (id_)
+          (expression
+            (primitive_expression
+              (primitive_constant
+                (string_lit))))
+          (id_)
+          (expression
+            (primitive_expression
+              (primitive_constant
+                (binary)))))))))
+
+=====================================
+CREATE COLUMN ENCRYPTION KEY - two values
+=====================================
+
+CREATE COLUMN ENCRYPTION KEY MyCEK
+WITH VALUES
+(
+  COLUMN_MASTER_KEY = MyCMK1,
+  ALGORITHM = 'RSA_OAEP',
+  ENCRYPTED_VALUE = 0x1234
+),
+(
+  COLUMN_MASTER_KEY = MyCMK2,
+  ALGORITHM = 'RSA_OAEP',
+  ENCRYPTED_VALUE = 0x5678
+);
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_column_encryption_key
+          (id_)
+          (WITH)
+          (id_)
+          (expression
+            (full_column_name
+              (id_)))
+          (id_)
+          (expression
+            (primitive_expression
+              (primitive_constant
+                (string_lit))))
+          (id_)
+          (expression
+            (primitive_expression
+              (primitive_constant
+                (binary))))
+          (id_)
+          (expression
+            (full_column_name
+              (id_)))
+          (id_)
+          (expression
+            (primitive_expression
+              (primitive_constant
+                (string_lit))))
+          (id_)
+          (expression
+            (primitive_expression
+              (primitive_constant
+                (binary)))))))))
+
+=====================================
+DROP COLUMN ENCRYPTION KEY
+=====================================
+
+DROP COLUMN ENCRYPTION KEY MyCEK;
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_column_encryption_key
+          (id_))))))
+
+=====================================
+CREATE COLUMN MASTER KEY - basic
+=====================================
+
+CREATE COLUMN MASTER KEY MyCMK
+WITH (
+  KEY_STORE_PROVIDER_NAME = 'MSSQL_CERTIFICATE_STORE',
+  KEY_PATH = 'CurrentUser/My/cert123'
+);
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_column_master_key
+          (id_)
+          (WITH)
+          (id_)
+          (expression
+            (primitive_expression
+              (primitive_constant
+                (string_lit))))
+          (id_)
+          (expression
+            (primitive_expression
+              (primitive_constant
+                (string_lit)))))))))
+
+=====================================
+CREATE COLUMN MASTER KEY - with enclave computations
+=====================================
+
+CREATE COLUMN MASTER KEY MyCMK
+WITH (
+  KEY_STORE_PROVIDER_NAME = 'AZURE_KEY_VAULT',
+  KEY_PATH = 'https://vault.azure.net/keys/mykey',
+  ENCLAVE_COMPUTATIONS (SIGNATURE = 0xABCD1234)
+);
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_column_master_key
+          (id_)
+          (WITH)
+          (id_)
+          (expression
+            (primitive_expression
+              (primitive_constant
+                (string_lit))))
+          (id_)
+          (expression
+            (primitive_expression
+              (primitive_constant
+                (string_lit))))
+          (id_)
+          (id_)
+          (expression
+            (primitive_expression
+              (primitive_constant
+                (binary)))))))))
+
+=====================================
+DROP COLUMN MASTER KEY
+=====================================
+
+DROP COLUMN MASTER KEY MyCMK;
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_column_master_key
+          (id_))))))
+
+=====================================
+CREATE TABLE with ENCRYPTED WITH column
+=====================================
+
+CREATE TABLE dbo.Patients (
+  PatientId INT IDENTITY(1,1),
+  SSN CHAR(11) ENCRYPTED WITH (
+    COLUMN_ENCRYPTION_KEY = MyCEK,
+    ENCRYPTION_TYPE = DETERMINISTIC,
+    ALGORITHM = 'AEAD_AES_256_CBC_HMAC_SHA_256'
+  ),
+  FirstName NVARCHAR(50)
+);
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_table
+          (full_table_name
+            (id_)
+            (id_))
+          (table_element
+            (column_definition
+              (id_)
+              (data_type
+                (int_))
+              (identity_column
+                (decimal_)
+                (decimal_))))
+          (table_element
+            (column_definition
+              (id_)
+              (data_type
+                (char_)
+                (decimal_))
+              (column_encryption_definition
+                (WITH)
+                (id_)
+                (expression
+                  (full_column_name
+                    (id_)))
+                (id_)
+                (expression
+                  (full_column_name
+                    (id_)))
+                (id_)
+                (expression
+                  (primitive_expression
+                    (primitive_constant
+                      (string_lit)))))))
+          (table_element
+            (column_definition
+              (id_)
+              (data_type
+                (nvarchar_)
+                (decimal_)))))))))
+
+=====================================
+CREATE TABLE with ENCRYPTED WITH + COLLATE
+=====================================
+
+CREATE TABLE dbo.Patients2 (
+  SSN CHAR(11) COLLATE Latin1_General_BIN2 ENCRYPTED WITH (
+    COLUMN_ENCRYPTION_KEY = MyCEK,
+    ENCRYPTION_TYPE = RANDOMIZED,
+    ALGORITHM = 'AEAD_AES_256_CBC_HMAC_SHA_256'
+  )
+);
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_table
+          (full_table_name
+            (id_)
+            (id_))
+          (table_element
+            (column_definition
+              (id_)
+              (data_type
+                (char_)
+                (decimal_))
+              (id_)
+              (column_encryption_definition
+                (WITH)
+                (id_)
+                (expression
+                  (full_column_name
+                    (id_)))
+                (id_)
+                (expression
+                  (full_column_name
+                    (id_)))
+                (id_)
+                (expression
+                  (primitive_expression
+                    (primitive_constant
+                      (string_lit))))))))))))

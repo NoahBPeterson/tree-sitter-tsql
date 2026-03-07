@@ -907,9 +907,9 @@
 
 > Reference: `ScriptGenerator/SqlScriptGeneratorVisitor.CreateColumnEncryptionKeyStatement.cs`
 
-- [ ] `CREATE COLUMN ENCRYPTION KEY name WITH VALUES (...)` (`CreateColumnEncryptionKeyStatement.cs`)
-- [ ] `CREATE COLUMN MASTER KEY name WITH (...)` (`CreateColumnMasterKeyStatement.cs`)
-- [ ] `ENCRYPTED WITH (COLUMN_ENCRYPTION_KEY = ..., ENCRYPTION_TYPE = ...)` column option (`ColumnEncryptionDefinition.cs`)
+- [x] `CREATE COLUMN ENCRYPTION KEY name WITH VALUES (...)` (`CreateColumnEncryptionKeyStatement.cs`)
+- [x] `CREATE COLUMN MASTER KEY name WITH (...)` (`CreateColumnMasterKeyStatement.cs`)
+- [x] `ENCRYPTED WITH (COLUMN_ENCRYPTION_KEY = ..., ENCRYPTION_TYPE = ...)` column option (`ColumnEncryptionDefinition.cs`)
 
 ### 7.19 Availability Groups / Always On HA (SqlScriptDOM)
 
@@ -1009,9 +1009,9 @@
 
 > Reference: `ScriptGenerator/SqlScriptGeneratorVisitor.CreateEndpointStatement.cs`
 
-- [ ] `CREATE ENDPOINT name STATE = STARTED AS TCP (...) FOR TSQL|DATA_MIRRORING|SERVICE_BROKER (...)` (`CreateEndpointStatement.cs`)
-- [ ] `ALTER ENDPOINT name ...` (`AlterEndpointStatement.cs`)
-- [ ] `DROP ENDPOINT name` (`DropEndpointStatement.cs`)
+- [x] `CREATE ENDPOINT name STATE = STARTED AS TCP (...) FOR TSQL|DATA_MIRRORING|SERVICE_BROKER (...)` (`CreateEndpointStatement.cs`)
+- [x] `ALTER ENDPOINT name ...` (`AlterEndpointStatement.cs`)
+- [x] `DROP ENDPOINT name` (`DropEndpointStatement.cs`)
 
 ### 7.30 Security — Row-Level Security, Audit & Data Masking (SqlScriptDOM)
 

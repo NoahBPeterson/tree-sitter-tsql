@@ -392,6 +392,29 @@
     }
   },
   {
+    "type": "alter_endpoint",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "as",
+          "named": true
+        },
+        {
+          "type": "expression",
+          "named": true
+        },
+        {
+          "type": "id_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "alter_index",
     "named": true,
     "fields": {},
@@ -1628,6 +1651,10 @@
           "named": true
         },
         {
+          "type": "column_encryption_definition",
+          "named": true
+        },
+        {
           "type": "data_type",
           "named": true
         },
@@ -1649,6 +1676,29 @@
         },
         {
           "type": "null_notnull",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "column_encryption_definition",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "WITH",
+          "named": true
+        },
+        {
+          "type": "expression",
+          "named": true
+        },
+        {
+          "type": "id_",
           "named": true
         }
       ]
@@ -1874,6 +1924,52 @@
     }
   },
   {
+    "type": "create_column_encryption_key",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "WITH",
+          "named": true
+        },
+        {
+          "type": "expression",
+          "named": true
+        },
+        {
+          "type": "id_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "create_column_master_key",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "WITH",
+          "named": true
+        },
+        {
+          "type": "expression",
+          "named": true
+        },
+        {
+          "type": "id_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "create_columnstore_index",
     "named": true,
     "fields": {},
@@ -2053,6 +2149,29 @@
         },
         {
           "type": "full_table_name",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "create_endpoint",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "as",
+          "named": true
+        },
+        {
+          "type": "expression",
+          "named": true
+        },
+        {
+          "type": "id_",
           "named": true
         }
       ]
@@ -3054,6 +3173,10 @@
           "named": true
         },
         {
+          "type": "alter_endpoint",
+          "named": true
+        },
+        {
           "type": "alter_index",
           "named": true
         },
@@ -3098,6 +3221,14 @@
           "named": true
         },
         {
+          "type": "create_column_encryption_key",
+          "named": true
+        },
+        {
+          "type": "create_column_master_key",
+          "named": true
+        },
+        {
           "type": "create_columnstore_index",
           "named": true
         },
@@ -3119,6 +3250,10 @@
         },
         {
           "type": "create_default_statement",
+          "named": true
+        },
+        {
+          "type": "create_endpoint",
           "named": true
         },
         {
@@ -3222,6 +3357,14 @@
           "named": true
         },
         {
+          "type": "drop_column_encryption_key",
+          "named": true
+        },
+        {
+          "type": "drop_column_master_key",
+          "named": true
+        },
+        {
           "type": "drop_cryptographic_provider",
           "named": true
         },
@@ -3235,6 +3378,10 @@
         },
         {
           "type": "drop_database_scoped_credential",
+          "named": true
+        },
+        {
+          "type": "drop_endpoint",
           "named": true
         },
         {
@@ -3569,6 +3716,36 @@
     }
   },
   {
+    "type": "drop_column_encryption_key",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "id_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "drop_column_master_key",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "id_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "drop_cryptographic_provider",
     "named": true,
     "fields": {},
@@ -3605,6 +3782,21 @@
   },
   {
     "type": "drop_database_scoped_credential",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "id_",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "drop_endpoint",
     "named": true,
     "fields": {},
     "children": {

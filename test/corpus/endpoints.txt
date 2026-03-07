@@ -1,0 +1,189 @@
+=====================================
+CREATE ENDPOINT - basic TCP/TSQL
+=====================================
+
+CREATE ENDPOINT MyEndpoint
+AS TCP (LISTENER_PORT = 5022)
+FOR TSQL ();
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_endpoint
+          (id_)
+          (as)
+          (id_)
+          (id_)
+          (expression
+            (primitive_expression
+              (primitive_constant
+                (decimal_))))
+          (id_))))))
+
+=====================================
+CREATE ENDPOINT - with STATE and AUTHORIZATION
+=====================================
+
+CREATE ENDPOINT MyEndpoint
+AUTHORIZATION sa
+STATE = STARTED
+AS TCP (LISTENER_PORT = 5022, LISTENER_IP = ALL)
+FOR TSQL ();
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_endpoint
+          (id_)
+          (id_)
+          (id_)
+          (id_)
+          (as)
+          (id_)
+          (id_)
+          (expression
+            (primitive_expression
+              (primitive_constant
+                (decimal_))))
+          (id_)
+          (id_)
+          (id_))))))
+
+=====================================
+CREATE ENDPOINT - DATABASE_MIRRORING with ROLE
+=====================================
+
+CREATE ENDPOINT Mirroring
+AS TCP (LISTENER_PORT = 5023)
+FOR DATABASE_MIRRORING (ROLE = ALL);
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_endpoint
+          (id_)
+          (as)
+          (id_)
+          (id_)
+          (expression
+            (primitive_expression
+              (primitive_constant
+                (decimal_))))
+          (id_)
+          (id_)
+          (id_))))))
+
+=====================================
+CREATE ENDPOINT - SERVICE_BROKER with AUTHENTICATION
+=====================================
+
+CREATE ENDPOINT BrokerEndpoint
+AS TCP (LISTENER_PORT = 4022, LISTENER_IP = ALL)
+FOR SERVICE_BROKER (AUTHENTICATION = WINDOWS);
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_endpoint
+          (id_)
+          (as)
+          (id_)
+          (id_)
+          (expression
+            (primitive_expression
+              (primitive_constant
+                (decimal_))))
+          (id_)
+          (id_)
+          (id_)
+          (id_)
+          (id_))))))
+
+=====================================
+ALTER ENDPOINT - change state
+=====================================
+
+ALTER ENDPOINT MyEndpoint
+STATE = STOPPED;
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_endpoint
+          (id_)
+          (id_)
+          (id_))))))
+
+=====================================
+ALTER ENDPOINT - change TCP options
+=====================================
+
+ALTER ENDPOINT MyEndpoint
+AS TCP (LISTENER_PORT = 6022);
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_endpoint
+          (id_)
+          (as)
+          (id_)
+          (id_)
+          (expression
+            (primitive_expression
+              (primitive_constant
+                (decimal_)))))))))
+
+=====================================
+ALTER ENDPOINT - change payload options
+=====================================
+
+ALTER ENDPOINT MyEndpoint
+FOR DATABASE_MIRRORING (ROLE = PARTNER);
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_endpoint
+          (id_)
+          (id_)
+          (id_)
+          (expression
+            (full_column_name
+              (id_))))))))
+
+=====================================
+DROP ENDPOINT
+=====================================
+
+DROP ENDPOINT MyEndpoint;
+
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_endpoint
+          (id_))))))

@@ -261,6 +261,15 @@ module.exports = grammar({
       // Database Scoped Credentials
       ,$.create_database_scoped_credential
       ,$.drop_database_scoped_credential
+      // Column Encryption
+      ,$.create_column_encryption_key
+      ,$.drop_column_encryption_key
+      ,$.create_column_master_key
+      ,$.drop_column_master_key
+      // Endpoints
+      ,$.create_endpoint
+      ,$.alter_endpoint
+      ,$.drop_endpoint
     ),
 
     //https://learn.microsoft.com/en-us/sql/t-sql/statements/create-database-transact-sql
@@ -889,6 +898,7 @@ module.exports = grammar({
           $.identity_column,
           $.column_constraint,
           $.generated_always,
+          $.column_encryption_definition,
           seq(token(/COLLATE/i), $.id_),
         ))),
         seq(token(/AS/i), $.expression, optional(token(/PERSISTED/i))),
@@ -1451,6 +1461,105 @@ module.exports = grammar({
 
     drop_database_scoped_credential: $ => seq(
       token(/DROP/i), token(/DATABASE/i), token(/SCOPED/i), token(/CREDENTIAL/i), $.id_,
+    ),
+
+    // =====================
+    // COLUMN ENCRYPTION KEY
+    // =====================
+
+    create_column_encryption_key: $ => prec.right(seq(
+      token(/CREATE/i), token(/COLUMN/i), token(/ENCRYPTION/i), token(/KEY/i),
+      $.id_,
+      $.WITH, token(/VALUES/i),
+      '(', $._cek_value, repeat(seq(',', $._cek_value)), ')',
+      optional(seq(',', '(', $._cek_value, repeat(seq(',', $._cek_value)), ')')),
+    )),
+
+    _cek_value: $ => seq(
+      choice($.id_, alias($._cek_keyword, $.id_)),
+      '=', $.expression,
+    ),
+
+    _cek_keyword: $ => choice(token(/ALGORITHM/i)),
+
+    drop_column_encryption_key: $ => seq(
+      token(/DROP/i), token(/COLUMN/i), token(/ENCRYPTION/i), token(/KEY/i), $.id_,
+    ),
+
+    // =====================
+    // COLUMN MASTER KEY
+    // =====================
+
+    create_column_master_key: $ => prec.right(seq(
+      token(/CREATE/i), token(/COLUMN/i), token(/MASTER/i), token(/KEY/i),
+      $.id_,
+      $.WITH, '(',
+      $._cmk_option, repeat(seq(',', $._cmk_option)),
+      ')',
+    )),
+
+    _cmk_option: $ => choice(
+      seq(choice($.id_, alias($._cmk_keyword, $.id_)), '=', $.expression),
+      seq($.id_, '(', alias($._cmk_keyword, $.id_), '=', $.expression, ')'),
+    ),
+
+    _cmk_keyword: $ => choice(token(/SIGNATURE/i)),
+
+    drop_column_master_key: $ => seq(
+      token(/DROP/i), token(/COLUMN/i), token(/MASTER/i), token(/KEY/i), $.id_,
+    ),
+
+    // =====================
+    // COLUMN ENCRYPTION DEFINITION (in column_definition)
+    // =====================
+
+    column_encryption_definition: $ => seq(
+      token(/ENCRYPTED/i), $.WITH, '(',
+      $._column_encryption_option,
+      repeat(seq(',', $._column_encryption_option)),
+      ')',
+    ),
+
+    _column_encryption_option: $ => seq(
+      choice($.id_, alias(token(/ALGORITHM/i), $.id_)),
+      '=', $.expression,
+    ),
+
+    // =====================
+    // CREATE/ALTER/DROP ENDPOINT
+    // =====================
+
+    create_endpoint: $ => prec.right(seq(
+      token(/CREATE/i), token(/ENDPOINT/i), $.id_,
+      optional(seq(token(/AUTHORIZATION/i), $.id_)),
+      optional(seq($.id_, '=', $.id_)),
+      $.as, $.id_,
+      '(', $._endpoint_option, repeat(seq(',', $._endpoint_option)), ')',
+      token(/FOR/i), $.id_,
+      '(', optional(seq($._endpoint_option, repeat(seq(',', $._endpoint_option)))), ')',
+    )),
+
+    alter_endpoint: $ => prec.right(seq(
+      token(/ALTER/i), token(/ENDPOINT/i), $.id_,
+      optional(seq($.id_, '=', $.id_)),
+      optional(seq($.as, $.id_,
+        '(', $._endpoint_option, repeat(seq(',', $._endpoint_option)), ')')),
+      optional(seq(token(/FOR/i), $.id_,
+        '(', optional(seq($._endpoint_option, repeat(seq(',', $._endpoint_option)))), ')')),
+    )),
+
+    drop_endpoint: $ => seq(
+      token(/DROP/i), token(/ENDPOINT/i), $.id_,
+    ),
+
+    _endpoint_option: $ => seq(
+      choice($.id_, alias($._endpoint_option_keyword, $.id_)),
+      optional(seq('=', choice($.expression, alias($._endpoint_option_keyword, $.id_)))),
+    ),
+
+    _endpoint_option_keyword: $ => choice(
+      token(/ENCRYPTION/i), token(/CERTIFICATE/i), token(/ROLE/i),
+      token(/ALL/i), token(/DISABLED/i), token(/WINDOWS/i),
     ),
 
     // ALTER AUTHORIZATION
@@ -2884,7 +2993,7 @@ module.exports = grammar({
       ,token(/INSERTED/i), token(/DELETED/i)
       ,token(/RESULT/i)
       /* Crypto/DDL keywords used as identifiers */
-      ,token(/ACTIVE/i), token(/SEARCH/i)
+      ,token(/ACTIVE/i), token(/SEARCH/i), token(/ENDPOINT/i)
     )),
 
     integer: $ => INT,
