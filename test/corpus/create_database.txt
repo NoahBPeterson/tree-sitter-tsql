@@ -113,7 +113,7 @@ CREATE DATABASE ON PRIMARY with FILEGROUP
 ================================================================================
 CREATE DATABASE d5
 ON PRIMARY
-(NAME = d5_dat1, FILENAME = 'c:\d5.mdf', SIZE = 10MB)
+(NAME = d5_dat1, FILENAME = 'c:\d5.mdf', SIZE = 10MB),
 FILEGROUP fg1
 (NAME = d5_dat2, FILENAME = 'c:\d5_fg1.ndf', SIZE = 10MB);
 --------------------------------------------------------------------------------
@@ -372,9 +372,9 @@ CREATE DATABASE multiple filegroups
 ================================================================================
 CREATE DATABASE d19
 ON PRIMARY
-(NAME = d19_dat, FILENAME = 'c:\d19.mdf', SIZE = 10MB)
+(NAME = d19_dat, FILENAME = 'c:\d19.mdf', SIZE = 10MB),
 FILEGROUP fg1
-(NAME = d19_fg1, FILENAME = 'c:\d19_fg1.ndf', SIZE = 5MB)
+(NAME = d19_fg1, FILENAME = 'c:\d19_fg1.ndf', SIZE = 5MB),
 FILEGROUP fg2
 (NAME = d19_fg2, FILENAME = 'c:\d19_fg2.ndf', SIZE = 5MB);
 --------------------------------------------------------------------------------
@@ -419,7 +419,7 @@ CREATE DATABASE FILEGROUP CONTAINS MEMORY_OPTIMIZED_DATA
 ================================================================================
 CREATE DATABASE d20
 ON PRIMARY
-(NAME = d20_dat, FILENAME = 'c:\d20.mdf', SIZE = 10MB)
+(NAME = d20_dat, FILENAME = 'c:\d20.mdf', SIZE = 10MB),
 FILEGROUP fg_mem CONTAINS MEMORY_OPTIMIZED_DATA
 (NAME = d20_mod, FILENAME = 'c:\d20_mod');
 --------------------------------------------------------------------------------

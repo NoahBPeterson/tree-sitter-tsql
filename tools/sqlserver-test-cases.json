@@ -1,0 +1,149 @@
+{
+  "_comment": "Test cases to verify against real SQL Server instances via Docker. Each test has setup SQL (create objects), the SQL under test, and teardown SQL (cleanup).",
+  "tests": [
+    {
+      "name": "ALTER SERVICE MASTER KEY multi-option",
+      "description": "Comma-separated OLD_ACCOUNT/OLD_PASSWORD/NEW_ACCOUNT/NEW_PASSWORD. Our grammar + Microsoft docs say valid; both .NET parsers reject.",
+      "setup": "",
+      "sql": "ALTER SERVICE MASTER KEY WITH OLD_ACCOUNT = 'OldAccount', OLD_PASSWORD = 'OldPwd', NEW_ACCOUNT = 'NewAccount', NEW_PASSWORD = 'NewPwd'",
+      "teardown": "",
+      "expected": "unknown"
+    },
+    {
+      "name": "DROP EXTERNAL TABLE IF EXISTS",
+      "description": "IF EXISTS on DROP EXTERNAL TABLE. All other DROP types support IF EXISTS. Both .NET parsers reject this.",
+      "setup": "",
+      "sql": "DROP EXTERNAL TABLE IF EXISTS dbo.ExternalOrders",
+      "teardown": "",
+      "expected": "unknown"
+    },
+    {
+      "name": "CREATE TABLE PRIMARY KEY no cols",
+      "description": "PRIMARY KEY constraint with empty column list. Our parser rejects; SqlParser accepts.",
+      "setup": "",
+      "sql": "CREATE TABLE #t_pk_nocols (PRIMARY KEY); DROP TABLE #t_pk_nocols;",
+      "teardown": "",
+      "expected": "unknown"
+    },
+    {
+      "name": "CREATE TABLE named PK no cols",
+      "description": "Named CONSTRAINT pk PRIMARY KEY with empty column list. Our parser rejects; SqlParser accepts.",
+      "setup": "",
+      "sql": "CREATE TABLE #t_namedpk (CONSTRAINT pk PRIMARY KEY); DROP TABLE #t_namedpk;",
+      "teardown": "",
+      "expected": "unknown"
+    },
+    {
+      "name": "ALTER DATABASE NAME no value",
+      "description": "Filespec with bare NAME (no = 'value'). Our parser rejects; SqlParser accepts.",
+      "setup": "CREATE DATABASE tsql_verify_testdb",
+      "sql": "ALTER DATABASE tsql_verify_testdb ADD FILE (NAME)",
+      "teardown": "DROP DATABASE tsql_verify_testdb",
+      "expected": "unknown"
+    },
+    {
+      "name": "CAST no AS",
+      "description": "CAST(expr) without AS type. Our parser rejects; SqlParser accepts.",
+      "setup": "",
+      "sql": "SELECT CAST(1)",
+      "teardown": "",
+      "expected": "unknown"
+    },
+    {
+      "name": "SELECT bare dollar sign",
+      "description": "SELECT $ — bare dollar. Our parser rejects; SqlParser treats as $0.00 money.",
+      "setup": "",
+      "sql": "SELECT $",
+      "teardown": "",
+      "expected": "unknown"
+    },
+    {
+      "name": "OVER PARTITION no BY",
+      "description": "ROW_NUMBER() OVER (PARTITION) — PARTITION without BY. Our parser rejects; ScriptDom 160+ accepts.",
+      "setup": "",
+      "sql": "SELECT ROW_NUMBER() OVER (PARTITION) FROM (SELECT 1 AS x) t",
+      "teardown": "",
+      "expected": "unknown"
+    },
+    {
+      "name": "OVER ROWS no extent",
+      "description": "SUM(a) OVER (ROWS) — ROWS without frame bounds. Our parser rejects; ScriptDom 160+ accepts.",
+      "setup": "CREATE TABLE #t_rows (a INT); INSERT INTO #t_rows VALUES (1),(2),(3)",
+      "sql": "SELECT SUM(a) OVER (ROWS) FROM #t_rows",
+      "teardown": "DROP TABLE #t_rows",
+      "expected": "unknown"
+    },
+    {
+      "name": "COMPRESSION_DELAY MINUTE singular",
+      "description": "COMPRESSION_DELAY = 1 MINUTE (singular). Our grammar accepts; ScriptDom only accepts MINUTES (plural).",
+      "setup": "CREATE TABLE #t_cd (a INT, b INT)",
+      "sql": "CREATE NONCLUSTERED COLUMNSTORE INDEX ncci ON #t_cd (a) WITH (COMPRESSION_DELAY = 1 MINUTE)",
+      "teardown": "DROP TABLE #t_cd",
+      "expected": "unknown"
+    },
+    {
+      "name": "COMPRESSION_DELAY MINUTES plural",
+      "description": "COMPRESSION_DELAY = 10 MINUTES (plural). Control test — should pass.",
+      "setup": "CREATE TABLE #t_cdm (a INT, b INT)",
+      "sql": "CREATE NONCLUSTERED COLUMNSTORE INDEX ncci ON #t_cdm (a) WITH (COMPRESSION_DELAY = 10 MINUTES)",
+      "teardown": "DROP TABLE #t_cdm",
+      "expected": "accept"
+    },
+    {
+      "name": "CLUSTERED COLUMNSTORE INDEX with ORDER",
+      "description": "ORDER clause on clustered columnstore index. ScriptDom rejects at < 130.",
+      "setup": "CREATE TABLE #t_cci (a INT, b INT)",
+      "sql": "CREATE CLUSTERED COLUMNSTORE INDEX cci ON #t_cci WITH (ORDER(a))",
+      "teardown": "DROP TABLE #t_cci",
+      "expected": "unknown"
+    },
+    {
+      "name": "CREATE DATABASE FILEGROUP comma-separated",
+      "description": "FILEGROUP clause with comma separator (per SQL docs). Our grammar now requires comma.",
+      "setup": "",
+      "sql": "CREATE DATABASE tsql_verify_fgdb ON PRIMARY (NAME = N'tsql_verify_fgdb', FILENAME = N'/var/opt/mssql/data/fgdb.mdf', SIZE = 8MB), FILEGROUP fg1 (NAME = N'fgdb_fg1', FILENAME = N'/var/opt/mssql/data/fgdb_fg1.ndf', SIZE = 8MB); DROP DATABASE tsql_verify_fgdb;",
+      "teardown": "",
+      "expected": "accept"
+    },
+    {
+      "name": "CREATE DATABASE FILEGROUP no comma",
+      "description": "FILEGROUP clause without comma. Tests whether real SQL Server requires the comma.",
+      "setup": "",
+      "sql": "CREATE DATABASE tsql_verify_fgdb2 ON PRIMARY (NAME = N'tsql_verify_fgdb2', FILENAME = N'/var/opt/mssql/data/fgdb2.mdf', SIZE = 8MB) FILEGROUP fg1 (NAME = N'fgdb2_fg1', FILENAME = N'/var/opt/mssql/data/fgdb2_fg1.ndf', SIZE = 8MB); DROP DATABASE tsql_verify_fgdb2;",
+      "teardown": "",
+      "expected": "unknown"
+    },
+    {
+      "name": "CREATE SYMMETRIC KEY comma before ENCRYPTION",
+      "description": "WITH ALGORITHM = AES_256, ENCRYPTION BY (comma). Tests if real SQL Server requires or rejects the comma.",
+      "setup": "CREATE MASTER KEY ENCRYPTION BY PASSWORD = 'MK#Pass2024!'; CREATE CERTIFICATE TestCert WITH SUBJECT = 'Test'",
+      "sql": "CREATE SYMMETRIC KEY TestSymKey WITH ALGORITHM = AES_256, ENCRYPTION BY CERTIFICATE TestCert",
+      "teardown": "DROP SYMMETRIC KEY TestSymKey; DROP CERTIFICATE TestCert; DROP MASTER KEY",
+      "expected": "unknown"
+    },
+    {
+      "name": "CREATE SYMMETRIC KEY no comma before ENCRYPTION",
+      "description": "WITH ALGORITHM = AES_256 ENCRYPTION BY (no comma). Our current grammar; both .NET parsers accept.",
+      "setup": "CREATE MASTER KEY ENCRYPTION BY PASSWORD = 'MK#Pass2024!'; CREATE CERTIFICATE TestCert2 WITH SUBJECT = 'Test'",
+      "sql": "CREATE SYMMETRIC KEY TestSymKey2 WITH ALGORITHM = AES_256 ENCRYPTION BY CERTIFICATE TestCert2",
+      "teardown": "DROP SYMMETRIC KEY TestSymKey2; DROP CERTIFICATE TestCert2; DROP MASTER KEY",
+      "expected": "accept"
+    },
+    {
+      "name": "CREATE FULLTEXT CATALOG AS DEFAULT before AUTHORIZATION",
+      "description": "AS DEFAULT then AUTHORIZATION (our current order). Tests correct clause ordering.",
+      "setup": "",
+      "sql": "CREATE FULLTEXT CATALOG tsql_verify_ftc AS DEFAULT AUTHORIZATION dbo; DROP FULLTEXT CATALOG tsql_verify_ftc;",
+      "teardown": "",
+      "expected": "accept"
+    },
+    {
+      "name": "CREATE FULLTEXT CATALOG AUTHORIZATION before AS DEFAULT",
+      "description": "AUTHORIZATION then AS DEFAULT (our old order). Tests if reversed order works.",
+      "setup": "",
+      "sql": "CREATE FULLTEXT CATALOG tsql_verify_ftc2 AUTHORIZATION dbo AS DEFAULT; DROP FULLTEXT CATALOG tsql_verify_ftc2;",
+      "teardown": "",
+      "expected": "unknown"
+    }
+  ]
+}

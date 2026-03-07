@@ -1,30 +1,50 @@
 {
-  "_comment": "Known mismatches between tree-sitter-tsql and the SqlScriptDOM oracle. These are intentional divergences where our parser is stricter than the oracle for good reason. Each entry maps a test name to a reason.",
+  "_comment": "Known mismatches between tree-sitter-tsql and the dual oracle (ScriptDom + SqlParser). Each entry maps a test name to a reason.",
   "ignored": {
+    "ALTER SERVICE MASTER KEY - with accounts": {
+      "direction": "tree_sitter_accepts",
+      "sql": "ALTER SERVICE MASTER KEY WITH OLD_ACCOUNT = 'a', OLD_PASSWORD = 'b', NEW_ACCOUNT = 'c', NEW_PASSWORD = 'd'",
+      "reason": "Neither ScriptDom nor SqlParser supports comma-separated multi-option syntax. Valid T-SQL per Microsoft docs."
+    },
+    "DROP EXTERNAL TABLE IF EXISTS": {
+      "direction": "tree_sitter_accepts",
+      "sql": "DROP EXTERNAL TABLE IF EXISTS dbo.ExternalOrders",
+      "reason": "Neither ScriptDom nor SqlParser supports IF EXISTS on DROP EXTERNAL TABLE. Valid in SQL Server 2016+."
+    },
     "ERROR CREATE TABLE PRIMARY KEY no cols": {
       "direction": "oracle_accepts",
       "sql": "CREATE TABLE t (PRIMARY KEY)",
-      "reason": "PK constraint with no column list is semantically meaningless — fails at runtime. Parser catches this early."
+      "reason": "SqlParser fallback accepts this but it's semantically invalid — PK with no column list fails at runtime."
     },
     "ERROR CREATE TABLE named PK no cols": {
       "direction": "oracle_accepts",
       "sql": "CREATE TABLE t (CONSTRAINT pk PRIMARY KEY)",
-      "reason": "Named PK constraint with no column list is semantically meaningless — fails at runtime. Parser catches this early."
+      "reason": "SqlParser fallback accepts this but it's semantically invalid — named PK with no column list fails at runtime."
     },
     "ERROR ALTER DATABASE NAME no value": {
       "direction": "oracle_accepts",
       "sql": "ALTER DATABASE db ADD FILE (NAME)",
-      "reason": "Filespec NAME without = 'value' is incomplete. Oracle may parse NAME as an expression but it's not valid filespec syntax."
+      "reason": "SqlParser fallback accepts NAME as expression but it's incomplete filespec syntax — missing = 'value'."
     },
     "ERROR CAST no AS": {
       "direction": "oracle_accepts",
       "sql": "SELECT CAST(1)",
-      "reason": "CAST without AS is broken syntax — CAST(expr AS type) is the defined form. No one writes CAST(1) intentionally."
+      "reason": "SqlParser fallback accepts this but CAST without AS is broken syntax — CAST(expr AS type) is required."
     },
     "ERROR - $action bare dollar sign": {
       "direction": "oracle_accepts",
       "sql": "SELECT $",
-      "reason": "Bare $ is almost certainly a typo for $action or $PARTITION. Oracle treats it as $0.00 money literal."
+      "reason": "SqlParser fallback treats bare $ as $0.00 money literal. Our parser intentionally rejects it."
+    },
+    "ERROR OVER PARTITION no BY": {
+      "direction": "oracle_accepts",
+      "sql": "SELECT ROW_NUMBER() OVER (PARTITION)",
+      "reason": "ScriptDom compat 160+ accepts bare PARTITION without BY. Our parser intentionally requires PARTITION BY."
+    },
+    "ERROR OVER ROWS no extent": {
+      "direction": "oracle_accepts",
+      "sql": "SELECT SUM(a) OVER (ROWS)",
+      "reason": "ScriptDom compat 160+ accepts bare ROWS without frame extent. Our parser intentionally requires a frame specification."
     }
   }
 }

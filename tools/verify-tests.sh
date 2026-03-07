@@ -1,8 +1,13 @@
 #!/bin/bash
 # Verify tree-sitter test cases against the SQL parser oracle.
 # Extracts SQL from test corpus files and checks:
-#   - Positive tests: oracle should parse successfully (exit 0)
+#   - Positive tests: oracle should parse successfully (exit 0 or 2)
 #   - Negative tests: oracle should fail to parse (exit 1)
+#
+# Oracle exit codes:
+#   0 = parses at default version (SQL Server 2014)
+#   1 = fails at all versions (invalid SQL)
+#   2 = fails at default but valid at a newer SQL Server version
 #
 # Known intentional mismatches are listed in verify-ignore.json
 # and reported separately (not counted as failures).
@@ -54,17 +59,20 @@ RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 CYAN='\033[0;36m'
+BLUE='\033[0;34m'
 NC='\033[0m'
 
 TOTAL_PASS=0
 TOTAL_FAIL=0
 TOTAL_IGNORED=0
+TOTAL_NEWER=0
 TOTAL_TESTS=0
 
 # Temp files for collecting results
 MISMATCH_FILE=$(mktemp)
 IGNORED_FILE=$(mktemp)
-trap "rm -f $MISMATCH_FILE $IGNORED_FILE" EXIT
+NEWER_FILE=$(mktemp)
+trap "rm -f $MISMATCH_FILE $IGNORED_FILE $NEWER_FILE" EXIT
 
 # Get list of files to process
 if [ $# -gt 0 ]; then
@@ -83,6 +91,7 @@ for testfile in $FILES; do
     file_pass=0
     file_fail=0
     file_ignored=0
+    file_newer=0
 
     state="looking_for_header"
     test_name=""
@@ -107,12 +116,14 @@ for testfile in $FILES; do
             reading_sql)
                 if [[ "$line" =~ ^---+$ ]]; then
                     if [ -n "$sql_lines" ]; then
-                        # Run oracle with compiled binary
-                        echo "$sql_lines" | "$ORACLE" --quiet 2>/dev/null
+                        # Run oracle — capture output and exit code
+                        oracle_output=$(echo "$sql_lines" | "$ORACLE" --quiet 2>/dev/null)
                         oracle_exit=$?
 
                         if [ $is_negative -eq 1 ]; then
-                            if [ $oracle_exit -ne 0 ]; then
+                            # Negative test: oracle should reject (exit 1)
+                            # Exit 2 (newer version) still means oracle accepts it
+                            if [ $oracle_exit -eq 1 ]; then
                                 file_pass=$((file_pass + 1))
                             elif is_ignored "$test_name"; then
                                 file_ignored=$((file_ignored + 1))
@@ -126,8 +137,20 @@ for testfile in $FILES; do
                                 echo "    SQL: $sql_first" >> "$MISMATCH_FILE"
                             fi
                         else
+                            # Positive test: oracle should accept (exit 0 or 2)
                             if [ $oracle_exit -eq 0 ]; then
                                 file_pass=$((file_pass + 1))
+                            elif [ $oracle_exit -eq 2 ]; then
+                                # Valid at a newer version — count as pass
+                                file_pass=$((file_pass + 1))
+                                file_newer=$((file_newer + 1))
+                                echo "  ${test_name}" >> "$NEWER_FILE"
+                                echo "    ${oracle_output}" >> "$NEWER_FILE"
+                            elif is_ignored "$test_name"; then
+                                file_ignored=$((file_ignored + 1))
+                                reason=$(get_ignore_reason "$test_name")
+                                echo "  ${test_name}" >> "$IGNORED_FILE"
+                                echo "    Reason: ${reason}" >> "$IGNORED_FILE"
                             else
                                 file_fail=$((file_fail + 1))
                                 sql_first=$(echo "$sql_lines" | head -1)
@@ -157,12 +180,15 @@ for testfile in $FILES; do
     TOTAL_PASS=$((TOTAL_PASS + file_pass))
     TOTAL_FAIL=$((TOTAL_FAIL + file_fail))
     TOTAL_IGNORED=$((TOTAL_IGNORED + file_ignored))
+    TOTAL_NEWER=$((TOTAL_NEWER + file_newer))
     TOTAL_TESTS=$((TOTAL_TESTS + file_total))
 
     if [ $file_fail -gt 0 ]; then
         echo -e "  ${RED}FAIL${NC} ${filename}: ${file_pass}/${file_total} pass (${file_fail} mismatches, ${file_ignored} ignored)"
     elif [ $file_ignored -gt 0 ]; then
         echo -e "  ${YELLOW}WARN${NC} ${filename}: ${file_pass}/${file_total} pass (${file_ignored} ignored)"
+    elif [ $file_newer -gt 0 ]; then
+        echo -e "  ${GREEN}PASS${NC} ${filename}: ${file_pass}/${file_total} pass (${file_newer} newer-version)"
     else
         echo -e "  ${GREEN}PASS${NC} ${filename}: ${file_pass}/${file_total} pass"
     fi
@@ -174,13 +200,22 @@ echo "VERIFICATION SUMMARY"
 echo "======================================"
 echo -e "Total tests:  $TOTAL_TESTS"
 echo -e "${GREEN}Pass${NC}:         $TOTAL_PASS"
+echo -e "${BLUE}Newer ver${NC}:    $TOTAL_NEWER (valid at newer SQL Server, included in pass count)"
 echo -e "${YELLOW}Ignored${NC}:      $TOTAL_IGNORED"
 echo -e "${RED}Fail${NC}:         $TOTAL_FAIL"
 echo ""
 
+if [ $TOTAL_NEWER -gt 0 ]; then
+    echo "======================================"
+    echo "NEWER VERSION (valid T-SQL, requires newer SQL Server):"
+    echo "======================================"
+    cat "$NEWER_FILE"
+    echo ""
+fi
+
 if [ $TOTAL_IGNORED -gt 0 ]; then
     echo "======================================"
-    echo "IGNORED (intentional strictness):"
+    echo "IGNORED (intentional divergence):"
     echo "======================================"
     cat "$IGNORED_FILE"
     echo ""

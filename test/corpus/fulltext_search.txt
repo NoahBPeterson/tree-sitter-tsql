@@ -21,8 +21,8 @@ CREATE FULLTEXT CATALOG MyCatalog
 ON FILEGROUP MyFileGroup
 IN PATH 'C:\FTData'
 WITH ACCENT_SENSITIVITY = OFF
-AUTHORIZATION dbo
-AS DEFAULT;
+AS DEFAULT
+AUTHORIZATION dbo;
 
 ---
 
@@ -37,8 +37,8 @@ AS DEFAULT;
           (WITH)
           (id_)
           (id_)
-          (id_)
-          (as))))))
+          (as)
+          (id_))))))
 
 =====================================
 DROP FULLTEXT CATALOG

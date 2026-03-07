@@ -75,6 +75,7 @@ module.exports = grammar({
     ,[$.column_constraint]
     ,[$.func_proc_name_database_schema, $.full_table_name]
     ,[$.table_constraint]
+    ,[$.filegroup_spec]
   ],
 
   extras: $ => [
@@ -301,7 +302,7 @@ module.exports = grammar({
       optional(seq(
         token(/ON/i), optional(token(/PRIMARY/i)),
         $.database_filespec, repeat(seq(token(','), $.database_filespec)),
-        repeat($.filegroup_spec),
+        repeat(seq(token(','), $.filegroup_spec)),
       )),
       optional(seq(token(/LOG/i), token(/ON/i),
         $.database_filespec, repeat(seq(token(','), $.database_filespec)))),
@@ -1403,7 +1404,7 @@ module.exports = grammar({
       token(/CREATE/i), token(/SYMMETRIC/i), token(/KEY/i), $.id_,
       optional(seq(token(/AUTHORIZATION/i), $.id_)),
       $.WITH, token(/ALGORITHM/i), token('='), $.id_,
-      token(','), token(/ENCRYPTION/i), token(/BY/i),
+      token(/ENCRYPTION/i), token(/BY/i),
       $._key_source, repeat(seq(token(','), $._key_source)),
     )),
 
@@ -1680,8 +1681,8 @@ module.exports = grammar({
       optional(seq(token(/ON/i), token(/FILEGROUP/i), $.id_)),
       optional(seq(token(/IN/i), token(/PATH/i), $.string_lit)),
       optional(seq($.WITH, $.id_, '=', choice($.id_, alias($._fulltext_keyword_value, $.id_)))),
-      optional(seq(token(/AUTHORIZATION/i), $.id_)),
       optional(seq($.as, token(/DEFAULT/i))),
+      optional(seq(token(/AUTHORIZATION/i), $.id_)),
     )),
 
     drop_fulltext_catalog: $ => seq(

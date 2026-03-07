@@ -1263,8 +1263,20 @@
                   {
                     "type": "REPEAT",
                     "content": {
-                      "type": "SYMBOL",
-                      "name": "filegroup_spec"
+                      "type": "SEQ",
+                      "members": [
+                        {
+                          "type": "TOKEN",
+                          "content": {
+                            "type": "STRING",
+                            "value": ","
+                          }
+                        },
+                        {
+                          "type": "SYMBOL",
+                          "name": "filegroup_spec"
+                        }
+                      ]
                     }
                   }
                 ]
@@ -13009,13 +13021,6 @@
           {
             "type": "TOKEN",
             "content": {
-              "type": "STRING",
-              "value": ","
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
               "type": "PATTERN",
               "value": "ENCRYPTION",
               "flags": "i"
@@ -15822,16 +15827,16 @@
                 "type": "SEQ",
                 "members": [
                   {
+                    "type": "SYMBOL",
+                    "name": "as"
+                  },
+                  {
                     "type": "TOKEN",
                     "content": {
                       "type": "PATTERN",
-                      "value": "AUTHORIZATION",
+                      "value": "DEFAULT",
                       "flags": "i"
                     }
-                  },
-                  {
-                    "type": "SYMBOL",
-                    "name": "id_"
                   }
                 ]
               },
@@ -15847,16 +15852,16 @@
                 "type": "SEQ",
                 "members": [
                   {
-                    "type": "SYMBOL",
-                    "name": "as"
-                  },
-                  {
                     "type": "TOKEN",
                     "content": {
                       "type": "PATTERN",
-                      "value": "DEFAULT",
+                      "value": "AUTHORIZATION",
                       "flags": "i"
                     }
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "id_"
                   }
                 ]
               },
@@ -40226,6 +40231,9 @@
     ],
     [
       "table_constraint"
+    ],
+    [
+      "filegroup_spec"
     ]
   ],
   "precedences": [
