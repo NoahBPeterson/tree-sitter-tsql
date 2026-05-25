@@ -4,6 +4,105 @@
 > See [implementation-guide.md](implementation-guide.md) for detailed notes and ANTLR4 line references.
 >
 > **Legend:** `[x]` = Done, `[ ]` = Not started, `[~]` = Partial
+>
+> **Authoritative completeness reference (added 2026-05-24):** the ANTLR4 community grammar
+> is a *proxy*. The real grammar is Microsoft's own ANTLR2 source, vendored at
+> `tools/SqlScriptDom/SqlScriptDom/Parser/TSql/TSql120.g` (SQL Server 2014, 26,522 lines).
+> The [TSql120.g Coverage section](#tsql120g-coverage-sql-server-2014--authoritative) below
+> diffs every leaf statement production against grammar.js, **parse-verified** (not name-matched),
+> with `TSql120.g:LINE` references so each gap is one click from the Microsoft source.
+
+---
+
+## TSql120.g Coverage (SQL Server 2014 — authoritative)
+
+> Diff of grammar.js against the real Microsoft 2014 grammar. Status determined by **parsing a
+> representative statement and checking for `ERROR`/`MISSING` nodes** (2026-05-24), not by name
+> matching. Covered statements are additionally cross-checked by the ScriptDom `TSql120Parser`
+> oracle (`tools/sql-parser-oracle/`), which all 1208 corpus tests pass.
+
+**Headline:** `TSql120.g` defines **261** leaf `*Statement` productions. After excluding ~20
+internal helper/dispatcher rules (e.g. `lastStatement`, `innerDmlStatement`, the `alterTable*`
+sub-rules), **~209 of ~241 user-facing statement families are covered (~87%)**. The **32 remaining
+gaps** are listed below, grouped by feature, each with its `TSql120.g` line. Most are rarely-used
+enterprise/Azure features (Always On, Extended Events, Federations, Service Broker priority).
+
+> ✅ **Common-statement batch implemented 2026-05-24** (parse-verified + ScriptDom `TSql120Parser`
+> oracle-verified): the `SET STATISTICS` bug fix, `SET OFFSETS`, `SET ERRLVL`, `ALTER SEQUENCE`,
+> `ALTER SCHEMA … TRANSFER`, `ALTER PARTITION FUNCTION/SCHEME`, `CREATE XML INDEX`,
+> `CREATE PRIMARY XML INDEX`, and `CREATE SPATIAL INDEX`. 12 regression tests added
+> (`test/corpus/common_statement_gaps.txt`). Items checked off below.
+
+> ⚠️ **SET STATISTICS false positive — now FIXED.** §4.2 line `SET STATISTICS IO|TIME|XML|PROFILE ON|OFF`
+> had been marked `[x]` but was **broken** (`set_special` expected a single glued `STATISTICS_IO` token;
+> valid T-SQL is two words). Confirmed against ANTLR + all 11 Microsoft grammar versions. Replaced with a
+> proper two-word `set_statistics_option` branch and removed the bogus glued tokens from grammar.js and the
+> scanner. (`TSql120.g:14275 setStatisticsStatement`.)
+
+### Always On / High Availability
+- [ ] `CREATE AVAILABILITY GROUP` (`TSql120.g:7579 createAvailabilityGroupStatement`)
+- [ ] `ALTER AVAILABILITY GROUP` (`TSql120.g:7627 alterAvailabilityGroupStatement`)
+- [ ] `DROP AVAILABILITY GROUP` (`TSql120.g:12985 dropAvailabilityGroupStatement`)
+
+### Extended Events & Event Notifications
+- [ ] `CREATE EVENT NOTIFICATION` (`TSql120.g:5742 createEventNotificationStatement`)
+- [ ] `DROP EVENT NOTIFICATION` (`TSql120.g:13288 dropEventNotificationStatement`)
+- [ ] `CREATE EVENT SESSION` (`TSql120.g:5844 createEventSessionStatement`)
+- [ ] `ALTER EVENT SESSION` (`TSql120.g:5865 alterEventSessionStatement`)
+- [ ] `DROP EVENT SESSION` (`TSql120.g:13309 dropEventSessionStatement`)
+- [ ] `CREATE EVENT` (dispatcher) (`TSql120.g:5728 createEventStatement`)
+- [ ] `DROP EVENT` (`TSql120.g:13273 dropEventStatement`)
+
+### Azure SQL Database Federations (deprecated, but present in TSql120.g)
+- [ ] `CREATE FEDERATION` (`TSql120.g:8024 createFederationStatement`)
+- [ ] `ALTER FEDERATION` (`TSql120.g:10091 alterFederationStatement`)
+- [ ] `DROP FEDERATION` (`TSql120.g:13332 dropFederationStatement`)
+- [ ] `USE FEDERATION` (`TSql120.g:11504 useFederationStatement`)
+
+### Service Broker — Priority, Remote Binding, Routes & DROPs
+- [ ] `CREATE BROKER PRIORITY` (`TSql120.g:19000 createBrokerPriorityStatement`)
+- [ ] `ALTER BROKER PRIORITY` (`TSql120.g:19007 alterBrokerPriorityStatement`)
+- [ ] `DROP BROKER PRIORITY` (`TSql120.g:19014 dropBrokerPriorityStatement`)
+- [ ] `CREATE REMOTE SERVICE BINDING` (`TSql120.g:8201 createRemoteServiceBindingStatement`)
+- [ ] `ALTER REMOTE SERVICE BINDING` (`TSql120.g:9326 alterRemoteServiceBindingStatement`)
+- [ ] `DROP REMOTE SERVICE BINDING` (`TSql120.g:13249 dropRemoteServiceBindingStatement`)
+- [ ] `ALTER ROUTE` (`TSql120.g:10566 alterRouteStatement`)
+- [ ] `DROP CONTRACT` (`TSql120.g:13193 dropContractStatement`)
+- [ ] `DROP QUEUE` (`TSql120.g:13204 dropQueueStatement`)
+- [ ] `DROP SERVICE` (`TSql120.g:13215 dropServiceStatement`)
+- [ ] `DROP ROUTE` (`TSql120.g:13226 dropRouteStatement`)
+- [ ] `DROP MESSAGE TYPE` (`TSql120.g:13237 dropMessageTypeStatement`)
+
+### Specialized Indexes
+- [x] `CREATE SPATIAL INDEX` (`TSql120.g:19330 createSpatialIndexStatement`)
+- [x] `CREATE XML INDEX` (`TSql120.g:7155 createXmlIndexStatement`)
+- [x] `CREATE PRIMARY XML INDEX` (`TSql120.g:7055 createPrimaryXmlIndexStatement`)
+- [ ] `CREATE SELECTIVE XML INDEX` (`TSql120.g:7064 createSelectiveXmlIndexStatement`)
+
+### ALTER SERVER CONFIGURATION
+- [ ] `ALTER SERVER CONFIGURATION SET ...` (`TSql120.g:1554 alterServerConfigurationStatement`)
+  - SET BUFFER POOL EXTENSION (`TSql120.g:1578`), DIAGNOSTICS LOG (`TSql120.g:1660`),
+    FAILOVER CLUSTER PROPERTY (`TSql120.g:1733`), HADR CLUSTER (`TSql120.g:1777`),
+    PROCESS AFFINITY (`TSql120.g:1815`)
+
+### ALTER DDL gaps (CREATE/DROP exist, ALTER missing)
+- [x] `ALTER SEQUENCE` (`TSql120.g:10619 alterSequenceStatement`)
+- [x] `ALTER SCHEMA ... TRANSFER` (`TSql120.g:10580 alterSchemaStatement`)
+- [x] `ALTER PARTITION FUNCTION ... SPLIT|MERGE RANGE` (`TSql120.g:10160 alterPartitionFunctionStatement`)
+- [x] `ALTER PARTITION SCHEME ... NEXT USED` (`TSql120.g:10193 alterPartitionSchemeStatement`)
+- [ ] `ALTER FULLTEXT STOPLIST` (`TSql120.g:6817 alterFulltextStoplistStatement`)
+
+### DROP gaps
+- [ ] `DROP AGGREGATE` (`TSql120.g:12961 dropAggregateStatement`)
+- [ ] `DROP SIGNATURE` (`TSql120.g:13355 dropSignatureStatement`)
+
+### SET statement gaps
+- [x] `SET STATISTICS IO|TIME|XML|PROFILE ON|OFF` — fixed: proper two-word `set_statistics_option` branch (`TSql120.g:14275 setStatisticsStatement`)
+- [x] `SET OFFSETS ...` (`TSql120.g:14108 setOffsetsStatement`)
+- [x] `SET ERRLVL n` (`TSql120.g:14265 setErrorLevelStatement`)
+
+### Bulk
+- [ ] `INSERT BULK ... WITH (...)` — replication/internal form, distinct from `BULK INSERT` (which is covered) (`TSql120.g:4429 insertBulkStatement`)
 
 ---
 
@@ -260,7 +359,7 @@
 - [x] `set_special` — `SET TRANSACTION ISOLATION LEVEL ...` (Parser L3404)
 - [x] `set_special` — `SET IDENTITY_INSERT table ON|OFF` (Parser L3405)
 - [x] `set_special` — `SET ROWCOUNT expression` (Parser L3406)
-- [x] `set_special` — `SET STATISTICS IO|TIME|XML|PROFILE ON|OFF` (Parser L3847)
+- [x] `set_special` — `SET STATISTICS IO|TIME|XML|PROFILE ON|OFF` (Parser L3847) — fixed 2026-05-24: two-word `set_statistics_option` branch replaced the bogus glued `STATISTICS_IO` token (`TSql120.g:14275`)
 - [x] `set_special` — `SET TEXTSIZE n` (Parser L3847)
 - [x] `set_special` — other SET options: LANGUAGE, DATEFORMAT, DATEFIRST, LOCK_TIMEOUT, DEADLOCK_PRIORITY, CONTEXT_INFO, QUERY_GOVERNOR_COST_LIMIT (Parser L3402-L3408)
 
@@ -959,9 +1058,9 @@
 
 > Reference: `ScriptGenerator/SqlScriptGeneratorVisitor.CreateResourcePoolStatement.cs` — 10+ files
 
-- [ ] `CREATE RESOURCE POOL name WITH (MAX_CPU_PERCENT = n, ...)` (`CreateResourcePoolStatement.cs`)
-- [ ] `CREATE WORKLOAD GROUP name WITH (...) USING pool` (`CreateWorkloadGroupStatement.cs`)
-- [ ] `ALTER RESOURCE GOVERNOR RECONFIGURE|DISABLE` (`AlterResourceGovernorStatement.cs`)
+- [x] `CREATE RESOURCE POOL name WITH (MAX_CPU_PERCENT = n, ...)` (`CreateResourcePoolStatement.cs`)
+- [x] `CREATE WORKLOAD GROUP name WITH (...) USING pool` (`CreateWorkloadGroupStatement.cs`)
+- [x] `ALTER RESOURCE GOVERNOR RECONFIGURE|DISABLE` (`AlterResourceGovernorStatement.cs`)
 
 ### 7.24 Azure AI Functions (SqlScriptDOM — SQL Server 2025)
 
@@ -980,10 +1079,10 @@
 
 > Reference: `ScriptGenerator/SqlScriptGeneratorVisitor.CreateAssemblyStatement.cs`
 
-- [ ] `CREATE ASSEMBLY name FROM 'path' WITH PERMISSION_SET = SAFE|EXTERNAL_ACCESS|UNSAFE` (`CreateAssemblyStatement.cs`)
-- [ ] `CREATE AGGREGATE name (@param type) RETURNS type EXTERNAL NAME assembly.class` (`CreateAggregateStatement.cs`)
-- [ ] `ALTER ASSEMBLY name ...` (`AlterAssemblyStatement.cs`)
-- [ ] `DROP ASSEMBLY name` (`DropAssemblyStatement.cs`)
+- [x] `CREATE ASSEMBLY name FROM 'path' WITH PERMISSION_SET = SAFE|EXTERNAL_ACCESS|UNSAFE` (`CreateAssemblyStatement.cs`)
+- [x] `CREATE AGGREGATE name (@param type) RETURNS type EXTERNAL NAME assembly.class` (`CreateAggregateStatement.cs`)
+- [x] `ALTER ASSEMBLY name ...` (`AlterAssemblyStatement.cs`)
+- [x] `DROP ASSEMBLY name` (`DropAssemblyStatement.cs`)
 
 ### 7.26 COPY Statement — Azure Synapse (SqlScriptDOM)
 
@@ -1018,23 +1117,23 @@
 > Reference: `ScriptGenerator/SqlScriptGeneratorVisitor.CreateSecurityPolicyStatement.cs`, `AddSensitivityClassification.cs`
 > Data Masking: `Parser/TSql/TSql170.g:30028` (`maskedClause` rule)
 
-- [ ] `CREATE SECURITY POLICY name ADD FILTER PREDICATE fn(col) ON table` (`CreateSecurityPolicyStatement.cs`)
-- [ ] `ALTER SECURITY POLICY name ...` (`AlterSecurityPolicyStatement.cs`)
-- [ ] `CREATE SERVER AUDIT name TO FILE (...)` (`CreateServerAuditStatement.cs`)
-- [ ] `CREATE SERVER AUDIT SPECIFICATION name FOR SERVER AUDIT audit ADD (action)` (`CreateServerAuditSpecificationStatement.cs`)
-- [ ] `CREATE DATABASE AUDIT SPECIFICATION name FOR SERVER AUDIT audit ADD (action)` (`CreateDatabaseAuditSpecificationStatement.cs`)
-- [ ] `ADD SENSITIVITY CLASSIFICATION TO table.column WITH (...)` (`AddSensitivityClassification.cs`)
-- [ ] Dynamic Data Masking — `col_name type MASKED WITH (FUNCTION = '...')` in CREATE TABLE (`TSql170.g:30028 maskedClause`)
-- [ ] Dynamic Data Masking — `ALTER TABLE t ALTER COLUMN col ADD MASKED WITH (FUNCTION = '...')` (`AlterTableAlterColumnOption.AddMaskingFunction`)
-- [ ] Dynamic Data Masking — `ALTER TABLE t ALTER COLUMN col DROP MASKED` (`AlterTableAlterColumnOption.DropMaskingFunction`)
+- [x] `CREATE SECURITY POLICY name ADD FILTER PREDICATE fn(col) ON table` (`CreateSecurityPolicyStatement.cs`)
+- [x] `ALTER SECURITY POLICY name ...` (`AlterSecurityPolicyStatement.cs`)
+- [x] `CREATE SERVER AUDIT name TO FILE (...)` (`CreateServerAuditStatement.cs`)
+- [x] `CREATE SERVER AUDIT SPECIFICATION name FOR SERVER AUDIT audit ADD (action)` (`CreateServerAuditSpecificationStatement.cs`)
+- [x] `CREATE DATABASE AUDIT SPECIFICATION name FOR SERVER AUDIT audit ADD (action)` (`CreateDatabaseAuditSpecificationStatement.cs`)
+- [x] `ADD SENSITIVITY CLASSIFICATION TO table.column WITH (...)` (`AddSensitivityClassification.cs`)
+- [x] Dynamic Data Masking — `col_name type MASKED WITH (FUNCTION = '...')` in CREATE TABLE (`TSql170.g:30028 maskedClause`)
+- [x] Dynamic Data Masking — `ALTER TABLE t ALTER COLUMN col ADD MASKED WITH (FUNCTION = '...')` (`AlterTableAlterColumnOption.AddMaskingFunction`)
+- [x] Dynamic Data Masking — `ALTER TABLE t ALTER COLUMN col DROP MASKED` (`AlterTableAlterColumnOption.DropMaskingFunction`)
 
 ### 7.31 Credentials (SqlScriptDOM)
 
 > Reference: `ScriptGenerator/SqlScriptGeneratorVisitor.CreateCredentialStatement.cs`
 
-- [ ] `CREATE CREDENTIAL name WITH IDENTITY = '...', SECRET = '...'` (`CreateCredentialStatement.cs`)
+- [x] `CREATE CREDENTIAL name WITH IDENTITY = '...', SECRET = '...'` (`CreateCredentialStatement.cs`)
 - [x] `CREATE DATABASE SCOPED CREDENTIAL name WITH IDENTITY = '...'` (`CreateDatabaseScopedCredentialStatement.cs`)
-- [ ] `ALTER CREDENTIAL name ...` (`AlterCredentialStatement.cs`)
+- [x] `ALTER CREDENTIAL name ...` (`AlterCredentialStatement.cs`)
 
 ### 7.32 Event Notifications & Extended Events (SqlScriptDOM)
 
@@ -1121,9 +1220,9 @@
 
 > Reference: ANTLR4 `alter_external_resource_pool`, `create_external_resource_pool`, `drop_external_resource_pool`
 
-- [ ] `CREATE EXTERNAL RESOURCE POOL name WITH (MAX_CPU_PERCENT = n, ...)`
-- [ ] `ALTER EXTERNAL RESOURCE POOL name|DEFAULT WITH (...)`
-- [ ] `DROP EXTERNAL RESOURCE POOL name`
+- [x] `CREATE EXTERNAL RESOURCE POOL name WITH (MAX_CPU_PERCENT = n, ...)`
+- [x] `ALTER EXTERNAL RESOURCE POOL name|DEFAULT WITH (...)`
+- [x] `DROP EXTERNAL RESOURCE POOL name`
 
 ### 7.42 Cryptographic Providers (Parser L1174)
 

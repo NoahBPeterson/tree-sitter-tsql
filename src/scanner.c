@@ -33,6 +33,7 @@ static const char *KEYWORDS[] = {
   "ACTIVE",
   "ADD",
   "AFTER",
+  "AGGREGATE",
   "ALGORITHM",
   "ALL",
   "ALTER",
@@ -69,6 +70,7 @@ static const char *KEYWORDS[] = {
   "ATTACH",
   "ATTACH_FORCE_REBUILD_LOG",
   "ATTACH_REBUILD_LOG",
+  "AUDIT",
   "AUTHORIZATION",
   "AUTO",
   "AVG",
@@ -83,6 +85,7 @@ static const char *KEYWORDS[] = {
   "BIT",
   "BIT_COUNT",
   "BIT_LENGTH",
+  "BLOCK",
   "BREAK",
   "BROWSE",
   "BULK",
@@ -109,6 +112,7 @@ static const char *KEYWORDS[] = {
   "CHECKSUM",
   "CHECKSUM_AGG",
   "CHOOSE",
+  "CLASSIFIER",
   "CLOSE",
   "CLUSTERED",
   "COALESCE",
@@ -244,6 +248,7 @@ static const char *KEYWORDS[] = {
   "EXPIRY_DATE",
   "EXPLICIT",
   "EXTERNAL",
+  "EXTERNAL_ACCESS",
   "FAST",
   "FAST_FORWARD",
   "FETCH",
@@ -261,6 +266,7 @@ static const char *KEYWORDS[] = {
   "FILE_ID",
   "FILE_IDEX",
   "FILE_NAME",
+  "FILTER",
   "FIRST",
   "FIRST_VALUE",
   "FLOAT",
@@ -298,6 +304,7 @@ static const char *KEYWORDS[] = {
   "GLOBAL",
   "GO",
   "GOTO",
+  "GOVERNOR",
   "GRANT",
   "GREATEST",
   "GROUP",
@@ -393,6 +400,8 @@ static const char *KEYWORDS[] = {
   "LOWER",
   "LTRIM",
   "M",
+  "MASK",
+  "MASKED",
   "MASTER",
   "MATCHED",
   "MAX",
@@ -488,6 +497,8 @@ static const char *KEYWORDS[] = {
   "PI",
   "PIVOT",
   "PLAN",
+  "POLICY",
+  "POOL",
   "POWER",
   "PRECEDING",
   "PRECISION",
@@ -538,6 +549,8 @@ static const char *KEYWORDS[] = {
   "REPLACE",
   "REPLICATE",
   "REPLICATION",
+  "RESOURCE",
+  "RESTART",
   "RESTORE",
   "RESULT",
   "RETURN",
@@ -563,6 +576,7 @@ static const char *KEYWORDS[] = {
   "RTRIM",
   "RULE",
   "S",
+  "SAFE",
   "SAVE",
   "SCHEMA",
   "SCHEMABINDING",
@@ -581,6 +595,7 @@ static const char *KEYWORDS[] = {
   "SEMANTICSIMILARITYDETAILSTABLE",
   "SEMANTICSIMILARITYTABLE",
   "SEND",
+  "SENSITIVITY",
   "SEQUENCE",
   "SERIALIZABLE",
   "SERVER",
@@ -614,6 +629,7 @@ static const char *KEYWORDS[] = {
   "SOUNDEX",
   "SOURCE",
   "SPACE",
+  "SPECIFICATION",
   "SQL_VARIANT",
   "SQL_VARIANT_PROPERTY",
   "SQRT",
@@ -622,10 +638,6 @@ static const char *KEYWORDS[] = {
   "START_DATE",
   "STATIC",
   "STATISTICS",
-  "STATISTICS_IO",
-  "STATISTICS_PROFILE",
-  "STATISTICS_TIME",
-  "STATISTICS_XML",
   "STATS",
   "STATS_DATE",
   "STDEV",
@@ -705,6 +717,7 @@ static const char *KEYWORDS[] = {
   "UNKNOWN",
   "UNLIMITED",
   "UNPIVOT",
+  "UNSAFE",
   "UPDATE",
   "UPDATETEXT",
   "UPDLOCK",
@@ -737,6 +750,7 @@ static const char *KEYWORDS[] = {
   "WITHOUT",
   "WITHOUT_ARRAY_WRAPPER",
   "WORK",
+  "WORKLOAD",
   "WRITETEXT",
   "XACT_ABORT",
   "XACT_STATE",
@@ -805,7 +819,11 @@ static int ascii_strcmp(const char *a, const char *b) {
 }
 
 void *tree_sitter_TSQL_external_scanner_create(void) {
-  /* Verify KEYWORDS array is sorted on first use */
+  /* Verify KEYWORDS array is sorted on first use.
+     Native/dev builds only — stderr/fprintf/abort aren't available to WASM
+     parsers (used by the playground), and `tree-sitter test` already enforces
+     sort order on every native build. */
+#if !defined(__wasm__) && !defined(__EMSCRIPTEN__)
   for (int i = 1; i < KEYWORD_COUNT; i++) {
     if (ascii_strcmp(KEYWORDS[i - 1], KEYWORDS[i]) >= 0) {
       fprintf(stderr,
@@ -814,6 +832,7 @@ void *tree_sitter_TSQL_external_scanner_create(void) {
       abort();
     }
   }
+#endif
   return NULL;  /* stateless scanner */
 }
 

@@ -4004,7 +4004,7 @@ SELECT * FROM t WHERE x > SOME (1, 2, 3)
                         (query_expression
                           (query_specification
                             (select
-                              (MISSING "_permission_token1"))
+                              (MISSING "_audit_action_name_token1"))
                             (select_list
                               (select_list_elem
                                 (expression_elem
@@ -4236,8 +4236,8 @@ CREATE TABLE t (AS a + b)
             (column_definition
               (id_)
               (data_type
-                (time_
-                  (MISSING "waitfor_statement_token3"))))))))))
+                (xml_dt_
+                  (MISSING "create_xml_index_token1"))))))))))
 
 ===========================
 ERROR - DDL trigger missing FOR clause

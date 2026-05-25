@@ -1,0 +1,233 @@
+===========================
+SET STATISTICS IO ON
+===========================
+SET STATISTICS IO ON
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (set_statement
+          (set_special
+            (set_statistics_option)))))))
+
+===========================
+SET STATISTICS multiple options
+===========================
+SET STATISTICS TIME, IO ON
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (set_statement
+          (set_special
+            (set_statistics_option)
+            (set_statistics_option)))))))
+
+===========================
+SET OFFSETS
+===========================
+SET OFFSETS SELECT, FROM ON
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (set_statement
+          (set_special
+            (offset_item)
+            (offset_item)))))))
+
+===========================
+SET ERRLVL
+===========================
+SET ERRLVL 5
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (another_statement
+        (set_statement
+          (set_special
+            (expression
+              (primitive_expression
+                (primitive_constant
+                  (decimal_))))))))))
+
+===========================
+ALTER SEQUENCE RESTART WITH and INCREMENT
+===========================
+ALTER SEQUENCE dbo.s RESTART WITH 1000 INCREMENT BY 5
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_sequence
+          (full_table_name
+            (id_)
+            (id_))
+          (decimal_)
+          (decimal_))))))
+
+===========================
+ALTER SCHEMA TRANSFER
+===========================
+ALTER SCHEMA sales TRANSFER dbo.Orders
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_schema
+          (id_)
+          (full_table_name
+            (id_)
+            (id_)))))))
+
+===========================
+ALTER SCHEMA TRANSFER with object kind TYPE
+===========================
+ALTER SCHEMA s TRANSFER TYPE::dbo.MyType
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_schema
+          (id_)
+          (full_table_name
+            (id_)
+            (id_)))))))
+
+===========================
+ALTER SCHEMA TRANSFER with object kind OBJECT
+===========================
+ALTER SCHEMA s TRANSFER OBJECT::dbo.Orders
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_schema
+          (id_)
+          (id_)
+          (full_table_name
+            (id_)
+            (id_)))))))
+
+===========================
+ALTER PARTITION FUNCTION SPLIT
+===========================
+ALTER PARTITION FUNCTION pf() SPLIT RANGE (500)
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_partition_function
+          (id_)
+          (expression
+            (primitive_expression
+              (primitive_constant
+                (decimal_)))))))))
+
+===========================
+ALTER PARTITION SCHEME NEXT USED
+===========================
+ALTER PARTITION SCHEME ps NEXT USED fg_archive
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_partition_scheme
+          (id_)
+          (id_))))))
+
+===========================
+CREATE XML INDEX
+===========================
+CREATE XML INDEX ix ON docs(xml_col)
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_xml_index
+          (id_)
+          (full_table_name
+            (id_))
+          (id_))))))
+
+===========================
+CREATE PRIMARY XML INDEX
+===========================
+CREATE PRIMARY XML INDEX pix ON docs(xml_col)
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_xml_index
+          (id_)
+          (full_table_name
+            (id_))
+          (id_))))))
+
+===========================
+CREATE secondary XML INDEX USING
+===========================
+CREATE XML INDEX ix2 ON docs(xml_col) USING XML INDEX pix FOR PATH
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_xml_index
+          (id_)
+          (full_table_name
+            (id_))
+          (id_)
+          (id_))))))
+
+===========================
+CREATE SPATIAL INDEX with options
+===========================
+CREATE SPATIAL INDEX six ON places(geo) USING GEOMETRY_GRID WITH (BOUNDING_BOX = (0,0,500,500), CELLS_PER_OBJECT = 16) ON [PRIMARY]
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_spatial_index
+          (id_)
+          (full_table_name
+            (id_))
+          (id_)
+          (id_)
+          (spatial_index_option
+            (id_)
+            (decimal_)
+            (decimal_)
+            (decimal_)
+            (decimal_))
+          (spatial_index_option
+            (id_)
+            (decimal_))
+          (id_))))))

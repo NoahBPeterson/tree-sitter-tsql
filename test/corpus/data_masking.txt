@@ -1,0 +1,183 @@
+================================================================================
+CREATE TABLE with MASKED column
+================================================================================
+
+CREATE TABLE dbo.Employees (
+    SSN varchar(11) MASKED WITH (FUNCTION = 'default()'),
+    Name nvarchar(100)
+);
+
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_table
+          (full_table_name
+            (id_)
+            (id_))
+          (table_element
+            (column_definition
+              (id_)
+              (data_type
+                (varchar_)
+                (decimal_))
+              (data_masking_clause
+                (WITH)
+                (string_lit))))
+          (table_element
+            (column_definition
+              (id_)
+              (data_type
+                (nvarchar_)
+                (decimal_)))))))))
+
+================================================================================
+CREATE TABLE with MASKED + NULL + DEFAULT
+================================================================================
+
+CREATE TABLE dbo.Customers (
+    Email nvarchar(100) MASKED WITH (FUNCTION = 'email()') NULL DEFAULT 'unknown',
+    Phone varchar(20) MASKED WITH (FUNCTION = 'partial(0,"XXX-XXX-",4)') NOT NULL
+);
+
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_table
+          (full_table_name
+            (id_)
+            (id_))
+          (table_element
+            (column_definition
+              (id_)
+              (data_type
+                (nvarchar_)
+                (decimal_))
+              (data_masking_clause
+                (WITH)
+                (string_lit))
+              (null_notnull
+                (null_))
+              (column_constraint
+                (default)
+                (expression
+                  (primitive_expression
+                    (primitive_constant
+                      (string_lit)))))))
+          (table_element
+            (column_definition
+              (id_)
+              (data_type
+                (varchar_)
+                (decimal_))
+              (data_masking_clause
+                (WITH)
+                (string_lit))
+              (null_notnull
+                (null_)))))))))
+
+================================================================================
+ALTER TABLE ALTER COLUMN ADD MASKED
+================================================================================
+
+ALTER TABLE dbo.Employees
+ALTER COLUMN Salary ADD MASKED WITH (FUNCTION = 'default()');
+
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_table
+          (full_table_name
+            (id_)
+            (id_))
+          (alter_table_alter_column
+            (id_)
+            (data_masking_clause
+              (WITH)
+              (string_lit))))))))
+
+================================================================================
+ALTER TABLE ALTER COLUMN DROP MASKED
+================================================================================
+
+ALTER TABLE dbo.Employees
+ALTER COLUMN Salary DROP MASKED;
+
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_table
+          (full_table_name
+            (id_)
+            (id_))
+          (alter_table_alter_column
+            (id_)))))))
+
+================================================================================
+CREATE TABLE with partial mask function
+================================================================================
+
+CREATE TABLE dbo.Contacts (
+    PhoneNumber varchar(12) MASKED WITH (FUNCTION = 'partial(1,"XXXXXXX",0)')
+);
+
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_table
+          (full_table_name
+            (id_)
+            (id_))
+          (table_element
+            (column_definition
+              (id_)
+              (data_type
+                (varchar_)
+                (decimal_))
+              (data_masking_clause
+                (WITH)
+                (string_lit)))))))))
+
+================================================================================
+CREATE TABLE with email mask function
+================================================================================
+
+CREATE TABLE dbo.Users (
+    EmailAddress nvarchar(256) MASKED WITH (FUNCTION = 'email()') NOT NULL
+);
+
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_table
+          (full_table_name
+            (id_)
+            (id_))
+          (table_element
+            (column_definition
+              (id_)
+              (data_type
+                (nvarchar_)
+                (decimal_))
+              (data_masking_clause
+                (WITH)
+                (string_lit))
+              (null_notnull
+                (null_)))))))))

@@ -224,8 +224,14 @@ module.exports = grammar({
       ,$.create_statistics
       ,$.create_partition_function
       ,$.create_partition_scheme
+      ,$.alter_partition_function
+      ,$.alter_partition_scheme
       ,$.drop_partition_function
       ,$.drop_partition_scheme
+      ,$.alter_sequence
+      ,$.alter_schema
+      ,$.create_xml_index
+      ,$.create_spatial_index
       ,$.create_rule_statement
       ,$.create_default_statement
       // Cryptographic DDL
@@ -293,6 +299,36 @@ module.exports = grammar({
       ,$.drop_external_file_format
       ,$.create_external_table
       ,$.drop_external_table
+      // Security / Audit
+      ,$.create_server_audit
+      ,$.alter_server_audit
+      ,$.drop_server_audit
+      ,$.create_server_audit_specification
+      ,$.drop_server_audit_specification
+      ,$.create_database_audit_specification
+      ,$.drop_database_audit_specification
+      ,$.create_security_policy
+      ,$.alter_security_policy
+      ,$.drop_security_policy
+      ,$.add_sensitivity_classification
+      ,$.create_credential
+      ,$.alter_credential
+      // Resource Governor
+      ,$.create_resource_pool
+      ,$.alter_resource_pool
+      ,$.drop_resource_pool
+      ,$.create_workload_group
+      ,$.alter_workload_group
+      ,$.drop_workload_group
+      ,$.alter_resource_governor
+      ,$.create_external_resource_pool
+      ,$.alter_external_resource_pool
+      ,$.drop_external_resource_pool
+      // CLR / Assembly
+      ,$.create_assembly
+      ,$.alter_assembly
+      ,$.drop_assembly
+      ,$.create_aggregate
     ),
 
     //https://learn.microsoft.com/en-us/sql/t-sql/statements/create-database-transact-sql
@@ -426,8 +462,12 @@ module.exports = grammar({
 
     alter_table_alter_column: $ => prec.right(seq(
       token(/ALTER/i), token(/COLUMN/i),
-      $.id_, $.data_type,
-      optional($.null_notnull),
+      $.id_,
+      choice(
+        seq($.data_type, optional($.null_notnull)),
+        seq(token(/ADD/i), $.data_masking_clause),
+        seq(token(/DROP/i), token(/MASKED/i)),
+      ),
     )),
 
     alter_table_drop: $ => choice(
@@ -536,6 +576,22 @@ module.exports = grammar({
     drop_partition_function: $ => seq(token(/DROP/i), token(/PARTITION/i), token(/FUNCTION/i), $.id_),
     drop_partition_scheme: $ => seq(token(/DROP/i), token(/PARTITION/i), token(/SCHEME/i), $.id_),
 
+    // ALTER PARTITION FUNCTION name() SPLIT|MERGE RANGE (value)  (TSql120.g:10160)
+    alter_partition_function: $ => prec.right(seq(
+      token(/ALTER/i), token(/PARTITION/i), token(/FUNCTION/i),
+      $.id_, token('('), token(')'),
+      choice(token(/SPLIT/i), token(/MERGE/i)),
+      optional(seq(token(/RANGE/i), token('('), $.expression, token(')'))),
+    )),
+
+    // ALTER PARTITION SCHEME name NEXT USED [filegroup]  (TSql120.g:10193)
+    alter_partition_scheme: $ => prec.right(seq(
+      token(/ALTER/i), token(/PARTITION/i), token(/SCHEME/i),
+      $.id_,
+      token(/NEXT/i), token(/USED/i),
+      optional(choice($.id_, $.string_lit)),
+    )),
+
     // =====================
     // DROP statements
     // =====================
@@ -612,6 +668,58 @@ module.exports = grammar({
     columnstore_index_option: $ => choice(
       seq(token(/ORDER/i), '(', $.column_name_list, ')'),
       seq($.id_, token('='), choice(seq($.decimal_, optional($.id_)), $.id_, token(/ON/i), token(/OFF/i))),
+    ),
+
+    // =====================
+    // CREATE [PRIMARY] XML INDEX  (TSql120.g:7155 / 7055)
+    // =====================
+
+    create_xml_index: $ => prec.right(seq(
+      token(/CREATE/i), optional(token(/PRIMARY/i)),
+      token(/XML/i), token(/INDEX/i),
+      $.id_,
+      token(/ON/i), $.full_table_name,
+      '(', $.id_, ')',
+      // Secondary XML index references the primary and a kind
+      optional(seq(token(/USING/i), token(/XML/i), token(/INDEX/i), $.id_,
+        optional(seq(token(/FOR/i), choice(token(/VALUE/i), token(/PATH/i), token(/PROPERTY/i)))))),
+      optional(seq(token(/WITH/i), '(', $.alter_table_option, repeat(seq(',', $.alter_table_option)), ')')),
+    )),
+
+    // =====================
+    // CREATE SPATIAL INDEX  (TSql120.g:19330)
+    // =====================
+
+    create_spatial_index: $ => prec.right(seq(
+      token(/CREATE/i), token(/SPATIAL/i), token(/INDEX/i),
+      $.id_,
+      token(/ON/i), $.full_table_name,
+      '(', $.id_, ')',
+      optional(seq(token(/USING/i), $.id_)),
+      optional(seq(token(/WITH/i), '(', $.spatial_index_option, repeat(seq(',', $.spatial_index_option)), ')')),
+      optional(seq(token(/ON/i), choice($.id_, $.string_lit))),
+    )),
+
+    // BOUNDING_BOX / GRIDS / CELLS_PER_OBJECT / regular index options all lex as id_.
+    // Value may be a scalar, ON|OFF, or a parenthesized list — e.g. (0,0,500,500) or (LEVEL_1 = LOW).
+    // Self-contained scalars (no $.expression) keep this free of full_column_name/bracket_expression conflicts.
+    spatial_index_option: $ => seq(
+      $.id_, '=', choice(
+        $._spatial_scalar,
+        seq('(', $._spatial_kv, repeat(seq(',', $._spatial_kv)), ')'),
+      ),
+    ),
+
+    _spatial_kv: $ => choice(
+      seq($.id_, '=', $._spatial_scalar),
+      $._spatial_scalar,
+    ),
+
+    _spatial_scalar: $ => choice(
+      $.id_, $.string_lit,
+      seq(optional(token(/-/)), choice($.float_, $.decimal_)),
+      token(/ON/i), token(/OFF/i),
+      token(/LOW/i), token(/MEDIUM/i), token(/HIGH/i),
     ),
 
     // =====================
@@ -769,6 +877,31 @@ module.exports = grammar({
       optional(choice(seq(token(/CACHE/i), $.decimal_), seq(token(/NO/i), token(/CACHE/i)))),
     )),
 
+    // ALTER SEQUENCE name [options]  (TSql120.g:10619)
+    // Ordered seq-of-optionals mirrors create_sequence (proven to handle the WITH binding).
+    alter_sequence: $ => prec.right(seq(
+      token(/ALTER/i), token(/SEQUENCE/i),
+      $.full_table_name,
+      optional(seq(token(/RESTART/i), optional(seq(token(/WITH/i), $.decimal_)))),
+      optional(seq(token(/INCREMENT/i), token(/BY/i), $.decimal_)),
+      optional(choice(seq(token(/MINVALUE/i), $.decimal_), seq(token(/NO/i), token(/MINVALUE/i)))),
+      optional(choice(seq(token(/MAXVALUE/i), $.decimal_), seq(token(/NO/i), token(/MAXVALUE/i)))),
+      optional(choice(token(/CYCLE/i), seq(token(/NO/i), token(/CYCLE/i)))),
+      optional(choice(seq(token(/CACHE/i), optional($.decimal_)), seq(token(/NO/i), token(/CACHE/i)))),
+    )),
+
+    // ALTER SCHEMA name TRANSFER [OBJECT|TYPE|XML SCHEMA COLLECTION ::] object  (TSql120.g:10580)
+    // OBJECT is a contextual keyword (not reserved) so it arrives as id_; TYPE is reserved → explicit token.
+    alter_schema: $ => prec.right(seq(
+      token(/ALTER/i), token(/SCHEMA/i), $.id_,
+      token(/TRANSFER/i),
+      optional(choice(
+        seq(choice($.id_, token(/TYPE/i)), DOUBLE_COLON),
+        seq(token(/XML/i), token(/SCHEMA/i), token(/COLLECTION/i), DOUBLE_COLON),
+      )),
+      $.full_table_name,
+    )),
+
     create_synonym: $ => seq(
       token(/CREATE/i), token(/SYNONYM/i),
       $.full_table_name,
@@ -922,6 +1055,7 @@ module.exports = grammar({
           $.column_constraint,
           $.generated_always,
           $.column_encryption_definition,
+          $.data_masking_clause,
           seq(token(/COLLATE/i), $.id_),
         ))),
         seq(token(/AS/i), $.expression, optional(token(/PERSISTED/i))),
@@ -1795,6 +1929,225 @@ module.exports = grammar({
       token(/FORMAT/i), token(/CREDENTIAL/i),
     ),
 
+    // ===== Generic option (key=value) for audit, resource governor, security policy =====
+    _generic_option: $ => prec.right(seq(
+      choice($.id_, alias($._generic_option_keyword, $.id_)),
+      optional(seq('=', choice($.expression, alias($._generic_option_keyword, $.id_)))),
+    )),
+
+    _generic_option_keyword: $ => choice(
+      token(/ON/i), token(/OFF/i), token(/STATE/i),
+      token(/FILTER/i), token(/FUNCTION/i),
+    ),
+
+    // ===== Security / Audit DDL =====
+    // https://learn.microsoft.com/en-us/sql/t-sql/statements/create-server-audit-transact-sql
+    create_server_audit: $ => prec.right(seq(
+      token(/CREATE/i), token(/SERVER/i), token(/AUDIT/i), $.id_,
+      token(/TO/i), choice(
+        seq(token(/FILE/i), '(', $._generic_option, repeat(seq(',', $._generic_option)), ')'),
+        $.id_,
+      ),
+      optional(seq($.WITH, '(', $._generic_option, repeat(seq(',', $._generic_option)), ')')),
+    )),
+
+    alter_server_audit: $ => prec.right(seq(
+      token(/ALTER/i), token(/SERVER/i), token(/AUDIT/i), $.id_,
+      optional(choice(
+        seq(token(/TO/i), choice(
+          seq(token(/FILE/i), '(', $._generic_option, repeat(seq(',', $._generic_option)), ')'),
+          $.id_,
+        )),
+        seq($.WITH, '(', $._generic_option, repeat(seq(',', $._generic_option)), ')'),
+        seq(token(/WHERE/i), $.search_condition),
+        seq(token(/REMOVE/i), token(/WHERE/i)),
+      )),
+      optional(seq($.WITH, '(', $._generic_option, repeat(seq(',', $._generic_option)), ')')),
+    )),
+
+    drop_server_audit: $ => seq(
+      token(/DROP/i), token(/SERVER/i), token(/AUDIT/i), $.id_,
+    ),
+
+    create_server_audit_specification: $ => prec.right(seq(
+      token(/CREATE/i), token(/SERVER/i), token(/AUDIT/i), token(/SPECIFICATION/i), $.id_,
+      token(/FOR/i), token(/SERVER/i), token(/AUDIT/i), $.id_,
+      repeat(seq(token(/ADD/i), '(', $._audit_action_spec, ')')),
+      optional(seq($.WITH, '(', $._generic_option, repeat(seq(',', $._generic_option)), ')')),
+    )),
+
+    drop_server_audit_specification: $ => seq(
+      token(/DROP/i), token(/SERVER/i), token(/AUDIT/i), token(/SPECIFICATION/i), $.id_,
+    ),
+
+    create_database_audit_specification: $ => prec.right(seq(
+      token(/CREATE/i), token(/DATABASE/i), token(/AUDIT/i), token(/SPECIFICATION/i), $.id_,
+      token(/FOR/i), token(/SERVER/i), token(/AUDIT/i), $.id_,
+      repeat(seq(token(/ADD/i), '(', $._audit_action_spec, ')')),
+      optional(seq($.WITH, '(', $._generic_option, repeat(seq(',', $._generic_option)), ')')),
+    )),
+
+    drop_database_audit_specification: $ => seq(
+      token(/DROP/i), token(/DATABASE/i), token(/AUDIT/i), token(/SPECIFICATION/i), $.id_,
+    ),
+
+    _audit_action_spec: $ => prec.right(seq(
+      $._audit_action_name, repeat($._audit_action_name),
+      optional(seq(token(/ON/i), optional(seq($.id_, token('::'))), $.full_table_name)),
+      optional(seq(token(/BY/i), $.id_, repeat(seq(',', $.id_)))),
+    )),
+
+    _audit_action_name: $ => choice(
+      $.id_,
+      token(/SELECT/i), token(/INSERT/i), token(/UPDATE/i), token(/DELETE/i),
+      token(/EXECUTE/i), token(/RECEIVE/i), token(/REFERENCES/i),
+    ),
+
+    // https://learn.microsoft.com/en-us/sql/t-sql/statements/create-security-policy-transact-sql
+    create_security_policy: $ => prec.right(seq(
+      token(/CREATE/i), token(/SECURITY/i), token(/POLICY/i), $.full_table_name,
+      repeat1($._security_predicate),
+      optional(seq($.WITH, '(', $._generic_option, repeat(seq(',', $._generic_option)), ')')),
+      optional(seq(token(/NOT/i), token(/FOR/i), token(/REPLICATION/i))),
+    )),
+
+    alter_security_policy: $ => prec.right(seq(
+      token(/ALTER/i), token(/SECURITY/i), token(/POLICY/i), $.full_table_name,
+      repeat(choice(
+        $._security_predicate,
+        seq(token(/DROP/i), token(/FILTER/i), token(/PREDICATE/i), token(/ON/i), $.full_table_name),
+        seq(token(/DROP/i), token(/BLOCK/i), token(/PREDICATE/i), token(/ON/i), $.full_table_name),
+      )),
+      optional(seq($.WITH, '(', $._generic_option, repeat(seq(',', $._generic_option)), ')')),
+    )),
+
+    drop_security_policy: $ => seq(
+      token(/DROP/i), token(/SECURITY/i), token(/POLICY/i), optional($._if_exists), $.full_table_name,
+    ),
+
+    _security_predicate: $ => prec.right(seq(
+      token(/ADD/i),
+      choice(token(/FILTER/i), token(/BLOCK/i)),
+      token(/PREDICATE/i),
+      $.func_proc_name_schema, '(', optional(seq($.expression, repeat(seq(',', $.expression)))), ')',
+      token(/ON/i), $.full_table_name,
+      optional(seq(token(/AFTER/i), choice(token(/INSERT/i), token(/UPDATE/i)))),
+    )),
+
+    // https://learn.microsoft.com/en-us/sql/t-sql/statements/add-sensitivity-classification-transact-sql
+    add_sensitivity_classification: $ => prec.right(seq(
+      token(/ADD/i), token(/SENSITIVITY/i), token(/CLASSIFICATION/i),
+      token(/TO/i), $.full_column_name,
+      $.WITH, '(', $._generic_option, repeat(seq(',', $._generic_option)), ')',
+    )),
+
+    // https://learn.microsoft.com/en-us/sql/t-sql/statements/create-credential-transact-sql
+    create_credential: $ => prec.right(seq(
+      token(/CREATE/i), token(/CREDENTIAL/i), $.id_,
+      $.WITH, token(/IDENTITY/i), token('='), $.string_lit,
+      optional(seq(',', token(/SECRET/i), token('='), $.string_lit)),
+    )),
+
+    alter_credential: $ => prec.right(seq(
+      token(/ALTER/i), token(/CREDENTIAL/i), $.id_,
+      $.WITH, token(/IDENTITY/i), token('='), $.string_lit,
+      optional(seq(',', token(/SECRET/i), token('='), $.string_lit)),
+    )),
+
+    // ===== Dynamic Data Masking =====
+    data_masking_clause: $ => seq(
+      token(/MASKED/i), $.WITH, '(', token(/FUNCTION/i), token('='), $.string_lit, ')',
+    ),
+
+    // ===== Resource Governor DDL =====
+    // https://learn.microsoft.com/en-us/sql/t-sql/statements/create-resource-pool-transact-sql
+    create_resource_pool: $ => prec.right(seq(
+      token(/CREATE/i), token(/RESOURCE/i), token(/POOL/i), $.id_,
+      optional(seq($.WITH, '(', $._generic_option, repeat(seq(',', $._generic_option)), ')')),
+    )),
+
+    alter_resource_pool: $ => prec.right(seq(
+      token(/ALTER/i), token(/RESOURCE/i), token(/POOL/i), $.id_,
+      $.WITH, '(', $._generic_option, repeat(seq(',', $._generic_option)), ')',
+    )),
+
+    drop_resource_pool: $ => seq(
+      token(/DROP/i), token(/RESOURCE/i), token(/POOL/i), $.id_,
+    ),
+
+    create_workload_group: $ => prec.right(seq(
+      token(/CREATE/i), token(/WORKLOAD/i), token(/GROUP/i), $.id_,
+      optional(seq($.WITH, '(', $._generic_option, repeat(seq(',', $._generic_option)), ')')),
+      optional(seq(token(/USING/i), $.id_, optional(seq(',', token(/EXTERNAL/i), $.id_)))),
+    )),
+
+    alter_workload_group: $ => prec.right(seq(
+      token(/ALTER/i), token(/WORKLOAD/i), token(/GROUP/i), $.id_,
+      optional(seq($.WITH, '(', $._generic_option, repeat(seq(',', $._generic_option)), ')')),
+      optional(seq(token(/USING/i), $.id_, optional(seq(',', token(/EXTERNAL/i), $.id_)))),
+    )),
+
+    drop_workload_group: $ => seq(
+      token(/DROP/i), token(/WORKLOAD/i), token(/GROUP/i), $.id_,
+    ),
+
+    alter_resource_governor: $ => prec.right(seq(
+      token(/ALTER/i), token(/RESOURCE/i), token(/GOVERNOR/i),
+      choice(
+        token(/RECONFIGURE/i),
+        token(/DISABLE/i),
+        seq(token(/RESET/i), token(/STATISTICS/i)),
+        seq($.WITH, '(', $._generic_option, repeat(seq(',', $._generic_option)), ')'),
+      ),
+    )),
+
+    create_external_resource_pool: $ => prec.right(seq(
+      token(/CREATE/i), token(/EXTERNAL/i), token(/RESOURCE/i), token(/POOL/i), $.id_,
+      optional(seq($.WITH, '(', $._generic_option, repeat(seq(',', $._generic_option)), ')')),
+    )),
+
+    alter_external_resource_pool: $ => prec.right(seq(
+      token(/ALTER/i), token(/EXTERNAL/i), token(/RESOURCE/i), token(/POOL/i), $.id_,
+      $.WITH, '(', $._generic_option, repeat(seq(',', $._generic_option)), ')',
+    )),
+
+    drop_external_resource_pool: $ => seq(
+      token(/DROP/i), token(/EXTERNAL/i), token(/RESOURCE/i), token(/POOL/i), $.id_,
+    ),
+
+    // ===== CLR / Assembly DDL =====
+    // https://learn.microsoft.com/en-us/sql/t-sql/statements/create-assembly-transact-sql
+    create_assembly: $ => prec.right(seq(
+      token(/CREATE/i), token(/ASSEMBLY/i), $.id_,
+      optional(seq(token(/AUTHORIZATION/i), $.id_)),
+      token(/FROM/i), $.expression,
+      optional(seq($.WITH, token(/PERMISSION_SET/i), token('='),
+        choice(token(/SAFE/i), token(/EXTERNAL_ACCESS/i), token(/UNSAFE/i)))),
+    )),
+
+    alter_assembly: $ => prec.right(seq(
+      token(/ALTER/i), token(/ASSEMBLY/i), $.id_,
+      optional(seq(token(/FROM/i), $.expression)),
+      optional(seq($.WITH, $._generic_option, repeat(seq(',', $._generic_option)))),
+      optional(seq(token(/ADD/i), token(/FILE/i), token(/FROM/i), $.expression,
+        optional(seq($.as, $.string_lit)))),
+      optional(seq(token(/DROP/i), token(/FILE/i), $.string_lit)),
+    )),
+
+    drop_assembly: $ => prec.right(seq(
+      token(/DROP/i), token(/ASSEMBLY/i), optional($._if_exists),
+      $.id_, repeat(seq(',', $.id_)),
+      optional(seq($.WITH, token(/NO/i), token(/DEPENDENTS/i))),
+    )),
+
+    // https://learn.microsoft.com/en-us/sql/t-sql/statements/create-aggregate-transact-sql
+    create_aggregate: $ => seq(
+      token(/CREATE/i), token(/AGGREGATE/i), $.full_table_name,
+      '(', $.LOCAL_ID_, $.data_type, ')',
+      token(/RETURNS/i), $.data_type,
+      token(/EXTERNAL/i), token(/NAME/i), $.func_proc_name_database_schema,
+    ),
+
     // ALTER AUTHORIZATION
     // https://learn.microsoft.com/en-us/sql/t-sql/statements/alter-authorization-transact-sql
     alter_authorization_statement: $ => seq(
@@ -1899,7 +2252,25 @@ module.exports = grammar({
         ,seq(token(/DEADLOCK_PRIORITY/i), choice(token(/LOW/i), token(/NORMAL/i), token(/HIGH/i), $.expression))
         ,seq(token(/CONTEXT_INFO/i), $.expression)
         ,seq(token(/QUERY_GOVERNOR_COST_LIMIT/i), $.expression)
+        // SET STATISTICS IO|TIME|XML|PROFILE [, ...] ON|OFF  (TSql120.g:14275) — two-word form
+        ,seq(token(/STATISTICS/i), $.set_statistics_option, repeat(seq(',', $.set_statistics_option)),
+          choice(token(/ON/i), token(/OFF/i)))
+        // SET OFFSETS keyword [, ...] ON|OFF  (TSql120.g:14108)
+        ,seq(token(/OFFSETS/i), $.offset_item, repeat(seq(',', $.offset_item)),
+          choice(token(/ON/i), token(/OFF/i)))
+        // SET ERRLVL n  (TSql120.g:14265)
+        ,seq(token(/ERRLVL/i), $.expression)
       )
+    ),
+
+    set_statistics_option: $ => choice(
+      token(/IO/i), token(/TIME/i), token(/XML/i), token(/PROFILE/i),
+    ),
+
+    offset_item: $ => choice(
+      token(/SELECT/i), token(/FROM/i), token(/ORDER/i), token(/COMPUTE/i),
+      token(/TABLE/i), token(/PROCEDURE/i), token(/PROC/i),
+      token(/EXECUTE/i), token(/EXEC/i), token(/STATEMENT/i), token(/PARAM/i),
     ),
 
     set_on_off_option: $ => choice(
@@ -1925,10 +2296,6 @@ module.exports = grammar({
       ,token(/SHOWPLAN_ALL/i)
       ,token(/SHOWPLAN_TEXT/i)
       ,token(/SHOWPLAN_XML/i)
-      ,token(/STATISTICS_IO/i)
-      ,token(/STATISTICS_XML/i)
-      ,token(/STATISTICS_PROFILE/i)
-      ,token(/STATISTICS_TIME/i)
       ,token(/XACT_ABORT/i)
     ),
 
@@ -3229,6 +3596,8 @@ module.exports = grammar({
       ,token(/ACTIVE/i), token(/SEARCH/i), token(/ENDPOINT/i)
       /* Service Broker keywords */
       ,token(/MESSAGE/i), token(/CONTRACT/i), token(/QUEUE/i), token(/ROUTE/i)
+      /* Security/Resource keywords */
+      ,token(/AUDIT/i), token(/POOL/i)
     )),
 
     integer: $ => INT,

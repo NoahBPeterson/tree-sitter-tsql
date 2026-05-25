@@ -1,0 +1,164 @@
+================================================================================
+CREATE ASSEMBLY - basic SAFE
+================================================================================
+
+CREATE ASSEMBLY MyAssembly FROM 'C:\Assemblies\MyAssembly.dll';
+
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_assembly
+          (id_)
+          (expression
+            (primitive_expression
+              (primitive_constant
+                (string_lit)))))))))
+
+================================================================================
+CREATE ASSEMBLY - EXTERNAL_ACCESS with authorization
+================================================================================
+
+CREATE ASSEMBLY NetAssembly AUTHORIZATION dbo
+FROM 'C:\Assemblies\Net.dll'
+WITH PERMISSION_SET = EXTERNAL_ACCESS;
+
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_assembly
+          (id_)
+          (id_)
+          (expression
+            (primitive_expression
+              (primitive_constant
+                (string_lit))))
+          (WITH))))))
+
+================================================================================
+CREATE ASSEMBLY - UNSAFE
+================================================================================
+
+CREATE ASSEMBLY UnsafeAssembly FROM 'C:\Assemblies\Unsafe.dll'
+WITH PERMISSION_SET = UNSAFE;
+
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_assembly
+          (id_)
+          (expression
+            (primitive_expression
+              (primitive_constant
+                (string_lit))))
+          (WITH))))))
+
+================================================================================
+ALTER ASSEMBLY - from path
+================================================================================
+
+ALTER ASSEMBLY MyAssembly FROM 'C:\Assemblies\MyAssembly_v2.dll';
+
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_assembly
+          (id_)
+          (expression
+            (primitive_expression
+              (primitive_constant
+                (string_lit)))))))))
+
+================================================================================
+ALTER ASSEMBLY - add file
+================================================================================
+
+ALTER ASSEMBLY MyAssembly
+ADD FILE FROM 'C:\Assemblies\MyAssembly.xml' AS 'MyAssembly.xml';
+
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_assembly
+          (id_)
+          (expression
+            (primitive_expression
+              (primitive_constant
+                (string_lit))))
+          (as)
+          (string_lit))))))
+
+================================================================================
+DROP ASSEMBLY
+================================================================================
+
+DROP ASSEMBLY MyAssembly;
+
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_assembly
+          (id_))))))
+
+================================================================================
+DROP ASSEMBLY - IF EXISTS with NO DEPENDENTS
+================================================================================
+
+DROP ASSEMBLY IF EXISTS OldAssembly WITH NO DEPENDENTS;
+
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_assembly
+          (id_)
+          (WITH))))))
+
+================================================================================
+CREATE AGGREGATE
+================================================================================
+
+CREATE AGGREGATE dbo.Concatenate (@value nvarchar(4000))
+RETURNS nvarchar(max)
+EXTERNAL NAME StringUtilities.Concatenate;
+
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_aggregate
+          (full_table_name
+            (id_)
+            (id_))
+          (LOCAL_ID_)
+          (data_type
+            (nvarchar_)
+            (decimal_))
+          (data_type
+            (nvarchar_)
+            (max_))
+          (func_proc_name_database_schema
+            (func_proc_name_schema
+              (id_)
+              (id_))))))))

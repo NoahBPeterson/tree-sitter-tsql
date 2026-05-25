@@ -45,6 +45,21 @@
       "direction": "oracle_accepts",
       "sql": "SELECT SUM(a) OVER (ROWS)",
       "reason": "ScriptDom compat 160+ accepts bare ROWS without frame extent. Our parser intentionally requires a frame specification."
+    },
+    "CREATE SERVER AUDIT SPECIFICATION - multiple actions with state": {
+      "direction": "tree_sitter_accepts",
+      "sql": "CREATE SERVER AUDIT SPECIFICATION AuditSpec2 FOR SERVER AUDIT MyAudit ADD (SERVER_ROLE_MEMBER_CHANGE_GROUP) ADD (DATABASE_CHANGE_GROUP) WITH (STATE = ON)",
+      "reason": "Neither ScriptDom nor SqlParser supports multiple ADD clauses in audit specifications. Valid T-SQL per Microsoft docs."
+    },
+    "CREATE DATABASE AUDIT SPECIFICATION - multiple actions": {
+      "direction": "tree_sitter_accepts",
+      "sql": "CREATE DATABASE AUDIT SPECIFICATION DbAuditSpec2 FOR SERVER AUDIT MyAudit ADD (INSERT ON OBJECT::dbo.Orders BY AppUser, DbAdmin) ADD (DELETE ON OBJECT::dbo.Orders BY AppUser) WITH (STATE = ON)",
+      "reason": "Neither ScriptDom nor SqlParser supports multiple ADD clauses in audit specifications. Valid T-SQL per Microsoft docs."
+    },
+    "CREATE SECURITY POLICY - multiple predicates with options": {
+      "direction": "tree_sitter_accepts",
+      "sql": "CREATE SECURITY POLICY dbo.MultiPolicy ADD FILTER PREDICATE dbo.fn_filter(TenantId) ON dbo.Sales ADD BLOCK PREDICATE dbo.fn_block(TenantId) ON dbo.Sales AFTER UPDATE WITH (STATE = ON)",
+      "reason": "Neither ScriptDom nor SqlParser supports CREATE SECURITY POLICY syntax. Valid T-SQL introduced in SQL Server 2016."
     }
   }
 }

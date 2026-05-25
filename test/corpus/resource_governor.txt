@@ -1,0 +1,198 @@
+================================================================================
+CREATE RESOURCE POOL - basic
+================================================================================
+
+CREATE RESOURCE POOL PoolA;
+
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_resource_pool
+          (id_))))))
+
+================================================================================
+CREATE RESOURCE POOL - with options
+================================================================================
+
+CREATE RESOURCE POOL PoolB
+WITH (MIN_CPU_PERCENT = 10, MAX_CPU_PERCENT = 50, CAP_CPU_PERCENT = 80);
+
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_resource_pool
+          (id_)
+          (WITH)
+          (id_)
+          (expression
+            (primitive_expression
+              (primitive_constant
+                (decimal_))))
+          (id_)
+          (expression
+            (primitive_expression
+              (primitive_constant
+                (decimal_))))
+          (id_)
+          (expression
+            (primitive_expression
+              (primitive_constant
+                (decimal_)))))))))
+
+================================================================================
+ALTER RESOURCE POOL
+================================================================================
+
+ALTER RESOURCE POOL PoolB
+WITH (MAX_CPU_PERCENT = 75);
+
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_resource_pool
+          (id_)
+          (WITH)
+          (id_)
+          (expression
+            (primitive_expression
+              (primitive_constant
+                (decimal_)))))))))
+
+================================================================================
+DROP RESOURCE POOL
+================================================================================
+
+DROP RESOURCE POOL PoolA;
+
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_resource_pool
+          (id_))))))
+
+================================================================================
+CREATE WORKLOAD GROUP - basic
+================================================================================
+
+CREATE WORKLOAD GROUP GroupA;
+
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_workload_group
+          (id_))))))
+
+================================================================================
+CREATE WORKLOAD GROUP - with USING
+================================================================================
+
+CREATE WORKLOAD GROUP GroupB
+WITH (MAX_DOP = 4, REQUEST_MAX_MEMORY_GRANT_PERCENT = 25)
+USING PoolB;
+
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_workload_group
+          (id_)
+          (WITH)
+          (id_)
+          (expression
+            (primitive_expression
+              (primitive_constant
+                (decimal_))))
+          (id_)
+          (expression
+            (primitive_expression
+              (primitive_constant
+                (decimal_))))
+          (id_))))))
+
+================================================================================
+DROP WORKLOAD GROUP
+================================================================================
+
+DROP WORKLOAD GROUP GroupA;
+
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_workload_group
+          (id_))))))
+
+================================================================================
+ALTER RESOURCE GOVERNOR - reconfigure
+================================================================================
+
+ALTER RESOURCE GOVERNOR RECONFIGURE;
+
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_resource_governor)))))
+
+================================================================================
+ALTER RESOURCE GOVERNOR - with classifier
+================================================================================
+
+ALTER RESOURCE GOVERNOR WITH (CLASSIFIER_FUNCTION = dbo.fn_classifier);
+
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_resource_governor
+          (WITH)
+          (id_)
+          (expression
+            (full_column_name
+              (id_)
+              (id_))))))))
+
+================================================================================
+CREATE EXTERNAL RESOURCE POOL
+================================================================================
+
+CREATE EXTERNAL RESOURCE POOL ExtPoolA
+WITH (MAX_CPU_PERCENT = 50);
+
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_external_resource_pool
+          (id_)
+          (WITH)
+          (id_)
+          (expression
+            (primitive_expression
+              (primitive_constant
+                (decimal_)))))))))

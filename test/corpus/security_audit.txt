@@ -1,0 +1,486 @@
+================================================================================
+CREATE SERVER AUDIT - to file
+================================================================================
+
+CREATE SERVER AUDIT MyAudit TO FILE (FILEPATH = 'C:\Audits\');
+
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_server_audit
+          (id_)
+          (id_)
+          (expression
+            (primitive_expression
+              (primitive_constant
+                (string_lit)))))))))
+
+================================================================================
+CREATE SERVER AUDIT - to application log
+================================================================================
+
+CREATE SERVER AUDIT AppAudit TO APPLICATION_LOG;
+
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_server_audit
+          (id_)
+          (id_))))))
+
+================================================================================
+ALTER SERVER AUDIT - with options
+================================================================================
+
+ALTER SERVER AUDIT MyAudit WITH (STATE = ON);
+
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_server_audit
+          (id_)
+          (WITH)
+          (id_)
+          (id_))))))
+
+================================================================================
+ALTER SERVER AUDIT - add WHERE clause
+================================================================================
+
+ALTER SERVER AUDIT MyAudit WHERE server_principal_id = 1;
+
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_server_audit
+          (id_)
+          (search_condition
+            (predicate
+              (expression
+                (full_column_name
+                  (id_)))
+              (comparison_operator)
+              (expression
+                (primitive_expression
+                  (primitive_constant
+                    (decimal_)))))))))))
+
+================================================================================
+DROP SERVER AUDIT
+================================================================================
+
+DROP SERVER AUDIT MyAudit;
+
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_server_audit
+          (id_))))))
+
+================================================================================
+CREATE SERVER AUDIT SPECIFICATION - basic
+================================================================================
+
+CREATE SERVER AUDIT SPECIFICATION AuditSpec
+FOR SERVER AUDIT MyAudit
+ADD (FAILED_LOGIN_GROUP);
+
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_server_audit_specification
+          (id_)
+          (id_)
+          (id_))))))
+
+================================================================================
+CREATE SERVER AUDIT SPECIFICATION - multiple actions with state
+================================================================================
+
+CREATE SERVER AUDIT SPECIFICATION AuditSpec2
+FOR SERVER AUDIT MyAudit
+ADD (SERVER_ROLE_MEMBER_CHANGE_GROUP)
+ADD (DATABASE_CHANGE_GROUP)
+WITH (STATE = ON);
+
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_server_audit_specification
+          (id_)
+          (id_)
+          (id_)
+          (id_)
+          (WITH)
+          (id_)
+          (id_))))))
+
+================================================================================
+DROP SERVER AUDIT SPECIFICATION
+================================================================================
+
+DROP SERVER AUDIT SPECIFICATION AuditSpec;
+
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_server_audit_specification
+          (id_))))))
+
+================================================================================
+CREATE DATABASE AUDIT SPECIFICATION - with ON and BY
+================================================================================
+
+CREATE DATABASE AUDIT SPECIFICATION DbAuditSpec
+FOR SERVER AUDIT MyAudit
+ADD (SELECT ON OBJECT::dbo.Customers BY public);
+
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_database_audit_specification
+          (id_)
+          (id_)
+          (id_)
+          (full_table_name
+            (id_)
+            (id_))
+          (id_))))))
+
+================================================================================
+CREATE DATABASE AUDIT SPECIFICATION - multiple actions
+================================================================================
+
+CREATE DATABASE AUDIT SPECIFICATION DbAuditSpec2
+FOR SERVER AUDIT MyAudit
+ADD (INSERT ON OBJECT::dbo.Orders BY AppUser, DbAdmin)
+ADD (DELETE ON OBJECT::dbo.Orders BY AppUser)
+WITH (STATE = ON);
+
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_database_audit_specification
+          (id_)
+          (id_)
+          (id_)
+          (full_table_name
+            (id_)
+            (id_))
+          (id_)
+          (id_)
+          (id_)
+          (full_table_name
+            (id_)
+            (id_))
+          (id_)
+          (WITH)
+          (id_)
+          (id_))))))
+
+================================================================================
+DROP DATABASE AUDIT SPECIFICATION
+================================================================================
+
+DROP DATABASE AUDIT SPECIFICATION DbAuditSpec;
+
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_database_audit_specification
+          (id_))))))
+
+================================================================================
+CREATE SECURITY POLICY - filter predicate
+================================================================================
+
+CREATE SECURITY POLICY dbo.SecurityPolicy
+ADD FILTER PREDICATE dbo.fn_securitypredicate(TenantId) ON dbo.Sales;
+
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_security_policy
+          (full_table_name
+            (id_)
+            (id_))
+          (func_proc_name_schema
+            (id_)
+            (id_))
+          (expression
+            (full_column_name
+              (id_)))
+          (full_table_name
+            (id_)
+            (id_)))))))
+
+================================================================================
+CREATE SECURITY POLICY - block predicate with AFTER INSERT
+================================================================================
+
+CREATE SECURITY POLICY dbo.BlockPolicy
+ADD BLOCK PREDICATE dbo.fn_blockpredicate(UserId) ON dbo.Orders AFTER INSERT;
+
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_security_policy
+          (full_table_name
+            (id_)
+            (id_))
+          (func_proc_name_schema
+            (id_)
+            (id_))
+          (expression
+            (full_column_name
+              (id_)))
+          (full_table_name
+            (id_)
+            (id_)))))))
+
+================================================================================
+CREATE SECURITY POLICY - multiple predicates with options
+================================================================================
+
+CREATE SECURITY POLICY dbo.MultiPolicy
+ADD FILTER PREDICATE dbo.fn_filter(TenantId) ON dbo.Sales
+ADD BLOCK PREDICATE dbo.fn_block(TenantId) ON dbo.Sales AFTER UPDATE
+WITH (STATE = ON);
+
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_security_policy
+          (full_table_name
+            (id_)
+            (id_))
+          (func_proc_name_schema
+            (id_)
+            (id_))
+          (expression
+            (full_column_name
+              (id_)))
+          (full_table_name
+            (id_)
+            (id_))
+          (func_proc_name_schema
+            (id_)
+            (id_))
+          (expression
+            (full_column_name
+              (id_)))
+          (full_table_name
+            (id_)
+            (id_))
+          (WITH)
+          (id_)
+          (id_))))))
+
+================================================================================
+ALTER SECURITY POLICY - add predicate
+================================================================================
+
+ALTER SECURITY POLICY dbo.SecurityPolicy
+ADD FILTER PREDICATE dbo.fn_filter2(DeptId) ON dbo.Employees;
+
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_security_policy
+          (full_table_name
+            (id_)
+            (id_))
+          (func_proc_name_schema
+            (id_)
+            (id_))
+          (expression
+            (full_column_name
+              (id_)))
+          (full_table_name
+            (id_)
+            (id_)))))))
+
+================================================================================
+ALTER SECURITY POLICY - drop predicate
+================================================================================
+
+ALTER SECURITY POLICY dbo.SecurityPolicy
+DROP FILTER PREDICATE ON dbo.Sales;
+
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_security_policy
+          (full_table_name
+            (id_)
+            (id_))
+          (full_table_name
+            (id_)
+            (id_)))))))
+
+================================================================================
+DROP SECURITY POLICY
+================================================================================
+
+DROP SECURITY POLICY dbo.SecurityPolicy;
+
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_security_policy
+          (full_table_name
+            (id_)
+            (id_)))))))
+
+================================================================================
+ADD SENSITIVITY CLASSIFICATION
+================================================================================
+
+ADD SENSITIVITY CLASSIFICATION TO dbo.Customers.SSN
+WITH (LABEL = 'Highly Confidential', INFORMATION_TYPE = 'SSN');
+
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (add_sensitivity_classification
+          (full_column_name
+            (id_)
+            (id_)
+            (id_))
+          (WITH)
+          (id_)
+          (expression
+            (primitive_expression
+              (primitive_constant
+                (string_lit))))
+          (id_)
+          (expression
+            (primitive_expression
+              (primitive_constant
+                (string_lit)))))))))
+
+================================================================================
+CREATE CREDENTIAL - basic
+================================================================================
+
+CREATE CREDENTIAL MyCredential
+WITH IDENTITY = 'MyDomain\MyAccount';
+
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_credential
+          (id_)
+          (WITH)
+          (string_lit))))))
+
+================================================================================
+CREATE CREDENTIAL - with secret
+================================================================================
+
+CREATE CREDENTIAL AzureCredential
+WITH IDENTITY = 'MyStorageAccount', SECRET = 'MyAccessKey';
+
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (create_credential
+          (id_)
+          (WITH)
+          (string_lit)
+          (string_lit))))))
+
+================================================================================
+ALTER CREDENTIAL
+================================================================================
+
+ALTER CREDENTIAL MyCredential
+WITH IDENTITY = 'NewDomain\NewAccount';
+
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_credential
+          (id_)
+          (WITH)
+          (string_lit))))))
+
+================================================================================
+DROP SECURITY POLICY IF EXISTS
+================================================================================
+
+DROP SECURITY POLICY IF EXISTS dbo.OldPolicy;
+
+--------------------------------------------------------------------------------
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_security_policy
+          (full_table_name
+            (id_)
+            (id_)))))))
