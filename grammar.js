@@ -246,6 +246,8 @@ module.exports = grammar({
       ,$.create_asymmetric_key
       ,$.drop_asymmetric_key
       ,$.add_signature_statement
+      ,$.drop_signature
+      ,$.drop_aggregate
       // XML Schema Collection
       ,$.create_xml_schema_collection
       ,$.drop_xml_schema_collection
@@ -284,6 +286,7 @@ module.exports = grammar({
       ,$.alter_fulltext_index
       ,$.drop_fulltext_index
       ,$.create_fulltext_stoplist
+      ,$.alter_fulltext_stoplist
       ,$.drop_fulltext_stoplist
       // Service Broker DDL
       ,$.create_message_type
@@ -292,6 +295,12 @@ module.exports = grammar({
       ,$.alter_queue
       ,$.create_service
       ,$.create_route
+      ,$.alter_route
+      ,$.drop_contract
+      ,$.drop_queue
+      ,$.drop_service
+      ,$.drop_route
+      ,$.drop_message_type
       // External Tables / PolyBase
       ,$.create_external_data_source
       ,$.drop_external_data_source
@@ -1368,6 +1377,20 @@ module.exports = grammar({
       '=', $.expression,
     ),
 
+    // ALTER ROUTE name WITH option = value [, ...]  (TSql120.g:10566)
+    alter_route: $ => prec.right(seq(
+      token(/ALTER/i), token(/ROUTE/i), $.id_,
+      $.WITH,
+      $._route_option, repeat(seq(',', $._route_option)),
+    )),
+
+    // Service Broker DROPs  (TSql120.g:13193-13237)
+    drop_contract: $ => seq(token(/DROP/i), token(/CONTRACT/i), $.id_),
+    drop_queue: $ => seq(token(/DROP/i), token(/QUEUE/i), $.full_table_name),
+    drop_service: $ => seq(token(/DROP/i), token(/SERVICE/i), $.id_),
+    drop_route: $ => seq(token(/DROP/i), token(/ROUTE/i), $.id_),
+    drop_message_type: $ => seq(token(/DROP/i), token(/MESSAGE/i), token(/TYPE/i), $.id_),
+
     // Service Broker: END CONVERSATION
     // https://learn.microsoft.com/en-us/sql/t-sql/statements/end-conversation-transact-sql
     end_conversation_statement: $ => prec.right(seq(
@@ -1592,6 +1615,22 @@ module.exports = grammar({
       ),
       optional(seq($.WITH, token(/PASSWORD/i), token('='), $.string_lit)),
     )),
+
+    // DROP [COUNTER] SIGNATURE FROM element BY ...  (TSql120.g:13355) — mirrors ADD (uses FROM, reuses _signature_by)
+    drop_signature: $ => prec.right(seq(
+      token(/DROP/i), optional(token(/COUNTER/i)), token(/SIGNATURE/i),
+      token(/FROM/i),
+      optional(seq($.id_, token('::'))),
+      $.id_,
+      token(/BY/i),
+      $._signature_by, repeat(seq(token(','), $._signature_by)),
+    )),
+
+    // DROP AGGREGATE [IF EXISTS] [schema.]name [, ...]  (TSql120.g:12961)
+    drop_aggregate: $ => seq(
+      token(/DROP/i), token(/AGGREGATE/i), optional($._if_exists),
+      $.full_table_name, repeat(seq(',', $.full_table_name)),
+    ),
 
     // =====================
     // CREATE/DROP XML SCHEMA COLLECTION
@@ -1878,6 +1917,21 @@ module.exports = grammar({
     drop_fulltext_stoplist: $ => seq(
       token(/DROP/i), token(/FULLTEXT/i), token(/STOPLIST/i), $.id_,
     ),
+
+    // ALTER FULLTEXT STOPLIST name { ADD 'w' LANGUAGE lang | DROP { 'w' LANGUAGE lang | ALL [LANGUAGE lang] } }  (TSql120.g:6817)
+    alter_fulltext_stoplist: $ => prec.right(seq(
+      token(/ALTER/i), token(/FULLTEXT/i), token(/STOPLIST/i), $.id_,
+      choice(
+        seq(token(/ADD/i), $.string_lit, token(/LANGUAGE/i), $._language_term),
+        seq(token(/DROP/i), choice(
+          seq($.string_lit, token(/LANGUAGE/i), $._language_term),
+          seq(token(/ALL/i), token(/LANGUAGE/i), $._language_term),
+          token(/ALL/i),
+        )),
+      ),
+    )),
+
+    _language_term: $ => choice($.string_lit, $.decimal_, $.id_),
 
     // =====================
     // EXTERNAL TABLES / POLYBASE

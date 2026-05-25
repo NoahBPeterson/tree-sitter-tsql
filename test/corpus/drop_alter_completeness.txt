@@ -1,0 +1,159 @@
+===========================
+DROP CONTRACT
+===========================
+DROP CONTRACT c
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_contract
+          (id_))))))
+
+===========================
+DROP QUEUE
+===========================
+DROP QUEUE dbo.q
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_queue
+          (full_table_name
+            (id_)
+            (id_)))))))
+
+===========================
+DROP SERVICE
+===========================
+DROP SERVICE s
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_service
+          (id_))))))
+
+===========================
+DROP ROUTE
+===========================
+DROP ROUTE r
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_route
+          (id_))))))
+
+===========================
+DROP MESSAGE TYPE
+===========================
+DROP MESSAGE TYPE mt
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_message_type
+          (id_))))))
+
+===========================
+ALTER ROUTE
+===========================
+ALTER ROUTE r WITH ADDRESS = 'tcp://1.2.3.4:4022'
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_route
+          (id_)
+          (WITH)
+          (id_)
+          (expression
+            (primitive_expression
+              (primitive_constant
+                (string_lit)))))))))
+
+===========================
+DROP AGGREGATE IF EXISTS multiple
+===========================
+DROP AGGREGATE IF EXISTS a, b
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_aggregate
+          (full_table_name
+            (id_))
+          (full_table_name
+            (id_)))))))
+
+===========================
+DROP SIGNATURE
+===========================
+DROP SIGNATURE FROM obj BY CERTIFICATE cert
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_signature
+          (id_)
+          (id_))))))
+
+===========================
+DROP COUNTER SIGNATURE with password
+===========================
+DROP COUNTER SIGNATURE FROM obj BY CERTIFICATE cert WITH PASSWORD = 'p'
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (drop_signature
+          (id_)
+          (id_)
+          (WITH)
+          (string_lit))))))
+
+===========================
+ALTER FULLTEXT STOPLIST ADD
+===========================
+ALTER FULLTEXT STOPLIST sl ADD 'word' LANGUAGE 1033
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_fulltext_stoplist
+          (id_)
+          (string_lit)
+          (decimal_))))))
+
+===========================
+ALTER FULLTEXT STOPLIST DROP ALL
+===========================
+ALTER FULLTEXT STOPLIST sl DROP ALL
+---
+
+(tsql_file
+  (batch
+    (sql_clauses
+      (ddl_clause
+        (alter_fulltext_stoplist
+          (id_))))))

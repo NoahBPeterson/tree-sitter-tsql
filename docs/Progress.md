@@ -23,15 +23,20 @@
 
 **Headline:** `TSql120.g` defines **261** leaf `*Statement` productions. After excluding ~20
 internal helper/dispatcher rules (e.g. `lastStatement`, `innerDmlStatement`, the `alterTable*`
-sub-rules), **~209 of ~241 user-facing statement families are covered (~87%)**. The **32 remaining
+sub-rules), **~218 of ~241 user-facing statement families are covered (~90%)**. The **23 remaining
 gaps** are listed below, grouped by feature, each with its `TSql120.g` line. Most are rarely-used
 enterprise/Azure features (Always On, Extended Events, Federations, Service Broker priority).
 
 > ✅ **Common-statement batch implemented 2026-05-24** (parse-verified + ScriptDom `TSql120Parser`
 > oracle-verified): the `SET STATISTICS` bug fix, `SET OFFSETS`, `SET ERRLVL`, `ALTER SEQUENCE`,
 > `ALTER SCHEMA … TRANSFER`, `ALTER PARTITION FUNCTION/SCHEME`, `CREATE XML INDEX`,
-> `CREATE PRIMARY XML INDEX`, and `CREATE SPATIAL INDEX`. 12 regression tests added
+> `CREATE PRIMARY XML INDEX`, and `CREATE SPATIAL INDEX`. 13 regression tests added
 > (`test/corpus/common_statement_gaps.txt`). Items checked off below.
+
+> ✅ **DROP/ALTER completeness batch implemented 2026-05-25** (parse + oracle-verified): Service Broker
+> `DROP CONTRACT/QUEUE/SERVICE/ROUTE/MESSAGE TYPE`, `ALTER ROUTE`, `DROP AGGREGATE`, `DROP SIGNATURE`,
+> and `ALTER FULLTEXT STOPLIST` — filling CRUD asymmetries in families that already had CREATE.
+> 11 regression tests added (`test/corpus/drop_alter_completeness.txt`).
 
 > ⚠️ **SET STATISTICS false positive — now FIXED.** §4.2 line `SET STATISTICS IO|TIME|XML|PROFILE ON|OFF`
 > had been marked `[x]` but was **broken** (`set_special` expected a single glued `STATISTICS_IO` token;
@@ -66,12 +71,12 @@ enterprise/Azure features (Always On, Extended Events, Federations, Service Brok
 - [ ] `CREATE REMOTE SERVICE BINDING` (`TSql120.g:8201 createRemoteServiceBindingStatement`)
 - [ ] `ALTER REMOTE SERVICE BINDING` (`TSql120.g:9326 alterRemoteServiceBindingStatement`)
 - [ ] `DROP REMOTE SERVICE BINDING` (`TSql120.g:13249 dropRemoteServiceBindingStatement`)
-- [ ] `ALTER ROUTE` (`TSql120.g:10566 alterRouteStatement`)
-- [ ] `DROP CONTRACT` (`TSql120.g:13193 dropContractStatement`)
-- [ ] `DROP QUEUE` (`TSql120.g:13204 dropQueueStatement`)
-- [ ] `DROP SERVICE` (`TSql120.g:13215 dropServiceStatement`)
-- [ ] `DROP ROUTE` (`TSql120.g:13226 dropRouteStatement`)
-- [ ] `DROP MESSAGE TYPE` (`TSql120.g:13237 dropMessageTypeStatement`)
+- [x] `ALTER ROUTE` (`TSql120.g:10566 alterRouteStatement`)
+- [x] `DROP CONTRACT` (`TSql120.g:13193 dropContractStatement`)
+- [x] `DROP QUEUE` (`TSql120.g:13204 dropQueueStatement`)
+- [x] `DROP SERVICE` (`TSql120.g:13215 dropServiceStatement`)
+- [x] `DROP ROUTE` (`TSql120.g:13226 dropRouteStatement`)
+- [x] `DROP MESSAGE TYPE` (`TSql120.g:13237 dropMessageTypeStatement`)
 
 ### Specialized Indexes
 - [x] `CREATE SPATIAL INDEX` (`TSql120.g:19330 createSpatialIndexStatement`)
@@ -90,11 +95,11 @@ enterprise/Azure features (Always On, Extended Events, Federations, Service Brok
 - [x] `ALTER SCHEMA ... TRANSFER` (`TSql120.g:10580 alterSchemaStatement`)
 - [x] `ALTER PARTITION FUNCTION ... SPLIT|MERGE RANGE` (`TSql120.g:10160 alterPartitionFunctionStatement`)
 - [x] `ALTER PARTITION SCHEME ... NEXT USED` (`TSql120.g:10193 alterPartitionSchemeStatement`)
-- [ ] `ALTER FULLTEXT STOPLIST` (`TSql120.g:6817 alterFulltextStoplistStatement`)
+- [x] `ALTER FULLTEXT STOPLIST` (`TSql120.g:6817 alterFulltextStoplistStatement`)
 
 ### DROP gaps
-- [ ] `DROP AGGREGATE` (`TSql120.g:12961 dropAggregateStatement`)
-- [ ] `DROP SIGNATURE` (`TSql120.g:13355 dropSignatureStatement`)
+- [x] `DROP AGGREGATE` (`TSql120.g:12961 dropAggregateStatement`)
+- [x] `DROP SIGNATURE` (`TSql120.g:13355 dropSignatureStatement`)
 
 ### SET statement gaps
 - [x] `SET STATISTICS IO|TIME|XML|PROFILE ON|OFF` — fixed: proper two-word `set_statistics_option` branch (`TSql120.g:14275 setStatisticsStatement`)
